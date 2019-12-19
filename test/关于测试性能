@@ -1,0 +1,5 @@
+go test -test.bench=".*" -count=5 -test.benchmem
+
+-test.bench=".*" 测试所有参数
+-count=5 测试几遍
+-test.benchmem  性能测试的时候输出内存情况
