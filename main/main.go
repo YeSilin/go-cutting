@@ -7,9 +7,7 @@ import (
 	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/model/additional"
-	"github.com/yesilin/go-cutting/model/initial"
 	"github.com/yesilin/go-cutting/model/layout"
-	"github.com/yesilin/go-cutting/model/mapFrame"
 	"github.com/yesilin/go-cutting/model/setting"
 	"github.com/yesilin/go-cutting/tools"
 	"strings"
@@ -19,7 +17,7 @@ import (
 func init() {
 	go func() {
 		// 导入注册表 使用正确的打开方式，并且取消脚本执行警告
-		initial.OpenMode()
+		model.OpenMode()
 
 		// 创建jsx文件夹
 		_ = tools.CreateMkdirAll("Config/JSX/Temp")
@@ -98,8 +96,8 @@ func main() {
 			tools.CallClear()      // 清屏
 			model.OldFrameChoice() // 切图
 		case "2":
-			tools.CallClear()         // 清屏
-			mapFrame.MapFrameChoice() // 贴图
+			tools.CallClear()      // 清屏
+			model.MapFrameChoice() // 贴图
 		case "3":
 			tools.CallClear() // 清屏
 			model.Choice()    // 效果图

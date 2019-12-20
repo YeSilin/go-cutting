@@ -4,9 +4,6 @@ go 1.13
 
 require (
 	fyne.io/fyne v1.1.2
-	github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394
-	github.com/bitly/go-simplejson v0.5.0
-	github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 // indirect
 	github.com/briandowns/spinner v1.6.1
 	github.com/cenkalti/dominantcolor v0.0.0-20171020061837-df772e8dd39e
 	github.com/disintegration/imaging v1.6.1

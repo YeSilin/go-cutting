@@ -1,11 +1,10 @@
-package mapFrame
+package model
 
 import (
 	"fmt"
 	"github.com/gookit/color"
 	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/globa"
-	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
 	"strconv"
@@ -21,7 +20,7 @@ func MapFrameChoice() {
 		fmt.Println("\n【贴图】[1]普通座屏\t[2]左右镂空\t[3]中间大两边小\t\t[4]上下镂空")
 		fmt.Println("\n【贴图】[5]顶天立地\t[6]各种折屏\t[7]多个座屏\t\t[8]不扣补切")
 
-		frameType := model.Input("\n【贴图】请选择上方的边框类型：", false)
+		frameType := Input("\n【贴图】请选择上方的边框类型：", false)
 
 		switch frameType {
 		case "1":
@@ -54,11 +53,11 @@ FLAG:
 func mapFrame1() {
 	for {
 		tools.PrintLine(3) // 请注意切图的工厂与框架的选择
-		widthStr := model.Input("\n【贴图】请输入小座屏的宽（默认120）：", true)
+		widthStr := Input("\n【贴图】请输入小座屏的宽（默认120）：", true)
 		if widthStr == "-" {
 			break
 		}
-		heightStr := model.Input("\n【贴图】请输入小座屏的高（默认180）：", true)
+		heightStr := Input("\n【贴图】请输入小座屏的高（默认180）：", true)
 		if heightStr == "-" {
 			break
 		}
@@ -88,26 +87,26 @@ func mapFrame1() {
 func mapFrame6() {
 	for {
 		tools.PrintLine(3) // 请注意切图的工厂与框架的选择
-		widthStr := model.Input("\n【贴图】请输入折屏单扇的宽（默认45）：", true)
+		widthStr := Input("\n【贴图】请输入折屏单扇的宽（默认45）：", true)
 		if widthStr == "-" {
 			break
 		}
-		heightStr := model.Input("\n【贴图】请输入折屏单扇的高（默认180）：", true)
+		heightStr := Input("\n【贴图】请输入折屏单扇的高（默认180）：", true)
 		if heightStr == "-" {
 			break
 		}
-		upperHollowOutStr := model.Input("\n【贴图】请输入上镂空的大小（默认0）：", false)
+		upperHollowOutStr := Input("\n【贴图】请输入上镂空的大小（默认0）：", false)
 		if heightStr == "-" {
 			break
 		}
 
-		downHollowOutStr := model.Input("\n【贴图】请输入下镂空的大小（默认0）：", false)
+		downHollowOutStr := Input("\n【贴图】请输入下镂空的大小（默认0）：", false)
 		if heightStr == "-" {
 
 			break
 		}
 
-		numberStr := model.Input("\n【贴图】请输入共拥有几扇：", false)
+		numberStr := Input("\n【贴图】请输入共拥有几扇：", false)
 		if numberStr == "-" {
 			break
 		}
