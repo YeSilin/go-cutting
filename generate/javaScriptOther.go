@@ -702,7 +702,7 @@ func SizeMarks() {
 }
 
 // 暗号-98的实现
-func DetailsPage() {
+func SaveForWeb() {
 	// 使用最高效的字符串拼接
 	var jsx = strings.Builder{}
 
@@ -729,11 +729,8 @@ func DetailsPage() {
 	jsx.WriteString("    // 获取当前脚本所在路径\r\n")
 	jsx.WriteString("    var scriptPath = (new File($.fileName)).parent;\r\n")
 	jsx.WriteString("\r\n")
-	jsx.WriteString("    // 为指定路径文件定义变量\r\n")
-	jsx.WriteString("    var fileRef = new File(scriptPath + \"/../Picture/主图/dp.jpg\");\r\n")
-	jsx.WriteString("\r\n")
 	jsx.WriteString("    // 定义文件保存位置\r\n")
-	jsx.WriteString("    var fileObj = new File(fileRef);\r\n")
+	jsx.WriteString("    var savePath = new File(scriptPath + \"/../Picture/主图/dp.jpg\");\r\n")
 	jsx.WriteString("\r\n")
 	jsx.WriteString("    var jpgOpt = new ExportOptionsSaveForWeb();\r\n")
 	jsx.WriteString("    jpgOpt.format = SaveDocumentType.JPEG;  // 保存为jpg\r\n")
@@ -749,7 +746,7 @@ func DetailsPage() {
 	jsx.WriteString("\r\n")
 	jsx.WriteString("    // 更新进度条\r\n")
 	jsx.WriteString("    updateProgress(3, 4);\r\n")
-	jsx.WriteString("    activeDocument.exportDocument(fileObj, ExportType.SAVEFORWEB, jpgOpt);\r\n")
+	jsx.WriteString("    activeDocument.exportDocument(savePath, ExportType.SAVEFORWEB,);\r\n")
 	jsx.WriteString("\r\n")
 	jsx.WriteString("    // 更新进度条\r\n")
 	jsx.WriteString("    updateProgress(4, 4);\r\n")
@@ -775,5 +772,5 @@ func DetailsPage() {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("Config/JSX/DetailsPage.jsx", jsxStr)
+	tools.CreateFile("Config/JSX/SaveForWeb.jsx", jsxStr)
 }

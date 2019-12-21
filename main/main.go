@@ -27,7 +27,7 @@ func init() {
 		generate.ClearMetadataNoPopUp() // 生成我自己动作要用的清除元数据脚本备用
 		generate.BlackEdge()            // 生成添加黑边脚本备用
 		generate.SizeMarks()            // 生成 将矩形选框转换为标记测量标志
-		generate.DetailsPage()          // 生成详情页指定保存位置
+		generate.SaveForWeb()           // 生成详情页指定保存位置
 
 		// 创建历史记录文件夹
 		now := time.Now().Format("2006-01")
@@ -59,7 +59,7 @@ func main() {
 		// 定义私密文件路径
 		PrivateFile, _ := tools.Home()
 		PrivateFile = fmt.Sprintf("%s\\Documents\\Adobe\\Config.chx", PrivateFile)
-		power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.000065, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
+		power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.000066, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
 		// 如果权限不是true
 		if !power {
 			fmt.Println(tips)
@@ -77,7 +77,7 @@ func main() {
 
 	for {
 		fmt.Println(tips) // 提示信息
-		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.0.65 app " + strings.Repeat("-", 20))
+		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.0.66 app " + strings.Repeat("-", 20))
 
 		fmt.Println("\n【更新】添加新暗号【--】返回上一次输入，例如镂空大小输错，返回重新输入镂空大小！")
 

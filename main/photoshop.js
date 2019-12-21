@@ -21,11 +21,8 @@ function saveAsWeb() {
     // 获取当前脚本所在路径
     var scriptPath = (new File($.fileName)).parent;
 
-    // 为指定路径文件定义变量
-    var fileRef = new File(scriptPath + "/../Picture/主图/dp.jpg");
-
     // 定义文件保存位置
-    var fileObj = new File(fileRef);
+    var savePath = new File(scriptPath + "/../Picture/主图/dp.jpg");
 
     var jpgOpt = new ExportOptionsSaveForWeb();
     jpgOpt.format = SaveDocumentType.JPEG;  // 保存为jpg
@@ -41,7 +38,7 @@ function saveAsWeb() {
 
     // 更新进度条
     updateProgress(3, 4);
-    activeDocument.exportDocument(fileObj, ExportType.SAVEFORWEB, jpgOpt);
+    activeDocument.exportDocument(savePath, ExportType.SAVEFORWEB,);
 
     // 更新进度条
     updateProgress(4, 4);

@@ -151,7 +151,7 @@ func Input(text string, canvasMode bool) string {
 			// 创建套图文件夹
 			_ = tools.CreateMkdirAll("Config/Picture/主图")
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/JSX/DetailsPage.jsx"
+			dataPath := "Config/JSX/SaveForWeb.jsx"
 			exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 
 			time.Sleep(time.Second) // 停一秒
