@@ -72,34 +72,47 @@ func OldFrame1() {
 	// 定义一个预留尺寸
 	var reserve = globa.NowSetting.Reserve
 
-	for {
-	FLAG:
-		ChineseTitle("当前框架常规座屏", 79) // 请注意切图的工厂与框架的选择
-		widthStr := Input("\n【切图】请输入常规座屏的宽：", true)
-		if widthStr == "-" || widthStr == "--" {
-			break
-		}
+	// 初始化输入提示的切片
+	inputPrompt := [2]string{"\n【切图】请输入常规座屏的宽：", "\n【切图】请输入常规座屏的高："}
 
-		heightStr := Input("\n【切图】请输入常规座屏的高：", true)
-		if heightStr == "-" {
-			break
-		}
-		// 返回上一次输入
-		if heightStr == "--" {
-			goto FLAG
+	// 保存尺寸的切片
+	saveSizeStr := [2]string{}
+
+	// 循环使用此框架
+	for{
+		ChineseTitle("当前框架常规座屏", 79) // 请注意切图的工厂与框架的选择
+		for i := 0; i < len(saveSizeStr); i++ {
+			saveSizeStr[i] = Input(inputPrompt[i], true)
+
+			// 输入返回当然要返回啦
+			if saveSizeStr[i] == "-" {
+				return
+			}
+
+			// 第一次就输入返回就退出此框架
+			if i == 0 && saveSizeStr[i] == "--"{
+				return
+			}
+
+			// 退回上一级输入
+			if saveSizeStr[i] == "--" {
+				i -= 2
+			}
 		}
 
 		//存储未计算时的历史记录
-		var history = fmt.Sprintf("常规座屏的宽：%s\n", widthStr)
-		history += fmt.Sprintf("常规座屏的高：%s\n", heightStr)
+		history := fmt.Sprintf("常规座屏的宽：%s\n", saveSizeStr[0])
+		history += fmt.Sprintf("常规座屏的高：%s\n", saveSizeStr[1])
 
 		// 强制类型转换成浮点数
-		width, _ := strconv.ParseFloat(widthStr, 64)
-		height, _ := strconv.ParseFloat(heightStr, 64)
+		width, _ := strconv.ParseFloat(saveSizeStr[0], 64)
+		height, _ := strconv.ParseFloat(saveSizeStr[1], 64)
 
+		// 进行框架公式计算
 		width = width - 10 + reserve
 		height = height - 10 + reserve
 
+		// 输出提示
 		color.Yellow.Printf("\n【切图】常规座屏：宽 %.2f cm，高 %.2f cm", width, height)
 
 		//存储已计算的历史记录
@@ -593,30 +606,22 @@ func OldFrame6() {
 			tempName = "常规"
 		}
 
-		//if upperHollowOut > 0 {
-		//
-		//	height -= upperHollowOut + 5 // 如果有上镂空的话
-		//}
-		//if downHollowOut > 0 {
-		//	height -= downHollowOut + 5 // 如果有下镂空的话
-		//}
-
-		color.Yellow.Printf("\n【切图】%s折屏：总宽 %.2f cm，高 %.2f cm", tempName,totalWidth, height)
+		color.Yellow.Printf("\n【切图】%s折屏：总宽 %.2f cm，高 %.2f cm", tempName, totalWidth, height)
 		//存储已计算的历史记录
-		history += fmt.Sprintf("%s折屏：总宽 %.2f cm，高 %.2f cm\n", tempName,totalWidth, height)
+		history += fmt.Sprintf("%s折屏：总宽 %.2f cm，高 %.2f cm\n", tempName, totalWidth, height)
 		go quickCipher.History(history) // 写入历史
 
 		//获取当前时间，进行格式化 2006-01-02 15:04:05
 		now := time.Now().Format("0102150405")
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_%s折屏_%.0fx%.0f", now,tempName, totalWidth, height)
+		frameName := fmt.Sprintf("%s_%s折屏_%.0fx%.0f", now, tempName, totalWidth, height)
 		// 定义单片名字
-		singleName := fmt.Sprintf("%s_%s折屏",now,tempName)
+		singleName := fmt.Sprintf("%s_%s折屏", now, tempName)
 
-		generate.NewDocumentJS(totalWidth, height, frameName, false) // 创建ps文档
-		generate.LineJs6(width, number)                              // 生成专属参考线
-		go generate.Tailor6(width, height, number, frameName,singleName)        // 生成暗号【-1】可以用的另存脚本
-		tools.MaxCanvas(width, height)                               // 最大画布判断
+		generate.NewDocumentJS(totalWidth, height, frameName, false)      // 创建ps文档
+		generate.LineJs6(width, number)                                   // 生成专属参考线
+		go generate.Tailor6(width, height, number, frameName, singleName) // 生成暗号【-1】可以用的另存脚本
+		tools.MaxCanvas(width, height)                                    // 最大画布判断
 
 		if globa.NowSetting.OpenPs { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
