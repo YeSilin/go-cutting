@@ -36,7 +36,7 @@ func OldFrameChoice() {
 			OldFrame2()       // 左右镂空
 		case "3":
 			tools.CallClear() // 清屏
-			OldFrame3()      // 左右画布
+			OldFrame3()       // 左右画布
 		case "4":
 			tools.CallClear() // 清屏
 			OldFrame4()       // 上下镂空
@@ -261,6 +261,7 @@ func OldFrame3() {
 	// 保存尺寸的切片
 	saveSizeStr := [4]string{}
 
+	// 循环使用此框架
 	for {
 		ChineseTitle("当前框架左右画布", 79) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
@@ -345,52 +346,64 @@ func OldFrame4() {
 	// 定义一个预留尺寸
 	var reserve = globa.NowSetting.Reserve
 
-	for {
-	FLAG1:
-		ChineseTitle("当前框架上下镂空", 79) // 请注意切图的工厂与框架的选择
-		widthStr := Input("\n【切图】请输入上下镂空的总宽：", true)
-		if widthStr == "-" || widthStr == "--" {
-			break
-		}
-	FLAG2:
-		heightStr := Input("\n【切图】请输入上下镂空的总高：", true)
-		if heightStr == "-" {
-			break
-		}
-		// 返回上一次输入
-		if heightStr == "--" {
-			goto FLAG1
-		}
-	FLAG3:
-		upperHollowOutStr := Input("\n【切图】请输入上镂空的大小：", false)
-		if upperHollowOutStr == "-" {
-			break
-		}
-		// 返回上一次输入
-		if upperHollowOutStr == "--" {
-			goto FLAG2
-		}
+	// 初始化输入提示的切片
+	inputPrompt := [4]string{"\n【切图】请输入上下镂空的总宽：", "\n【切图】请输入上下镂空的总高：",
+		"\n【切图】请输入上镂空的大小：", "\n【切图】请输入下镂空的大小："}
 
-		downHollowOutStr := Input("\n【切图】请输入下镂空的大小：", false)
-		if downHollowOutStr == "-" {
-			break
-		}
-		// 返回上一次输入
-		if downHollowOutStr == "--" {
-			goto FLAG3
+	// 保存尺寸的切片
+	saveSizeStr := [4]string{}
+
+	// 循环使用此框架
+	for {
+		ChineseTitle("当前框架上下镂空", 79) // 请注意切图的工厂与框架的选择
+		for i := 0; i < len(saveSizeStr); i++ {
+			// 只有前2个需要开启画布模式
+			if i < 2 {
+				saveSizeStr[i] = Input(inputPrompt[i], true)
+			} else {
+				saveSizeStr[i] = Input(inputPrompt[i], false)
+			}
+
+			// 输入返回当然要返回啦
+			if saveSizeStr[i] == "-" {
+				return
+			}
+
+			// 第一次就输入返回就退出此框架
+			if i == 0 && saveSizeStr[i] == "--" {
+				return
+			}
+
+			// 退回上一级输入
+			if saveSizeStr[i] == "--" {
+				i -= 2
+			}
 		}
 
 		//存储未计算时的历史记录
-		var history = fmt.Sprintf("上下镂空的总宽：%s\n", widthStr)
-		history += fmt.Sprintf("上下镂空的总高：%s\n", heightStr)
-		history += fmt.Sprintf("上镂空的大小：%s\n", upperHollowOutStr)
-		history += fmt.Sprintf("下镂空的大小：%s\n", downHollowOutStr)
+		history := fmt.Sprintf("上下镂空的总宽：%s\n", saveSizeStr[0])
+		history += fmt.Sprintf("上下镂空的总高：%s\n", saveSizeStr[1])
+		history += fmt.Sprintf("上镂空的大小：%s\n", saveSizeStr[2])
+		history += fmt.Sprintf("下镂空的大小：%s\n", saveSizeStr[3])
 
-		width, _ := strconv.ParseFloat(widthStr, 64)
-		height, _ := strconv.ParseFloat(heightStr, 64)
-		upperHollowOut, _ := strconv.ParseFloat(upperHollowOutStr, 64)
-		downHollowOut, _ := strconv.ParseFloat(downHollowOutStr, 64)
+		// 强制类型转换成浮点数
+		width, _ := strconv.ParseFloat(saveSizeStr[0], 64)
+		height, _ := strconv.ParseFloat(saveSizeStr[1], 64)
+		upperHollowOut, _ := strconv.ParseFloat(saveSizeStr[2], 64)
+		downHollowOut, _ := strconv.ParseFloat(saveSizeStr[3], 64)
 
+		// 声明临时框架名字
+		var tempName = "上下镂空"
+
+		// 镂空判断
+		if upperHollowOut > 0 || downHollowOut == 0 {
+			tempName = "上镂空"
+		}
+		if upperHollowOut == 0 || downHollowOut > 0 {
+			tempName = "下镂空"
+		}
+
+		// 进行框架公式计算
 		width = width - 10 + reserve
 		height = height - 10 + reserve
 		if upperHollowOut > 0 {
@@ -400,16 +413,16 @@ func OldFrame4() {
 			height -= downHollowOut + 5 // 如果有下镂空的话
 		}
 
-		color.Yellow.Printf("\n【切图】上下镂空：宽 %.2f cm，高 %.2f cm", width, height)
+		color.Yellow.Printf("\n【切图】%s：宽 %.2f cm，高 %.2f cm", tempName, width, height)
 
 		//存储已计算的历史记录
-		history += fmt.Sprintf("上下镂空：宽 %.2f cm，高 %.2f cm\n", width, height)
+		history += fmt.Sprintf("%s：宽 %.2f cm，高 %.2f cm\n", tempName, width, height)
 		go quickCipher.History(history) // 写入历史
 
 		//获取当前时间，进行格式化 2006-01-02 15:04:05
 		now := time.Now().Format("0102150405")
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_上下镂空_%.0fx%.0f", now, width, height)
+		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", now, tempName, width, height)
 
 		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor0(frameName)                         // 生成暗号【-1】可以用的另存脚本
