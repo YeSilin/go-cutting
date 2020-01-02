@@ -56,6 +56,7 @@ func current() {
 		openPsStr = model.ColourString(openPsStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	}
 
+	// 自动黑边状态
 	var blackEdgeStr string
 	switch globa.NowSetting.BlackEdge {
 	case true:
@@ -69,12 +70,22 @@ func current() {
 		blackEdgeStr = model.ColourString(blackEdgeStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	}
 
+	// 自定前缀状态
+	var prefixStr string
+	if globa.NowSetting.Prefix != ""{
+		prefixStr = "已定义"
+		prefixStr = model.ColourString(prefixStr, ctc.ForegroundGreen) // 设置带颜色的字符串
+	} else {
+		prefixStr = "未定义"
+		prefixStr = model.ColourString(prefixStr, ctc.ForegroundBright) // 设置带颜色的字符串
+	}
+
 	// 带颜色的预留画布提示
 	var reserveStr = fmt.Sprintf("%.2fcm", globa.NowSetting.Reserve)
 	reserveStr = model.ColourString(reserveStr, ctc.ForegroundGreen) // 设置带颜色的字符串
 
 	fmt.Printf("\n【状态】[1]记忆框架：%s\t[2]自动新建：%s\t[3]自动黑边：%s\n", memoryStr, openPsStr, blackEdgeStr)
-	fmt.Printf("\n【状态】[4]暂位预留：%s\t[5]切布预留：%s\t[6]恢复默认出厂设置\n", model.ColourString("未开发", ctc.ForegroundBright), reserveStr)
+	fmt.Printf("\n【状态】[4]自定前缀：%s\t[5]切布预留：%s\t[6]恢复默认出厂设置\n", prefixStr, reserveStr)
 }
 
 // 验证输入的内容是不是有效数据
@@ -155,6 +166,26 @@ func ModifySetting() {
 				fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
 				goto FLAG // 跳到循环结束
 			}
+		case "4":
+			fmt.Println("\n【提示】自定义前缀可以在使用【-1】暗号时自动添加，例如定义为【沐：】为前缀！")
+			fmt.Println("\n此功能未开发，设置无效")
+			var tempPrefixStr = model.Input("\n【提示】请输入最新的切图前缀：", false)
+
+			switch tempPrefixStr {
+			case "-":
+				goto FLAG // 跳到循环结束
+			case "0":  // 直接回车代表删除前缀
+				// 设置前缀
+				globa.NowSetting.Prefix = ""
+			default:
+				// 设置前缀
+				globa.NowSetting.Prefix = tempPrefixStr
+				fmt.Printf("\n【提示】切图前缀已更改成 【%s】，输入内容为空代表删除！\n", globa.NowSetting.Prefix)
+				// 将当前设置编码到json文件
+				JsonSettingEncoder("Config/Config.json", globa.NowSetting)
+			}
+
+
 		case "5":
 			fmt.Println("\n【警告】修改此项将直接影响最终的切图结果，如未出现特殊情况请勿修改")
 			var tempReserve = model.Input("\n【警告】请输入最新的切图预留：", false)

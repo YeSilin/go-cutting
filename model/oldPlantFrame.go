@@ -66,6 +66,12 @@ func OldFrameChoice() {
 FLAG:
 }
 
+// 返回当前时间
+func nowTime() (now string) {
+	// 获取当前时间，进行格式化 2006-01-02 15:04:05
+	return time.Now().Format("060102150405")
+}
+
 //旧厂小座屏
 //边框是5  扣掉两个边框5+5 然后再加回来5厘米  可以理解为扣5*/
 func OldFrame1() {
@@ -119,10 +125,8 @@ func OldFrame1() {
 		history += fmt.Sprintf("常规座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
 		go quickCipher.History(history) // 写入历史
 
-		//获取当前时间，进行格式化 2006-01-02 15:04:05
-		now := time.Now().Format("0102150405")
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", now, width, height)
+		frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", nowTime(), width, height)
 
 		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor0(frameName)                         // 生成暗号【-1】可以用的另存脚本
@@ -226,10 +230,8 @@ func OldFrame2() {
 		history += fmt.Sprintf("%s：宽 %.2f cm，高 %.2f cm\n", tempName, width, height)
 		go quickCipher.History(history) // 写入历史
 
-		//获取当前时间，进行格式化 2006-01-02 15:04:05
-		now := time.Now().Format("0102150405")
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", now, tempName, width, height)
+		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", nowTime(), tempName, width, height)
 
 		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor0(frameName)                         // 生成暗号【-1】可以用的另存脚本
@@ -317,10 +319,8 @@ func OldFrame3() {
 		history += fmt.Sprintf("左右画布：中间 %.2f cm，两边各 %.2f cm，高 %.2f cm\n", width, hollowOut, height)
 		go quickCipher.History(history) // 写入历史
 
-		//获取当前时间，进行格式化 2006-01-02 15:04:05
-		now := time.Now().Format("0102150405")
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_左右画布_%.0fx%.0f", now, totalWidth, height)
+		frameName := fmt.Sprintf("%s_左右画布_%.0fx%.0f", nowTime(), totalWidth, height)
 
 		generate.NewDocumentJS(totalWidth, height, frameName, false) // 创建ps文档
 		generate.LineJs3(width, hollowOut)                           // 生成专属参考线
@@ -419,10 +419,8 @@ func OldFrame4() {
 		history += fmt.Sprintf("%s：宽 %.2f cm，高 %.2f cm\n", tempName, width, height)
 		go quickCipher.History(history) // 写入历史
 
-		//获取当前时间，进行格式化 2006-01-02 15:04:05
-		now := time.Now().Format("0102150405")
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", now, tempName, width, height)
+		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", nowTime(), tempName, width, height)
 
 		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor0(frameName)                         // 生成暗号【-1】可以用的另存脚本
@@ -512,10 +510,8 @@ func OldFrame5() {
 		history += fmt.Sprintf("顶天立地：宽 %.2f cm，高 %.2f cm\n", width, height)
 		go quickCipher.History(history) // 写入历史
 
-		//获取当前时间，进行格式化 2006-01-02 15:04:05
-		now := time.Now().Format("0102150405")
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_顶天立地_%.0fx%.0f", now, width, height)
+		frameName := fmt.Sprintf("%s_顶天立地_%.0fx%.0f", nowTime(), width, height)
 
 		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor0(frameName)                         // 生成暗号【-1】可以用的另存脚本
@@ -625,7 +621,8 @@ func OldFrame6() {
 		go quickCipher.History(history) // 写入历史
 
 		//获取当前时间，进行格式化 2006-01-02 15:04:05
-		now := time.Now().Format("0102150405")
+		now := nowTime()
+
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s折屏_%.0fx%.0f", now, tempName, totalWidth, height)
 		// 定义单片名字
@@ -795,10 +792,9 @@ func OldFrame7() {
 		go quickCipher.History(history) // 写入历史
 
 		color.Yellow.Printf("\n【切图】多座屏：总宽 %.2f cm，高 %.2f cm", widthSum, heightMax)
-		//获取当前时间，进行格式化 2006-01-02 15:04:05
-		now := time.Now().Format("0102150405")
+
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_%s座屏_%.0fx%.0f", now, tools.Transfer(len(widthSlice)), widthSum, heightMax)
+		frameName := fmt.Sprintf("%s_%s座屏_%.0fx%.0f", nowTime(), tools.Transfer(len(widthSlice)), widthSum, heightMax)
 
 		generate.NewDocumentJS(widthSum, heightMax, frameName, false) // 创建ps文档
 		generate.LineJs7(widthSlice, heightSlice, heightMax, heightMin)
@@ -862,10 +858,8 @@ func OldFrame8() {
 		history += fmt.Sprintf("卷帘座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
 		go quickCipher.History(history) // 写入历史
 
-		//获取当前时间，进行格式化 2006-01-02 15:04:05
-		now := time.Now().Format("0102150405")
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_卷帘座屏_%.0fx%.0f", now, width, height)
+		frameName := fmt.Sprintf("%s_卷帘座屏_%.0fx%.0f", nowTime(), width, height)
 
 		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor0(frameName)                         // 生成暗号【-1】可以用的另存脚本
@@ -916,10 +910,8 @@ func OldFrame9() {
 		history += fmt.Sprintf("补切画布的切图：宽为 %.2f cm，高为 %.2f cm", width, height)
 		go quickCipher.History(history) // 写入历史
 
-		//获取当前时间，进行格式化 2006-01-02 15:04:05
-		now := time.Now().Format("0102150405")
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_补切画布_%.0fx%.0f", now, width, height)
+		frameName := fmt.Sprintf("%s_补切画布_%.0fx%.0f", nowTime(), width, height)
 
 		go generate.Tailor0(frameName)                         // 生成暗号【-1】可以用的另存脚本
 		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
