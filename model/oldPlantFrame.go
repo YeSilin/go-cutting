@@ -3,9 +3,9 @@ package model
 import (
 	"fmt"
 	"github.com/gookit/color"
+	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/generate"
-	"github.com/yesilin/go-cutting/globa"
 	"github.com/yesilin/go-cutting/model/quickCipher"
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
@@ -76,7 +76,7 @@ func nowTime() (now string) {
 //边框是5  扣掉两个边框5+5 然后再加回来5厘米  可以理解为扣5*/
 func OldFrame1() {
 	// 定义一个预留尺寸
-	var reserve = globa.NowSetting.Reserve
+	var reserve = viper.GetFloat64("reserve")
 
 	// 初始化输入提示的切片
 	inputPrompt := [2]string{"\n【切图】请输入常规座屏的宽：", "\n【切图】请输入常规座屏的高："}
@@ -130,15 +130,15 @@ func OldFrame1() {
 
 		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor0(frameName)                         // 生成暗号【-1】可以用的另存脚本
-		tools.MaxCanvas(width, height)                         // 最大画布判断
+		generate.MaxCanvas(width, height)                         // 最大画布判断
 
-		if globa.NowSetting.OpenPs { // 是否自动新建ps文档
+		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "Config/jsx/NewDocumentJS.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
-		if !globa.NowSetting.Memory { // 是否记忆框架
+		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}
@@ -148,7 +148,7 @@ func OldFrame1() {
 //先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个竖边 空出的中间画面加5厘米  旧厂的边框实际厚度是5厘米
 func OldFrame2() {
 	// 定义一个预留尺寸
-	var reserve = globa.NowSetting.Reserve
+	var reserve = viper.GetFloat64("reserve")
 
 	// 初始化输入提示的切片
 	inputPrompt := [5]string{"\n【切图】请输入左右镂空的总宽：", "\n【切图】请输入左右镂空的总高：", "\n【切图】请输入左镂空的大小：",
@@ -235,16 +235,16 @@ func OldFrame2() {
 
 		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor0(frameName)                         // 生成暗号【-1】可以用的另存脚本
-		tools.MaxCanvas(width, height)                         // 最大画布判断
+		generate.MaxCanvas(width, height)                         // 最大画布判断
 
-		if globa.NowSetting.OpenPs { // 是否自动新建ps文档
+		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "Config/jsx/NewDocumentJS.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
 
-		if !globa.NowSetting.Memory { // 是否记忆框架
+		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}
@@ -254,7 +254,7 @@ func OldFrame2() {
 //先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个竖边 空出的中间画面加5厘米
 func OldFrame3() {
 	// 定义一个预留尺寸
-	var reserve = globa.NowSetting.Reserve
+	var reserve = viper.GetFloat64("reserve")
 
 	// 初始化输入提示的切片
 	inputPrompt := [4]string{"\n【切图】请输入左右画布的总宽：", "\n【切图】请输入左右画布的总高：",
@@ -325,16 +325,16 @@ func OldFrame3() {
 		generate.NewDocumentJS(totalWidth, height, frameName, false) // 创建ps文档
 		generate.LineJs3(width, hollowOut)                           // 生成专属参考线
 		go generate.Tailor3(width, height, hollowOut, frameName)     // 生成暗号【-1】可以用的另存脚本
-		tools.MaxCanvas(width, height)                               // 最大画布判断
+		generate.MaxCanvas(width, height)                               // 最大画布判断
 
-		if globa.NowSetting.OpenPs { // 是否自动新建ps文档
+		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "Config/jsx/NewDocumentJS.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
 
-		if !globa.NowSetting.Memory { // 是否记忆框架
+		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}
@@ -344,7 +344,7 @@ func OldFrame3() {
 //先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个横边 空出的中间画面加5厘米
 func OldFrame4() {
 	// 定义一个预留尺寸
-	var reserve = globa.NowSetting.Reserve
+	var reserve = viper.GetFloat64("reserve")
 
 	// 初始化输入提示的切片
 	inputPrompt := [4]string{"\n【切图】请输入上下镂空的总宽：", "\n【切图】请输入上下镂空的总高：",
@@ -424,16 +424,16 @@ func OldFrame4() {
 
 		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor0(frameName)                         // 生成暗号【-1】可以用的另存脚本
-		tools.MaxCanvas(width, height)                         // 最大画布判断
+		generate.MaxCanvas(width, height)                         // 最大画布判断
 
-		if globa.NowSetting.OpenPs { // 是否自动新建ps文档
+		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "Config/jsx/NewDocumentJS.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
 
-		if !globa.NowSetting.Memory { // 是否记忆框架
+		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}
@@ -443,7 +443,7 @@ func OldFrame4() {
 //扣掉镂空部分 再扣5
 func OldFrame5() {
 	// 定义一个预留尺寸
-	var reserve = globa.NowSetting.Reserve
+	var reserve = viper.GetFloat64("reserve")
 
 	for {
 	FLAG1:
@@ -515,16 +515,16 @@ func OldFrame5() {
 
 		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor0(frameName)                         // 生成暗号【-1】可以用的另存脚本
-		tools.MaxCanvas(width, height)                         // 最大画布判断
+		generate.MaxCanvas(width, height)                         // 最大画布判断
 
-		if globa.NowSetting.OpenPs { // 是否自动新建ps文档
+		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "Config/jsx/NewDocumentJS.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
 
-		if !globa.NowSetting.Memory { // 是否记忆框架
+		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}
@@ -534,7 +534,7 @@ func OldFrame5() {
 //扣5
 func OldFrame6() {
 	// 定义一个预留尺寸
-	var reserve = globa.NowSetting.Reserve
+	var reserve = viper.GetFloat64("reserve")
 
 	for {
 	FLAG1:
@@ -631,16 +631,16 @@ func OldFrame6() {
 		generate.NewDocumentJS(totalWidth, height, frameName, false)      // 创建ps文档
 		generate.LineJs6(width, number)                                   // 生成专属参考线
 		go generate.Tailor6(width, height, number, frameName, singleName) // 生成暗号【-1】可以用的另存脚本
-		tools.MaxCanvas(width, height)                                    // 最大画布判断
+		generate.MaxCanvas(width, height)                                    // 最大画布判断
 
-		if globa.NowSetting.OpenPs { // 是否自动新建ps文档
+		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "Config/jsx/NewDocumentJS.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
 
-		if !globa.NowSetting.Memory { // 是否记忆框架
+		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}
@@ -649,7 +649,7 @@ func OldFrame6() {
 //旧厂多座屏
 func OldFrame7() {
 	// 定义一个预留尺寸
-	var reserve = globa.NowSetting.Reserve
+	var reserve = viper.GetFloat64("reserve")
 
 	for {
 	UP1: // 主要给宽返回
@@ -799,16 +799,16 @@ func OldFrame7() {
 		generate.NewDocumentJS(widthSum, heightMax, frameName, false) // 创建ps文档
 		generate.LineJs7(widthSlice, heightSlice, heightMax, heightMin)
 		go generate.Tailor7(widthSlice, heightSlice, heightMax, frameName) // 生成暗号【-1】可以用的另存脚本// 生成参考线与遮罩层
-		tools.MaxCanvas(widthMax, heightMax)                               // 最大画布判断
+		generate.MaxCanvas(widthMax, heightMax)                               // 最大画布判断
 
-		if globa.NowSetting.OpenPs { // 是否自动新建ps文档
+		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "Config/jsx/NewDocumentJS.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
 
-		if !globa.NowSetting.Memory { // 是否记忆框架
+		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}
@@ -821,7 +821,7 @@ FLAG:
 // 宽-20   高上下各镂空15 长度要预留10
 func OldFrame8() {
 	// 定义一个预留尺寸
-	var reserve = globa.NowSetting.Reserve
+	var reserve = viper.GetFloat64("reserve")
 
 	for {
 	FLAG:
@@ -863,15 +863,15 @@ func OldFrame8() {
 
 		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor0(frameName)                         // 生成暗号【-1】可以用的另存脚本
-		tools.MaxCanvas(width, height)                         // 最大画布判断
+		generate.MaxCanvas(width, height)                         // 最大画布判断
 
-		if globa.NowSetting.OpenPs { // 是否自动新建ps文档
+		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "Config/jsx/NewDocumentJS.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
-		if !globa.NowSetting.Memory { // 是否记忆框架
+		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}
@@ -915,16 +915,16 @@ func OldFrame9() {
 
 		go generate.Tailor0(frameName)                         // 生成暗号【-1】可以用的另存脚本
 		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
-		tools.MaxCanvas(width, height)                         // 最大画布判断
+		generate.MaxCanvas(width, height)                         // 最大画布判断
 
-		if globa.NowSetting.OpenPs { // 是否自动新建ps文档
+		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "Config/jsx/NewDocumentJS.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
 
-		if !globa.NowSetting.Memory { // 是否记忆框架
+		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}

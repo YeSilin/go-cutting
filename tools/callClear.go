@@ -1,3 +1,4 @@
+// 这个文件实现跨平台清屏
 package tools
 
 import (

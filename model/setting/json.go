@@ -1,14 +1,7 @@
 package setting
 
-import (
-	"encoding/json"
-	"fmt"
-	"github.com/yesilin/go-cutting/globa"
-	"os"
-)
 
-
-
+/*
 // 设置信息编码
 //func JsonSettingEncoder(path string, memory, openPs, blackEdge bool, reserve float64) {
 func JsonSettingEncoder(path string, newSetting globa.SetInformation) {
@@ -57,3 +50,4 @@ func JsonSettingDecode(path string) (globa.SetInformation, error) {
 		return oldSetting, nil
 	}
 }
+*/

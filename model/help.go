@@ -2,7 +2,7 @@ package model
 
 import (
 	"fmt"
-	"github.com/yesilin/go-cutting/globa"
+	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/tools"
 )
 
@@ -63,7 +63,7 @@ func careful() {
 	fmt.Println("\n    6. 四周是纯白底色的时候要加 0.5厘米的黑色描边 快捷键是 Alt + Ctrl + C")
 	fmt.Println("\n    7. 切图时半透最大148的宽，不透最大180的宽")
 	fmt.Println("\n    8. 切图遇到不透画布并且双面图案不一样时，每张需额外备注：“印一张”")
-	fmt.Printf("\n    9. 目前程序公式中，旧厂订布预留是 %.2f 厘米！\n", globa.NowSetting.Reserve)
+	fmt.Printf("\n    9. 目前程序公式中，旧厂订布预留是 %.2f 厘米！\n", viper.GetFloat64("reserve"))
 
 	fmt.Println("\n\n【帮助】将已切好的图片发送给以下人员：")
 	fmt.Println("\n    大部分切图不透与半透 --> 直接发群里\t卷帘画布 --> 单独发给厂长")

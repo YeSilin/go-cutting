@@ -3,9 +3,8 @@ package model
 import (
 	"fmt"
 	"github.com/gookit/color"
+	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/generate"
-	"github.com/yesilin/go-cutting/globa"
-	"github.com/yesilin/go-cutting/tools"
 	"strconv"
 	"strings"
 )
@@ -16,7 +15,7 @@ func Choice() {
 		EnglishTitle("Temporary", 79)
 
 		// 提示标题
-		tips:= `
+		tips := `
 【效果】[1]新建效果图      [2]置入小座屏      [3]置入单折屏      [4]置入单镂空
 `
 		fmt.Print(tips)
@@ -95,9 +94,9 @@ func tempFame1To4() {
 
 		generate.TempFrame1JS(width*10, height*10) // 生成小座屏效果图框架
 
-		tools.MaxCanvas(width-5, height-5) // 最大画布判断
+		generate.MaxCanvas(width-5, height-5) // 最大画布判断
 
-		if !globa.NowSetting.Memory { // 是否记忆框架
+		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}

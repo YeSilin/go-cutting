@@ -2,7 +2,7 @@ package generate
 
 import (
 	"fmt"
-	"github.com/yesilin/go-cutting/globa"
+	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/tools"
 	"strings"
 )
@@ -125,7 +125,7 @@ func Tailor() {
 	jsx.WriteString("   // return;\n")
 	jsx.WriteString("} else {\n")
 	jsx.WriteString("    // 是否自动黑边\n")
-	jsx.WriteString(fmt.Sprintf("    var BlackEdge = %t;   // 这里传golang变量哦！！！！！！！！！！！！！！\n", globa.NowSetting.BlackEdge))
+	jsx.WriteString(fmt.Sprintf("    var BlackEdge = %t;   // 这里传golang变量哦！！！！！！！！！！！！！！\n", viper.GetBool("blackEdge")))
 	jsx.WriteString("\n")
 	jsx.WriteString("    // 保存开始的历史记录状态\n")
 	jsx.WriteString("    var savedState = app.activeDocument.activeHistoryState;\n")
@@ -226,7 +226,7 @@ func Tailor0(frameName string) {
 	jsx.WriteString("   // return;\n")
 	jsx.WriteString("} else {\n")
 	jsx.WriteString("    // 是否自动黑边\n")
-	jsx.WriteString(fmt.Sprintf("    var BlackEdge = %t;   // 这里传golang变量哦！！！！！！！！！！！！！！\n", globa.NowSetting.BlackEdge))
+	jsx.WriteString(fmt.Sprintf("    var BlackEdge = %t;   // 这里传golang变量哦！！！！！！！！！！！！！！\n", viper.GetBool("blackEdge")))
 	jsx.WriteString("\n")
 	jsx.WriteString("    // 保存开始的历史记录状态\n")
 	jsx.WriteString("    var savedState = app.activeDocument.activeHistoryState;\n")
@@ -327,7 +327,7 @@ func Tailor3(width, height, hollowOut float64, frameName string) {
 	jsx.WriteString("} else {\n")
 	jsx.WriteString("\n")
 	jsx.WriteString("    // 是否自动黑边\n")
-	jsx.WriteString(fmt.Sprintf("    var BlackEdge = %t;   // 这里传golang变量哦！！！！！！！！！！！！！！\n", globa.NowSetting.BlackEdge))
+	jsx.WriteString(fmt.Sprintf("    var BlackEdge = %t;   // 这里传golang变量哦！！！！！！！！！！！！！！\n", viper.GetBool("blackEdge")))
 	jsx.WriteString("    // 中间大两边小的镂空均是\n")
 	jsx.WriteString(fmt.Sprintf("    var hollowOut = %.2f;   // 这里传golang变量哦！！！！！！！！！！！！！！\n", hollowOut))
 	jsx.WriteString("    // 中间大两边小的中间宽\n")
@@ -542,7 +542,7 @@ func Tailor6(width, height, number float64,frameName, singleName string) {
 	jsx.WriteString("    // 定义一个变量表示几扇\n")
 	jsx.WriteString(fmt.Sprintf("    var num = %.0f;  // 这里传golang变量哦！！！！！！！！！！！\n", number))
 	jsx.WriteString("    // 是否自动黑边\n")
-	jsx.WriteString(fmt.Sprintf("    var BlackEdge = %t; // 这里传golang变量哦！！！！！！！！！！！\n", globa.NowSetting.BlackEdge))
+	jsx.WriteString(fmt.Sprintf("    var BlackEdge = %t; // 这里传golang变量哦！！！！！！！！！！！\n", viper.GetBool("blackEdge")))
 	jsx.WriteString("\n")
 	jsx.WriteString("    // 监控异常\n")
 	jsx.WriteString("    try {\n")
@@ -707,7 +707,7 @@ func Tailor7(widthSlice, heightSlice []float64, heightMax float64,frameName stri
 	jsx.WriteString(fmt.Sprintf("    var heightArray = %s;  // 这里传golang排版好的字符串哦！！！！！！！！！！！\n", tools.ToJsArray(heightSlice)))
 	jsx.WriteString("    // 最高的高度哦\n")
 	jsx.WriteString(fmt.Sprintf("    var heightMax = %f;        // 这里传golang变量哦！！！！！！！！！！！\n", heightMax))
-	jsx.WriteString(fmt.Sprintf("    var BlackEdge = %t;    // 这里传golang变量哦！！！！！！！！！！！\n", globa.NowSetting.BlackEdge))
+	jsx.WriteString(fmt.Sprintf("    var BlackEdge = %t;    // 这里传golang变量哦！！！！！！！！！！！\n", viper.GetBool("blackEdge")))
 	jsx.WriteString("\n")
 	jsx.WriteString("    // 监控异常\n")
 	jsx.WriteString("    try {\n")

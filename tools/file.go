@@ -171,7 +171,7 @@ func CreateMkdir(filePath string) {
 	}
 }
 
-//调用os.MkdirAll递归创建文件夹
+// 调用os.MkdirAll递归创建文件夹
 func CreateMkdirAll(filePath string) error {
 	exist, err := IsPathExists(filePath)
 	if err != nil {

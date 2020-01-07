@@ -3,8 +3,9 @@ package model
 import (
 	"fmt"
 	"github.com/gookit/color"
+	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/generate"
-	"github.com/yesilin/go-cutting/globa"
+
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
 	"strconv"
@@ -67,15 +68,15 @@ func mapFrame1() {
 		width -= 8
 		height -= 8
 		fmt.Printf("\n【贴图】小座屏：宽 %.0f pixels，高 %.0f pixels", width*10, height*10)
-		tools.MaxCanvas(width, height)
+		generate.MaxCanvas(width, height)
 		generate.NewDocument3DMapJS(width, height, "小座屏贴图") // 生成创建ps文档脚本
-		if globa.NowSetting.OpenPs { // 是否自动新建ps文档
+		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "Config/jsx/NewDocumentJS.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
-		if !globa.NowSetting.Memory { // 是否记忆框架
+		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}
@@ -130,7 +131,7 @@ func mapFrame6() {
 		}
 
 		fmt.Printf("\n【贴图】常规折屏：宽 %.0f pixels，高 %.0f pixels", totalWidth*10, height*10)
-		tools.MaxCanvas(width, height)
+		generate.MaxCanvas(width, height)
 
 		//获取当前时间，进行格式化 2006-01-02 15:04:05
 		now := time.Now().Format("0102150405")
@@ -140,14 +141,14 @@ func mapFrame6() {
 		generate.NewDocument3DMapJS(totalWidth, height, frameName) // 生成创建ps文档脚本
 		generate.Line3DMapJs6(width, number)                           // 生成专属参考线
 		go generate.Tailor3DMap6(width, height, number,frameName) // 生成暗号【-1】可以用的另存脚本
-		if globa.NowSetting.OpenPs { // 是否自动新建ps文档
+		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "Config/jsx/NewDocumentJS.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
 
-		if !globa.NowSetting.Memory { // 是否记忆框架
+		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}

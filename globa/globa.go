@@ -1,6 +1,6 @@
 package globa
 
-// 定义全局结构体，用于储存配置信息，结构体中大写开头的变量才可以被json处理，小写开头不会被处理
+/*// 定义全局结构体，用于储存配置信息，结构体中大写开头的变量才可以被json处理，小写开头不会被处理
 type SetInformation struct {
 	Memory    bool
 	OpenPs    bool
@@ -16,3 +16,4 @@ var DefaultSetting SetInformation = SetInformation{false, true, true, "",5}
 var NowSetting SetInformation
 
 
+*/
