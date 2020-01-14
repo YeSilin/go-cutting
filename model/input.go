@@ -120,6 +120,12 @@ func Input(text string, canvasMode bool) string {
 			go cmd.Run()
 
 			continue
+
+		case "-10":
+			// 创建一个协程使用cmd启动外部程序
+			dataPath := "Config/JSX/SaveAsJPEG.jsx"
+			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+			continue
 		case "-11":
 			OldFrame1()
 			continue

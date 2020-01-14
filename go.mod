@@ -7,7 +7,6 @@ require (
 	github.com/briandowns/spinner v1.6.1
 	github.com/cenkalti/dominantcolor v0.0.0-20171020061837-df772e8dd39e
 	github.com/disintegration/imaging v1.6.1
-	github.com/fsnotify/fsnotify v1.4.7
 	github.com/go-vgo/robotgo v0.0.0-20191114162002-56ef33d1716b
 	github.com/gookit/color v1.1.7
 	github.com/mattn/go-colorable v0.1.4 // indirect

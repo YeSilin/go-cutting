@@ -158,7 +158,7 @@ func ClearMetadata() {
 	tools.CreateFile("Config/JSX/ClearMetadataJS.jsx", jsxStr)
 }
 
-//生成清除元数据js，让文件跟小巧 无弹窗版本！
+//生成清除元数据js，不清理智能对象，让文件跟小巧 无弹窗版本！
 func ClearMetadataNoPopUp() {
 	// 使用最高效的字符串拼接
 	var jsx = strings.Builder{}
@@ -842,3 +842,74 @@ func MaxCanvas(width, height float64) {
 	// 追加写入
 	tools.WriteFile("Config/jsx/NewDocumentJS.jsx", jsxStr)
 }
+
+
+
+//生成自带清除元数据的另存
+func SaveAsJPEG() {
+	// 使用最高效的字符串拼接
+	var jsx = strings.Builder{}
+
+	jsx.WriteString("// 清理元数据\r\n")
+	jsx.WriteString("function deleteDocumentAncestorsMetadata() {\r\n")
+	jsx.WriteString("    // 清理元数据四步骤\r\n")
+	jsx.WriteString("    if (ExternalObject.AdobeXMPScript == undefined) ExternalObject.AdobeXMPScript = new ExternalObject(\"lib:AdobeXMPScript\");\r\n")
+	jsx.WriteString("    var xmp = new XMPMeta(activeDocument.xmpMetadata.rawData);\r\n")
+	jsx.WriteString("    // Begone foul Document Ancestors!\r\n")
+	jsx.WriteString("    xmp.deleteProperty(XMPConst.NS_PHOTOSHOP, \"DocumentAncestors\");\r\n")
+	jsx.WriteString("    app.activeDocument.xmpMetadata.rawData = xmp.serialize();\r\n")
+	jsx.WriteString("}\r\n")
+	jsx.WriteString("\r\n")
+	jsx.WriteString("// 全部整合在一起\r\n")
+	jsx.WriteString("function optimized() {\r\n")
+	jsx.WriteString("    // 清理元数据\r\n")
+	jsx.WriteString("    deleteDocumentAncestorsMetadata()\r\n")
+	jsx.WriteString("\r\n")
+	jsx.WriteString("    // 定义一个变量[exportOptionsSave]，用来表示导出文档为jpeg格式的设置属性。\r\n")
+	jsx.WriteString("    var exportOptionsSave = new JPEGSaveOptions();\r\n")
+	jsx.WriteString("\r\n")
+	jsx.WriteString("    // 设置杂边为无\r\n")
+	jsx.WriteString("    exportOptionsSave.matte = MatteType.NONE;\r\n")
+	jsx.WriteString("\r\n")
+	jsx.WriteString("    // 设置导出文档时，图片的压缩质量。数字范围为1至12。\r\n")
+	jsx.WriteString("    exportOptionsSave.quality = 12;\r\n")
+	jsx.WriteString("\r\n")
+	jsx.WriteString("    // 保存为基线已优化\r\n")
+	jsx.WriteString("    exportOptionsSave.formatOptions = FormatOptions.OPTIMIZEDBASELINE;\r\n")
+	jsx.WriteString("\r\n")
+	jsx.WriteString("    // 嵌入彩色配置文件\r\n")
+	jsx.WriteString("    exportOptionsSave.embedColorProfile = true;\r\n")
+	jsx.WriteString("\r\n")
+	jsx.WriteString("    // 获取当前文档的文件名\r\n")
+	jsx.WriteString("    var name = app.activeDocument.name\r\n")
+	jsx.WriteString("    var TmpFile = new File(\"~/Desktop/GoCutting/\" + name);\r\n")
+	jsx.WriteString("\r\n")
+	jsx.WriteString("    // 保存文件类型\r\n")
+	jsx.WriteString("    // var saveType = new Array(\"JPEG Files: *.jpg\", \"PNG Files: *.png\");\r\n")
+	jsx.WriteString("\r\n")
+	jsx.WriteString("    // saveAs( 文件, 选项, 作为副本, 扩展名大小写 )\r\n")
+	jsx.WriteString("    //调用[document]的[saveAs]另存方法，使用上面设置的各种参数，将当前文档导出并转换为JPEG格式的文档\r\n")
+	jsx.WriteString("    app.activeDocument.saveAs(TmpFile.saveDlg(\"另存为\", \"JPEG Files: *.jpg\"), exportOptionsSave, true, Extension.LOWERCASE);\r\n")
+	jsx.WriteString("}\r\n")
+	jsx.WriteString("\r\n")
+	jsx.WriteString("\r\n")
+	jsx.WriteString("// 判断是否有打开的文件\r\n")
+	jsx.WriteString("if (!documents.length) {\r\n")
+	jsx.WriteString("    //alert(\"没有打开的文档，请打开一个文档来运行此脚本！\");\r\n")
+	jsx.WriteString("    // return;\r\n")
+	jsx.WriteString("} else {\r\n")
+	jsx.WriteString("    // 如果出错就返回最开始\r\n")
+	jsx.WriteString("    try {\r\n")
+	jsx.WriteString("        // 生成历史记录\r\n")
+	jsx.WriteString("        app.activeDocument.suspendHistory(\"另存为\", \"optimized()\");\r\n")
+	jsx.WriteString("    } catch (error) {\r\n")
+	jsx.WriteString("        // 忽略错误\r\n")
+	jsx.WriteString("    }\r\n")
+	jsx.WriteString("}")
+
+	// 转成字符串格式
+	jsxStr := jsx.String()
+	// 71.0 更新 先强制生成的文本写覆盖入目标文件
+	tools.CreateFile("Config/JSX/SaveAsJPEG.jsx", jsxStr)
+}
+

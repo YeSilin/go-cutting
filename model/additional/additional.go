@@ -2,6 +2,7 @@ package additional
 
 import (
 	"fmt"
+
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"os"
@@ -38,7 +39,7 @@ func Additional() {
 		switch help {
 		case "1": //激活win10系统
 			// 创建一个协程使用cmd启动外部程序
-			dataPath := "Config/EXE/W10DigitalActivation.exe /activate"
+			dataPath := "Config/W10DigitalActivation.exe /activate"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 			fmt.Println("\n【注意】win10系统已激活，此项附加功能的命令需要右键管理员身份运行本软件方可生效！")
@@ -46,15 +47,15 @@ func Additional() {
 
 		case "2": //UI3简单测试
 			// 创建一个协程使用cmd启动外部程序
-			dataPath := "Config/EXE/RevokeMsgPatcher.exe"
+			dataPath := "Config/RevokeMsgPatcher.exe"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 			tools.PrintLine(2)
 
 		case "3": // 取得文件所有权
-			//generate.AcquisitionOfOwnershipReg() // 先生成注册表
+
 			// 创建一个协程使用cmd启动外部程序
-			cmd := exec.Command("cmd.exe", "/c", "regedit /s .\\Config\\AcquisitionOfOwnership.reg")
+			cmd := exec.Command("cmd.exe", "/c", "regedit /s .\\Config\\takeOwnership.reg")
 			go cmd.Run()
 			fmt.Println("\n【注意】右键菜单已添加，此项附加功能的命令需要右键管理员身份运行本软件方可生效！")
 			tools.PrintLine(2)
@@ -94,7 +95,7 @@ func Additional() {
 
 		case "9": //UI3简单测试
 			// 创建一个协程使用cmd启动外部程序
-			dataPath := "Config\\EXE\\PSDRepairKit\\PSDRepairKit.exe"
+			dataPath := "Config/PSDRepairKit/PSDRepairKit.exe"
 			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 		case "-":
 			goto FLAG //跳出循环

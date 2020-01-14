@@ -8,55 +8,49 @@ function deleteDocumentAncestorsMetadata() {
     app.activeDocument.xmpMetadata.rawData = xmp.serialize();
 }
 
-
-// 另存为web
-function saveAsWeb() {
-    // 更新进度条
-    updateProgress(1, 4);
+// 全部整合在一起
+function optimized() {
     // 清理元数据
-    deleteDocumentAncestorsMetadata();
+    deleteDocumentAncestorsMetadata()
 
-    // 更新进度条
-    updateProgress(2, 4);
-    // 获取当前脚本所在路径
-    var scriptPath = (new File($.fileName)).parent;
+    // 定义一个变量[exportOptionsSave]，用来表示导出文档为jpeg格式的设置属性。
+    var exportOptionsSave = new JPEGSaveOptions();
 
-    // 定义文件保存位置
-    var savePath = new File(scriptPath + "/../Picture/主图/dp.jpg");
+    // 设置杂边为无
+    exportOptionsSave.matte = MatteType.NONE;
 
-    var jpgOpt = new ExportOptionsSaveForWeb();
-    jpgOpt.format = SaveDocumentType.JPEG;  // 保存为jpg
-    jpgOpt.includeProfile = false;  //装入颜色配置文件
-    jpgOpt.interlaced = false;  // 交错
-    jpgOpt.optimized = true;  //最优化
-    jpgOpt.blur = 0;    // 默认 0.0 不模糊。
-    jpgOpt.matteColor = new RGBColor(); // 把杂边颜色染成白色
-    jpgOpt.matteColor.red = 255;
-    jpgOpt.matteColor.green = 255;
-    jpgOpt.matteColor.blue = 255;
-    jpgOpt.quality = 100;  // 品质   100是最高画质
+    // 设置导出文档时，图片的压缩质量。数字范围为1至12。
+    exportOptionsSave.quality = 12;
 
-    // 更新进度条
-    updateProgress(3, 4);
-    activeDocument.exportDocument(savePath, ExportType.SAVEFORWEB,);
+    // 保存为基线已优化
+    exportOptionsSave.formatOptions = FormatOptions.OPTIMIZEDBASELINE;
 
-    // 更新进度条
-    updateProgress(4, 4);
+    // 嵌入彩色配置文件
+    exportOptionsSave.embedColorProfile = true;
+
+    // 获取当前文档的文件名
+    var name = app.activeDocument.name
+    var TmpFile = new File("~/Desktop/GoCutting/" + name);
+
+    // 保存文件类型
+    // var saveType = new Array("JPEG Files: *.jpg", "PNG Files: *.png");
+
+    // saveAs( 文件, 选项, 作为副本, 扩展名大小写 )
+    //调用[document]的[saveAs]另存方法，使用上面设置的各种参数，将当前文档导出并转换为JPEG格式的文档
+    app.activeDocument.saveAs(TmpFile.saveDlg("另存为", "JPEG Files: *.jpg"), exportOptionsSave, true, Extension.LOWERCASE);
 }
 
 
-function main() {
-    // 判断是否有打开的文件
-    if (!documents.length) {
-        alert("没有打开的文档，请打开一个文档来运行此脚本！");
-        return;
+// 判断是否有打开的文件
+if (!documents.length) {
+    //alert("没有打开的文档，请打开一个文档来运行此脚本！");
+    // return;
+} else {
+    // 如果出错就返回最开始
+    try {
+        // 生成历史记录
+        app.activeDocument.suspendHistory("另存为", "optimized()");
+    } catch (error) {
+        // 忽略错误
     }
-
-    // 进度条调用另存函数
-    app.doForcedProgress("正在导出文件... ", "saveAsWeb()")  // 添加进度条
-
-
 }
-
-// 主函数
-main();
