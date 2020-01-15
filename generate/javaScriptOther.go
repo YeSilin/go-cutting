@@ -735,7 +735,7 @@ func SaveForWeb() {
 	jsx.WriteString("\r\n")
 	jsx.WriteString("    var jpgOpt = new ExportOptionsSaveForWeb();\r\n")
 	jsx.WriteString("    jpgOpt.format = SaveDocumentType.JPEG;  // 保存为jpg\r\n")
-	jsx.WriteString("    jpgOpt.includeProfile = false;  //装入颜色配置文件\r\n")
+	jsx.WriteString("    jpgOpt.includeProfile = true;  //装入颜色配置文件\r\n")
 	jsx.WriteString("    jpgOpt.interlaced = false;  // 交错\r\n")
 	jsx.WriteString("    jpgOpt.optimized = true;  //最优化\r\n")
 	jsx.WriteString("    jpgOpt.blur = 0;    // 默认 0.0 不模糊。\r\n")

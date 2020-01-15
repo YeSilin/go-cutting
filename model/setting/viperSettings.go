@@ -186,13 +186,13 @@ func ModifySetting() {
 				fmt.Println("\n【提示】设置成功 - 功能已开启！")
 				// 保存最新配置
 				_ = viper.WriteConfig()
-				generate.Tailor() // 根据配置更新通用裁剪
+				generate.Tailor("") // 根据配置更新通用裁剪
 			case "2":
 				viper.Set("blackEdge", false)
 				fmt.Println("\n【提示】设置成功 - 功能已关闭！")
 				// 保存最新配置
 				_ = viper.WriteConfig()
-				generate.Tailor() // 根据配置更新通用裁剪
+				generate.Tailor("") // 根据配置更新通用裁剪
 			case "-":
 				fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
 				goto FLAG // 跳到循环结束
@@ -244,7 +244,7 @@ func ModifySetting() {
 
 			// 保存最新配置
 			_ = viper.WriteConfig()
-			generate.Tailor() // 根据配置更新通用裁剪
+			generate.Tailor("") // 根据配置更新通用裁剪
 		case "-":
 			goto FLAG // 跳到循环结束
 		default:
