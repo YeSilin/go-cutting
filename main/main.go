@@ -22,7 +22,7 @@ func init() {
 		// 创建jsx文件夹
 		_ = tools.CreateMkdirAll("Config/JSX/Temp")
 		generate.SelectTailor()         // 生成裁剪选择脚本备用
-		generate.Tailor("")               // 生成通用裁剪脚本备用
+		generate.Tailor("")             // 生成通用裁剪脚本备用
 		generate.ClearMetadata()        // 生成 -3 要用的清除元数据脚本备用
 		generate.ClearMetadataNoPopUp() // 生成我自己动作要用的清除元数据脚本备用
 		generate.BlackEdge()            // 生成添加黑边脚本备用
