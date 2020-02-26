@@ -1,9 +1,8 @@
 module github.com/yesilin/go-cutting
 
-go 1.13
+go 1.14
 
 require (
-	fyne.io/fyne v1.1.2
 	github.com/briandowns/spinner v1.6.1
 	github.com/cenkalti/dominantcolor v0.0.0-20171020061837-df772e8dd39e
 	github.com/disintegration/imaging v1.6.1
@@ -12,6 +11,7 @@ require (
 	github.com/mattn/go-colorable v0.1.4 // indirect
 	github.com/mattn/go-isatty v0.0.10 // indirect
 	github.com/muesli/smartcrop v0.3.0
+	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 // indirect
 	github.com/noelyahan/impexp v0.0.0-20190507042629-ba8d234c5451 // indirect
 	github.com/noelyahan/mergi v0.0.0-20190514155713-df743a5b4419
 	github.com/noelyahan/mergitrans v0.0.0-20190507035323-73e76dcd7d2a // indirect

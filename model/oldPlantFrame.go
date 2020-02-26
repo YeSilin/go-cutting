@@ -203,10 +203,10 @@ func OldFrame2() {
 		var tempName = "左右镂空"
 
 		// 镂空判断
-		if leftHollowOut > 0 || rightHollowOut == 0 {
+		if leftHollowOut > 0 && rightHollowOut == 0 {
 			tempName = "左镂空"
 		}
-		if leftHollowOut == 0 || rightHollowOut > 0 {
+		if leftHollowOut == 0 && rightHollowOut > 0 {
 			tempName = "右镂空"
 		}
 
@@ -396,10 +396,10 @@ func OldFrame4() {
 		var tempName = "上下镂空"
 
 		// 镂空判断
-		if upperHollowOut > 0 || downHollowOut == 0 {
+		if upperHollowOut > 0 && downHollowOut == 0 {
 			tempName = "上镂空"
 		}
-		if upperHollowOut == 0 || downHollowOut > 0 {
+		if upperHollowOut == 0 && downHollowOut > 0 {
 			tempName = "下镂空"
 		}
 

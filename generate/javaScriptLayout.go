@@ -188,3 +188,24 @@ func ReplaceDetailsPage() {
 
 	fmt.Println("\n【提示】脚本注入成功，正在自动替换详情页中名字以【dp】开头的智能对象图层！")
 }
+
+
+// 生成 修改全部jpg为 300ppi
+func AllResolution300() {
+	// 获取所有扩展名是jpg的文件名，类型是字符串切片
+	jpgSlice, _ := filepath.Glob(".\\Config\\Picture\\*.jpg")
+	// 如果png和jpg都小于一张就不执行
+	if len(jpgSlice) < 1 {
+		fmt.Println("\n【提示】脚本注入失败，因为 Picture 文件夹下没有 jpg 格式图片！")
+		// 打开套图文件夹
+		exec.Command("cmd.exe", "/c", "start Config\\Picture").Run()
+		return
+	}
+
+	for i := 0; i < len(jpgSlice); i++ {
+		// 去掉Config\Picture\`
+		jpgSlice[i] = strings.TrimPrefix(jpgSlice[i], `Config\Picture\`)
+	}
+
+
+}
