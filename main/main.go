@@ -21,7 +21,7 @@ func init() {
 		model.OpenMode()
 
 		// 创建jsx文件夹
-		_ = tools.CreateMkdirAll("Config/JSX/Temp")
+		_ = tools.CreateMkdirAll("config/jsx/temp")
 		generate.SelectTailor()         // 生成裁剪选择脚本备用
 		generate.Tailor("")             // 生成通用裁剪脚本备用
 		generate.ClearMetadata()        // 生成 -3 要用的清除元数据脚本备用
@@ -39,10 +39,10 @@ func init() {
 		_ = tools.CreateMkdirAll(fmt.Sprintf("Config/History/%s", now))
 
 		// 创建套图文件夹
-		_ = tools.CreateMkdirAll("Config/Picture")
+		_ = tools.CreateMkdirAll("config/Picture")
 
 		// 创建备份文件夹
-		_ = tools.CreateMkdirAll("Config/Backups")
+		_ = tools.CreateMkdirAll("config/Backups")
 	}()
 
 	// 实现快捷键 -1
@@ -63,7 +63,7 @@ func main() {
 		// 定义私密文件路径
 		PrivateFile, _ := tools.Home()
 		PrivateFile = fmt.Sprintf("%s\\Documents\\Adobe\\Config.chx", PrivateFile)
-		power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.000079, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
+		power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.000081, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
 		// 如果权限不是true
 		if !power {
 			fmt.Println(tips)
@@ -80,11 +80,11 @@ func main() {
 	}
 
 	// 启动gui
-	go model.Gui()
+	go model.GuiMain()
 
 	for {
 		fmt.Println(tips) // 提示信息
-		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.0.79 app " + strings.Repeat("-", 20))
+		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.0.81 app " + strings.Repeat("-", 20))
 
 		fmt.Println("\n【更新】添加新暗号【--】返回上一次输入，例如镂空大小输错，返回重新输入镂空大小！")
 
@@ -93,8 +93,6 @@ func main() {
 
 【菜单】[5]附加功能        [6]暗号列表        [7]设置中心        [8]帮助信息`
 		fmt.Println(tips)
-
-		//factory := model.Input("\n【菜单】[1]切图，[2]贴图，[3]效果，[4]套图，[5]附加，[6]设置，[7]帮助：", false)
 		factory := model.Input("\n【菜单】请选择上方的菜单功能：", false)
 
 		switch factory {
@@ -116,7 +114,7 @@ func main() {
 		case "6":
 			// 启动gui
 			// 搭建web窗口
-			go webview.Open("GoCutting", "http://localhost:9090", 350, 600, true)
+			go webview.Open("GoCutting", "http://localhost:9090/index", 350, 600, true)
 		case "7":
 			tools.CallClear()       // 清屏
 			setting.ModifySetting() // 设置

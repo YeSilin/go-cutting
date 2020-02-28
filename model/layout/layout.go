@@ -2,7 +2,6 @@ package layout
 
 import (
 	"fmt"
-	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
@@ -46,38 +45,26 @@ func picture() {
 		switch layoutType {
 		case "1", "01":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("Config/PNG/mulan.png")
+			WatermarkMasterGraph("config/img/mulan.png")
 		case "2", "02":
-			//// 这里得到用户输入
-			//yh := isWhiteBackgroundMap()
-			//switch yh {
-			//case "y":
-			//	tools.CallClear() // 清屏
-			//	WatermarkMasterGraph("Config/PNG/yinanjj.png", true)
-			//case "n":
-			//	tools.CallClear() // 清屏
-			//	WatermarkMasterGraph("Config/PNG/yinanjj.png", false)
-			//case "-":
-			//	continue
-			//}
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("Config/PNG/yinanjj.png")
+			WatermarkMasterGraph("config/img/yinanjj.png")
 		case "3", "03":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("Config/PNG/yushantanjj.png")
+			WatermarkMasterGraph("config/img/yushantanjj.png")
 		case "4", "04":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("Config/PNG/yushantanpf.png")
+			WatermarkMasterGraph("config/img/yushantanpf.png")
 		case "5", "05":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("Config/PNG/muyunge.png")
+			WatermarkMasterGraph("config/img/muyunge.png")
 		case "6", "06":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("Config/PNG/huafu.png")
+			WatermarkMasterGraph("config/img/huafu.png")
 
 		case "7", "07":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("Config/PNG/jinzunfu.png")
+			WatermarkMasterGraph("config/img/jinzunfu.png")
 		case "8", "08":
 
 		case "-", "--":
@@ -104,11 +91,12 @@ func modifyResolution() {
 		switch layoutType {
 		case "1":
 			tools.CallClear()
-			AllResolution72() // 改为72ppi
-			go exec.Command("cmd.exe", "/c", "start Config\\Picture").Run()  // 打开套图文件夹
+			PixelsPerInchChangedTo72()                                      // 改为72ppi
+			go exec.Command("cmd.exe", "/c", "start Config\\Picture").Run() // 打开套图文件夹
 		case "2":
 			tools.CallClear()
-			fmt.Println("\n【提示】修改为300ppi未开发！")
+			PixelsPerInchChangedTo300()
+			go exec.Command("cmd.exe", "/c", "start Config\\Picture").Run() // 打开套图文件夹
 		case "-", "--":
 			goto FLAG
 		default:
@@ -150,7 +138,7 @@ func Choice() {
 
 		case "4":
 			tools.CallClear()             // 清屏
-			generate.ReplaceDetailsPage() // 通用详情
+			ReplaceDetailsPage() // 替换详情页
 		case "5":
 			tools.CallClear()      // 清屏
 			UniversalMasterGraph() // 通用主图

@@ -1,8 +1,8 @@
+// 关于主图修改
 package layout
 
 import (
 	"fmt"
-	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/tools"
 	"image"
 	"log"
@@ -10,41 +10,10 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"text/template"
 )
 
 
-
-// 通用主图第一版
-func picture01() {
-	// 为了防止文件丢失，在重命名之前先备份一次文件
-	//_ = tools.CopyDir("Config/Picture", "Config/Backups/")
-
-	// 获取所有扩展名是jpg的文件名，类型是字符串切片
-	files, _ := filepath.Glob(".\\Config\\Picture\\*.jpg")
-	// 如果jpg文件小于1个，就不执行
-	if len(files) < 1 {
-		return
-	}
-	// 创建套图文件夹
-	_ = tools.CreateMkdirAll("Config/Picture/主图")
-	generate.UniversalMasterGraph(len(files))
-
-	// 多出几个文件数量就循环几次，如果是负数自然就不循环
-	//for i := 0; i < len(files); i++ {
-	//	// 删除文件，Go中删除文件和删除文件夹同一个函数
-	//	err := os.Remove(files[i]) // 由于windows 系统获取到的文件名字，默认是升序，于是可以不用排序
-	//	// 打印被删除的文件
-	//	//fmt.Println(files[i])
-	//	if err != nil {
-	//		log.Fatal(err)
-	//	}
-	//}
-
-	// 删除多余备份，最大保留10个
-	//tools.DeleteRedundantBackups("Config/Backups/*",10)
-	// 打开套图文件夹
-	exec.Command("cmd.exe", "/c", "start Config\\Picture").Run()
-}
 
 // 通用主图第二版
 func UniversalMasterGraph() {
@@ -188,8 +157,7 @@ func WatermarkMasterGraph(watermarkPath string) {
 }
 
 // 全部修改为72ppi
-func AllResolution72() {
-
+func PixelsPerInchChangedTo72() {
 	// 获取所有扩展名是jpg的文件名，类型是字符串切片
 	files, _ := filepath.Glob(".\\Config\\Picture\\*.jpg")
 	// 如果jpg文件小于1个，就不执行
@@ -235,4 +203,118 @@ func AllResolution72() {
 	}()
 
 	fmt.Println("\n【提示】已转成 72ppi 如果文件丢失，备份文件夹在上级目录下的 Backups！")
+}
+
+// 全部修改为300ppi
+func PixelsPerInchChangedTo300() {
+	// 获取所有扩展名是jpg的文件名，类型是字符串切片
+	jpgSlice, _ := filepath.Glob(".\\Config\\Picture\\*.jpg")
+
+	// 如果jpg文件小于1个，就不执行
+	if len(jpgSlice) < 1 {
+		fmt.Println("\n【提示】转换失败，因为 Picture 文件夹下没有 jpg 格式图片！")
+		return
+	}
+
+	go func() {
+		// 为了防止文件丢失，在重命名之前先备份一次文件
+		_ = tools.CopyDir("Config/Picture", "Config/Backups/")
+
+		// 解析指定文件生成模板对象
+		tmpl, err := template.ParseFiles("config/jsx/template/pixelsPerInchChangedTo300.jsx")
+		if err != nil {
+			fmt.Println("create template failed, err:", err)
+			return
+		}
+
+		// 创建文件，返回两个值，一是创建的文件，二是错误信息
+		f, err := os.Create("config/jsx/pixelsPerInchChangedTo300.jsx")
+		if err != nil { // 如果有错误，打印错误，同时返回
+			fmt.Println("创建文件错误 =", err)
+			return
+		}
+
+		// 去掉Config\Picture\
+		for i := 0; i < len(jpgSlice); i++ {
+			jpgSlice[i] = strings.TrimPrefix(jpgSlice[i], `Config\Picture\`)
+		}
+
+		// 利用给定数据渲染模板，并将结果写入f
+		tmpl.Execute(f, tools.StrToJsArray("srcArray", jpgSlice))
+
+		// 关闭文件
+		f.Close()
+
+		// 创建一个协程使用cmd来运行脚本
+		dataPath := "Config/jsx/pixelsPerInchChangedTo300.jsx"
+		exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+
+		// 删除多余备份，最大保留10个
+		tools.DeleteRedundantBackups("Config/Backups/*", 10)
+	}()
+
+	fmt.Println("\n【提示】脚本注入成功，正在转成 300PPI 若文件丢失，备份文件在上级目录 Backups！")
+}
+
+// 详情页替换智能对象
+func ReplaceDetailsPage() {
+	// 获取所有扩展名是jpg的文件名，类型是字符串切片
+	jpgSlice, _ := filepath.Glob(".\\Config\\Picture\\*.jpg")
+	// 如果png和jpg都小于一张就不执行
+	if len(jpgSlice) < 1 {
+		fmt.Println("\n【提示】脚本注入失败，因为 Picture 文件夹下没有 jpg 格式图片！")
+		// 打开套图文件夹
+		exec.Command("cmd.exe", "/c", "start Config\\Picture").Run()
+		return
+	}
+
+	go func() {
+		// 获取白底图
+		minImage, isMinImage := tools.MinWhiteBackground("Config\\Picture\\*.jpg")
+
+		// 去掉白底图
+		result := []string{}
+		if isMinImage {
+			// 不是白底图的都添加到result切片
+			for i := 0; i < len(jpgSlice); i++ {
+				if minImage != jpgSlice[i] {
+					result = append(result, jpgSlice[i])
+				}
+			}
+			// 更新最新切片
+			jpgSlice = result
+		}
+
+		// 去掉Config\Picture\
+		for i := 0; i < len(jpgSlice); i++ {
+
+			jpgSlice[i] = strings.TrimPrefix(jpgSlice[i], `Config\Picture\`)
+		}
+
+		// 解析指定文件生成模板对象
+		tmpl, err := template.ParseFiles("config/jsx/template/replaceDetailsPage.jsx")
+		if err != nil {
+			fmt.Println("create template failed, err:", err)
+			return
+		}
+
+		// 创建文件，返回两个值，一是创建的文件，二是错误信息
+		f, err := os.Create("config/jsx/replaceDetailsPage.jsx")
+		if err != nil { // 如果有错误，打印错误，同时返回
+			fmt.Println("创建文件错误 =", err)
+			return
+		}
+
+		// 利用给定数据渲染模板，并将结果写入f
+		tmpl.Execute(f, tools.StrToJsArray("srcArray", jpgSlice))
+
+		// 关闭文件
+		f.Close()
+
+		// 创建一个协程使用cmd来运行脚本
+		dataPath := "Config/jsx/ReplaceDetailsPage.jsx"
+		exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+	}()
+
+	fmt.Println("\n【提示】脚本注入成功，正在自动替换详情页中名字以【dp】开头的智能对象图层！")
 }

@@ -843,8 +843,6 @@ func MaxCanvas(width, height float64) {
 	tools.WriteFile("Config/jsx/NewDocumentJS.jsx", jsxStr)
 }
 
-
-
 //生成自带清除元数据的另存
 func SaveAsJPEG() {
 	// 使用最高效的字符串拼接

@@ -68,7 +68,7 @@ func StrRightInsert(str, insert string, num int) string {
 	return str[:index] + insert + str[index:]
 }
 
-// 这是一个将切片转换成js数组的函数
+// 这是一个将浮点数切片转换成js数组的函数
 func ToJsArray(s []float64) string {
 	var str = "new Array("
 	for i := 0; i < len(s); i++ {
@@ -82,8 +82,8 @@ func ToJsArray(s []float64) string {
 }
 
 
-// 这是一个将切片转换成js数组的函数
-func StrToJsArray(s []string) string {
+// 这是一个将字符串切片转换成js数组的函数
+func StrToJsArray2(s []string) string {
 	var str = "new Array("
 	for i := 0; i < len(s); i++ {
 		str += fmt.Sprintf("\"%s\"", s[i])
@@ -92,6 +92,20 @@ func StrToJsArray(s []string) string {
 		}
 	}
 	str += ")"
+	return str
+}
+
+
+// 这是一个将字符串切片转换成js数组的函数，完整的组
+func StrToJsArray(name string, s []string) string {
+	var str = fmt.Sprintf("var %s = [",name)
+	for i := 0; i < len(s); i++ {
+		str += fmt.Sprintf("\"%s\"", s[i])
+		if i != len(s)-1 {
+			str += ", "
+		}
+	}
+	str += "];"
 	return str
 }
 

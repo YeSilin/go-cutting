@@ -2,98 +2,64 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 
-    <link rel="icon" type="image/x-icon" href="http://127.0.0.1:9090/Config/images/logo7.png" />
+    <link rel="stylesheet" type="text/css" href="http://127.0.0.1:9090/css/index.css">
+    <link rel="icon" type="image/x-icon" href="http://127.0.0.1:9090/img/logo7-1.png"/>
 
     <style>
-        .divcss1 {
-            background: #77c2ac; /*背景颜色*/
-            color: #ffffff; /*字体颜色*/
-            height: 55px;
-            padding-top: 1px; /*上填充*/
-            padding-left: 8%; /*左填充*/
-            font-family: Microsoft YaHei, Helvetica, sans-serif; /*字体样式*/
-            letter-spacing: 1px; /*字间距*/
-        }
-
-        .divcss2 {
-            padding-top: 5%; /*上填充*/
-            padding-right: 3%;
-            padding-bottom: 8%;
-            padding-left: 3%;
-            font-family: Microsoft YaHei, Helvetica, sans-serif;
-        }
-
-        .tool-button { /* 按钮美化 */
-            width: 48%; /* 宽度 */
-            height: 40px; /* 高度 */
-            border-width: 0px; /* 边框宽度 */
-            border-radius: 3px; /* 边框半径 */
-            background: #fffdff; /* 背景颜色 */
-            cursor: pointer; /* 鼠标移入按钮范围时出现手势 */
-            outline: none; /* 不显示轮廓线 */
-            font-family: Microsoft YaHei, sans-serif; /* 设置字体 */
-            color: #838184; /* 字体颜色 */
-            font-size: 15px; /* 字体大小 */
-            box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.1);
-            margin-bottom: 4%; /*下外边距*/
-        }
-
-        .tool-button:hover { /* 鼠标移入按钮范围时改变颜色 */
-            background: #77C2AC;
-            color: #ffffff; /* 字体颜色 */
-        }
-
-        .align-left {
-            float: left; /* 左对齐 */
-        }
-
-        .align-right {
-            float: right; /* 右对齐 */
-        }
-
-        .align-center {
-            /*margin: auto;*/
-            text-align: center
-        }
-
     </style>
+
 </head>
 
-<body style="background:#efecf0">
+<body>
 
-<div class="divcss1" style="box-shadow: 2px 2px 7px #888888;">
-    <p style="line-height:5%;font-size:18px">GoCutting</p>
-    <p style="line-height:10%;font-size:12px;letter-spacing:2px">一个简单快速的切图软件。</p>
+
+
+<div class="div-css1">
+    <p style="font-size:18px">GoCutting</p>
+    <p style="font-size:12px;letter-spacing:2px">一个简单快速的切图软件。</p>
 </div>
 
 <!--    提交后不跳转-->
 <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
 
 
-<div class="divcss2">
+<div class="div-css2">
     <form action="http://127.0.0.1:9090/index" method="post" target="nm_iframe">
-        <button class="tool-button align-left" type="submit" name="裁剪快捷键" value="true" >裁剪快捷键</button>
-        <button class="tool-button align-right" type="submit" name="重建新文档" value="true">重建新文档</button>
+        <button class="tool-button align-left" type="submit" name="裁剪快捷键" value="true" title="暗号[-1]">裁剪快捷键</button>
+        <button class="tool-button align-right" type="submit" name="重建新文档" value="true" title="暗号[-2]">重建新文档</button>
 
-        <button class="tool-button align-left" type="submit" name="深度清理PSD" value="true" >深度清理PSD</button>
-        <button class="tool-button align-right" type="submit" name="快捷文件夹" value="true">快捷文件夹</button>
+        <button class="tool-button align-left" type="submit" name="深度清理PSD" value="true" title="暗号[-3]">深度清理PSD</button>
+        <button class="tool-button align-right" type="submit" name="快捷文件夹" value="true" title="暗号[-4]">快捷文件夹</button>
 
-        <button class="tool-button align-left" type="submit" name="快速清理PSD" value="true">快速清理PSD</button>
-        <button class="tool-button align-right" type="submit" name="自动加黑边" value="true">自动加黑边</button>
+        <button class="tool-button align-left" type="submit" name="快速清理PSD" value="true" title="暗号[-6]">快速清理PSD</button>
+        <button class="tool-button align-right" type="submit" name="自动加黑边" value="true" title="暗号[-7]">自动加黑边</button>
 
-        <button class="tool-button align-left" type="submit" name="到切图历史" value="true">到切图历史</button>
-        <button class="tool-button align-right" type="submit" name="优化版另存" value="true">优化版另存</button>
+        <button class="tool-button align-left" type="submit" name="到切图历史" value="true" title="暗号[-9]">到切图历史</button>
+        <button class="tool-button align-right" type="submit" name="优化版另存" value="true" title="暗号[-10]">优化版另存</button>
 
-        <button class="tool-button align-left" type="submit" name="快速导出图片" value="true">快速导出图片</button>
-        <button class="tool-button align-right" type="submit" name="激活win10系统" value="true">激活win10系统</button>
+        <button class="tool-button align-left" type="submit" name="快速导出图片" value="true" title="暗号[-98]">快速导出图片</button>
+        <button class="tool-button align-right" type="submit" name="激活win10系统" value="true" title="暗号[-99]">激活win10系统</button>
     </form>
 </div>
 
 <div class="align-center" style="padding-top: 30%; /*上填充*/">
-    <img src="http://127.0.0.1:9090/Config/images/logo7.png" width=70% alt="Logo"/>
-
-    <a href="http://127.0.0.1:9090/automaticLayout" class="button">Continue</a>
+    <img src="http://127.0.0.1:9090/img/logo7-1.png" width=70% alt="Logo"/>
 </div>
+
+
+<!--
+<div id="page1">
+    <iframe align="center" width="100%" height="170" src="http://127.0.0.1:9090/html/menu.html"  frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="yes"></iframe>
+</div>
+-->
+
+
+
+
 </body>
+
+
+
 </html>
