@@ -55,26 +55,35 @@ func main() {
 	// 使用权限
 	var power bool
 
-	// 没有网络就不让用
-	if tools.IsNetwork() {
-		color.LightCyan.Println("【验证】网络已连接正在向服务器获取使用权限，请尽量不关闭软件避免断网时无法使用！")
+	// 进行三次网络请求，都失败就当没有网络，并且不让使用
+	for i := 0; i < 4; i++ {
+		tools.CallClear() // 清屏
 
-		// 限制软件使用 2019.7.19
-		// 定义私密文件路径
-		PrivateFile, _ := tools.Home()
-		PrivateFile = fmt.Sprintf("%s\\Documents\\Adobe\\Config.chx", PrivateFile)
-		power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.000081, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
-		// 如果权限不是true
-		if !power {
-			fmt.Println(tips)
+		// 有网直接退出循环
+		if tools.IsNetwork() {
+			color.LightCyan.Println("【验证】网络已连接服务器获取使用权限成功，请尽量不关闭软件，避免断网时无法使用！")
+			break
+		}
+
+		// 第四次获取网络就当没网络
+		if i == 3 {
+			color.LightCyan.Println("【验证】网络已断开无法向服务器请求使用权限，软件将在五秒内自动关闭...")
 			time.Sleep(5 * time.Second) // 休眠五秒
 			return
 		}
 
-		//time.Sleep(1 * time.Second)
-		//tools.CallClear() // 清屏
-	} else {
-		fmt.Println("\n【验证】网络已断开无法向服务器请求使用权限，软件将在五秒内自动关闭...")
+		color.LightCyan.Printf("【验证】第 %d 次网络连接失败，正在重新向服务器获取使用权限请稍等...", i+1)
+		time.Sleep(2 * time.Second) // 休眠2秒
+	}
+
+	// 限制软件使用 2019.7.19
+	// 定义私密文件路径
+	PrivateFile, _ := tools.Home()
+	PrivateFile = fmt.Sprintf("%s\\Documents\\Adobe\\Config.chx", PrivateFile)
+	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.000083, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
+	// 如果权限不是true
+	if !power {
+		fmt.Println(tips)
 		time.Sleep(5 * time.Second) // 休眠五秒
 		return
 	}
@@ -84,8 +93,7 @@ func main() {
 
 	for {
 		fmt.Println(tips) // 提示信息
-		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.0.81 app " + strings.Repeat("-", 20))
-
+		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.0.83 app " + strings.Repeat("-", 20))
 		fmt.Println("\n【更新】添加新暗号【--】返回上一次输入，例如镂空大小输错，返回重新输入镂空大小！")
 
 		tips := `

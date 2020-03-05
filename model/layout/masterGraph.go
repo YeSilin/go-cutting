@@ -13,10 +13,8 @@ import (
 	"text/template"
 )
 
-
-
 // 通用主图第二版
-func UniversalMasterGraph() {
+func UniversalMasterGraph(delete bool) {
 	// 获取所有扩展名是jpg的文件名，类型是字符串切片
 	jpgSlice, _ := filepath.Glob(".\\Config\\Picture\\*.jpg")
 	// 获取所有扩展名是png的文件名，类型是字符串切片
@@ -48,19 +46,22 @@ func UniversalMasterGraph() {
 			tools.ImageResize(srcPath, dstPath, 800, 800, 99)
 		}
 
-		// 删除之前复制的jpg
-		for _, v := range jpgSlice {
-			err := os.Remove(v)
-			if err != nil {
-				log.Fatal(err)
+		// 删除复制的文件
+		if delete {
+			// 删除之前复制的jpg
+			for _, v := range jpgSlice {
+				err := os.Remove(v)
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
-		}
 
-		// 删除之前复制的png
-		for _, v := range pngSlice {
-			err := os.Remove(v)
-			if err != nil {
-				log.Fatal(err)
+			// 删除之前复制的png
+			for _, v := range pngSlice {
+				err := os.Remove(v)
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
 		}
 
@@ -71,7 +72,7 @@ func UniversalMasterGraph() {
 }
 
 // 带水印主图，水印路径，是否有白底图
-func WatermarkMasterGraph(watermarkPath string) {
+func WatermarkMasterGraph(watermarkPath string, delete bool) {
 	// 获取所有扩展名是jpg的文件名，类型是字符串切片
 	jpgSlice, _ := filepath.Glob(".\\Config\\Picture\\*.jpg")
 	// 获取所有扩展名是png的文件名，类型是字符串切片
@@ -131,19 +132,22 @@ func WatermarkMasterGraph(watermarkPath string) {
 			tools.ImageResize(srcPath, dstPath, 800, 800, 99)
 		}
 
-		// 删除之前复制的jpg
-		for _, v := range jpgSlice {
-			err := os.Remove(v)
-			if err != nil {
-				log.Fatal(err)
+		// 删除复制的文件
+		if delete {
+			// 删除之前复制的jpg
+			for _, v := range jpgSlice {
+				err := os.Remove(v)
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
-		}
 
-		// 删除之前复制的png
-		for _, v := range pngSlice {
-			err := os.Remove(v)
-			if err != nil {
-				log.Fatal(err)
+			// 删除之前复制的png
+			for _, v := range pngSlice {
+				err := os.Remove(v)
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
 		}
 
@@ -306,7 +310,7 @@ func ReplaceDetailsPage() {
 		}
 
 		// 利用给定数据渲染模板，并将结果写入f
-		tmpl.Execute(f, tools.StrToJsArray("srcArray", jpgSlice))
+		_= tmpl.Execute(f, tools.StrToJsArray("srcArray", jpgSlice))
 
 		// 关闭文件
 		f.Close()

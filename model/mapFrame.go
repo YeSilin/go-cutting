@@ -71,7 +71,7 @@ func mapFrame1() {
 		generate.NewDocument3DMapJS(width, height, "小座屏贴图") // 生成创建ps文档脚本
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/jsx/NewDocumentJS.jsx"
+			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
@@ -138,7 +138,7 @@ func mapFrame6() {
 		go generate.Tailor3DMap6(width, height, number,frameName) // 生成暗号【-1】可以用的另存脚本
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/jsx/NewDocumentJS.jsx"
+			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}

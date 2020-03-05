@@ -66,7 +66,7 @@ func Input(text string, canvasMode bool) string {
 			continue
 		case "-2":
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/JSX/NewDocumentJS.jsx"
+			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 			fmt.Println("\n【注意】已重建新文档，参数来自最近一次切图记录！")

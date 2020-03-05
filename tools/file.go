@@ -226,3 +226,13 @@ func GetMinFile(pattern string) (minFile string) {
 	//fmt.Println(files[minFileIndex])
 	return files[minFileIndex]
 }
+
+// 判断所给路径是否为文件夹
+func IsDir(path string) bool {
+	s, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+	return s.IsDir()
+}
+

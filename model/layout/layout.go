@@ -45,26 +45,26 @@ func picture() {
 		switch layoutType {
 		case "1", "01":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/mulan.png")
+			WatermarkMasterGraph("config/img/mulan.png",true)
 		case "2", "02":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/yinanjj.png")
+			WatermarkMasterGraph("config/img/yinanjj.png",true)
 		case "3", "03":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/yushantanjj.png")
+			WatermarkMasterGraph("config/img/yushantanjj.png",true)
 		case "4", "04":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/yushantanpf.png")
+			WatermarkMasterGraph("config/img/yushantanpf.png",true)
 		case "5", "05":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/muyunge.png")
+			WatermarkMasterGraph("config/img/muyunge.png",true)
 		case "6", "06":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/huafu.png")
+			WatermarkMasterGraph("config/img/huafu.png",true)
 
 		case "7", "07":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/jinzunfu.png")
+			WatermarkMasterGraph("config/img/jinzunfu.png",true)
 		case "8", "08":
 
 		case "-", "--":
@@ -141,7 +141,7 @@ func Choice() {
 			ReplaceDetailsPage() // 替换详情页
 		case "5":
 			tools.CallClear()      // 清屏
-			UniversalMasterGraph() // 通用主图
+			UniversalMasterGraph(true) // 通用主图
 			// 打开套图文件夹
 			exec.Command("cmd.exe", "/c", "start Config\\Picture").Run()
 		case "6":

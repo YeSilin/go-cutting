@@ -25,7 +25,7 @@ func LineJs3(width, hollowOut float64) {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 追加写入
-	tools.WriteFile("Config/JSX/NewDocumentJS.jsx", jsxStr)
+	tools.WriteFile("config/jsx/newDocument.jsx", jsxStr)
 }
 
 //生成折屏参考线js
@@ -54,7 +54,7 @@ func LineJs6(width, number float64) {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 追加写入
-	tools.WriteFile("Config/JSX/NewDocumentJS.jsx", jsxStr)
+	tools.WriteFile("config/jsx/newDocument.jsx", jsxStr)
 }
 
 // 生成多座屏参考线js
@@ -147,7 +147,7 @@ func LineJs7(widthSlice, heightSlice []float64, heightMax, heightMin float64) {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 追加写入
-	tools.WriteFile("Config/JSX/NewDocumentJS.jsx", jsxStr)
+	tools.WriteFile("config/jsx/newDocument.jsx", jsxStr)
 }
 
 //生成折屏3d贴图参考线js
@@ -176,7 +176,7 @@ func Line3DMapJs6(width, number float64) {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 追加写入
-	tools.WriteFile("Config/JSX/NewDocumentJS.jsx", jsxStr)
+	tools.WriteFile("config/jsx/newDocument.jsx", jsxStr)
 }
 
 

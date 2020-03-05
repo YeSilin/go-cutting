@@ -840,7 +840,7 @@ func MaxCanvas(width, height float64) {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 追加写入
-	tools.WriteFile("Config/jsx/NewDocumentJS.jsx", jsxStr)
+	tools.WriteFile("config/jsx/newDocument.jsx", jsxStr)
 }
 
 //生成自带清除元数据的另存

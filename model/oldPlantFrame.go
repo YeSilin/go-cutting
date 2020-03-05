@@ -128,13 +128,13 @@ func OldFrame1() {
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", nowTime(), width, height)
 
-		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
+		generate.NewDocument(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor(frameName)                         // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                         // 最大画布判断
 
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/jsx/NewDocumentJS.jsx"
+			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
@@ -233,13 +233,13 @@ func OldFrame2() {
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", nowTime(), tempName, width, height)
 
-		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
+		generate.NewDocument(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor(frameName)                         // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                         // 最大画布判断
 
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/jsx/NewDocumentJS.jsx"
+			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
@@ -322,14 +322,14 @@ func OldFrame3() {
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_左右画布_%.0fx%.0f", nowTime(), totalWidth, height)
 
-		generate.NewDocumentJS(totalWidth, height, frameName, false) // 创建ps文档
+		generate.NewDocument(totalWidth, height, frameName, false) // 创建ps文档
 		generate.LineJs3(width, hollowOut)                           // 生成专属参考线
 		go generate.Tailor3(width, height, hollowOut, frameName)     // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                               // 最大画布判断
 
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/jsx/NewDocumentJS.jsx"
+			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
@@ -422,13 +422,13 @@ func OldFrame4() {
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", nowTime(), tempName, width, height)
 
-		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
+		generate.NewDocument(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor(frameName)                         // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                         // 最大画布判断
 
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/jsx/NewDocumentJS.jsx"
+			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
@@ -513,13 +513,13 @@ func OldFrame5() {
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_顶天立地_%.0fx%.0f", nowTime(), width, height)
 
-		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
+		generate.NewDocument(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor(frameName)                         // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                         // 最大画布判断
 
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/jsx/NewDocumentJS.jsx"
+			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
@@ -628,14 +628,14 @@ func OldFrame6() {
 		// 定义单片名字
 		singleName := fmt.Sprintf("%s_%s折屏", now, tempName)
 
-		generate.NewDocumentJS(totalWidth, height, frameName, false)      // 创建ps文档
+		generate.NewDocument(totalWidth, height, frameName, false)      // 创建ps文档
 		generate.LineJs6(width, number)                                   // 生成专属参考线
 		go generate.Tailor6(width, height, number, frameName, singleName) // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                                    // 最大画布判断
 
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/jsx/NewDocumentJS.jsx"
+			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
@@ -796,14 +796,14 @@ func OldFrame7() {
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s座屏_%.0fx%.0f", nowTime(), tools.Transfer(len(widthSlice)), widthSum, heightMax)
 
-		generate.NewDocumentJS(widthSum, heightMax, frameName, false) // 创建ps文档
+		generate.NewDocument(widthSum, heightMax, frameName, false) // 创建ps文档
 		generate.LineJs7(widthSlice, heightSlice, heightMax, heightMin)
 		go generate.Tailor7(widthSlice, heightSlice, heightMax, frameName) // 生成暗号【-1】可以用的另存脚本// 生成参考线与遮罩层
 		generate.MaxCanvas(widthMax, heightMax)                               // 最大画布判断
 
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/jsx/NewDocumentJS.jsx"
+			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
@@ -861,13 +861,13 @@ func OldFrame8() {
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_卷帘座屏_%.0fx%.0f", nowTime(), width, height)
 
-		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
+		generate.NewDocument(width, height, frameName, true) // 创建ps文档
 		go generate.Tailor(frameName)                         // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                         // 最大画布判断
 
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/jsx/NewDocumentJS.jsx"
+			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
@@ -914,12 +914,12 @@ func OldFrame9() {
 		frameName := fmt.Sprintf("%s_补切画布_%.0fx%.0f", nowTime(), width, height)
 
 		go generate.Tailor(frameName)                         // 生成暗号【-1】可以用的另存脚本
-		generate.NewDocumentJS(width, height, frameName, true) // 创建ps文档
+		generate.NewDocument(width, height, frameName, true) // 创建ps文档
 		generate.MaxCanvas(width, height)                         // 最大画布判断
 
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/jsx/NewDocumentJS.jsx"
+			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}

@@ -1,0 +1,39 @@
+// 设置首选项新文档预设单位是厘米，PIXELS是像素
+app.preferences.rulerUnits = Units.CM;
+// 新文档的宽度
+var width = {{printf "%.2f" .Width}};
+// 新文档的高度
+var height = {{printf "%.2f" .Height}};
+// 新文档的分辨率
+const resolution = 100;
+// 新文档的名称
+var docName = "{{.FrameName}}";
+// 新文档的颜色模式
+const mode = NewDocumentMode.CMYK;
+// 新文档的默认背景填充颜色
+const initialFill = DocumentFill.WHITE;
+// 新文档的像素比率
+const pixelAspectRatio = 1;
+// 设置颜色位数为8位
+const bitsPerChannel = BitsPerChannelType.EIGHT;
+// 设置颜色配置文件为日本常规用途3
+const colorProfileName = "Japan Color 2011 Coated";
+
+// 将设置好的参数放在[add]方法里面
+app.documents.add(width, height, resolution, docName, mode, initialFill, pixelAspectRatio, bitsPerChannel, colorProfileName);
+
+{{/*只有类似座屏那种单张的才需要参考线*/}}
+{{if .WordLine}}
+// 定义一个函数用于新建参考线
+function addLine() {
+    // 添加文字垂直参考线
+    activeDocument.guides.add(Direction.VERTICAL, UnitValue("5cm"));
+    activeDocument.guides.add(Direction.VERTICAL, UnitValue("{{printf "%.2f" (sub .Width 5)}}cm"));
+    // 添加文字水平参考线
+    activeDocument.guides.add(Direction.HORIZONTAL, UnitValue("5cm"));
+    activeDocument.guides.add(Direction.HORIZONTAL, UnitValue("{{printf "%.2f" (sub .Height 5)}}cm"));
+}
+
+// 生成历史记录
+app.activeDocument.suspendHistory("建议：字不要在此参考线外！", "addLine()");
+{{end}}
