@@ -46,7 +46,7 @@ func key() {
 	fmt.Println("\n\t[-9]到切图历史\t\t[-10]优化版另存\t\t[-12]左右镂空")
 	fmt.Println("\n\t[-13]中间大两边小\t[-14]上下镂空\t\t[-15]顶天立地")
 	fmt.Println("\n\t[-16]常规折屏\t\t[-17]三座屏\t\t[-96]功能未开发")
-	fmt.Println("\n\t[-97]功能未开发\t\t[-98]快速导出图片\t[-99]激活win10系统")
+	fmt.Println("\n\t[-97]替换详情页\t\t[-98]快速导出图片\t[-99]激活win10系统")
 
 	tools.PrintLine(2)
 }

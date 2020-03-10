@@ -1,9 +1,9 @@
 // 设置首选项新文档预设单位是厘米，PIXELS是像素
 app.preferences.rulerUnits = Units.CM;
 // 新文档的宽度
-var width = {{printf "%.2f" .Width}};
+var width = {{printf "%.2f" .Width}}; // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
 // 新文档的高度
-var height = {{printf "%.2f" .Height}};
+var height = {{printf "%.2f" .Height}}; // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
 // 新文档的分辨率
 const resolution = 100;
 // 新文档的名称
@@ -23,15 +23,15 @@ const colorProfileName = "Japan Color 2011 Coated";
 app.documents.add(width, height, resolution, docName, mode, initialFill, pixelAspectRatio, bitsPerChannel, colorProfileName);
 
 {{/*只有类似座屏那种单张的才需要参考线*/}}
-{{if .WordLine}}
+{{if .WordLine}} // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
 // 定义一个函数用于新建参考线
 function addLine() {
     // 添加文字垂直参考线
     activeDocument.guides.add(Direction.VERTICAL, UnitValue("5cm"));
-    activeDocument.guides.add(Direction.VERTICAL, UnitValue("{{printf "%.2f" (sub .Width 5)}}cm"));
+    activeDocument.guides.add(Direction.VERTICAL, UnitValue("{{printf "%.2f" (sub .Width 5)}}cm")); // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
     // 添加文字水平参考线
     activeDocument.guides.add(Direction.HORIZONTAL, UnitValue("5cm"));
-    activeDocument.guides.add(Direction.HORIZONTAL, UnitValue("{{printf "%.2f" (sub .Height 5)}}cm"));
+    activeDocument.guides.add(Direction.HORIZONTAL, UnitValue("{{printf "%.2f" (sub .Height 5)}}cm")); // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
 }
 
 // 生成历史记录

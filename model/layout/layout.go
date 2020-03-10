@@ -2,6 +2,7 @@ package layout
 
 import (
 	"fmt"
+	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
@@ -138,7 +139,7 @@ func Choice() {
 
 		case "4":
 			tools.CallClear()             // 清屏
-			ReplaceDetailsPage() // 替换详情页
+			generate.ReplaceDetailsPage() // 替换详情页
 		case "5":
 			tools.CallClear()      // 清屏
 			UniversalMasterGraph(true) // 通用主图

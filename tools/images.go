@@ -11,6 +11,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sync"
 )
 
 // 调整图像大小，源路径 和 保存的目标路径，如果宽度或高度之一为0，则图像比率保持不变。
@@ -173,25 +174,25 @@ func IsWhiteBackground(fileInput string) (bool, int64, error) {
 	}
 
 	// 左上角
-	r1, g1, b1, _ := img.At(0+1, 0+1).RGBA()
+	r1, g1, b1, _ := img.At(0+10, 0+10).RGBA()
 	if !isWB(r1, g1, b1) {
 		return false, fSize, err
 	}
 
 	// 右上角
-	r2, g2, b2, _ := img.At(imgWidth-1, 0+1).RGBA()
+	r2, g2, b2, _ := img.At(imgWidth-10, 0+10).RGBA()
 	if !isWB(r2, g2, b2) {
 		return false, fSize, err
 	}
 
 	// 左下角
-	r3, g3, b3, _ := img.At(0+1, imgHeight-1).RGBA()
+	r3, g3, b3, _ := img.At(0+10, imgHeight-10).RGBA()
 	if !isWB(r3, g3, b3) {
 		return false, fSize, err
 	}
 
 	// 右下角
-	r4, g4, b4, _ := img.At(imgWidth-1, imgHeight-1).RGBA()
+	r4, g4, b4, _ := img.At(imgWidth-10, imgHeight-10).RGBA()
 	if !isWB(r4, g4, b4) {
 		return false, fSize, err
 	}
@@ -202,42 +203,61 @@ func IsWhiteBackground(fileInput string) (bool, int64, error) {
 
 
 // 得到一个文件夹所有白底图的，最小白底图
-func MinWhiteBackground(pattern string) (string, bool) {
+func MinWhiteBackground(pattern string) (result string, exist bool) {
 	// 可能的白底图
 	var probablyName []string
 	var probablySize []int64
 
+
+	// 并发操作同一个切片时，加个互斥锁
+	var add sync.Mutex
+
 	// 并发避免提前退出
-	exit := make(chan bool)
+	var wg sync.WaitGroup
 
 	// 获取所有扩展名是jpg的文件名，类型是字符串切片
 	jpgSlice, _ := filepath.Glob(pattern)
-	for _, v := range jpgSlice {
-		go func() {
-			b, size, err := IsWhiteBackground(v)
+
+
+	// 每个图片都使用新的go程去判断是不是白底图
+	for i := 0; i < len(jpgSlice); i++ {
+		wg.Add(1)// 计时器加1，go程还没创建时就要先加1
+
+		// 使用go并发时记得传参，因为外面是公用变量，在等待的过程中，公用变量可能会发生变化
+		go func(i int) {
+			defer wg.Done()//计数器减1
+
+			ok, size, err := IsWhiteBackground(jpgSlice[i])
 			if err != nil {
 				fmt.Println("tools.IsWhiteBackground err:", err)
 				return
 			}
-			// 如果是白底图
-			if b {
-				probablyName = append(probablyName, v)
+
+			// 如果是白底图，就添加进切片
+			if ok {
+				add.Lock() // 加锁
+				probablyName = append(probablyName, jpgSlice[i])
 				probablySize = append(probablySize, size)
+				add.Unlock() // 解锁
 			}
-			exit <- true
-		}()
+		}(i)
 	}
 
 	// 通道防止主进程提前退出
-	for i := 0; i < len(jpgSlice); i++ {
-		<-exit
-	}
+	wg.Wait()
+
 
 	// 如果一个白底图也没有检查到就返回
 	if len(probablyName) == 0 {
-		return "", false
+		return
 	}
 
+	// 只有一个也马上返回
+	if len(probablyName) == 1 {
+		return probablyName[0], true
+	}
+
+	// 如果有多个就得求出最小的白底图
 	minIdx := 0
 	for i := 1; i < len(probablySize); i++ {
 		if probablySize[minIdx] > probablySize[i] {

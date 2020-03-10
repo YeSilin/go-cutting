@@ -15,7 +15,7 @@ import (
 //@param height 传入高度
 //@param wordLine 是否创建文字不要超过的参考线
 func NewDocument(width, height float64, frameName string, wordLine bool) {
-	// 定义一个匿名结构体，给模板使用
+	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
 	info := struct {
 		Width     float64
 		Height    float64

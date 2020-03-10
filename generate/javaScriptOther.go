@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"github.com/gookit/color"
 	"github.com/yesilin/go-cutting/tools"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
+	"text/template"
 )
 
 //生成清除元数据第二版js，让文件跟小巧，带进度条
@@ -776,71 +779,78 @@ func SaveForWeb() {
 	tools.CreateFile("Config/JSX/SaveForWeb.jsx", jsxStr)
 }
 
-
 //如果画布的高和宽同时大于148则提示
 func MaxCanvas(width, height float64) {
+	// 默认不写入
+	write := false
+
 	if width > 180 && height > 180 {
 		// 这其实是红色
 		color.LightBlue.Println("（已超不透最大180cm。）")
+		write = true
 	} else if width > 148 && height > 148 {
 		color.LightBlue.Println("（已超半透最大148cm。）")
+		write = true
 	} else {
 		fmt.Println()
+		return
 	}
-	//PrintLine(2) // 每个框架运行完都加个分隔符
 
-	//最大画布字体图层提示
-	var jsx = strings.Builder{}
+	// 如果要写入
+	if write {
+		//最大画布字体图层提示
+		var jsx = strings.Builder{}
 
-	jsx.WriteString("// 无聊加了个画布大小判断\n")
-	jsx.WriteString(fmt.Sprintf("if ((%f>180) && (%f>180)) {\n", width, height))
-	jsx.WriteString("     // 生成历史记录\n")
-	jsx.WriteString("    app.activeDocument.suspendHistory(\"注意：已超不透最大180cm\", \"maxCanvas(\\\"注意：已超不透最大180cm。\\\",  \\\"9d2e2d\\\")\");\n")
-	jsx.WriteString(fmt.Sprintf("} else if ((%f>148) && (%f>148)) {\n", width, height))
-	jsx.WriteString("      // 生成历史记录\n")
-	jsx.WriteString("    app.activeDocument.suspendHistory(\"注意：已超半透最大148cm\", \"maxCanvas(\\\"注意：已超半透最大148cm。\\\",  \\\"77bb11\\\")\");\n")
-	jsx.WriteString("}\n")
-	jsx.WriteString("\n")
-	jsx.WriteString("\n")
-	jsx.WriteString("function maxCanvas(text, rgbValue){\n")
-	jsx.WriteString("    // 在当前文档中添加一个图层。并且用变量 newLayer 记录这个图层。\n")
-	jsx.WriteString("    var newLayer = app.activeDocument.artLayers.add();\n")
-	jsx.WriteString("\n")
-	jsx.WriteString("    //把图层 newLayer 的图层类型变为”文本“ ，图层转换为文本图层。\n")
-	jsx.WriteString("    newLayer.kind = LayerKind.TEXT;\n")
-	jsx.WriteString("\n")
-	jsx.WriteString("    //把图层 newLayer 的文本内容类型变为”文本框“。\n")
-	jsx.WriteString("    newLayer.textItem.kind = TextType.PARAGRAPHTEXT;\n")
-	jsx.WriteString("\n")
-	jsx.WriteString("    //设置图层 newLayer 的文本框宽度与高度。\n")
-	jsx.WriteString("    newLayer.textItem.width = app.activeDocument.width*0.8;\n")
-	jsx.WriteString("    newLayer.textItem.height = app.activeDocument.width*0.1;\n")
-	jsx.WriteString("\n")
-	jsx.WriteString("    //设置图层 newLayer 的文本框位置，横坐标 50 像素，纵坐标 100 像素。\n")
-	jsx.WriteString("    //newLayer.textItem.position= [UnitValue(\"50px\"), UnitValue(\"100px\")]\n")
-	jsx.WriteString("    newLayer.textItem.position= [UnitValue(app.activeDocument.width*0.1), UnitValue((app.activeDocument.height*0.5)-(app.activeDocument.width*0.025))];\n")
-	jsx.WriteString("\n")
-	jsx.WriteString("    //设置 newLayer 的文本字体大小为“40 点”。\n")
-	jsx.WriteString("    newLayer.textItem.size = UnitValue(app.activeDocument.width*0.05);\n")
-	jsx.WriteString("\n")
-	jsx.WriteString("    //设置 newLayer 的文本内容。\n")
-	jsx.WriteString("    newLayer.textItem.contents= text;\n")
-	jsx.WriteString("\n")
-	jsx.WriteString("    //设置 newLayer 的文本框对齐方式为居中对齐。\n")
-	jsx.WriteString("    newLayer.textItem.justification = Justification.CENTER;\n")
-	jsx.WriteString("\n")
-	jsx.WriteString("    //创建一个色彩变量 c   ，颜色为 #77bb11。\n")
-	jsx.WriteString("    var c = new SolidColor();\n")
-	jsx.WriteString("    c.rgb.hexValue = rgbValue;\n")
-	jsx.WriteString("\n")
-	jsx.WriteString("    //设置 newLayer 的文本颜色为 c。\n")
-	jsx.WriteString("    newLayer.textItem.color = c;\n")
-	jsx.WriteString("}\n")
+		jsx.WriteString("// 无聊加了个画布大小判断\n")
+		jsx.WriteString(fmt.Sprintf("if ((%f>180) && (%f>180)) {\n", width, height))
+		jsx.WriteString("     // 生成历史记录\n")
+		jsx.WriteString("    app.activeDocument.suspendHistory(\"注意：已超不透最大180cm\", \"maxCanvas(\\\"注意：已超不透最大180cm。\\\",  \\\"9d2e2d\\\")\");\n")
+		jsx.WriteString(fmt.Sprintf("} else if ((%f>148) && (%f>148)) {\n", width, height))
+		jsx.WriteString("      // 生成历史记录\n")
+		jsx.WriteString("    app.activeDocument.suspendHistory(\"注意：已超半透最大148cm\", \"maxCanvas(\\\"注意：已超半透最大148cm。\\\",  \\\"77bb11\\\")\");\n")
+		jsx.WriteString("}\n")
+		jsx.WriteString("\n")
+		jsx.WriteString("\n")
+		jsx.WriteString("function maxCanvas(text, rgbValue){\n")
+		jsx.WriteString("    // 在当前文档中添加一个图层。并且用变量 newLayer 记录这个图层。\n")
+		jsx.WriteString("    var newLayer = app.activeDocument.artLayers.add();\n")
+		jsx.WriteString("\n")
+		jsx.WriteString("    //把图层 newLayer 的图层类型变为”文本“ ，图层转换为文本图层。\n")
+		jsx.WriteString("    newLayer.kind = LayerKind.TEXT;\n")
+		jsx.WriteString("\n")
+		jsx.WriteString("    //把图层 newLayer 的文本内容类型变为”文本框“。\n")
+		jsx.WriteString("    newLayer.textItem.kind = TextType.PARAGRAPHTEXT;\n")
+		jsx.WriteString("\n")
+		jsx.WriteString("    //设置图层 newLayer 的文本框宽度与高度。\n")
+		jsx.WriteString("    newLayer.textItem.width = app.activeDocument.width*0.8;\n")
+		jsx.WriteString("    newLayer.textItem.height = app.activeDocument.width*0.1;\n")
+		jsx.WriteString("\n")
+		jsx.WriteString("    //设置图层 newLayer 的文本框位置，横坐标 50 像素，纵坐标 100 像素。\n")
+		jsx.WriteString("    //newLayer.textItem.position= [UnitValue(\"50px\"), UnitValue(\"100px\")]\n")
+		jsx.WriteString("    newLayer.textItem.position= [UnitValue(app.activeDocument.width*0.1), UnitValue((app.activeDocument.height*0.5)-(app.activeDocument.width*0.025))];\n")
+		jsx.WriteString("\n")
+		jsx.WriteString("    //设置 newLayer 的文本字体大小为“40 点”。\n")
+		jsx.WriteString("    newLayer.textItem.size = UnitValue(app.activeDocument.width*0.05);\n")
+		jsx.WriteString("\n")
+		jsx.WriteString("    //设置 newLayer 的文本内容。\n")
+		jsx.WriteString("    newLayer.textItem.contents= text;\n")
+		jsx.WriteString("\n")
+		jsx.WriteString("    //设置 newLayer 的文本框对齐方式为居中对齐。\n")
+		jsx.WriteString("    newLayer.textItem.justification = Justification.CENTER;\n")
+		jsx.WriteString("\n")
+		jsx.WriteString("    //创建一个色彩变量 c   ，颜色为 #77bb11。\n")
+		jsx.WriteString("    var c = new SolidColor();\n")
+		jsx.WriteString("    c.rgb.hexValue = rgbValue;\n")
+		jsx.WriteString("\n")
+		jsx.WriteString("    //设置 newLayer 的文本颜色为 c。\n")
+		jsx.WriteString("    newLayer.textItem.color = c;\n")
+		jsx.WriteString("}\n")
 
-	// 转成字符串格式
-	jsxStr := jsx.String()
-	// 追加写入
-	tools.WriteFile("config/jsx/newDocument.jsx", jsxStr)
+		// 转成字符串格式
+		jsxStr := jsx.String()
+		// 追加写入
+		tools.WriteFile("config/jsx/newDocument.jsx", jsxStr)
+	}
 }
 
 //生成自带清除元数据的另存
@@ -909,5 +919,71 @@ func SaveAsJPEG() {
 	jsxStr := jsx.String()
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
 	tools.CreateFile("Config/JSX/SaveAsJPEG.jsx", jsxStr)
+}
+
+// 生成详情页替换智能对象的脚本
+func ReplaceDetailsPage() {
+	// 获取所有扩展名是jpg的文件名，类型是字符串切片
+	jpgSlice, _ := filepath.Glob(".\\Config\\Picture\\*.jpg")
+	// 如果jpg小于一张就不执行
+	if len(jpgSlice) < 1 {
+		fmt.Println("\n【提示】脚本注入失败，因为 Picture 文件夹下没有 jpg 格式图片！")
+		// 打开套图文件夹
+		exec.Command("cmd.exe", "/c", "start Config\\Picture").Run()
+		return
+	}
+
+	go func() {
+		// 获取白底图
+		minImage, isMinImage := tools.MinWhiteBackground("Config\\Picture\\*.jpg")
+		// 去掉白底图
+		result := []string{}
+		if isMinImage {
+			// 不是白底图的都添加到result切片
+			for i := 0; i < len(jpgSlice); i++ {
+				if minImage != jpgSlice[i] {
+					result = append(result, jpgSlice[i])
+				}
+			}
+
+
+			// 更新最新切片
+			jpgSlice = result
+		}
+
+		// 去掉Config\Picture\
+		for i := 0; i < len(jpgSlice); i++ {
+
+			jpgSlice[i] = strings.TrimPrefix(jpgSlice[i], `Config\Picture\`)
+		}
+
+
+
+		// 解析指定文件生成模板对象
+		tmpl, err := template.ParseFiles("config/jsx/template/replaceDetailsPage.gohtml")
+		if err != nil {
+			fmt.Println("create template failed, err:", err)
+			return
+		}
+
+		// 创建文件，返回两个值，一是创建的文件，二是错误信息
+		f, err := os.Create("config/jsx/replaceDetailsPage.jsx")
+		if err != nil { // 如果有错误，打印错误，同时返回
+			fmt.Println("创建文件错误 =", err)
+			return
+		}
+
+		// 利用给定数据渲染模板，并将结果写入f
+		_= tmpl.Execute(f, tools.StrToJsArray("srcArray", jpgSlice))
+
+		// 关闭文件
+		f.Close()
+
+		// 创建一个协程使用cmd来运行脚本
+		dataPath := "Config/jsx/ReplaceDetailsPage.jsx"
+		exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+	}()
+
+	fmt.Println("\n【提示】脚本注入成功，正在自动替换详情页中名字以【dp】开头的智能对象图层！")
 }
 

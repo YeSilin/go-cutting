@@ -76,8 +76,6 @@ func index(w http.ResponseWriter, r *http.Request) {
 			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
-			fmt.Println("\n【注意】已重建新文档，参数来自最近一次切图记录！")
-			tools.PrintLine(2)
 		case cipher3 == "true":
 			// 创建一个协程使用cmd启动外部程序
 			dataPath := "Config/JSX/ClearMetadataJS.jsx"
