@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/yesilin/go-cutting/model/quickCipher"
 	"github.com/yesilin/go-cutting/tools"
-	"github.com/zserge/webview"
 	"io"
 	"log"
 	"net/http"
@@ -144,7 +143,7 @@ func automaticLayout(w http.ResponseWriter, r *http.Request) {
 
 
 // web 服务器
-func runWebServer() {
+func RunWebServer() {
 	// 文件服务器 返回html,img,css,js
 	http.Handle("/html/", http.StripPrefix("/html/",http.FileServer(http.Dir("./config/html"))))
 	http.Handle("/img/", http.StripPrefix("/img/",http.FileServer(http.Dir("./config/img"))))
@@ -162,11 +161,9 @@ func runWebServer() {
 
 }
 
-func GuiMain() {
-	// 运行web服务器
-	go runWebServer()
 
-	// 搭建web窗口
-	_ = webview.Open("GoCutting", "http://localhost:9090/index", 350, 600, true)
-}
+
+
+
+
 

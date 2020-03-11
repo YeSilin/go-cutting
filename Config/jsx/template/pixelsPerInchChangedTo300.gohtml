@@ -29,6 +29,14 @@ for (i = 0; i < srcArray.length; i++) {
     if (fileRef.exists) {    // 如果图像存在
         app.open(fileRef);   // 打开文档
 
+        // 如果图片原本就是1500*1500 300分辨率，就不修改
+        if (app.activeDocument.width == 1500 && app.activeDocument.height == 1500 && app.activeDocument.resolution == 300) {
+            // 关闭文档 不存储改变
+            app.activeDocument.close(SaveOptions.DONOTSAVECHANGES);
+            continue
+        }
+
+
         // 清理元数据
         deleteDocumentAncestorsMetadata();
 

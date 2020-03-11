@@ -225,7 +225,7 @@ func PixelsPerInchChangedTo300() {
 		_ = tools.CopyDir("Config/Picture", "Config/Backups/")
 
 		// 解析指定文件生成模板对象
-		tmpl, err := template.ParseFiles("config/jsx/template/pixelsPerInchChangedTo300.jsx")
+		tmpl, err := template.ParseFiles("config/jsx/template/pixelsPerInchChangedTo300.gohtml")
 		if err != nil {
 			fmt.Println("create template failed, err:", err)
 			return
