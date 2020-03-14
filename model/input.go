@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/clib"
 	"github.com/yesilin/go-cutting/generate"
@@ -155,7 +156,7 @@ func Input(text string, canvasMode bool) string {
 			OldFrame9()
 			continue
 		case "-97":
-			generate.ReplaceDetailsPage() // 替换详情页
+			generate.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
 			continue
 		case "-98":
 			// 创建套图文件夹

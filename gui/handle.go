@@ -1,11 +1,10 @@
-package model
+package gui
 
 import (
 	"fmt"
 	"github.com/yesilin/go-cutting/model/quickCipher"
 	"github.com/yesilin/go-cutting/tools"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -36,17 +35,11 @@ func responseWriter(w http.ResponseWriter, file string) {
 	}
 }
 
-
 // 首页回调函数
-func index(w http.ResponseWriter, r *http.Request) {
+func indexHandle(w http.ResponseWriter, r *http.Request) {
 	// r:代表跟请求相关的所有内容
-
 	//获取请求的方法
-	if method := r.Method; method == "GET" {
-		// 返回页面
-
-		responseWriter(w, "Config/html/index.html")
-	} else {
+	if method := r.Method; method == "POST" {
 		_ = r.ParseForm() // 解析
 		// 获取表单中的数据
 		//fmt.Printf("%v\n", r.Form)
@@ -66,10 +59,10 @@ func index(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case cipher1 == "true":
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/JSX/SelectTailor.jsx"
+			dataPath := "config/JSX/SelectTailor.jsx"
 			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 			// 每次选择正确的脚本时删除多余备份，最大保留30个
-			go tools.DeleteRedundantBackups("Config/JSX/Temp/*", 30)
+			go tools.DeleteRedundantBackups("config/JSX/Temp/*", 30)
 		case cipher2 == "true":
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "config/jsx/newDocument.jsx"
@@ -131,39 +124,15 @@ func index(w http.ResponseWriter, r *http.Request) {
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
+
+	} else {
+		// 返回页面
+		responseWriter(w, "config/html/index.html")
 	}
 }
 
-
-func automaticLayout(w http.ResponseWriter, r *http.Request) {
+// 自动嵌套图片的回调函数
+func autoNestingPicturesHandle(w http.ResponseWriter, r *http.Request) {
 	// 返回页面
-	responseWriter(w, "config/html/automaticLayout.html")
+	responseWriter(w, "config/html/autoNestingPictures.html")
 }
-
-
-
-// web 服务器
-func RunWebServer() {
-	// 文件服务器 返回html,img,css,js
-	http.Handle("/html/", http.StripPrefix("/html/",http.FileServer(http.Dir("./config/html"))))
-	http.Handle("/img/", http.StripPrefix("/img/",http.FileServer(http.Dir("./config/img"))))
-	http.Handle("/css/", http.StripPrefix("/css/",http.FileServer(http.Dir("./config/css"))))
-	http.Handle("/js/", http.StripPrefix("/js/",http.FileServer(http.Dir("./config/js"))))
-
-
-	http.HandleFunc("/index", index)
-	http.HandleFunc("/automaticLayout", automaticLayout)
-
-	err := http.ListenAndServe(":9090", nil) // 设置监听的端口
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
-
-}
-
-
-
-
-
-
-

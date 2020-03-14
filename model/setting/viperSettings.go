@@ -5,10 +5,7 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
-	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/model"
-	"github.com/yesilin/go-cutting/tools"
-	"strconv"
 	"strings"
 )
 
@@ -23,17 +20,18 @@ func init() {
 	viper.SetDefault("blackEdge", true)
 	viper.SetDefault("prefix", "")
 	viper.SetDefault("reserve", 5)
+	viper.SetDefault("picture", "config/picture")
 
 	//  设置配置文件名，不带后缀
 	viper.SetConfigName("settings")
 
 	// 第一个搜索路径
-	viper.AddConfigPath("./Config/")
+	viper.AddConfigPath("./config/")
 
 	//设置配置文件类型
 	viper.SetConfigType("yaml")
 
-	// 安全保存配置文件，如果没有配置文件就保存
+	// 安全保存配置文件，如果没有配置文件就保存当前配置
 	_ = viper.SafeWriteConfig()
 
 	// 搜索路径，并读取配置数据
@@ -59,11 +57,20 @@ func init() {
 // 验证输入的内容是不是有效数据
 // @param text: 传入用户输入提示信息
 // @return: 返回有效的配置信息
-func isStringInput(text string) string {
+func isStringInput(text string, isPath bool) string {
 	var receive string
 	for {
 		fmt.Print(text)
 		_, _ = fmt.Scanln(&receive) // 储存用户输入的值
+
+		// 如果本次是为了判断路径
+		if isPath {
+			// 删除首尾连续的的空白字符。
+			receive = strings.TrimSpace(receive)
+			// 把所有反斜杠修改成正斜杠
+			//receive = strings.Replace(receive, "\\", "/", -1)
+			return receive
+		}
 
 		// 只有这三个字符才能传出，其他字符则一直循环
 		if (receive == "1") || (receive == "2") || (receive == "-") {
@@ -132,126 +139,19 @@ func current() {
 	var reserveStr = fmt.Sprintf("%.2fcm", viper.GetFloat64("reserve"))
 	reserveStr = model.ColourString(reserveStr, ctc.ForegroundGreen) // 设置带颜色的字符串
 
-	fmt.Printf("\n【状态】[1]记忆框架：%s\t[2]自动新建：%s\t[3]自动黑边：%s\n", memoryStr, openPsStr, blackEdgeStr)
-	fmt.Printf("\n【状态】[4]自定前缀：%s\t[5]切布预留：%s\t[6]恢复默认出厂设置\n", prefixStr, reserveStr)
-}
-
-/**修改配置*/
-func ModifySetting() {
-	for {
-		current() // 当前状态
-
-		var modify = model.Input("\n【设置】请选择需要修改的设置：", false)
-		switch modify {
-		case "1":
-			var tempMemory = isStringInput("\n【更改】是否记住框架的选择，[1]是，[2]否：")
-			switch tempMemory {
-			case "1":
-				viper.Set("memory", true)
-				fmt.Println("\n【提示】设置成功 - 功能已开启！")
-				// 保存最新配置
-				_ = viper.WriteConfig()
-				continue
-			case "2":
-				viper.Set("memory", false)
-				fmt.Println("\n【提示】设置成功 - 功能已关闭！")
-				// 保存最新配置
-				_ = viper.WriteConfig()
-			case "-":
-				fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
-				goto FLAG // 跳到循环结束
-			}
-		case "2":
-			var tempOpenPs = isStringInput("\n【更改】是否自动新建切图文档，[1]是，[2]否：")
-			switch tempOpenPs {
-			case "1":
-				viper.Set("openPs", true)
-				fmt.Println("\n【提示】设置成功 - 功能已开启！")
-				// 保存最新配置
-				_ = viper.WriteConfig()
-			case "2":
-				viper.Set("openPs", false)
-				fmt.Println("\n【提示】设置成功 - 功能已关闭！")
-				// 保存最新配置
-				_ = viper.WriteConfig()
-			case "-":
-				fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
-				goto FLAG // 跳到循环结束
-			}
-		case "3":
-			var tempBlackEdge = isStringInput("\n【更改】是否切图自动添加黑边，[1]是，[2]否：")
-			switch tempBlackEdge {
-			case "1":
-				viper.Set("blackEdge", true)
-				fmt.Println("\n【提示】设置成功 - 功能已开启！")
-				// 保存最新配置
-				_ = viper.WriteConfig()
-				generate.Tailor("") // 根据配置更新通用裁剪
-			case "2":
-				viper.Set("blackEdge", false)
-				fmt.Println("\n【提示】设置成功 - 功能已关闭！")
-				// 保存最新配置
-				_ = viper.WriteConfig()
-				generate.Tailor("") // 根据配置更新通用裁剪
-			case "-":
-				fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
-				goto FLAG // 跳到循环结束
-			}
-		case "4":
-			fmt.Println("\n【提示】自定义前缀可以在使用【-1】暗号时自动添加，例如定义为【沐：】为前缀！")
-			fmt.Println("\n此功能未开发，设置无效")
-			var tempPrefixStr = model.Input("\n【提示】请输入最新的切图前缀：", false)
-
-			switch tempPrefixStr {
-			case "-":
-				goto FLAG // 跳到循环结束
-			case "0": // 直接回车代表删除前缀
-				// 设置前缀
-				viper.Set("prefix","")
-			default:
-				// 设置前缀
-				viper.Set("prefix", tempPrefixStr)
-				fmt.Printf("\n【提示】切图前缀已更改成 【%s】，输入内容为空代表删除！\n", tempPrefixStr)
-				// 保存最新配置
-				_ = viper.WriteConfig()
-			}
-
-		case "5":
-			fmt.Println("\n【警告】修改此项将直接影响最终的切图结果，如未出现特殊情况请勿修改")
-			var tempReserve = model.Input("\n【警告】请输入最新的切图预留：", false)
-
-			switch tempReserve {
-			case "-":
-				goto FLAG // 跳到循环结束
-			default:
-				// 转成64位浮点数再赋值
-				reserve64, _ := strconv.ParseFloat(tempReserve, 64)
-				viper.Set("reserve", reserve64)
-				fmt.Printf("\n【提示】切图预留已更改成 %.2fcm，一切后果自负\n", reserve64)
-				// 保存最新配置
-				_ = viper.WriteConfig()
-			}
-		case "6":
-			tools.CallClear() // 清屏
-			fmt.Println("\n【提示】已恢复默认设置成功，配置信息已重新加载并生效！")
-
-			// 重置为默认参数
-			viper.Set("memory", false)
-			viper.Set("openPs", true)
-			viper.Set("blackEdge", true)
-			viper.Set("prefix", "")
-			viper.Set("reserve", 5)
-
-			// 保存最新配置
-			_ = viper.WriteConfig()
-			generate.Tailor("") // 根据配置更新通用裁剪
-		case "-":
-			goto FLAG // 跳到循环结束
-		default:
-			continue
-		}
+	// 修改套图文件夹位置
+	var pictureStr string
+	if viper.GetString("picture") != "config/picture" {
+		pictureStr = "已修改"
+		pictureStr = model.ColourString(pictureStr, ctc.ForegroundGreen) // 设置带颜色的字符串
+	} else {
+		pictureStr = "默认值"
+		pictureStr = model.ColourString(pictureStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	}
-FLAG: //为了跳出for循环
-	// 保存最新配置
-	_ = viper.WriteConfig()
+
+	fmt.Printf("\n【状态】[1]记忆框架：%s\t[2]自动新建：%s\t[3]自动黑边：%s\n", memoryStr, openPsStr, blackEdgeStr)
+	fmt.Printf("\n【状态】[4]自定前缀：%s\t[5]切布预留：%s\t[6]暂位预留：未开发\n", prefixStr, reserveStr)
+	fmt.Printf("\n【状态】[7]套图位置：%s\t[8]暂位预留：未开发\t[9]恢复默认出厂设置\n", pictureStr)
 }
+
+

@@ -16,11 +16,12 @@ import (
  * @param destPath		拷贝到的位置: D:/backup/
  */
 func CopyDir(srcPath string, destPath string) error {
+	// 先把反斜杠转成正斜杠，不然会出现错误
+	srcPath = strings.Replace(srcPath, "\\", "/", -1)
 
 	// 带点的相对路径会引起bug，因此增加一个判断字符串首字母是否是相对路径的 点
 	if strings.HasPrefix(srcPath, ".") {
 		srcPath = strings.Replace(srcPath, "./", "", 1)
-		srcPath = strings.Replace(srcPath, ".\\", "", 1)
 	}
 
 	//检测目录正确性

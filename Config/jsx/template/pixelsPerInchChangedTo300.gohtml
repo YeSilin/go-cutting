@@ -18,12 +18,8 @@ app.preferences.rulerUnits = Units.PIXELS;
 // 这是源文件索引
 var src = 0;
 
-// 获取当前脚本所在路径
-const scriptPath = (new File($.fileName)).parent;
-// 为源文件加上完整路径
-for (i = 0; i < srcArray.length; i++) {
-    srcArray[i] = scriptPath + "/../Picture/" + srcArray[i];
 
+for (i = 0; i < srcArray.length; i++) {
     // 为指定路径文件定义变量
     var fileRef = new File(srcArray[i]);
     if (fileRef.exists) {    // 如果图像存在
@@ -35,7 +31,6 @@ for (i = 0; i < srcArray.length; i++) {
             app.activeDocument.close(SaveOptions.DONOTSAVECHANGES);
             continue
         }
-
 
         // 清理元数据
         deleteDocumentAncestorsMetadata();

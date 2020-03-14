@@ -2,11 +2,13 @@ package layout
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
 )
+
 
 // 判断用户输入，是否有白底图
 func isWhiteBackgroundMap() string {
@@ -46,26 +48,26 @@ func picture() {
 		switch layoutType {
 		case "1", "01":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/mulan.png",true)
+			WatermarkMasterGraph(viper.GetString("picture"),"config/img/mulan.png", false)
 		case "2", "02":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/yinanjj.png",true)
+			WatermarkMasterGraph(viper.GetString("picture"),"config/img/yinanjj.png", false)
 		case "3", "03":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/yushantanjj.png",true)
+			WatermarkMasterGraph(viper.GetString("picture"),"config/img/yushantanjj.png", false)
 		case "4", "04":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/yushantanpf.png",true)
+			WatermarkMasterGraph(viper.GetString("picture"),"config/img/yushantanpf.png", false)
 		case "5", "05":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/muyunge.png",true)
+			WatermarkMasterGraph(viper.GetString("picture"),"config/img/muyunge.png", false)
 		case "6", "06":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/huafu.png",true)
+			WatermarkMasterGraph(viper.GetString("picture"),"config/img/huafu.png", false)
 
 		case "7", "07":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph("config/img/jinzunfu.png",true)
+			WatermarkMasterGraph(viper.GetString("picture"),"config/img/jinzunfu.png", false)
 		case "8", "08":
 
 		case "-", "--":
@@ -92,12 +94,12 @@ func modifyResolution() {
 		switch layoutType {
 		case "1":
 			tools.CallClear()
-			PixelsPerInchChangedTo72()                                      // 改为72ppi
-			go exec.Command("cmd.exe", "/c", "start Config\\Picture").Run() // 打开套图文件夹
+			PixelsPerInchChangedTo72(viper.GetString("picture"))                                      // 改为72ppi
+			go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", viper.GetString("picture"))).Run() // 打开套图文件夹
 		case "2":
 			tools.CallClear()
-			PixelsPerInchChangedTo300()
-			go exec.Command("cmd.exe", "/c", "start Config\\Picture").Run() // 打开套图文件夹
+			PixelsPerInchChangedTo300(viper.GetString("picture"))
+			go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", viper.GetString("picture"))).Run() // 打开套图文件夹
 		case "-", "--":
 			goto FLAG
 		default:
@@ -125,13 +127,13 @@ func Choice() {
 		switch layoutType {
 		case "1":
 			tools.CallClear() // 清屏
-			go exec.Command("cmd.exe", "/c", "start Config\\Picture").Run()
+			go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", viper.GetString("picture"))).Run()
 			fmt.Println("\n【提示】已打开套图文件夹，请复制正方形的 jpg 或 png 高清图片以备自动套图使用！")
 		case "2":
 			tools.CallClear() // 清屏
-			Rename()
+			Rename(viper.GetString("picture"))
 			// 打开套图文件夹
-			exec.Command("cmd.exe", "/c", "start Config\\Picture").Run()
+			go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", viper.GetString("picture"))).Run()
 		case "3":
 			tools.CallClear() // 清屏
 			go exec.Command("cmd.exe", "/c", "start Config\\Backups").Run()
@@ -139,12 +141,12 @@ func Choice() {
 
 		case "4":
 			tools.CallClear()             // 清屏
-			generate.ReplaceDetailsPage() // 替换详情页
+			generate.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
 		case "5":
-			tools.CallClear()      // 清屏
-			UniversalMasterGraph(true) // 通用主图
+			tools.CallClear()          // 清屏
+			UniversalMasterGraph(viper.GetString("picture"),false) // 通用主图
 			// 打开套图文件夹
-			exec.Command("cmd.exe", "/c", "start Config\\Picture").Run()
+			go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", viper.GetString("picture"))).Run()
 		case "6":
 			tools.CallClear() // 清屏
 			picture()         // 主图自动化

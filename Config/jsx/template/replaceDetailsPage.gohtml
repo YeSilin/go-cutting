@@ -22,7 +22,8 @@ function replaceContents(newFile, theSO) {
 
 // 递归函数
 function replaceSmartObjects(doc) {
-    for (var i = 0; i < doc.layers.length; i++) {
+    // 这里倒序，因为最上层的图层是0
+    for (var i = doc.layers.length -1; i >=0; i--) {
         var curLayer = doc.layers[i];
 
         // 如果选中的图层类型不是普通图层，即代表是图层组
@@ -77,13 +78,6 @@ if (!documents.length) {
 
         // 默认当做没有dp智能对象
         var isDP = false;
-
-        // 获取当前脚本所在路径
-        var scriptPath = (new File($.fileName)).parent;
-        // 为源文件加上完整路径
-        for (i = 0; i < srcArray.length; i++) {
-            srcArray[i] = scriptPath + "/../Picture/" + srcArray[i]
-        }
 
         // 运行带进度条的图层替换
         progressBar();

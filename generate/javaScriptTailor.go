@@ -153,9 +153,9 @@ func Tailor(frameName string) {
 
 	// 框架名不是空，就生成专属裁剪脚本
 	if frameName != "" {
-		tools.CreateFile(fmt.Sprintf("Config/JSX/Temp/Tailor_%s.jsx",frameName), jsxStr)
+		tools.CreateFile(fmt.Sprintf("config/JSX/Temp/Tailor_%s.jsx",frameName), jsxStr)
 	} else {
-		tools.CreateFile("Config/JSX/Tailor.jsx", jsxStr)
+		tools.CreateFile("config/JSX/Tailor.jsx", jsxStr)
 	}
 }
 

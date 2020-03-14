@@ -236,3 +236,50 @@ func IsDir(path string) bool {
 	return s.IsDir()
 }
 
+// 获取指定目录中的子目录，以map形式
+func SubdirectoryMap(originalPath string) (files map[string][]string) {
+	// 字典和切片需要先分配内存空间
+	files = make(map[string][]string)
+
+	// 获取所有文件
+	f, err := filepath.Glob(originalPath)
+	if err != nil {
+		fmt.Println("filepath.Glob err: ", err)
+		return
+	}
+
+	// 开始存进 map 里
+	for i := 0; i < len(f); i++ {
+		// 先把所有反斜杠修改成正斜杠
+		f[i] = strings.Replace(f[i], "\\", "/", -1)
+
+		// 如果是文件夹
+		if IsDir(f[i]) {
+
+			// 对字符串进行拼接，获得子文件路径
+			fromPath := fmt.Sprintf("%s/*", f[i])
+
+			// 获取子文件夹所有文件
+			f2, err := filepath.Glob(fromPath)
+			if err != nil {
+				fmt.Println("filepath.Glob err: ", err)
+				return
+			}
+
+			// 得到子文件夹名
+			dirName := filepath.Base(f[i])
+
+			// 循环子文件夹内的文件
+			for j := 0; j < len(f2); j++ {
+				// 先把所有反斜杠修改成正斜杠
+				f2[j] = strings.Replace(f2[j], "\\", "/", -1)
+				files[dirName] = append(files[dirName], f2[j])
+			}
+
+			// 非文件夹存默认 map 里
+		} else {
+			files["default"] = append(files["default"], f[i])
+		}
+	}
+	return
+}
