@@ -2,13 +2,13 @@ package gui
 
 import (
 	"fmt"
+	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/model/quickCipher"
 	"github.com/yesilin/go-cutting/tools"
 	"io"
 	"net/http"
 	"os"
 	"os/exec"
-	"time"
 )
 
 // 负责写入到浏览器的函数
@@ -83,41 +83,13 @@ func indexHandle(w http.ResponseWriter, r *http.Request) {
 			dataPath := "Config/JSX/BlackEdgeJS.jsx"
 			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 		case cipher9 == "true":
-			//获取当前时间，进行格式化 2006-01-02 15:04:05
-			fileName := time.Now().Format("2006-01-02")
-			now := time.Now().Format("2006-01")
-
-			// 储存历史记录路径
-			path := fmt.Sprintf("Config/History/%s/%s.txt", now, fileName)
-
-			// 先查看是否有历史记录文件
-			exists, _ := tools.IsPathExists(path)
-			// 如果找不到文件，就创建文件 头
-			if !exists {
-				exec.Command("cmd.exe", "/c", "start Config\\History").Run()
-				return
-			}
-			// 创建一个协程使用cmd来运行脚本
-			cmd := exec.Command("cmd.exe", "/c", "start "+path)
-			go cmd.Run()
+			model.StartCode9() // 打开历史记录
 		case cipher10 == "true":
 			// 创建一个协程使用cmd启动外部程序
 			dataPath := "Config/JSX/SaveAsJPEG.jsx"
 			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 		case cipher98 == "true":
-			// 创建套图文件夹
-			_ = tools.CreateMkdirAll("Config/Picture/主图")
-			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/JSX/SaveForWeb.jsx"
-			exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
-
-			time.Sleep(time.Second) // 停一秒
-			// 如果存在images就打开
-			if ok, _ := tools.IsPathExists("Config/Picture/主图/images"); ok {
-				go exec.Command("cmd.exe", "/c", "start Config\\Picture\\主图\\images").Run()
-			} else {
-				go exec.Command("cmd.exe", "/c", "start Config\\Picture\\主图").Run()
-			}
+			model.StartCode98()
 		case cipher99 == "true":
 			// 创建一个协程使用cmd启动外部程序
 			dataPath := "Config/W10DigitalActivation.exe /activate"

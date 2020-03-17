@@ -86,7 +86,7 @@ func main() {
 	// 定义私密文件路径
 	PrivateFile, _ := tools.Home()
 	PrivateFile = fmt.Sprintf("%s\\Documents\\Adobe\\Config.chx", PrivateFile)
-	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.000088, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
+	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.000090, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
 	// 如果权限不是true
 	if !power {
 		fmt.Println(tips)
@@ -98,7 +98,7 @@ func main() {
 
 	for {
 		fmt.Println(tips) // 提示信息
-		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.0.88 app " + strings.Repeat("-", 20))
+		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.0.90 app " + strings.Repeat("-", 20))
 		fmt.Println("\n【更新】添加新暗号【--】返回上一次输入，例如镂空大小输错，返回重新输入镂空大小！")
 
 		tips := `
@@ -127,6 +127,7 @@ func main() {
 			tools.CallClear()       // 清屏
 			additional.Additional() // 附加
 		case "6":
+			tools.CallClear() // 清屏
 			// 启动gui
 			// 搭建web窗口
 			go webview.Open("GoCutting", "http://localhost:9090/index", 350, 600, true)

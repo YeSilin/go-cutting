@@ -11,6 +11,35 @@ import (
 	"strings"
 )
 
+// 修改自动套图路径
+func modifyPicturePath() {
+	tools.CallClear() // 清屏
+	model.EnglishTitle("Modify Picture Path", 79)
+	fmt.Printf("\n【提示】正在修改自动套图文件夹路径，当前路径是【%s】\n", viper.GetString("picture"))
+	// 套图文件夹位置
+	var tempPictureStr = isStringInput("\n【提示】请输入最新的套图文件夹位置：", true)
+
+	switch tempPictureStr {
+	case "-":
+		return
+	// 直接回车代表恢复默认路径
+	case "":
+		// 设置套图文件夹位置
+		viper.Set("picture", "config/picture")
+		tools.CallClear() // 清屏
+		fmt.Println("\n【提示】直接回车会恢复默认设置，现已恢复默认设置！")
+	default:
+		// 设置套图文件夹位置
+		viper.Set("picture", tempPictureStr)
+		fmt.Printf("\n【提示】套图文件位置已更改成 【%s】，输入内容为空代表删除！\n", tempPictureStr)
+		// 保存最新配置
+		err := viper.WriteConfig()
+		if err != nil {
+			globa.Logger.Println("viper.WriteConfig err:", err)
+		}
+	}
+}
+
 /**修改配置*/
 func ModifySetting() {
 	for {
@@ -18,53 +47,56 @@ func ModifySetting() {
 
 		var modify = model.Input("\n【设置】请选择需要修改的设置：", false)
 		switch modify {
+		// 是否记住框架
 		case "1":
 			var tempMemory = isStringInput("\n【更改】是否记住框架的选择，[1]是，[2]否：", false)
 			switch tempMemory {
 			case "1":
 				viper.Set("memory", true)
-				fmt.Println("\n【提示】设置成功 - 功能已开启！")
+				fmt.Println("\n【提示】设置成功 - 记住框架的选择已开启！")
 				// 保存最新配置
 				_ = viper.WriteConfig()
 				continue
 			case "2":
 				viper.Set("memory", false)
-				fmt.Println("\n【提示】设置成功 - 功能已关闭！")
+				fmt.Println("\n【提示】设置成功 - 记住框架的选择已关闭！")
 				// 保存最新配置
 				_ = viper.WriteConfig()
 			case "-":
 				fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
 				goto FLAG // 跳到循环结束
 			}
+		// 是否自动新建切图文档
 		case "2":
 			var tempOpenPs = isStringInput("\n【更改】是否自动新建切图文档，[1]是，[2]否：", false)
 			switch tempOpenPs {
 			case "1":
 				viper.Set("openPs", true)
-				fmt.Println("\n【提示】设置成功 - 功能已开启！")
+				fmt.Println("\n【提示】设置成功 - 自动新建切图文档已开启！")
 				// 保存最新配置
 				_ = viper.WriteConfig()
 			case "2":
 				viper.Set("openPs", false)
-				fmt.Println("\n【提示】设置成功 - 功能已关闭！")
+				fmt.Println("\n【提示】设置成功 - 自动新建切图文档已关闭！")
 				// 保存最新配置
 				_ = viper.WriteConfig()
 			case "-":
 				fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
 				goto FLAG // 跳到循环结束
 			}
+		// 是否切图自动添加黑边
 		case "3":
 			var tempBlackEdge = isStringInput("\n【更改】是否切图自动添加黑边，[1]是，[2]否：", false)
 			switch tempBlackEdge {
 			case "1":
 				viper.Set("blackEdge", true)
-				fmt.Println("\n【提示】设置成功 - 功能已开启！")
+				fmt.Println("\n【提示】设置成功 - 切图自动添加黑边已开启！")
 				// 保存最新配置
 				_ = viper.WriteConfig()
 				generate.Tailor("") // 根据配置更新通用裁剪
 			case "2":
 				viper.Set("blackEdge", false)
-				fmt.Println("\n【提示】设置成功 - 功能已关闭！")
+				fmt.Println("\n【提示】设置成功 - 切图自动添加黑边已关闭！")
 				// 保存最新配置
 				_ = viper.WriteConfig()
 				generate.Tailor("") // 根据配置更新通用裁剪
@@ -72,6 +104,7 @@ func ModifySetting() {
 				fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
 				goto FLAG // 跳到循环结束
 			}
+		// 最新的切图前缀
 		case "4":
 			fmt.Println("\n【提示】自定义前缀可以在使用【-1】暗号时自动添加，例如定义为【沐：】为前缀！")
 			fmt.Println("\n此功能未开发，设置无效")
@@ -90,6 +123,7 @@ func ModifySetting() {
 				// 保存最新配置
 				_ = viper.WriteConfig()
 			}
+		// 最新的切图预留
 		case "5":
 			fmt.Println("\n【警告】修改此项将直接影响最终的切图结果，如未出现特殊情况请勿修改")
 			var tempReserve = model.Input("\n【警告】请输入最新的切图预留：", false)
@@ -105,27 +139,10 @@ func ModifySetting() {
 				// 保存最新配置
 				_ = viper.WriteConfig()
 			}
+		// 自动套图文件夹路径
 		case "7":
-			fmt.Printf("\n【提示】正在修改自动套图文件夹路径，当前路径是【%s】\n", viper.GetString("picture"))
-			// 套图文件夹位置
-			var tempPictureStr = isStringInput("\n【提示】请输入最新的套图文件夹位置：", true)
-
-			switch tempPictureStr {
-			case "-":
-				goto FLAG // 跳到循环结束
-			case "": // 直接回车代表恢复默认路径
-				// 设置套图文件夹位置
-				viper.Set("picture", "config/picture")
-				tools.CallClear()      // 清屏
-				fmt.Println("\n【提示】直接回车会恢复默认设置，现已恢复默认设置！")
-			default:
-				// 设置套图文件夹位置
-				viper.Set("picture", tempPictureStr)
-				fmt.Printf("\n【提示】套图文件位置已更改成 【%s】，输入内容为空代表删除！\n", tempPictureStr)
-				// 保存最新配置
-				_ = viper.WriteConfig()
-			}
-
+			modifyPicturePath()
+		// 恢复默认设置
 		case "9":
 			tools.CallClear() // 清屏
 			fmt.Println("\n【提示】已恢复默认设置成功，配置信息已重新加载并生效！")

@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/model"
+	"github.com/yesilin/go-cutting/tools"
 	"strings"
 )
 
@@ -74,6 +75,7 @@ func isStringInput(text string, isPath bool) string {
 
 		// 只有这三个字符才能传出，其他字符则一直循环
 		if (receive == "1") || (receive == "2") || (receive == "-") {
+			tools.CallClear() // 清屏
 			return receive
 		}
 
