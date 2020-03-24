@@ -21,7 +21,7 @@ func init() {
 	viper.SetDefault("blackEdge", true)
 	viper.SetDefault("prefix", "")
 	viper.SetDefault("reserve", 5)
-	viper.SetDefault("picture", "config/picture")
+	viper.SetDefault("picture", "config\\picture") // 正斜杠会出错
 
 	//  设置配置文件名，不带后缀
 	viper.SetConfigName("settings")
@@ -143,7 +143,7 @@ func current() {
 
 	// 修改套图文件夹位置
 	var pictureStr string
-	if viper.GetString("picture") != "config/picture" {
+	if viper.GetString("picture") != "config\\picture" {
 		pictureStr = "已修改"
 		pictureStr = model.ColourString(pictureStr, ctc.ForegroundGreen) // 设置带颜色的字符串
 	} else {

@@ -40,7 +40,7 @@ func picture() {
 
 【主图】[4]御尚屏风                [5]木韵主图                [6]华府主图
 
-【主图】[7]金尊主图                [8]暂未开发                [9]暂未开发`
+【主图】[7]金尊主图                [8]素梵家具                [9]暂未开发`
 		fmt.Println(text)
 
 		layoutType := model.Input("\n【主图】请选择需要使用的功能：", false)
@@ -69,7 +69,7 @@ func picture() {
 			tools.CallClear() // 清屏
 			WatermarkMasterGraph(viper.GetString("picture"),"config/img/jinzunfu.png", false)
 		case "8", "08":
-
+			WatermarkMasterGraph(viper.GetString("picture"),"config/img/sufanjj.png", false)
 		case "-", "--":
 			goto FLAG
 		default:

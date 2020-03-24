@@ -707,77 +707,39 @@ func SizeMarks() {
 }
 
 // 暗号-98的实现
-func SaveForWeb() {
-	// 使用最高效的字符串拼接
-	var jsx = strings.Builder{}
+func SaveForWeb(originalPath string) {
+	// 返回绝对路径
+	originalPath, err := filepath.Abs(originalPath)
+	if err != nil {
+		fmt.Println("filepath.Abs err:", err)
+		return
+	}
+	// 全部换成正斜杠
+	originalPath = strings.Replace(originalPath, "\\", "/", -1)
+	// 修改成js脚本可以看懂的路径
+	originalPath = "/" + strings.Replace(originalPath, ":", "", 1)
 
-	jsx.WriteString("// 清理元数据\r\n")
-	jsx.WriteString("function deleteDocumentAncestorsMetadata() {\r\n")
-	jsx.WriteString("    // 清理元数据四步骤\r\n")
-	jsx.WriteString("    if (ExternalObject.AdobeXMPScript == undefined) ExternalObject.AdobeXMPScript = new ExternalObject(\"lib:AdobeXMPScript\");\r\n")
-	jsx.WriteString("    var xmp = new XMPMeta(activeDocument.xmpMetadata.rawData);\r\n")
-	jsx.WriteString("    // Begone foul Document Ancestors!\r\n")
-	jsx.WriteString("    xmp.deleteProperty(XMPConst.NS_PHOTOSHOP, \"DocumentAncestors\");\r\n")
-	jsx.WriteString("    app.activeDocument.xmpMetadata.rawData = xmp.serialize();\r\n")
-	jsx.WriteString("}\r\n")
-	jsx.WriteString("\r\n")
-	jsx.WriteString("\r\n")
-	jsx.WriteString("// 另存为web\r\n")
-	jsx.WriteString("function saveAsWeb() {\r\n")
-	jsx.WriteString("    // 更新进度条\r\n")
-	jsx.WriteString("    updateProgress(1, 4);\r\n")
-	jsx.WriteString("    // 清理元数据\r\n")
-	jsx.WriteString("    deleteDocumentAncestorsMetadata();\r\n")
-	jsx.WriteString("\r\n")
-	jsx.WriteString("    // 更新进度条\r\n")
-	jsx.WriteString("    updateProgress(2, 4);\r\n")
-	jsx.WriteString("    // 获取当前脚本所在路径\r\n")
-	jsx.WriteString("    var scriptPath = (new File($.fileName)).parent;\r\n")
-	jsx.WriteString("\r\n")
-	jsx.WriteString("    // 定义文件保存位置\r\n")
-	jsx.WriteString("    var savePath = new File(scriptPath + \"/../Picture/主图/dp.jpg\");\r\n")
-	jsx.WriteString("\r\n")
-	jsx.WriteString("    var jpgOpt = new ExportOptionsSaveForWeb();\r\n")
-	jsx.WriteString("    jpgOpt.format = SaveDocumentType.JPEG;  // 保存为jpg\r\n")
-	jsx.WriteString("    jpgOpt.includeProfile = true;  //装入颜色配置文件\r\n")
-	jsx.WriteString("    jpgOpt.interlaced = false;  // 交错\r\n")
-	jsx.WriteString("    jpgOpt.optimized = true;  //最优化\r\n")
-	jsx.WriteString("    jpgOpt.blur = 0;    // 默认 0.0 不模糊。\r\n")
-	jsx.WriteString("    jpgOpt.matteColor = new RGBColor(); // 把杂边颜色染成白色\r\n")
-	jsx.WriteString("    jpgOpt.matteColor.red = 255;\r\n")
-	jsx.WriteString("    jpgOpt.matteColor.green = 255;\r\n")
-	jsx.WriteString("    jpgOpt.matteColor.blue = 255;\r\n")
-	jsx.WriteString("    jpgOpt.quality = 100;  // 品质   100是最高画质\r\n")
-	jsx.WriteString("\r\n")
-	jsx.WriteString("    // 更新进度条\r\n")
-	jsx.WriteString("    updateProgress(3, 4);\r\n")
-	jsx.WriteString("    activeDocument.exportDocument(savePath, ExportType.SAVEFORWEB,);\r\n")
-	jsx.WriteString("\r\n")
-	jsx.WriteString("    // 更新进度条\r\n")
-	jsx.WriteString("    updateProgress(4, 4);\r\n")
-	jsx.WriteString("}\r\n")
-	jsx.WriteString("\r\n")
-	jsx.WriteString("\r\n")
-	jsx.WriteString("function main() {\r\n")
-	jsx.WriteString("    // 判断是否有打开的文件\r\n")
-	jsx.WriteString("    if (!documents.length) {\r\n")
-	jsx.WriteString("        alert(\"没有打开的文档，请打开一个文档来运行此脚本！\");\r\n")
-	jsx.WriteString("        return;\r\n")
-	jsx.WriteString("    }\r\n")
-	jsx.WriteString("\r\n")
-	jsx.WriteString("    // 进度条调用另存函数\r\n")
-	jsx.WriteString("    app.doForcedProgress(\"正在导出文件... \", \"saveAsWeb()\")  // 添加进度条\r\n")
-	jsx.WriteString("\r\n")
-	jsx.WriteString("\r\n")
-	jsx.WriteString("}\r\n")
-	jsx.WriteString("\r\n")
-	jsx.WriteString("// 主函数\r\n")
-	jsx.WriteString("main();")
+	// 解析指定文件生成模板对象
+	tmpl, err := template.ParseFiles("config/jsx/template/saveForWeb.gohtml")
+	if err != nil {
+		fmt.Println("create template failed, err:", err)
+		return
+	}
 
-	// 转成字符串格式
-	jsxStr := jsx.String()
-	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("Config/JSX/SaveForWeb.jsx", jsxStr)
+	// 创建文件，返回两个值，一是创建的文件，二是错误信息
+	f, err := os.Create("config/jsx/saveForWeb.jsx")
+	if err != nil { // 如果有错误，打印错误，同时返回
+		fmt.Println("os.Create err:", err)
+		return
+	}
+	// 关闭文件
+	defer f.Close()
+
+	// 保存路径定义
+	savePath := fmt.Sprintf("%s/主图/dp.jpg", originalPath)
+
+	// 利用给定数据渲染模板，并将结果写入f
+	_ = tmpl.Execute(f, savePath)
 }
 
 //如果画布的高和宽同时大于148则提示
@@ -925,9 +887,9 @@ func SaveAsJPEG() {
 // 生成详情页替换智能对象的脚本
 func ReplaceDetailsPage(originalPath string) {
 	// 返回绝对路径
-	originalPath ,err := filepath.Abs(originalPath)
+	originalPath, err := filepath.Abs(originalPath)
 	if err != nil {
-		fmt.Println("filepath.Abs err:",err)
+		fmt.Println("filepath.Abs err:", err)
 		return
 	}
 	// 全部换成正斜杠
@@ -959,19 +921,12 @@ func ReplaceDetailsPage(originalPath string) {
 			jpgSlice = result
 		}
 
-
 		// 修改成js脚本可以看懂的路径
 		for i := 0; i < len(jpgSlice); i++ {
 			jpgSlice[i] = strings.Replace(jpgSlice[i], "\\", "/", -1)
 			jpgSlice[i] = strings.Replace(jpgSlice[i], ":", "", 1)
-			jpgSlice[i] = "/"+jpgSlice[i]
+			jpgSlice[i] = "/" + jpgSlice[i]
 		}
-
-		//// 去掉Config/Picture/
-		//for i := 0; i < len(jpgSlice); i++ {
-		//
-		//	jpgSlice[i] = strings.TrimPrefix(jpgSlice[i], originalPath+"/")
-		//}
 
 		// 解析指定文件生成模板对象
 		tmpl, err := template.ParseFiles("config/jsx/template/replaceDetailsPage.gohtml")

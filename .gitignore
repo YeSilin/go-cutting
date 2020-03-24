@@ -17,10 +17,12 @@
 /config/History/
 /config/Icon/
 /config/Picture/
+/config/logs/
 .idea/
 
 # 想忽略某个文件夹，但又不想忽略这个文件夹下的某个子目录
 /config/jsx/*
 !/config/jsx/template/
+
 
 

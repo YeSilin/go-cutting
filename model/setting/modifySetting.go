@@ -25,13 +25,21 @@ func modifyPicturePath() {
 	// 直接回车代表恢复默认路径
 	case "":
 		// 设置套图文件夹位置
-		viper.Set("picture", "config/picture")
+		viper.Set("picture", "config\\picture")
 		tools.CallClear() // 清屏
 		fmt.Println("\n【提示】直接回车会恢复默认设置，现已恢复默认设置！")
 	default:
+		tools.CallClear() // 清屏
+
+		// 判断路径是否存在
+		if ok,_ := tools.IsPathExists(tempPictureStr);!ok{
+			tools.CreateMkdirAll(tempPictureStr)
+			fmt.Println("\n【提示】输入的文件夹未创建，已成功创建该文件夹！")
+		}
 		// 设置套图文件夹位置
 		viper.Set("picture", tempPictureStr)
 		fmt.Printf("\n【提示】套图文件位置已更改成 【%s】，输入内容为空代表删除！\n", tempPictureStr)
+
 		// 保存最新配置
 		err := viper.WriteConfig()
 		if err != nil {
@@ -147,17 +155,20 @@ func ModifySetting() {
 			tools.CallClear() // 清屏
 			fmt.Println("\n【提示】已恢复默认设置成功，配置信息已重新加载并生效！")
 
-			// 重置为默认参数
-			viper.Set("memory", false)
-			viper.Set("openPs", true)
-			viper.Set("blackEdge", true)
-			viper.Set("prefix", "")
-			viper.Set("reserve", 5)
-			viper.Set("picture", "config/picture")
+			go func() {
+				// 重置为默认参数
+				viper.Set("memory", false)
+				viper.Set("openPs", true)
+				viper.Set("blackEdge", true)
+				viper.Set("prefix", "")
+				viper.Set("reserve", 5)
+				viper.Set("picture", "config\\picture")
 
-			// 保存最新配置
-			_ = viper.WriteConfig()
-			generate.Tailor("") // 根据配置更新通用裁剪
+				// 保存最新配置
+				_ = viper.WriteConfig()
+				generate.Tailor("") // 根据配置更新通用裁剪
+			}()
+
 		case "-":
 			goto FLAG // 跳到循环结束
 		default:

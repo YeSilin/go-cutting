@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gookit/color"
+	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/gui"
@@ -16,8 +17,6 @@ import (
 	"time"
 )
 
-
-
 func init() {
 	// 运行web服务器
 	go gui.RunWebServer()
@@ -28,14 +27,14 @@ func init() {
 
 		// 创建jsx文件夹
 		_ = tools.CreateMkdirAll("config/jsx/temp")
-		generate.SelectTailor()         // 生成裁剪选择脚本备用
-		generate.Tailor("")             // 生成通用裁剪脚本备用
-		generate.ClearMetadata()        // 生成 -3 要用的清除元数据脚本备用
-		generate.ClearMetadataNoPopUp() // 生成我自己动作要用的清除元数据脚本备用
-		generate.BlackEdge()            // 生成添加黑边脚本备用
-		generate.SizeMarks()            // 生成 将矩形选框转换为标记测量标志
-		generate.SaveForWeb()           // 生成详情页指定保存位置
-		generate.SaveAsJPEG()           // 生成带自带清除元数据的另存脚本
+		generate.SelectTailor()                         // 生成裁剪选择脚本备用
+		generate.Tailor("")                             // 生成通用裁剪脚本备用
+		generate.ClearMetadata()                        // 生成 -3 要用的清除元数据脚本备用
+		generate.ClearMetadataNoPopUp()                 // 生成我自己动作要用的清除元数据脚本备用
+		generate.BlackEdge()                            // 生成添加黑边脚本备用
+		generate.SizeMarks()                            // 生成 将矩形选框转换为标记测量标志
+		generate.SaveForWeb(viper.GetString("picture")) // 生成详情页指定保存位置
+		generate.SaveAsJPEG()                           // 生成带自带清除元数据的另存脚本
 
 		// 管理员取得所有权
 		//generate.TakeOwnership()
@@ -86,7 +85,7 @@ func main() {
 	// 定义私密文件路径
 	PrivateFile, _ := tools.Home()
 	PrivateFile = fmt.Sprintf("%s\\Documents\\Adobe\\Config.chx", PrivateFile)
-	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.000090, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
+	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.000093, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
 	// 如果权限不是true
 	if !power {
 		fmt.Println(tips)
@@ -94,11 +93,9 @@ func main() {
 		return
 	}
 
-
-
 	for {
 		fmt.Println(tips) // 提示信息
-		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.0.90 app " + strings.Repeat("-", 20))
+		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.0.93 app " + strings.Repeat("-", 20))
 		fmt.Println("\n【更新】添加新暗号【--】返回上一次输入，例如镂空大小输错，返回重新输入镂空大小！")
 
 		tips := `
@@ -122,7 +119,7 @@ func main() {
 			tools.CallClear() // 清屏
 			// 搭建web窗口
 			//go webview.Open("GoCutting", "http://localhost:9090/autoNestingPictures", 350, 600, true)
-			layout.Choice()   // 套图
+			layout.Choice() // 套图
 		case "5":
 			tools.CallClear()       // 清屏
 			additional.Additional() // 附加
@@ -131,6 +128,8 @@ func main() {
 			// 启动gui
 			// 搭建web窗口
 			go webview.Open("GoCutting", "http://localhost:9090/index", 350, 600, true)
+			//go gui.RunWebview()
+
 		case "7":
 			tools.CallClear()       // 清屏
 			setting.ModifySetting() // 设置
