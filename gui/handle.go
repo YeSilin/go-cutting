@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/model/quickCipher"
-	"github.com/yesilin/go-cutting/tools"
 	"io"
 	"net/http"
 	"os"
@@ -58,20 +57,11 @@ func indexHandle(w http.ResponseWriter, r *http.Request) {
 
 		switch {
 		case cipher1 == "true":
-			// 创建一个协程使用cmd来运行脚本
-			dataPath := "config/JSX/SelectTailor.jsx"
-			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
-			// 每次选择正确的脚本时删除多余备份，最大保留30个
-			go tools.DeleteRedundantBackups("config/JSX/Temp/*", 30)
+			model.StartCode1()
 		case cipher2 == "true":
-			// 创建一个协程使用cmd来运行脚本
-			dataPath := "config/jsx/newDocument.jsx"
-			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
-			go cmd.Run()
+			model.StartCode2()
 		case cipher3 == "true":
-			// 创建一个协程使用cmd启动外部程序
-			dataPath := "Config/JSX/ClearMetadataJS.jsx"
-			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+			model.StartCode3() // 深度清除源数据
 		case cipher4 == "true":
 			quickCipher.Work() // 工作目录
 		case cipher6 == "true":
@@ -91,10 +81,7 @@ func indexHandle(w http.ResponseWriter, r *http.Request) {
 		case cipher98 == "true":
 			model.StartCode98()
 		case cipher99 == "true":
-			// 创建一个协程使用cmd启动外部程序
-			dataPath := "Config/W10DigitalActivation.exe /activate"
-			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
-			go cmd.Run()
+			model.StartCode99()
 		}
 
 	} else {

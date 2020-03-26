@@ -626,7 +626,7 @@ func OldFrame6() {
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s折屏_%.0fx%.0f", now, tempName, totalWidth, height)
 		// 定义单片名字
-		singleName := fmt.Sprintf("%s_%s折屏", now, tempName)
+		singleName := fmt.Sprintf("%s折屏", tempName)
 
 		generate.NewDocument(totalWidth, height, frameName, false)      // 创建ps文档
 		generate.LineJs6(width, number)                                   // 生成专属参考线
