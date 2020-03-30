@@ -1,3 +1,5 @@
+// 修改所有设置
+
 package setting
 
 import (
@@ -10,6 +12,79 @@ import (
 	"strconv"
 	"strings"
 )
+
+// 修改是否记忆框架
+func modifyMemoryFrame() {
+	tools.CallClear() // 清屏
+	model.EnglishTitle("Modify Memory Frame", 79)
+	fmt.Println("\n【提示】在快捷切图中是否记住框架的选择，如选择普通座屏就会一直停留在普通座屏")
+	var tempMemory = isStringInput("\n【更改】是否记住框架的选择，[1]是，[2]否：", false)
+	switch tempMemory {
+	case "1":
+		viper.Set("memory", true)
+		fmt.Println("\n【提示】设置成功 - 记住框架的选择已开启！")
+		// 保存最新配置
+		_ = viper.WriteConfig()
+	case "2":
+		viper.Set("memory", false)
+		fmt.Println("\n【提示】设置成功 - 记住框架的选择已关闭！")
+		// 保存最新配置
+		_ = viper.WriteConfig()
+	case "-":
+		fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
+		return
+	}
+}
+
+// 修改是否自动新建切图文档
+func modifyAutomaticCreateDocuments() {
+	tools.CallClear() // 清屏
+	model.EnglishTitle("Modify Automatic Create Documents", 79)
+	fmt.Println("\n【提示】在快捷切图中是否在输入好尺寸信息后自动调用 PS 新建此文档")
+
+	var tempOpenPs = isStringInput("\n【更改】是否自动新建切图文档，[1]是，[2]否：", false)
+	switch tempOpenPs {
+	case "1":
+		viper.Set("openPs", true)
+		fmt.Println("\n【提示】设置成功 - 自动新建切图文档已开启！")
+		// 保存最新配置
+		_ = viper.WriteConfig()
+	case "2":
+		viper.Set("openPs", false)
+		fmt.Println("\n【提示】设置成功 - 自动新建切图文档已关闭！")
+		// 保存最新配置
+		_ = viper.WriteConfig()
+	case "-":
+		//fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
+		return
+	}
+}
+
+// 修改是否自动添加黑边
+func modifyAutomaticAddBlackEdge() {
+	tools.CallClear() // 清屏
+	model.EnglishTitle("Modify Automatic Add Black Edge", 79)
+	fmt.Println("\n【提示】在快捷切图中是否在使用【-1】保存时自动为当前文档添加黑边")
+
+	var tempBlackEdge = isStringInput("\n【更改】是否切图自动添加黑边，[1]是，[2]否：", false)
+	switch tempBlackEdge {
+	case "1":
+		viper.Set("blackEdge", true)
+		fmt.Println("\n【提示】设置成功 - 切图自动添加黑边已开启！")
+		// 保存最新配置
+		_ = viper.WriteConfig()
+		generate.Tailor("") // 根据配置更新通用裁剪
+	case "2":
+		viper.Set("blackEdge", false)
+		fmt.Println("\n【提示】设置成功 - 切图自动添加黑边已关闭！")
+		// 保存最新配置
+		_ = viper.WriteConfig()
+		generate.Tailor("") // 根据配置更新通用裁剪
+	case "-":
+		//fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
+		return
+	}
+}
 
 // 修改自动套图路径
 func modifyPicturePath() {
@@ -32,7 +107,7 @@ func modifyPicturePath() {
 		tools.CallClear() // 清屏
 
 		// 判断路径是否存在
-		if ok,_ := tools.IsPathExists(tempPictureStr);!ok{
+		if ok, _ := tools.IsPathExists(tempPictureStr); !ok {
 			tools.CreateMkdirAll(tempPictureStr)
 			fmt.Println("\n【提示】输入的文件夹未创建，已成功创建该文件夹！")
 		}
@@ -55,63 +130,12 @@ func ModifySetting() {
 
 		var modify = model.Input("\n【设置】请选择需要修改的设置：", false)
 		switch modify {
-		// 是否记住框架
 		case "1":
-			var tempMemory = isStringInput("\n【更改】是否记住框架的选择，[1]是，[2]否：", false)
-			switch tempMemory {
-			case "1":
-				viper.Set("memory", true)
-				fmt.Println("\n【提示】设置成功 - 记住框架的选择已开启！")
-				// 保存最新配置
-				_ = viper.WriteConfig()
-				continue
-			case "2":
-				viper.Set("memory", false)
-				fmt.Println("\n【提示】设置成功 - 记住框架的选择已关闭！")
-				// 保存最新配置
-				_ = viper.WriteConfig()
-			case "-":
-				fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
-				goto FLAG // 跳到循环结束
-			}
-		// 是否自动新建切图文档
+			modifyMemoryFrame() // 是否记住框架
 		case "2":
-			var tempOpenPs = isStringInput("\n【更改】是否自动新建切图文档，[1]是，[2]否：", false)
-			switch tempOpenPs {
-			case "1":
-				viper.Set("openPs", true)
-				fmt.Println("\n【提示】设置成功 - 自动新建切图文档已开启！")
-				// 保存最新配置
-				_ = viper.WriteConfig()
-			case "2":
-				viper.Set("openPs", false)
-				fmt.Println("\n【提示】设置成功 - 自动新建切图文档已关闭！")
-				// 保存最新配置
-				_ = viper.WriteConfig()
-			case "-":
-				fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
-				goto FLAG // 跳到循环结束
-			}
-		// 是否切图自动添加黑边
+			modifyAutomaticCreateDocuments() // 是否自动新建切图文档
 		case "3":
-			var tempBlackEdge = isStringInput("\n【更改】是否切图自动添加黑边，[1]是，[2]否：", false)
-			switch tempBlackEdge {
-			case "1":
-				viper.Set("blackEdge", true)
-				fmt.Println("\n【提示】设置成功 - 切图自动添加黑边已开启！")
-				// 保存最新配置
-				_ = viper.WriteConfig()
-				generate.Tailor("") // 根据配置更新通用裁剪
-			case "2":
-				viper.Set("blackEdge", false)
-				fmt.Println("\n【提示】设置成功 - 切图自动添加黑边已关闭！")
-				// 保存最新配置
-				_ = viper.WriteConfig()
-				generate.Tailor("") // 根据配置更新通用裁剪
-			case "-":
-				fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
-				goto FLAG // 跳到循环结束
-			}
+			modifyAutomaticAddBlackEdge() // 是否切图自动添加黑边
 		// 最新的切图前缀
 		case "4":
 			fmt.Println("\n【提示】自定义前缀可以在使用【-1】暗号时自动添加，例如定义为【沐：】为前缀！")

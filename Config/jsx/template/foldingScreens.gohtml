@@ -16,17 +16,6 @@ String.prototype.format = function () {
 };
 
 
-// 质朴长存法 整数前面补零
-function pad(num, n) {
-    var len = num.toString().length;
-    while (len < n) {
-        num = "0" + num;
-        len++;
-    }
-    return num;
-}
-
-
 // 定义一个函数用来设置黑边
 function addEdge() {
     // 保存当前背景颜色
@@ -95,7 +84,7 @@ function getPathName(saveName) {
     // 裁剪之后进行保存的位置和你想要的默认名称
     var tempFile = new File("~/Desktop/GoCutting/" + saveName);
     // 返回带路径的名字，注意要先数字解码
-    return decodeURI(tempFile.saveDlg("优化另存为"))
+    return decodeURI(tempFile.saveDlg("优化另存为",["不要带扩展名:*","默认保存为 JPG 文件:*"]))
 }
 
 
@@ -130,7 +119,7 @@ function main() {
     // 得到最终会保存出来的文件名
     var fileNameArr = new Array();
     for (var i = 0; i < num; i++) {
-        fileNameArr[i] = "{0}_{1}_{2}_".format(userSavePath, singleName, pad(i + 1, 2)) + width + "x" + height;
+        fileNameArr[i] = "{0}_{1}_{2}-{3}_".format(userSavePath, singleName, i + 1, num) + width + "x" + height;
     }
 
     // 遍历全部可能覆盖的文件名
@@ -151,7 +140,7 @@ function main() {
     // 开始自动保存文件
     for (var i = 0; i < num; i++) {
         // 生成历史记录并调用函数
-        app.activeDocument.suspendHistory("优化另存", "optimized(width*i, 0, width*(i+1), height, fileNameArr[i])");
+        app.activeDocument.suspendHistory("优化另存为", "optimized(width*i, 0, width*(i+1), height, fileNameArr[i])");
 
         // 返回上一级历史
         returnUpper();

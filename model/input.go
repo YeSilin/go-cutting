@@ -73,9 +73,7 @@ func Input(text string, canvasMode bool) string {
 			dataPath := "Config/JSX/SizeMarks.jsx"
 			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 		case "-6":
-			// 简单清除元数据
-			dataPath := "Config/JSX/ClearMetadataNoPopUpJS.jsx"
-			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+			StartCode6() // 简单清除元数据
 			continue
 		case "-7":
 			// 创建一个协程使用cmd来运行脚本

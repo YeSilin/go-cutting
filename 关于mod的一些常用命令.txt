@@ -1,7 +1,0 @@
-https://goproxy.io  这是官方代理
-
-go mod init <项目模块名称>初始化模块，会在项目根目录下生成 go.mod 文件，例如：github.com/yesilin/go-cutting
-
-go mod tidy 根据go.mod文件来处理依赖关系， 对版本进行更新，这是一条神一样的命令，它会自动清理掉不需要的依赖项，同时可以将依赖项更新到当前版本。
-
-go mod edit -go=1.13 指定使用golang的主要语言版本，如果不使用这条命令，那么版本永远也不会更新。

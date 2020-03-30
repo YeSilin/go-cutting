@@ -16,17 +16,6 @@ String.prototype.format = function () {
 };
 
 
-/* 质朴长存法 整数前面补零 */
-function pad(num, n) {
-    var len = num.toString().length;
-    while (len < n) {
-        num = "0" + num;
-        len++;
-    }
-    return num;
-}
-
-
 // 定义一个函数用来设置黑边
 function addEdge() {
     // 保存当前背景颜色
@@ -94,7 +83,7 @@ function getPathName(saveName) {
     // 裁剪之后进行保存的位置和你想要的默认名称
     var tempFile = new File("~/Desktop/GoCutting/" + saveName);
     // 返回带路径的名字，注意要先数字解码
-    return decodeURI(tempFile.saveDlg("优化另存为"))
+    return decodeURI(tempFile.saveDlg("优化另存为",["不要带扩展名:*","默认保存为 JPG 文件:*"]))
 }
 
 
@@ -128,7 +117,7 @@ function main() {
     // 得到最终会保存出来的文件名
     var fileNameArr = new Array();
     for (var i = 0; i < widthArray.length; i++) {
-        fileNameArr[i] = "{0}_{1}_{2}_".format(userSavePath, screenName, pad(i + 1, 2)) + widthArray[i] + "x" + heightArray[i];
+        fileNameArr[i] = "{0}_{1}_{2}-{3}_".format(userSavePath, screenName, i + 1, widthArray.length) + widthArray[i] + "x" + heightArray[i];
     }
 
     // 遍历全部可能覆盖的文件名

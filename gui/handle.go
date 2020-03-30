@@ -65,9 +65,7 @@ func indexHandle(w http.ResponseWriter, r *http.Request) {
 		case cipher4 == "true":
 			quickCipher.Work() // 工作目录
 		case cipher6 == "true":
-			// 简单清除元数据
-			dataPath := "Config/JSX/ClearMetadataNoPopUpJS.jsx"
-			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+			model.StartCode6() // 简单清除元数据
 		case cipher7 == "true":
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "Config/JSX/BlackEdgeJS.jsx"

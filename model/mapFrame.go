@@ -25,7 +25,6 @@ func MapFrameChoice() {
 		switch frameType {
 		case "1":
 			mapFrame1() // 小座屏
-
 		case "2":
 			fmt.Println("未开发") // 左右镂空
 		case "3":

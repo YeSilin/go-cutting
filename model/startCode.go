@@ -34,6 +34,12 @@ func StartCode3() {
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
+// 启动暗号-6 简单清除元数据
+func StartCode6() {
+	dataPath := "Config/JSX/ClearMetadataNoPopUpJS.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+}
+
 // 启动暗号-9
 func StartCode9() {
 	//获取当前时间，进行格式化 2006-01-02 15:04:05

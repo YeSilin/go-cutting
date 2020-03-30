@@ -19,6 +19,8 @@ func UniversalMasterGraph(originalPath string, delete bool) {
 	jpgSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.jpg", originalPath))
 	// 获取所有扩展名是png的文件名，类型是字符串切片
 	pngSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.png", originalPath))
+	// 获取所有扩展名是txt的文件名，类型是字符串切片
+	txtSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.txt", originalPath))
 
 	// 如果png和jpg都小于一张就不执行
 	if len(jpgSlice) < 1 && len(pngSlice) < 1 {
@@ -47,6 +49,13 @@ func UniversalMasterGraph(originalPath string, delete bool) {
 			srcPath := v
 			dstPath := strings.Replace(srcPath, originalPath, resultPath, 1)
 			tools.ImageResize(srcPath, dstPath, 800, 800, 99)
+		}
+
+		// 复制所有文本到主图文件夹
+		for i := 0; i < len(txtSlice); i++ {
+			// 生成目标文件路径
+			dst := strings.Replace(txtSlice[i], originalPath, resultPath, 1)
+			tools.CopyFile(txtSlice[i], dst)
 		}
 
 		// 删除复制的文件
@@ -80,6 +89,8 @@ func WatermarkMasterGraph(originalPath, watermarkPath string, delete bool) {
 	jpgSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.jpg", originalPath))
 	// 获取所有扩展名是png的文件名，类型是字符串切片
 	pngSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.png", originalPath))
+	// 获取所有扩展名是txt的文件名，类型是字符串切片
+	txtSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.txt", originalPath))
 
 	// 如果png和jpg都小于一张就不执行
 	if len(jpgSlice) < 1 && len(pngSlice) < 1 {
@@ -136,6 +147,13 @@ func WatermarkMasterGraph(originalPath, watermarkPath string, delete bool) {
 			srcPath := v
 			dstPath := strings.Replace(srcPath, originalPath, resultPath, 1)
 			tools.ImageResize(srcPath, dstPath, 800, 800, 99)
+		}
+
+		// 复制所有文本到主图文件夹
+		for i := 0; i < len(txtSlice); i++ {
+			// 生成目标文件路径
+			dst := strings.Replace(txtSlice[i], originalPath, resultPath, 1)
+			tools.CopyFile(txtSlice[i], dst)
 		}
 
 		// 删除复制的文件
@@ -218,14 +236,13 @@ func PixelsPerInchChangedTo72(originalPath string) {
 // 全部修改为300ppi
 func PixelsPerInchChangedTo300(originalPath string) {
 	// 返回绝对路径
-	originalPath ,err := filepath.Abs(originalPath)
+	originalPath, err := filepath.Abs(originalPath)
 	if err != nil {
-		fmt.Println("filepath.Abs err:",err)
+		fmt.Println("filepath.Abs err:", err)
 		return
 	}
 	// 全部换成正斜杠
 	originalPath = strings.Replace(originalPath, "\\", "/", -1)
-
 
 	// 获取所有扩展名是jpg的文件名，类型是字符串切片
 	jpgSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.jpg", originalPath))
@@ -258,7 +275,7 @@ func PixelsPerInchChangedTo300(originalPath string) {
 		for i := 0; i < len(jpgSlice); i++ {
 			jpgSlice[i] = strings.Replace(jpgSlice[i], "\\", "/", -1)
 			jpgSlice[i] = strings.Replace(jpgSlice[i], ":", "", 1)
-			jpgSlice[i] = "/"+jpgSlice[i]
+			jpgSlice[i] = "/" + jpgSlice[i]
 		}
 
 		// 利用给定数据渲染模板，并将结果写入f

@@ -67,7 +67,7 @@ function getPathName(saveName) {
     // 裁剪之后进行保存的位置和你想要的默认名称
     var tempFile = new File("~/Desktop/GoCutting/" + saveName);
     // 返回带路径的名字，注意要先数字解码
-    return decodeURI(tempFile.saveDlg("优化另存为"))
+    return decodeURI(tempFile.saveDlg("优化另存为",["不要带扩展名:*","默认保存为 JPG 文件:*"]))
 }
 
 

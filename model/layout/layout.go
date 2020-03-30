@@ -64,7 +64,6 @@ func picture() {
 		case "6", "06":
 			tools.CallClear() // 清屏
 			WatermarkMasterGraph(viper.GetString("picture"),"config/img/huafu.png", false)
-
 		case "7", "07":
 			tools.CallClear() // 清屏
 			WatermarkMasterGraph(viper.GetString("picture"),"config/img/jinzunfu.png", false)
