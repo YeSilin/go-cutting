@@ -9,7 +9,6 @@ import (
 	"os/exec"
 )
 
-
 // 判断用户输入，是否有白底图
 func isWhiteBackgroundMap() string {
 	model.EnglishTitle("Is there a white background?", 79)
@@ -48,27 +47,27 @@ func picture() {
 		switch layoutType {
 		case "1", "01":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"),"config/img/mulan.png", false)
+			WatermarkMasterGraph(viper.GetString("picture"), "config/img/mulan.png", viper.GetBool("automaticDeletion"))
 		case "2", "02":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"),"config/img/yinanjj.png", false)
+			WatermarkMasterGraph(viper.GetString("picture"), "config/img/yinanjj.png", viper.GetBool("automaticDeletion"))
 		case "3", "03":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"),"config/img/yushantanjj.png", false)
+			WatermarkMasterGraph(viper.GetString("picture"), "config/img/yushantanjj.png", viper.GetBool("automaticDeletion"))
 		case "4", "04":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"),"config/img/yushantanpf.png", false)
+			WatermarkMasterGraph(viper.GetString("picture"), "config/img/yushantanpf.png", viper.GetBool("automaticDeletion"))
 		case "5", "05":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"),"config/img/muyunge.png", false)
+			WatermarkMasterGraph(viper.GetString("picture"), "config/img/muyunge.png", viper.GetBool("automaticDeletion"))
 		case "6", "06":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"),"config/img/huafu.png", false)
+			WatermarkMasterGraph(viper.GetString("picture"), "config/img/huafu.png", viper.GetBool("automaticDeletion"))
 		case "7", "07":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"),"config/img/jinzunfu.png", false)
+			WatermarkMasterGraph(viper.GetString("picture"), "config/img/jinzunfu.png", viper.GetBool("automaticDeletion"))
 		case "8", "08":
-			WatermarkMasterGraph(viper.GetString("picture"),"config/img/sufanjj.png", false)
+			WatermarkMasterGraph(viper.GetString("picture"), "config/img/sufanjj.png", viper.GetBool("automaticDeletion"))
 		case "-", "--":
 			goto FLAG
 		default:
@@ -93,7 +92,7 @@ func modifyResolution() {
 		switch layoutType {
 		case "1":
 			tools.CallClear()
-			PixelsPerInchChangedTo72(viper.GetString("picture"))                                      // 改为72ppi
+			PixelsPerInchChangedTo72(viper.GetString("picture"))                                        // 改为72ppi
 			go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", viper.GetString("picture"))).Run() // 打开套图文件夹
 		case "2":
 			tools.CallClear()
@@ -139,11 +138,11 @@ func Choice() {
 			fmt.Println("\n【提示】已打开备份文件夹，为了避免意外丢失文件，目前备份文件最大为 10 份！")
 
 		case "4":
-			tools.CallClear()             // 清屏
+			tools.CallClear()                                       // 清屏
 			generate.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
 		case "5":
-			tools.CallClear()          // 清屏
-			UniversalMasterGraph(viper.GetString("picture"),false) // 通用主图
+			tools.CallClear()                                                                    // 清屏
+			UniversalMasterGraph(viper.GetString("picture"), viper.GetBool("automaticDeletion")) // 通用主图
 			// 打开套图文件夹
 			go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", viper.GetString("picture"))).Run()
 		case "6":

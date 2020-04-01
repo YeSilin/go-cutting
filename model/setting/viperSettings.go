@@ -6,8 +6,6 @@ import (
 	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/model"
-	"github.com/yesilin/go-cutting/tools"
-	"strings"
 )
 
 // 初始化
@@ -22,6 +20,7 @@ func init() {
 	viper.SetDefault("prefix", "")
 	viper.SetDefault("reserve", 5)
 	viper.SetDefault("picture", "config\\picture") // 正斜杠会出错
+	viper.SetDefault("automaticDeletion", false)   // 自动主图时删除来源
 
 	//  设置配置文件名，不带后缀
 	viper.SetConfigName("settings")
@@ -53,33 +52,6 @@ func init() {
 	//viper.OnConfigChange(func(e fsnotify.Event) {
 	//	fmt.Println("【提示】配置文件已更新，来自：", e.Name)
 	//})
-}
-
-// 验证输入的内容是不是有效数据
-// @param text: 传入用户输入提示信息
-// @return: 返回有效的配置信息
-func isStringInput(text string, isPath bool) string {
-	var receive string
-	for {
-		fmt.Print(text)
-		_, _ = fmt.Scanln(&receive) // 储存用户输入的值
-
-		// 如果本次是为了判断路径
-		if isPath {
-			// 删除首尾连续的的空白字符。
-			receive = strings.TrimSpace(receive)
-			// 把所有反斜杠修改成正斜杠
-			//receive = strings.Replace(receive, "\\", "/", -1)
-			return receive
-		}
-
-		// 只有这三个字符才能传出，其他字符则一直循环
-		if (receive == "1") || (receive == "2") || (receive == "-") {
-			tools.CallClear() // 清屏
-			return receive
-		}
-
-	}
 }
 
 // 当前状态
@@ -151,9 +123,21 @@ func current() {
 		pictureStr = model.ColourString(pictureStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	}
 
+	// 主图自动删除来源
+	var automaticDeletionStr string
+	switch viper.GetBool("automaticDeletion") {
+	case true:
+		automaticDeletionStr = "已启用"
+		automaticDeletionStr = model.ColourString(automaticDeletionStr, ctc.ForegroundGreen) // 设置带颜色的字符串
+	case false:
+		automaticDeletionStr = "已关闭"
+		automaticDeletionStr = model.ColourString(automaticDeletionStr, ctc.ForegroundBright) // 设置带颜色的字符串
+	default:
+		automaticDeletionStr = "参数错误"
+		automaticDeletionStr = model.ColourString(automaticDeletionStr, ctc.ForegroundBright) // 设置带颜色的字符串
+	}
+
 	fmt.Printf("\n【状态】[1]记忆框架：%s\t[2]自动新建：%s\t[3]自动黑边：%s\n", memoryStr, openPsStr, blackEdgeStr)
 	fmt.Printf("\n【状态】[4]自定前缀：%s\t[5]切布预留：%s\t[6]暂位预留：未开发\n", prefixStr, reserveStr)
-	fmt.Printf("\n【状态】[7]套图位置：%s\t[8]暂位预留：未开发\t[9]恢复默认出厂设置\n", pictureStr)
+	fmt.Printf("\n【状态】[7]套图位置：%s\t[8]主图自删：%s\t[9]恢复默认出厂设置\n", pictureStr, automaticDeletionStr)
 }
-
-

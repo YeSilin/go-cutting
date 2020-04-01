@@ -153,9 +153,9 @@ func Tailor(frameName string) {
 
 	// 框架名不是空，就生成专属裁剪脚本
 	if frameName != "" {
-		tools.CreateFile(fmt.Sprintf("config/JSX/Temp/Tailor_%s.jsx", frameName), jsxStr)
+		tools.CreateFile(fmt.Sprintf("config/jsx/temp/tailor_%s.jsx", frameName), jsxStr)
 	} else {
-		tools.CreateFile("config/JSX/Tailor.jsx", jsxStr)
+		tools.CreateFile("config/jsx/tailor.jsx", jsxStr)
 	}
 }
 
@@ -401,5 +401,5 @@ func Tailor3DMap6(width, height, number float64, frameName string) {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile(fmt.Sprintf("Config/JSX/Temp/Tailor_%s.jsx", frameName), jsxStr)
+	tools.CreateFile(fmt.Sprintf("config/jsx/temp/tailor_%s.jsx", frameName), jsxStr)
 }

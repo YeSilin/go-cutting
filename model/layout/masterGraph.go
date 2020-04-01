@@ -1,4 +1,4 @@
-// 关于主图修改
+// 关于主图修改的函数
 package layout
 
 import (
@@ -41,7 +41,7 @@ func UniversalMasterGraph(originalPath string, delete bool) {
 		for _, v := range jpgSlice {
 			srcPath := v
 			dstPath := strings.Replace(srcPath, originalPath, resultPath, 1)
-			tools.ImageResize(srcPath, dstPath, 800, 800, 99)
+			tools.ImageResize(srcPath, dstPath, 800, 800, 98)
 		}
 
 		// png修改全部大小为800
