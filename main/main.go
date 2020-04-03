@@ -9,7 +9,7 @@ import (
 	"github.com/yesilin/go-cutting/gui"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/model/additional"
-	"github.com/yesilin/go-cutting/model/layout"
+	"github.com/yesilin/go-cutting/model/automaticNestingMap"
 	"github.com/yesilin/go-cutting/model/setting"
 	"github.com/yesilin/go-cutting/tools"
 	"github.com/zserge/webview"
@@ -20,6 +20,13 @@ import (
 func init() {
 	// 运行web服务器
 	go gui.RunWebServer()
+
+	// ps 未运行就进行通知
+	go func() {
+		if ok := tools.IsExeRuning("Photoshop.exe", "Adobe"); !ok {
+			tools.WinNotification("Photoshop 未运行", "大部分功能依赖于它，建议打开")
+		}
+	}()
 
 	go func() {
 		// 导入注册表 使用正确的打开方式，并且取消脚本执行警告
@@ -49,6 +56,7 @@ func init() {
 		// 创建备份文件夹
 		_ = tools.CreateMkdirAll("config/Backups")
 	}()
+
 
 	// 实现快捷键 -1
 	//go model.NegativeOne()
@@ -85,7 +93,7 @@ func main() {
 	// 定义私密文件路径
 	PrivateFile, _ := tools.Home()
 	PrivateFile = fmt.Sprintf("%s\\Documents\\Adobe\\Config.chx", PrivateFile)
-	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.001001, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
+	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.001003, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
 	// 如果权限不是true
 	if !power {
 		fmt.Println(tips)
@@ -95,7 +103,7 @@ func main() {
 
 	for {
 		fmt.Println(tips) // 提示信息
-		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.1.1 app " + strings.Repeat("-", 20))
+		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.1.3 app " + strings.Repeat("-", 20))
 		fmt.Println("\n【更新】添加新暗号【--】返回上一次输入，例如镂空大小输错，返回重新输入镂空大小！")
 
 		tips := `
@@ -119,7 +127,7 @@ func main() {
 			tools.CallClear() // 清屏
 			// 搭建web窗口
 			//go webview.Open("GoCutting", "http://localhost:9090/autoNestingPictures", 350, 600, true)
-			layout.Choice() // 套图
+			automaticNestingMap.Choice() // 套图
 		case "5":
 			tools.CallClear()       // 清屏
 			additional.Additional() // 附加

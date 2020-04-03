@@ -1,4 +1,4 @@
-package layout
+package automaticNestingMap
 
 import (
 	"fmt"

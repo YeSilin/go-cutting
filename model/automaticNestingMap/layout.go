@@ -1,4 +1,4 @@
-package layout
+package automaticNestingMap
 
 import (
 	"fmt"
@@ -39,7 +39,7 @@ func picture() {
 
 【主图】[4]御尚屏风                [5]木韵主图                [6]华府主图
 
-【主图】[7]金尊主图                [8]素梵家具                [9]暂未开发`
+【主图】[7]金尊主图                [8]素梵家具                [9]棠语家具`
 		fmt.Println(text)
 
 		layoutType := model.Input("\n【主图】请选择需要使用的功能：", false)
@@ -68,6 +68,8 @@ func picture() {
 			WatermarkMasterGraph(viper.GetString("picture"), "config/img/jinzunfu.png", viper.GetBool("automaticDeletion"))
 		case "8", "08":
 			WatermarkMasterGraph(viper.GetString("picture"), "config/img/sufanjj.png", viper.GetBool("automaticDeletion"))
+		case "9", "09":
+			WatermarkMasterGraph(viper.GetString("picture"), "config/img/tangyujj.png", viper.GetBool("automaticDeletion"))
 		case "-", "--":
 			goto FLAG
 		default:
@@ -129,9 +131,7 @@ func Choice() {
 			fmt.Println("\n【提示】已打开套图文件夹，请复制正方形的 jpg 或 png 高清图片以备自动套图使用！")
 		case "2":
 			tools.CallClear() // 清屏
-			Rename(viper.GetString("picture"))
-			// 打开套图文件夹
-			go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", viper.GetString("picture"))).Run()
+			go Rename(viper.GetString("picture"))
 		case "3":
 			tools.CallClear() // 清屏
 			go exec.Command("cmd.exe", "/c", "start Config\\Backups").Run()
@@ -143,8 +143,6 @@ func Choice() {
 		case "5":
 			tools.CallClear()                                                                    // 清屏
 			UniversalMasterGraph(viper.GetString("picture"), viper.GetBool("automaticDeletion")) // 通用主图
-			// 打开套图文件夹
-			go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", viper.GetString("picture"))).Run()
 		case "6":
 			tools.CallClear() // 清屏
 			picture()         // 主图自动化

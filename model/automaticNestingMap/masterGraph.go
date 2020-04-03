@@ -1,5 +1,5 @@
 // 关于主图修改的函数
-package layout
+package automaticNestingMap
 
 import (
 	"fmt"

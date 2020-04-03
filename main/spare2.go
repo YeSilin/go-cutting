@@ -5,7 +5,7 @@ import (
 	"github.com/gookit/color"
 )
 
-func main2() {
+func main20() {
 	// 简单快速的使用，跟 fmt.Print* 类似
 	color.Red.Println("Simple to use color")
 	color.Green.Print("Simple to use color")

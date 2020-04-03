@@ -139,5 +139,5 @@ func current() {
 
 	fmt.Printf("\n【状态】[1]记忆框架：%s\t[2]自动新建：%s\t[3]自动黑边：%s\n", memoryStr, openPsStr, blackEdgeStr)
 	fmt.Printf("\n【状态】[4]自定前缀：%s\t[5]切布预留：%s\t[6]暂位预留：未开发\n", prefixStr, reserveStr)
-	fmt.Printf("\n【状态】[7]套图位置：%s\t[8]主图自删：%s\t[9]恢复默认出厂设置\n", pictureStr, automaticDeletionStr)
+	fmt.Printf("\n【状态】[7]套图位置：%s\t[8]主图自删：%s\t[9]全部恢复默认设置\n", pictureStr, automaticDeletionStr)
 }

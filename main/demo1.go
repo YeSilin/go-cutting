@@ -1,28 +1,25 @@
 package main
 
 import (
-	"fmt"
-	"time"
+	"github.com/go-toast/toast"
+	"log"
 )
 
-func a(){
-	fmt.Println("a开始")
-	go func() {
-		for i := 0; i <10;i++{
-			fmt.Println("a",i)
-			time.Sleep(time.Second)
-		}
-	}()
-	fmt.Println("a结束")
+func main0() {
+	notification := toast.Notification{
+		//AppID:   "Microsoft.Windows.Shell.RunDialog",
+		AppID:   "Example App",
 
-}
-
-
-func main11() {
-
-
-	a()
-
-	time.Sleep(30*time.Second)
-
+		Title:   "标题",
+		Message: "这是消息内容，等等。。。",
+		Icon:    "C:\\path\\to\\your\\logo.png", // 文件必须存在
+		Actions: []toast.Action{
+			{"protocol", "按钮1", "https://www.google.com/"},
+			{"protocol", "按钮2", "https://github.com/"},
+		},
+	}
+	err := notification.Push()
+	if err != nil {
+		log.Fatalln(err)
+	}
 }

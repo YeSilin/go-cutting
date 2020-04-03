@@ -47,16 +47,16 @@ func StartCode9() {
 	now := time.Now().Format("2006-01")
 
 	// 储存历史记录路径
-	path := fmt.Sprintf("Config/History/%s/%s.txt", now, fileName)
+	path := fmt.Sprintf("config/History/%s/%s.txt", now, fileName)
 
 	// 先查看是否有历史记录文件
 	exists, _ := tools.IsPathExists(path)
 	// 如果找不到文件，就创建文件 头
 	if !exists {
-		fmt.Println("\n【错误】找不到今天的切图历史记录，可能今天还未开始切图，已自动打开历史文件夹！")
+		//fmt.Println("\n【错误】找不到今天的切图历史记录，可能今天还未开始切图，已自动打开历史文件夹！")
 
-		exec.Command("cmd.exe", "/c", "start Config\\History").Run()
-		tools.PrintLine(2)
+		exec.Command("cmd.exe", "/c", "start config\\History").Run()
+		//tools.PrintLine(2)
 		return
 	}
 	// 创建一个协程使用cmd来运行脚本
