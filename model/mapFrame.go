@@ -2,23 +2,25 @@ package model
 
 import (
 	"fmt"
-	"github.com/gookit/color"
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/generate"
 
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
 	"strconv"
-	"strings"
 )
 
 // 贴图框架的选择
 func MapFrameChoice() {
 	for {
-		color.LightCyan.Println("\n" + strings.Repeat("-", 34) + " Frameworks " + strings.Repeat("-", 33))
+		EnglishTitle("3ds Max Map Frame", 79)
+		text := `
+【切图】[1]常规座屏贴图            [2]左右镂空贴图            [3]左右画布贴图
 
-		fmt.Println("\n【贴图】[1]普通座屏\t[2]左右镂空\t[3]中间大两边小\t\t[4]上下镂空")
-		fmt.Println("\n【贴图】[5]顶天立地\t[6]各种折屏\t[7]多个座屏\t\t[8]不扣补切")
+【切图】[4]上下镂空贴图            [5]顶天立地贴图            [6]各种折屏贴图
+
+【切图】[7]多个座屏贴图            [8]卷帘座屏贴图            [9]不扣补切贴图`
+		fmt.Println(text)
 
 		frameType := Input("\n【贴图】请选择上方的边框类型：", false)
 
@@ -52,11 +54,11 @@ FLAG:
 func mapFrame1() {
 	for {
 		tools.PrintLine(3) // 请注意切图的工厂与框架的选择
-		widthStr := Input("\n【贴图】请输入小座屏的宽（默认120）：", true)
+		widthStr := Input("\n【贴图】请输入常规座屏的宽（默认120）：", true)
 		if widthStr == "-" {
 			break
 		}
-		heightStr := Input("\n【贴图】请输入小座屏的高（默认180）：", true)
+		heightStr := Input("\n【贴图】请输入常规座屏的高（默认180）：", true)
 		if heightStr == "-" {
 			break
 		}
@@ -65,9 +67,10 @@ func mapFrame1() {
 		height, _ := strconv.ParseFloat(heightStr, 64)
 		width -= 8
 		height -= 8
-		fmt.Printf("\n【贴图】小座屏：宽 %.0f pixels，高 %.0f pixels", width*10, height*10)
+
+		fmt.Printf("\n【贴图】常规座屏：宽 %.0f pixels，高 %.0f pixels", width*10, height*10)
 		generate.MaxCanvas(width, height)
-		generate.NewDocument3DMapJS(width, height, "小座屏贴图") // 生成创建ps文档脚本
+		generate.NewDocument3DMapJS(width, height, "常规座屏贴图") // 生成创建ps文档脚本
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "config/jsx/newDocument.jsx"
@@ -129,12 +132,18 @@ func mapFrame6() {
 		fmt.Printf("\n【贴图】常规折屏：宽 %.0f pixels，高 %.0f pixels", totalWidth*10, height*10)
 		generate.MaxCanvas(width, height)
 
+		//获取当前时间，进行格式化 2006-01-02 15:04:05
+		now := nowTime()
+
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_折屏贴图_%.0fx%.0f", nowTime(), totalWidth*10, height*10)
+		frameName := fmt.Sprintf("%s_折屏贴图_%.0fx%.0f", now, totalWidth*10, height*10)
+
+		// 定义单片名字
+		singleName := fmt.Sprintf("%s_折屏贴图", now)
 
 		generate.NewDocument3DMapJS(totalWidth, height, frameName) // 生成创建ps文档脚本
 		generate.Line3DMapJs6(width, number)                           // 生成专属参考线
-		go generate.Tailor3DMap6(width, height, number,frameName) // 生成暗号【-1】可以用的另存脚本
+		go generate.TailorForMap6(width, height, number,frameName,singleName) // 生成暗号【-1】可以用的另存脚本
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "config/jsx/newDocument.jsx"

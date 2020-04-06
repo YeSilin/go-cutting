@@ -90,7 +90,7 @@ func NewDocument3DMapJS(width, height float64, frameName string) {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("Config/JSX/NewDocumentJS.jsx", jsxStr)
+	tools.CreateFile("config/jsx/newDocument.jsx", jsxStr)
 }
 
 // 新建临时效果图文档
