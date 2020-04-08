@@ -30,17 +30,71 @@ func StartCode2() {
 // 启动暗号-3 深度清除源数据
 func StartCode3() {
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "Config/JSX/ClearMetadataJS.jsx"
+	dataPath := "config/jsx/clearMetadata.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+}
+
+// 启动暗号-4 快捷新建当天工作目录
+func StartCode4() {
+	//获取当前时间，进行格式化 2006-01-02 15:04:05
+	now := time.Now().Format("2006-01-02")
+
+	// 高老板
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/旧厂切图/%s/全镂空/半透", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/旧厂切图/%s/全镂空/不透", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/旧厂切图/%s/无镂空/半透", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/旧厂切图/%s/无镂空/不透", now))
+
+	// 这里的
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/半透/御尚檀", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/不透/御尚檀", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/半透/岚湘", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/不透/岚湘", now))
+
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/半透/沐兰", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/不透/沐兰", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/半透/华府", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/不透/华府", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/半透/木韵阁", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/不透/木韵阁", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/半透/金樽府", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/不透/金樽府", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/半透/怡柟", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/不透/怡柟", now))
+
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/半透/舍得", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/不透/舍得", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/半透/西厢", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/不透/西厢", now))
+
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/半透/藏湘阁", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/不透/藏湘阁", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/半透/阑若", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/不透/阑若", now))
+
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/半透/木墨", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/不透/木墨", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/半透/墨屏", now))
+	_ = tools.CreateMkdirAll(fmt.Sprintf("D:/切图（请移动至个人目录）/%s/不透/墨屏", now))
+
+	cmd := exec.Command("cmd.exe", "/c", "start D:\\切图（请移动至个人目录）")
+	cmd.Run()
+}
+
+// 启动暗号-7 为当前文档添加黑边
+func StartCode7() {
+	// 创建一个协程使用cmd来运行脚本
+	dataPath := "config/jsx/blackEdge.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
 // 启动暗号-6 简单清除元数据
 func StartCode6() {
-	dataPath := "Config/JSX/ClearMetadataNoPopUpJS.jsx"
+	dataPath := "config/jsx/clearMetadataNoPopUp.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
-// 启动暗号-9
+// 启动暗号-9 查询历史记录文件
 func StartCode9() {
 	//获取当前时间，进行格式化 2006-01-02 15:04:05
 	fileName := time.Now().Format("2006-01-02")
@@ -62,6 +116,13 @@ func StartCode9() {
 	// 创建一个协程使用cmd来运行脚本
 	cmd := exec.Command("cmd.exe", "/c", "start "+path)
 	go cmd.Run()
+}
+
+// 启动暗号-10 快捷另存为jpg
+func StartCode10(){
+	// 创建一个协程使用cmd启动外部程序
+	dataPath := "Config/JSX/SaveAsJPEG.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
 // 启动暗号-98

@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/generate"
-	"github.com/yesilin/go-cutting/gui"
+	"github.com/yesilin/go-cutting/web"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/model/additional"
 	"github.com/yesilin/go-cutting/model/automaticNestingMap"
@@ -19,7 +19,7 @@ import (
 
 func init() {
 	// 运行web服务器
-	go gui.RunWebServer()
+	go web.RunWebServer()
 
 	// ps 未运行就进行通知
 	go func() {
@@ -39,7 +39,7 @@ func init() {
 		generate.ClearMetadata()                        // 生成 -3 要用的清除元数据脚本备用
 		generate.ClearMetadataNoPopUp()                 // 生成我自己动作要用的清除元数据脚本备用
 		generate.BlackEdge()                            // 生成添加黑边脚本备用
-		generate.SizeMarks()                            // 生成 将矩形选框转换为标记测量标志
+		//generate.SizeMarks()                            // 生成 将矩形选框转换为标记测量标志
 		generate.SaveForWeb(viper.GetString("picture")) // 生成详情页指定保存位置
 		generate.SaveAsJPEG()                           // 生成带自带清除元数据的另存脚本
 
@@ -56,7 +56,6 @@ func init() {
 		// 创建备份文件夹
 		_ = tools.CreateMkdirAll("config/Backups")
 	}()
-
 
 	// 实现快捷键 -1
 	//go model.NegativeOne()
@@ -93,7 +92,7 @@ func main() {
 	// 定义私密文件路径
 	PrivateFile, _ := tools.Home()
 	PrivateFile = fmt.Sprintf("%s\\Documents\\Adobe\\Config.chx", PrivateFile)
-	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.001004, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
+	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.001006, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
 	// 如果权限不是true
 	if !power {
 		fmt.Println(tips)
@@ -103,7 +102,7 @@ func main() {
 
 	for {
 		fmt.Println(tips) // 提示信息
-		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.1.4 app " + strings.Repeat("-", 20))
+		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.1.6 app " + strings.Repeat("-", 20))
 		fmt.Println("\n【更新】添加新暗号【--】返回上一次输入，例如镂空大小输错，返回重新输入镂空大小！")
 
 		tips := `
@@ -144,7 +143,7 @@ func main() {
 		case "8":
 			tools.CallClear() // 清屏
 			model.Help()      // 帮助
-		case "-":
+		case "-", "--":
 			fmt.Println("【提示】已经是最顶层菜单了，无需再返回，输入其他数字试下其他功能吧！")
 			continue
 		default:

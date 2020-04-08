@@ -4,19 +4,29 @@
     font-family: Microsoft YaHei, sans-serif; /*字体样式*/
 }
 
-body{
-    background:#efecf0;
+body {
+    background: #efecf0;
 
 }
 
-
+/* 无法选择样式 */
+.cannotSelect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;  /*webkit浏览器*/
+    -moz-user-select: none; /*火狐*/
+    -khtml-user-select: none; /*早期浏览器*/
+    -ms-user-select: none;   /*IE10*/
+    /* 以下两个属性目前并未支持，写在这里为了减少风险 */
+    -o-user-select: none;
+    user-select: none;
+}
 
 
 .div-css1 {
     background: #77c2ac; /*背景颜色*/
     color: #ffffff; /*字体颜色*/
     height: 55px;
-    padding-top: 5px; /*上填充*/
+    padding-top: 6px; /*上填充*/
     padding-left: 5%; /*左填充*/
 
     letter-spacing: 1px; /*字间距*/
@@ -63,12 +73,6 @@ body{
     /*margin: auto;*/
     text-align: center
 }
-
-
-
-
-
-
 
 
 /*新的按钮特效*/

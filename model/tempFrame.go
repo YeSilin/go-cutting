@@ -1,3 +1,4 @@
+// 专门用来做临时效果图的
 package model
 
 import (

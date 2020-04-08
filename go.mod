@@ -23,7 +23,7 @@ require (
 	github.com/noelyahan/mergitrans v0.0.0-20190507035323-73e76dcd7d2a // indirect
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d // indirect
 	github.com/otiai10/mint v1.3.1 // indirect
-	github.com/pelletier/go-toml v1.6.0 // indirect
+	github.com/pelletier/go-toml v1.7.0 // indirect
 	github.com/robotn/gohook v0.0.0-20200320164259-fceda58dd0dc // indirect
 	github.com/shirou/gopsutil v2.20.3+incompatible // indirect
 	github.com/smartystreets/assertions v1.0.1 // indirect
@@ -38,9 +38,8 @@ require (
 	github.com/wzshiming/ctc v1.2.3
 	github.com/zserge/webview v0.0.0-20200121135717-9c1b0a888aa4
 	golang.org/x/net v0.0.0-20200320220750-118fecf932d8 // indirect
-	golang.org/x/sys v0.0.0-20200331124033-c3d80250170d
+	golang.org/x/sys v0.0.0-20200406155108-e3b113bbe6a4
 	golang.org/x/text v0.3.2
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/ini.v1 v1.55.0 // indirect
-	gopkg.in/yaml.v2 v2.2.8 // indirect
 )

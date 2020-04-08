@@ -1,3 +1,4 @@
+// 对输入的字符进行判断
 package model
 
 import (
@@ -6,9 +7,7 @@ import (
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/clib"
 	"github.com/yesilin/go-cutting/generate"
-	"github.com/yesilin/go-cutting/model/quickCipher"
 	"github.com/yesilin/go-cutting/tools"
-	"os/exec"
 	"regexp"
 	"strconv"
 	"strings"
@@ -67,18 +66,13 @@ func Input(text string, canvasMode bool) string {
 			StartCode3() // 深度清除源数据
 			continue
 		case "-4":
-			quickCipher.Work() // 工作目录
+			StartCode4() // 工作目录
 		case "-5":
-			// 将矩形选框转换为标记测量标志
-			dataPath := "Config/JSX/SizeMarks.jsx"
-			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 		case "-6":
 			StartCode6() // 简单清除元数据
 			continue
 		case "-7":
-			// 创建一个协程使用cmd来运行脚本
-			dataPath := "Config/JSX/BlackEdgeJS.jsx"
-			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+			StartCode7() // 为当前文档添加黑边
 			continue
 		case "-8":
 			tools.CallClear() // 清屏
@@ -87,9 +81,7 @@ func Input(text string, canvasMode bool) string {
 			StartCode9() // 打开历史记录
 			continue
 		case "-10":
-			// 创建一个协程使用cmd启动外部程序
-			dataPath := "Config/JSX/SaveAsJPEG.jsx"
-			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+			StartCode10() // 快捷另存为jpg
 			continue
 		case "-11":
 			OldFrame1()

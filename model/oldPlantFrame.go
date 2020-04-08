@@ -6,7 +6,6 @@ import (
 	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/generate"
-	"github.com/yesilin/go-cutting/model/quickCipher"
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
 	"strconv"
@@ -123,7 +122,7 @@ func OldFrame1() {
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("常规座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
-		go quickCipher.History(history) // 写入历史
+		go History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", nowTime(), width, height)
@@ -228,7 +227,7 @@ func OldFrame2() {
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("%s：宽 %.2f cm，高 %.2f cm\n", tempName, width, height)
-		go quickCipher.History(history) // 写入历史
+		go History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", nowTime(), tempName, width, height)
@@ -317,7 +316,7 @@ func OldFrame3() {
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("左右画布：中间 %.2f cm，两边各 %.2f cm，高 %.2f cm\n", width, hollowOut, height)
-		go quickCipher.History(history) // 写入历史
+		go History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_左右画布_%.0fx%.0f", nowTime(), totalWidth, height)
@@ -417,7 +416,7 @@ func OldFrame4() {
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("%s：宽 %.2f cm，高 %.2f cm\n", tempName, width, height)
-		go quickCipher.History(history) // 写入历史
+		go History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", nowTime(), tempName, width, height)
@@ -508,7 +507,7 @@ func OldFrame5() {
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("顶天立地：宽 %.2f cm，高 %.2f cm\n", width, height)
-		go quickCipher.History(history) // 写入历史
+		go History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_顶天立地_%.0fx%.0f", nowTime(), width, height)
@@ -618,7 +617,7 @@ func OldFrame6() {
 		color.Yellow.Printf("\n【切图】%s折屏：总宽 %.2f cm，高 %.2f cm", tempName, totalWidth, height)
 		//存储已计算的历史记录
 		history += fmt.Sprintf("%s折屏：总宽 %.2f cm，高 %.2f cm\n", tempName, totalWidth, height)
-		go quickCipher.History(history) // 写入历史
+		go History(history) // 写入历史
 
 		//获取当前时间，进行格式化 2006-01-02 15:04:05
 		now := nowTime()
@@ -789,7 +788,7 @@ func OldFrame7() {
 		history += fmt.Sprintf("每个座屏的下镂空均是：%s\n", downHollowOutStr)
 		//存储已计算的历史记录
 		history += fmt.Sprintf("多座屏：总宽 %.2f cm，高 %.2f cm\n", widthSum, heightMax)
-		go quickCipher.History(history) // 写入历史
+		go History(history) // 写入历史
 
 		color.Yellow.Printf("\n【切图】多座屏：总宽 %.2f cm，高 %.2f cm", widthSum, heightMax)
 
@@ -856,7 +855,7 @@ func OldFrame8() {
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("卷帘座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
-		go quickCipher.History(history) // 写入历史
+		go History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_卷帘座屏_%.0fx%.0f", nowTime(), width, height)
@@ -908,7 +907,7 @@ func OldFrame9() {
 		color.Yellow.Printf("\n【补切】补切画布的切图：宽为 %.2f cm，高为 %.2f cm", width, height)
 		//存储已计算的历史记录
 		history += fmt.Sprintf("补切画布的切图：宽为 %.2f cm，高为 %.2f cm", width, height)
-		go quickCipher.History(history) // 写入历史
+		go History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_补切画布_%.0fx%.0f", nowTime(), width, height)

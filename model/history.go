@@ -1,4 +1,4 @@
-package quickCipher
+package model
 
 import (
 	"fmt"
