@@ -512,9 +512,9 @@ function optimized() {
     // 嵌入彩色配置文件
     exportOptionsSave.embedColorProfile = true;
 
-    // 获取当前文档的文件名
-    var name = app.activeDocument.name
-    var TmpFile = new File("~/Desktop/GoCutting/" + name);
+	// 获取当前文档的文件名并分割
+    var name = app.activeDocument.name.split(".")
+    var TmpFile = new File("~/Desktop/GoCutting/" + name[0]+" 副本");
 
     // 保存文件类型
     // var saveType = new Array("JPEG Files: *.jpg", "PNG Files: *.png");

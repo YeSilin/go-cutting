@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <link rel="stylesheet" type="text/css" href="http://localhost:9090/static/mdui/css/mdui.min.css">
+    <link rel="stylesheet" type="text/css" href="http://localhost:9090/static/css/index.css">
+    <link rel="icon" type="image/x-icon" href="http://localhost:9090/static/img/logo7-1.png"/>
+
+    <style>
+    </style>
+</head>
+
+
+<body class="cannotSelect">
+
+<!-- 介绍 -->
+<div class="div-css1">
+    <div style="float: left; /* 浮動，靠左對齊 */">
+        <p style="font-size:18px">GoCutting</p>
+        <p style="font-size:12px;letter-spacing:2px;padding-top: 5px">一个简单快速的切图软件。</p>
+    </div>
+
+    <div class="align-right">   <!-- 右上角的按钮 用来导航-->
+        <button class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#right-drawer'} "><i
+                    class="mdui-icon material-icons">more_vert</i></button>
+    </div>
+</div>
+
+<!-- 抽屉式导航组件 -->
+<div class="mdui-drawer mdui-drawer-right" id="right-drawer">
+    <button class="mdui-btn mdui-btn-icon" mdui-drawer-close><i class="mdui-icon material-icons">close</i></button>
+</div>
+
+
+<!-- 提交后不跳转 -->
+<iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
+
+
+<div class="div-css2">
+    <form action="http://127.0.0.1:9090/index" method="post" target="nm_iframe">
+        <button class="tool-button align-left mdui-ripple mdui-btn" type="submit" name="裁剪快捷键" value="true"
+                id="signal-1"
+                mdui-tooltip="{content: '[-1] 自动裁剪特别是折屏多座屏等', delay: 300}">裁剪快捷键
+        </button>
+        <button class="tool-button align-right mdui-ripple mdui-btn" type="submit" name="重建新文档" value="true"
+                id="signal-2"
+                mdui-tooltip="{content: '[-2] 恢复意外关闭的切图文档', delay: 300}">重建新文档
+        </button>
+
+        <button class="tool-button align-left mdui-ripple mdui-btn" type="submit" name="深度清理PSD" value="true"
+                id="signal-3"
+                mdui-tooltip="{content: '[-3] 清理当前文档包括智能对象', delay: 300}">深度清理PSD
+        </button>
+        <button class="tool-button align-right mdui-ripple mdui-btn" type="submit" name="快速清理PSD" value="true"
+                id="signal-6"
+                mdui-tooltip="{content: '[-6] 仅清理当前文档不包括智能对象', delay: 300}">快速清理PSD
+        </button>
+
+        <button class="tool-button align-left mdui-ripple mdui-btn" type="submit" name="自动加黑边" value="true"
+                id="signal-7"
+                mdui-tooltip="{content: '[-7] 未当前文档四周添加0.5厘米黑边', delay: 300}">自动加黑边
+        </button>
+        <button class="tool-button align-right mdui-ripple mdui-btn" type="submit" name="查切图历史" value="true"
+                id="signal-9"
+                mdui-tooltip="{content: '[-9] 查询当天的切图的历史记录', delay: 300}">查切图历史
+        </button>
+
+        <button class="tool-button align-left mdui-ripple mdui-btn" type="submit" name="优化版另存" value="true"
+                id="signal-10"
+                mdui-tooltip="{content: '[-10] 调用另存时自动清理垃圾与自动选择为最佳画质', delay: 300}">优化版另存
+        </button>
+        <button class="tool-button align-right mdui-ripple mdui-btn" type="submit" name="快速导出图片" value="true"
+                id="signal-98"
+                mdui-tooltip="{content: '[-98] 快速导出为web格式图片到自动套图文件夹', delay: 300}">快速导出图片
+        </button>
+    </form>
+</div>
+
+<!-- 大logo -->
+<div class="align-center " style="padding-top: 30%; /*上填充*/">
+    <img src="http://localhost:9090/static/img/logo7-1.png" width=85% alt="Logo" oncontextmenu="return false;"
+         ondragstart="return false;/*图片不让选择*/"/>
+</div>
+
+
+<!--
+<div id="page1">
+    <iframe align="center" width="100%" height="170" src="http://127.0.0.1:9090/html/menu.html"  frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="yes"></iframe>
+</div>
+-->
+</body>
+
+
+<script src="http://localhost:9090/static/mdui/js/mdui.min.js"></script>
+<script src="http://localhost:9090/static/js/jquery-3.4.1.min.js"></script>
+<script src="http://localhost:9090/static/js/index.js"></script>
+<!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="http://localhost:9090/static/js/canvas-nest.js"></script>-->
+
+</html>

@@ -78,7 +78,7 @@ func indexHandle(w http.ResponseWriter, r *http.Request) {
 
 	} else {
 		// 返回页面
-		responseWriter(w, "config/web/html/index.html")
+		responseWriter(w, "config/static/html/index.html")
 	}
 }
 
@@ -86,5 +86,5 @@ func indexHandle(w http.ResponseWriter, r *http.Request) {
 // 自动嵌套图片的回调函数
 func autoNestingPicturesHandle(w http.ResponseWriter, r *http.Request) {
 	// 返回页面
-	responseWriter(w, "config/web/html/autoNestingPictures.html")
+	responseWriter(w, "config/static/html/autoNestingPictures.html")
 }

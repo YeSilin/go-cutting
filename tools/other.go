@@ -37,7 +37,7 @@ func IsExeRuning(strKey string, strExeName string) bool {
 // win 通知
 func WinNotification(title, message string) {
 	// 转换成绝对路径
-	icon, _ := filepath.Abs("config\\web\\img\\logo7-1.png")
+	icon, _ := filepath.Abs("config\\static\\img\\logo7-1.png")
 
 	notification := toast.Notification{
 		AppID: "GoCutting App",

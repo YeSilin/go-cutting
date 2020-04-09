@@ -47,29 +47,29 @@ func picture() {
 		switch layoutType {
 		case "1", "01":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"), "config/web/img/mulan.png", viper.GetBool("automaticDeletion"))
+			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/mulan.png", viper.GetBool("automaticDeletion"))
 		case "2", "02":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"), "config/web/img/yinanjj.png", viper.GetBool("automaticDeletion"))
+			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/yinanjj.png", viper.GetBool("automaticDeletion"))
 		case "3", "03":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"), "config/web/img/yushantanjj.png", viper.GetBool("automaticDeletion"))
+			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/yushantanjj.png", viper.GetBool("automaticDeletion"))
 		case "4", "04":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"), "config/web/img/yushantanpf.png", viper.GetBool("automaticDeletion"))
+			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/yushantanpf.png", viper.GetBool("automaticDeletion"))
 		case "5", "05":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"), "config/web/img/muyunge.png", viper.GetBool("automaticDeletion"))
+			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/muyunge.png", viper.GetBool("automaticDeletion"))
 		case "6", "06":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"), "config/web/img/huafu.png", viper.GetBool("automaticDeletion"))
+			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/huafu.png", viper.GetBool("automaticDeletion"))
 		case "7", "07":
 			tools.CallClear() // 清屏
-			WatermarkMasterGraph(viper.GetString("picture"), "config/web/img/jinzunfu.png", viper.GetBool("automaticDeletion"))
+			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/jinzunfu.png", viper.GetBool("automaticDeletion"))
 		case "8", "08":
-			WatermarkMasterGraph(viper.GetString("picture"), "config/web/img/sufanjj.png", viper.GetBool("automaticDeletion"))
+			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/sufanjj.png", viper.GetBool("automaticDeletion"))
 		case "9", "09":
-			WatermarkMasterGraph(viper.GetString("picture"), "config/web/img/tangyujj.png", viper.GetBool("automaticDeletion"))
+			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/tangyujj.png", viper.GetBool("automaticDeletion"))
 		case "-", "--":
 			goto FLAG
 		default:

@@ -8,7 +8,7 @@ import (
 // web 服务器
 func RunWebServer() {
 	// 文件服务器 返回html,img,css,js
-	http.Handle("/web/", http.StripPrefix("/web/", http.FileServer(http.Dir("./config/web"))))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./config/static"))))
 
 	http.HandleFunc("/index", indexHandle)
 	//http.HandleFunc("/autoNestingPictures", autoNestingPicturesHandle)
