@@ -55,7 +55,7 @@ func randomRename(srcPath, extensionName string) {
 		return
 	}
 
-	// 全部一起改名为temp
+	// 直接改名可能会重名，于是先全部一起改名为temp
 	for i, v := range files {
 		_ = os.Rename(v, fmt.Sprintf("%s/GoCuttingTemp%d.%s", srcPath, i+1, extensionName))
 	}
@@ -90,14 +90,16 @@ func Rename(originalPath string) {
 		return
 	}
 
-	// 为了防止文件丢失，在重命名之前先备份一次文件
-	_ = tools.CopyDir(originalPath, "Config/Backups/")
+	go func() {
+		// 为了防止文件丢失，在重命名之前先备份一次文件
+		_ = tools.CopyDir(originalPath, "Config/Backups/")
 
-	// 随机重命名
-	randomRename(originalPath, "jpg")
+		// 随机重命名
+		randomRename(originalPath, "jpg")
 
-	// 删除多余备份，最大保留10个
-	tools.DeleteRedundantBackups("Config/Backups/*", 10)
+		// 删除多余备份，最大保留10个
+		tools.DeleteRedundantBackups("Config/Backups/*", 10)
+	}()
 
 	fmt.Println("\n【提示】随机重命名成功，现已支持所有尺寸的 jpg 或 png 格式图片！")
 }

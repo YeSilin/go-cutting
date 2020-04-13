@@ -29,8 +29,8 @@ func NewDocument(width, height float64, frameName string, wordLine bool) {
 	//}
 
 	// 为模板自定义减法函数
-	sub := func(left float64, right float64) float64 {
-		return left - right
+	sub := func(Minuend float64, Reduction float64) float64 {
+		return Minuend - Reduction
 	}
 
 	// 采用链式操作在Parse解析之前调用Funcs添加自定义的kua函数
@@ -70,27 +70,39 @@ func NewDocument(width, height float64, frameName string, wordLine bool) {
 // 生成用来新建ps文档3d作图js
 // @param width 传入宽度
 // @param height 传入高度
-func NewDocument3DMapJS(width, height float64, frameName string) {
-	var jsx = strings.Builder{}
+func NewDocumentForMap(width, height float64, frameName string) {
+	// 把输入的高和宽转成自认为的像素
+	width *= 10
+	height *= 10
 
-	jsx.WriteString("#target photoshop\n")
-	jsx.WriteString("// 设置首选项新文档预设单位是厘米，PIXELS是像素\n")
-	jsx.WriteString("app.preferences.rulerUnits = Units.PIXELS;\n")
-	jsx.WriteString(fmt.Sprintf("var width = %f;\n", width*10))
-	jsx.WriteString(fmt.Sprintf("var height = %f;\n", height*10))
-	jsx.WriteString("// 定义一个变量[resolution]，表示新文档的分辨率。\n")
-	jsx.WriteString("var resolution = 72;\n")
-	jsx.WriteString(fmt.Sprintf("var docName = \"%s\";\n", frameName))
-	jsx.WriteString("//定义一个变量[mode]，表示新文档的颜色模式。\n")
-	jsx.WriteString("var mode = NewDocumentMode.RGB;\n")
-	jsx.WriteString("var initialFill = DocumentFill.WHITE;\n")
-	jsx.WriteString("var pixelAspectRatio = 1;\n")
-	jsx.WriteString("app.documents.add(width, height, resolution, docName, mode, initialFill, pixelAspectRatio);\n")
+	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
+	info := struct {
+		Width     float64
+		Height    float64
+		FrameName string // 新文档名
+	}{width, height, frameName}
 
-	// 转成字符串格式
-	jsxStr := jsx.String()
-	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("config/jsx/newDocument.jsx", jsxStr)
+	// 解析指定文件生成模板对象
+	tmpl, err := template.ParseFiles("config/jsx/template/newDocumentForMap.gohtml")
+	if err != nil {
+		fmt.Println("create template failed, err:", err)
+		return
+	}
+
+	// 创建文件，返回两个值，一是创建的文件，二是错误信息
+	f, err := os.Create("config/jsx/newDocument.jsx")
+	if err != nil { // 如果有错误，打印错误，同时返回
+		fmt.Println("os.Create err:", err)
+		return
+	}
+	// 关闭文件
+	defer f.Close()
+
+	// 利用给定数据渲染模板，并将结果写入f
+	err = tmpl.Execute(f, info)
+	if err != nil {
+		fmt.Println("tmpl.Execute err:", err)
+	}
 }
 
 // 新建临时效果图文档

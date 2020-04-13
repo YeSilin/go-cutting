@@ -131,7 +131,7 @@ func Choice() {
 			fmt.Println("\n【提示】已打开套图文件夹，请复制正方形的 jpg 或 png 高清图片以备自动套图使用！")
 		case "2":
 			tools.CallClear() // 清屏
-			go Rename(viper.GetString("picture"))
+			Rename(viper.GetString("picture"))
 		case "3":
 			tools.CallClear() // 清屏
 			go exec.Command("cmd.exe", "/c", "start Config\\Backups").Run()

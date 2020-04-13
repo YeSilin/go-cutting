@@ -13,7 +13,7 @@ func RunWebServer() {
 	http.HandleFunc("/index", indexHandle)
 	//http.HandleFunc("/autoNestingPictures", autoNestingPicturesHandle)
 
-	err := http.ListenAndServe(":9090", nil) // 设置监听的端口
+	err := http.ListenAndServe(":12110", nil) // 设置监听的端口
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}

@@ -31,14 +31,14 @@ require (
 	github.com/spf13/cast v1.3.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/spf13/viper v1.6.2
+	github.com/spf13/viper v1.6.3
 	github.com/stretchr/testify v1.5.1 // indirect
 	github.com/vcaesar/imgo v0.0.0-20200129165932-716c899edf4c // indirect
 	github.com/vcaesar/tt v0.0.0-20200302142112-0dcea7d8813d // indirect
 	github.com/wzshiming/ctc v1.2.3
 	github.com/zserge/webview v0.0.0-20200121135717-9c1b0a888aa4
 	golang.org/x/net v0.0.0-20200320220750-118fecf932d8 // indirect
-	golang.org/x/sys v0.0.0-20200406155108-e3b113bbe6a4
+	golang.org/x/sys v0.0.0-20200409092240-59c9f1ba88fa
 	golang.org/x/text v0.3.2
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/ini.v1 v1.55.0 // indirect

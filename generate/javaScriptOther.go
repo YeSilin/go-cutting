@@ -492,10 +492,19 @@ function deleteDocumentAncestorsMetadata() {
     app.activeDocument.xmpMetadata.rawData = xmp.serialize();
 }
 
+// 更新所有链接的智能对象
+function updateAllModified() {
+    var idplacedLayerUpdateAllModified = stringIDToTypeID( "placedLayerUpdateAllModified" );
+    executeAction( idplacedLayerUpdateAllModified, undefined, DialogModes.NO );
+}
+
 // 全部整合在一起
 function optimized() {
     // 清理元数据
     deleteDocumentAncestorsMetadata()
+
+	// 更新所有链接的智能对象
+	updateAllModified() 
 
     // 定义一个变量[exportOptionsSave]，用来表示导出文档为jpeg格式的设置属性。
     var exportOptionsSave = new JPEGSaveOptions();

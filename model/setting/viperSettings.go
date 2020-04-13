@@ -19,6 +19,7 @@ func init() {
 	viper.SetDefault("blackEdge", true)
 	viper.SetDefault("prefix", "")
 	viper.SetDefault("reserve", 5)
+	viper.SetDefault("cipherList", false)  // 自动开启暗号列表
 	viper.SetDefault("picture", "config\\picture") // 正斜杠会出错
 	viper.SetDefault("automaticDeletion", false)   // 自动主图时删除来源
 
@@ -113,6 +114,20 @@ func current() {
 	var reserveStr = fmt.Sprintf("%.2fcm", viper.GetFloat64("reserve"))
 	reserveStr = model.ColourString(reserveStr, ctc.ForegroundGreen) // 设置带颜色的字符串
 
+	// 自动开启暗号列表
+	var cipherListStr string
+	switch viper.GetBool("cipherList") {
+	case true:
+		cipherListStr = "自启动"
+		cipherListStr = model.ColourString(cipherListStr, ctc.ForegroundGreen) // 设置带颜色的字符串
+	case false:
+		cipherListStr = "已关闭"
+		cipherListStr = model.ColourString(cipherListStr, ctc.ForegroundBright) // 设置带颜色的字符串
+	default:
+		cipherListStr = "参数错误"
+		cipherListStr = model.ColourString(cipherListStr, ctc.ForegroundBright) // 设置带颜色的字符串
+	}
+
 	// 修改套图文件夹位置
 	var pictureStr string
 	if viper.GetString("picture") != "config\\picture" {
@@ -138,6 +153,6 @@ func current() {
 	}
 
 	fmt.Printf("\n【状态】[1]记忆框架：%s\t[2]自动新建：%s\t[3]自动黑边：%s\n", memoryStr, openPsStr, blackEdgeStr)
-	fmt.Printf("\n【状态】[4]自定前缀：%s\t[5]切布预留：%s\t[6]暂位预留：未开发\n", prefixStr, reserveStr)
+	fmt.Printf("\n【状态】[4]自定前缀：%s\t[5]切布预留：%s\t[6]暗号列表：%s\n", prefixStr, reserveStr,cipherListStr)
 	fmt.Printf("\n【状态】[7]套图位置：%s\t[8]主图自删：%s\t[9]全部恢复默认设置\n", pictureStr, automaticDeletionStr)
 }

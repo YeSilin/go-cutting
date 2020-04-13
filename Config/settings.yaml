@@ -1,6 +1,7 @@
 automaticdeletion: false
 blackedge: true
-memory: false
+cipherlist: false
+memory: true
 openps: true
 picture: config\picture
 prefix: ""

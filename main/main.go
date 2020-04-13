@@ -3,14 +3,12 @@ package main
 import (
 	"fmt"
 	"github.com/gookit/color"
-	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
-	"github.com/yesilin/go-cutting/generate"
-	"github.com/yesilin/go-cutting/web"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/model/additional"
 	"github.com/yesilin/go-cutting/model/automaticNestingMap"
 	"github.com/yesilin/go-cutting/model/setting"
+	"github.com/yesilin/go-cutting/model/web"
 	"github.com/yesilin/go-cutting/tools"
 	"github.com/zserge/webview"
 	"strings"
@@ -18,44 +16,15 @@ import (
 )
 
 func init() {
-	// 运行web服务器
-	go web.RunWebServer()
+	model.InitNetwork()      // 没有网络不让使用
+	model.InitNotification() // ps 未运行就进行通知
+	model.InitFolder()       // 创建必须提前存在的文件夹
+	model.InitScript()       // 创建必须提前准备的脚本
+	go web.RunWebServer() // 必须提前运行web服务器
+	model.InitCipherList()   // 判断是否打开暗号列表
 
-	// ps 未运行就进行通知
-	go func() {
-		if ok := tools.IsExeRuning("Photoshop.exe", "Adobe"); !ok {
-			tools.WinNotification("Photoshop 未运行", "大部分功能依赖于它，建议打开")
-		}
-	}()
-
-	go func() {
-		// 导入注册表 使用正确的打开方式，并且取消脚本执行警告
-		model.OpenMode()
-
-		// 创建jsx文件夹
-		_ = tools.CreateMkdirAll("config/jsx/temp")
-		generate.SelectTailor()                         // 生成裁剪选择脚本备用
-		generate.Tailor("")                             // 生成通用裁剪脚本备用
-		generate.ClearMetadata()                        // 生成 -3 要用的清除元数据脚本备用
-		generate.ClearMetadataNoPopUp()                 // 生成我自己动作要用的清除元数据脚本备用
-		generate.BlackEdge()                            // 生成添加黑边脚本备用
-		//generate.SizeMarks()                            // 生成 将矩形选框转换为标记测量标志
-		generate.SaveForWeb(viper.GetString("picture")) // 生成详情页指定保存位置
-		generate.SaveAsJPEG()                           // 生成带自带清除元数据的另存脚本
-
-		// 管理员取得所有权
-		//generate.TakeOwnership()
-
-		// 创建历史记录文件夹
-		now := time.Now().Format("2006-01")
-		_ = tools.CreateMkdirAll(fmt.Sprintf("Config/History/%s", now))
-
-		// 创建套图文件夹
-		_ = tools.CreateMkdirAll("config/Picture")
-
-		// 创建备份文件夹
-		_ = tools.CreateMkdirAll("config/Backups")
-	}()
+	// 管理员取得所有权
+	//generate.TakeOwnership()
 
 	// 实现快捷键 -1
 	//go model.NegativeOne()
@@ -67,32 +36,11 @@ func main() {
 	// 使用权限
 	var power bool
 
-	// 进行三次网络请求，都失败就当没有网络，并且不让使用
-	for i := 0; i < 4; i++ {
-		tools.CallClear() // 清屏
-
-		// 有网直接退出循环
-		if tools.IsNetwork() {
-			color.LightCyan.Println("【验证】网络已连接服务器获取使用权限成功，请尽量不关闭软件，避免断网时无法使用！")
-			break
-		}
-
-		// 第四次获取网络就当没网络
-		if i == 3 {
-			color.LightCyan.Println("【验证】网络已断开无法向服务器请求使用权限，软件将在五秒内自动关闭...")
-			time.Sleep(5 * time.Second) // 休眠五秒
-			return
-		}
-
-		color.LightCyan.Printf("【验证】第 %d 次网络连接失败，正在重新向服务器获取使用权限请稍等...", i+1)
-		time.Sleep(2 * time.Second) // 休眠2秒
-	}
-
 	// 限制软件使用 2019.7.19
 	// 定义私密文件路径
 	PrivateFile, _ := tools.Home()
 	PrivateFile = fmt.Sprintf("%s\\Documents\\Adobe\\Config.chx", PrivateFile)
-	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.001007, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
+	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.001009, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
 	// 如果权限不是true
 	if !power {
 		fmt.Println(tips)
@@ -102,7 +50,7 @@ func main() {
 
 	for {
 		fmt.Println(tips) // 提示信息
-		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.1.7 app " + strings.Repeat("-", 20))
+		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.1.9 app " + strings.Repeat("-", 20))
 		fmt.Println("\n【更新】添加新暗号【--】返回上一次输入，例如镂空大小输错，返回重新输入镂空大小！")
 
 		tips := `
@@ -125,7 +73,7 @@ func main() {
 		case "4":
 			tools.CallClear() // 清屏
 			// 搭建web窗口
-			//go webview.Open("GoCutting", "http://localhost:9090/autoNestingPictures", 350, 600, true)
+			//go webview.Open("GoCutting", "http://localhost:12110/autoNestingPictures", 350, 600, true)
 			automaticNestingMap.Choice() // 套图
 		case "5":
 			tools.CallClear()       // 清屏
@@ -134,7 +82,7 @@ func main() {
 			tools.CallClear() // 清屏
 			// 启动gui
 			// 搭建web窗口
-			go webview.Open("GoCutting", "http://localhost:9090/index", 350, 600, true)
+			go webview.Open("GoCutting", "http://localhost:12110/index", 350, 600, true)
 			//go gui.RunWebview()
 
 		case "7":

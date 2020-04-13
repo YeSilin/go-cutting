@@ -65,13 +65,16 @@ func mapFrame1() {
 
 		width, _ := strconv.ParseFloat(widthStr, 64)
 		height, _ := strconv.ParseFloat(heightStr, 64)
+
 		width -= 8
 		height -= 8
 
+
+
 		fmt.Printf("\n【贴图】常规座屏：宽 %.0f pixels，高 %.0f pixels", width*10, height*10)
 		generate.MaxCanvas(width, height)
-		generate.NewDocument3DMapJS(width, height, "常规座屏贴图") // 生成创建ps文档脚本
-		if viper.GetBool("openPs") { // 是否自动新建ps文档
+		generate.NewDocumentForMap(width, height, "常规座屏贴图") // 生成创建ps文档脚本
+		if viper.GetBool("openPs") {                        // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
@@ -141,10 +144,10 @@ func mapFrame6() {
 		// 定义单片名字
 		singleName := fmt.Sprintf("%s_折屏贴图", now)
 
-		generate.NewDocument3DMapJS(totalWidth, height, frameName) // 生成创建ps文档脚本
-		generate.Line3DMapJs6(width, number)                           // 生成专属参考线
+		generate.NewDocumentForMap(totalWidth, height, frameName)             // 生成创建ps文档脚本
+		generate.Line3DMapJs6(width, number)                                  // 生成专属参考线
 		go generate.TailorForMap6(width, height, number,frameName,singleName) // 生成暗号【-1】可以用的另存脚本
-		if viper.GetBool("openPs") { // 是否自动新建ps文档
+		if viper.GetBool("openPs") {                                          // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
 			dataPath := "config/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)

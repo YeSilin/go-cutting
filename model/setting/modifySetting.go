@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/generate"
-	"github.com/yesilin/go-cutting/globa"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"strconv"
@@ -51,17 +50,16 @@ func modifyMemoryFrame() {
 	case "1":
 		viper.Set("memory", true)
 		fmt.Println("\n【提示】设置成功 - 记住框架的选择已开启！")
-		// 保存最新配置
-		_ = viper.WriteConfig()
 	case "2":
 		viper.Set("memory", false)
 		fmt.Println("\n【提示】设置成功 - 记住框架的选择已关闭！")
-		// 保存最新配置
-		_ = viper.WriteConfig()
+
 	case "-":
 		//fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
 		return
 	}
+	// 保存最新配置
+	go viper.WriteConfig()
 }
 
 // 修改是否自动新建切图文档
@@ -82,6 +80,8 @@ func modifyAutomaticCreateDocuments() {
 		//fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
 		return
 	}
+	// 保存最新配置
+	go viper.WriteConfig()
 }
 
 // 修改是否自动添加黑边
@@ -104,6 +104,8 @@ func modifyAutomaticAddBlackEdge() {
 		//fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
 		return
 	}
+	// 保存最新配置
+	go viper.WriteConfig()
 }
 
 // 修改最新的切图预留
@@ -122,6 +124,28 @@ func modifyLatestCanvasReservation() {
 		viper.Set("reserve", reserve64)
 		fmt.Printf("\n【提示】切图预留已更改成 %.2fcm，一切后果自负\n", reserve64)
 	}
+	// 保存最新配置
+	go viper.WriteConfig()
+}
+
+// 修改是否自动打开暗号列表
+func modifyCipherList() {
+	tools.CallClear() // 清屏
+	model.EnglishTitle("Modify Cipher List", 79)
+	fmt.Println("\n【提示】在每次打开切图软件时，是否同时打开暗号列表的 UI 操作界面")
+	var tempMemory = isStringInput("\n【更改】是否自启动暗号列表，[1]是，[2]否：", false)
+	switch tempMemory {
+	case "1":
+		viper.Set("cipherList", true)
+		fmt.Println("\n【提示】设置成功 - 同时打开暗号列表已开启！")
+	case "2":
+		viper.Set("cipherList", false)
+		fmt.Println("\n【提示】设置成功 - 同时打开暗号列表已关闭！")
+	case "-":
+		return
+	}
+	// 保存最新配置
+	go viper.WriteConfig()
 }
 
 // 修改自动套图路径
@@ -155,7 +179,11 @@ func modifyPicturePath() {
 	}
 
 	// 生成详情页指定保存位置
-	go generate.SaveForWeb(viper.GetString("picture"))
+	go func() {
+		generate.SaveForWeb(viper.GetString("picture"))
+		// 保存最新配置
+		viper.WriteConfig()
+	}()
 }
 
 // 自动主图时删除来源
@@ -178,6 +206,8 @@ func modifyAutomaticDeletion() {
 		//fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
 		return
 	}
+	// 保存最新配置
+	go viper.WriteConfig()
 }
 
 // 修改为默认设置
@@ -201,7 +231,7 @@ func modifyToDefaultSetting() {
 	}()
 }
 
-// 修改全部配置
+// 选择要修改的配置
 func ModifySetting() {
 	for {
 		current() // 显示当前状态
@@ -235,6 +265,8 @@ func ModifySetting() {
 			}
 		case "5":
 			modifyLatestCanvasReservation() // 最新的切图预留
+		case "6":
+			modifyCipherList() // 自动开启暗号列表
 		case "7":
 			modifyPicturePath() // 自动套图文件夹路径
 		case "8":
@@ -248,13 +280,4 @@ func ModifySetting() {
 		}
 	}
 FLAG: //为了跳出for循环
-
-	go func() {
-		// 保存最新配置
-		err := viper.WriteConfig()
-		if err != nil {
-			// 记录错误日志
-			globa.Logger.Println("viper.WriteConfig err:")
-		}
-	}()
 }
