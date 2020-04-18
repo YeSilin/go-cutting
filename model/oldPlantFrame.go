@@ -71,6 +71,16 @@ func nowTime() (now string) {
 	return time.Now().Format("060102150405")
 }
 
+// 是否打开自动新建文档
+func isOpenPs() {
+	if viper.GetBool("openPs") { // 是否自动新建ps文档
+		// 创建一个协程使用cmd来运行脚本
+		dataPath := "config/jsx/newDocument.jsx"
+		cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
+		go cmd.Run()
+	}
+}
+
 //旧厂小座屏
 //边框是5  扣掉两个边框5+5 然后再加回来5厘米  可以理解为扣5*/
 func OldFrame1() {
@@ -128,15 +138,10 @@ func OldFrame1() {
 		frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", nowTime(), width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.Tailor(frameName)                         // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                         // 最大画布判断
+		go generate.Tailor(frameName)                        // 生成暗号【-1】可以用的另存脚本
+		generate.MaxCanvas(width, height)                    // 最大画布判断
 
-		if viper.GetBool("openPs") { // 是否自动新建ps文档
-			// 创建一个协程使用cmd来运行脚本
-			dataPath := "config/jsx/newDocument.jsx"
-			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
-			go cmd.Run()
-		}
+		isOpenPs()                    // 是否打开自动新建文档
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
@@ -233,15 +238,10 @@ func OldFrame2() {
 		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", nowTime(), tempName, width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.Tailor(frameName)                         // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                         // 最大画布判断
+		go generate.Tailor(frameName)                        // 生成暗号【-1】可以用的另存脚本
+		generate.MaxCanvas(width, height)                    // 最大画布判断
 
-		if viper.GetBool("openPs") { // 是否自动新建ps文档
-			// 创建一个协程使用cmd来运行脚本
-			dataPath := "config/jsx/newDocument.jsx"
-			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
-			go cmd.Run()
-		}
+		isOpenPs() // 是否打开自动新建文档
 
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
@@ -322,16 +322,11 @@ func OldFrame3() {
 		frameName := fmt.Sprintf("%s_左右画布_%.0fx%.0f", nowTime(), totalWidth, height)
 
 		generate.NewDocument(totalWidth, height, frameName, false) // 创建ps文档
-		generate.LineJs3(width, hollowOut)                           // 生成专属参考线
-		go generate.Tailor3(width, height, hollowOut, frameName)     // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                               // 最大画布判断
+		generate.LineJs3(width, hollowOut)                         // 生成专属参考线
+		go generate.Tailor3(width, height, hollowOut, frameName)   // 生成暗号【-1】可以用的另存脚本
+		generate.MaxCanvas(width, height)                          // 最大画布判断
 
-		if viper.GetBool("openPs") { // 是否自动新建ps文档
-			// 创建一个协程使用cmd来运行脚本
-			dataPath := "config/jsx/newDocument.jsx"
-			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
-			go cmd.Run()
-		}
+		isOpenPs() // 是否打开自动新建文档
 
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
@@ -422,15 +417,10 @@ func OldFrame4() {
 		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", nowTime(), tempName, width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.Tailor(frameName)                         // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                         // 最大画布判断
+		go generate.Tailor(frameName)                        // 生成暗号【-1】可以用的另存脚本
+		generate.MaxCanvas(width, height)                    // 最大画布判断
 
-		if viper.GetBool("openPs") { // 是否自动新建ps文档
-			// 创建一个协程使用cmd来运行脚本
-			dataPath := "config/jsx/newDocument.jsx"
-			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
-			go cmd.Run()
-		}
+		isOpenPs() // 是否打开自动新建文档
 
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
@@ -444,61 +434,52 @@ func OldFrame5() {
 	// 定义一个预留尺寸
 	var reserve = viper.GetFloat64("reserve")
 
+	// 初始化输入提示的切片
+	inputPrompt := [5]string{"\n【切图】请输入顶天立地的总宽：", "\n【切图】请输入顶天立地的总高：",
+		"\n【切图】请输入上镂空的大小：", "\n【切图】请输入下镂空的大小：", "\n【切图】请输入拥有几个贴地或贴顶横杆："}
+
+	// 保存尺寸的数组
+	saveSizeStr := [5]string{}
+
 	for {
-	FLAG1:
 		ChineseTitle("当前框架顶天立地", 79) // 请注意切图的工厂与框架的选择
-		widthStr := Input("\n【切图】请输入顶天立地的总宽：", true)
-		if widthStr == "-" || widthStr == "--" {
-			break
-		}
-	FLAG2:
-		heightStr := Input("\n【切图】请输入顶天立地的总高：", true)
-		if heightStr == "-" {
-			break
-		}
-		// 返回上一次输入
-		if heightStr == "--" {
-			goto FLAG1
-		}
-	FLAG3:
-		upperHollowOutStr := Input("\n【切图】请输入上镂空的大小：", false)
-		if upperHollowOutStr == "-" {
-			break
-		}
-		// 返回上一次输入
-		if upperHollowOutStr == "--" {
-			goto FLAG2
-		}
-	FLAG4:
-		downHollowOutStr := Input("\n【切图】请输入下镂空的大小：", false)
-		if downHollowOutStr == "-" {
-			break
-		}
-		// 返回上一次输入
-		if downHollowOutStr == "--" {
-			goto FLAG3
+
+		for i := 0; i < len(saveSizeStr); i++ {
+			// 只有前2个需要开启画布模式
+			if i < 2 {
+				saveSizeStr[i] = Input(inputPrompt[i], true)
+			} else {
+				saveSizeStr[i] = Input(inputPrompt[i], false)
+			}
+
+			// 输入返回当然要返回啦
+			if saveSizeStr[i] == "-" {
+				return
+			}
+
+			// 第一次就输入返回就退出此框架
+			if i == 0 && saveSizeStr[i] == "--" {
+				return
+			}
+
+			// 退回上一级输入
+			if saveSizeStr[i] == "--" {
+				i -= 2
+			}
 		}
 
-		numberStr := Input("\n【切图】请输入拥有几个贴地或贴顶横杆：", false)
-		if numberStr == "-" {
-			break
-		}
-		// 返回上一次输入
-		if numberStr == "--" {
-			goto FLAG4
-		}
 		//存储未计算时的历史记录
-		var history = fmt.Sprintf("顶天立地的总宽：%s\n", widthStr)
-		history += fmt.Sprintf("顶天立地的总高：%s\n", heightStr)
-		history += fmt.Sprintf("上镂空的大小：%s\n", upperHollowOutStr)
-		history += fmt.Sprintf("下镂空的大小：%s\n", downHollowOutStr)
-		history += fmt.Sprintf("拥有几个贴地或贴顶横杆：%s\n", numberStr)
+		var history = fmt.Sprintf("顶天立地的总宽：%s\n", saveSizeStr[0])
+		history += fmt.Sprintf("顶天立地的总高：%s\n", saveSizeStr[1])
+		history += fmt.Sprintf("上镂空的大小：%s\n", saveSizeStr[2])
+		history += fmt.Sprintf("下镂空的大小：%s\n", saveSizeStr[3])
+		history += fmt.Sprintf("拥有几个贴地或贴顶横杆：%s\n", saveSizeStr[4])
 
-		width, _ := strconv.ParseFloat(widthStr, 64)
-		height, _ := strconv.ParseFloat(heightStr, 64)
-		upperHollowOut, _ := strconv.ParseFloat(upperHollowOutStr, 64)
-		downHollowOut, _ := strconv.ParseFloat(downHollowOutStr, 64)
-		number, _ := strconv.ParseFloat(numberStr, 64)
+		width, _ := strconv.ParseFloat(saveSizeStr[0], 64)
+		height, _ := strconv.ParseFloat(saveSizeStr[1], 64)
+		upperHollowOut, _ := strconv.ParseFloat(saveSizeStr[2], 64)
+		downHollowOut, _ := strconv.ParseFloat(saveSizeStr[3], 64)
+		number, _ := strconv.ParseFloat(saveSizeStr[4], 64)
 
 		width = width - 10 + reserve
 		height = height - upperHollowOut - downHollowOut - 10 - number*5 + reserve
@@ -513,15 +494,10 @@ func OldFrame5() {
 		frameName := fmt.Sprintf("%s_顶天立地_%.0fx%.0f", nowTime(), width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.Tailor(frameName)                         // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                         // 最大画布判断
+		go generate.Tailor(frameName)                        // 生成暗号【-1】可以用的另存脚本
+		generate.MaxCanvas(width, height)                    // 最大画布判断
 
-		if viper.GetBool("openPs") { // 是否自动新建ps文档
-			// 创建一个协程使用cmd来运行脚本
-			dataPath := "config/jsx/newDocument.jsx"
-			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
-			go cmd.Run()
-		}
+		isOpenPs() // 是否打开自动新建文档
 
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
@@ -535,65 +511,55 @@ func OldFrame6() {
 	// 定义一个预留尺寸
 	var reserve = viper.GetFloat64("reserve")
 
-	for {
-	FLAG1:
-		ChineseTitle("当前框架常规折屏", 79) // 请注意切图的工厂与框架的选择
-		widthStr := Input("\n【切图】请输入折屏单扇的宽：", true)
-		if widthStr == "-" || widthStr == "--" {
-			break
-		}
-	FLAG2:
-		heightStr := Input("\n【切图】请输入折屏单扇的高：", true)
-		if heightStr == "-" {
-			break
-		}
-		// 返回上一次输入
-		if heightStr == "--" {
-			goto FLAG1
-		}
-	FLAG3:
-		upperHollowOutStr := Input("\n【切图】请输入上镂空的大小：", false)
-		if upperHollowOutStr == "-" {
-			break
-		}
-		// 返回上一次输入
-		if upperHollowOutStr == "--" {
-			goto FLAG2
-		}
-	FLAG4:
-		downHollowOutStr := Input("\n【切图】请输入下镂空的大小：", false)
-		if downHollowOutStr == "-" {
-			break
-		}
-		// 返回上一次输入
-		if downHollowOutStr == "--" {
-			goto FLAG3
-		}
+	// 初始化输入提示的切片
+	inputPrompt := [5]string{"\n【切图】请输入折屏单扇的宽：", "\n【切图】请输入折屏单扇的高：",
+		"\n【切图】请输入上镂空的大小：", "\n【切图】请输入下镂空的大小：", "\n【切图】请输入共拥有几扇："}
 
-		numberStr := Input("\n【切图】请输入共拥有几扇：", false)
-		if numberStr == "-" {
-			break
-		}
-		// 返回上一次输入
-		if numberStr == "--" {
-			goto FLAG4
+	// 保存尺寸的数组
+	saveSizeStr := [5]string{}
+
+	for {
+		ChineseTitle("当前框架各种折屏", 79) // 请注意切图的工厂与框架的选择
+		for i := 0; i < len(saveSizeStr); i++ {
+			// 只有前2个需要开启画布模式
+			if i < 2 {
+				saveSizeStr[i] = Input(inputPrompt[i], true)
+			} else {
+				saveSizeStr[i] = Input(inputPrompt[i], false)
+			}
+
+			// 输入返回当然要返回啦
+			if saveSizeStr[i] == "-" {
+				return
+			}
+
+			// 第一次就输入返回就退出此框架
+			if i == 0 && saveSizeStr[i] == "--" {
+				return
+			}
+
+			// 退回上一级输入
+			if saveSizeStr[i] == "--" {
+				i -= 2
+			}
 		}
 
 		//存储未计算时的历史记录
-		var history = fmt.Sprintf("折屏单扇的宽：%s\n", widthStr)
-		history += fmt.Sprintf("折屏单扇的高：%s\n", heightStr)
-		history += fmt.Sprintf("上镂空的大小：%s\n", upperHollowOutStr)
-		history += fmt.Sprintf("下镂空的大小：%s\n", downHollowOutStr)
-		history += fmt.Sprintf("共拥有几扇：%s\n", numberStr)
+		var history = fmt.Sprintf("折屏单扇的宽：%s\n", saveSizeStr[0])
+		history += fmt.Sprintf("折屏单扇的高：%s\n", saveSizeStr[1])
+		history += fmt.Sprintf("上镂空的大小：%s\n", saveSizeStr[2])
+		history += fmt.Sprintf("下镂空的大小：%s\n", saveSizeStr[3])
+		history += fmt.Sprintf("共拥有几扇：%s\n", saveSizeStr[4])
 
-		width, _ := strconv.ParseFloat(widthStr, 64)
-		height, _ := strconv.ParseFloat(heightStr, 64)
-		number, _ := strconv.ParseFloat(numberStr, 64)
-		upperHollowOut, _ := strconv.ParseFloat(upperHollowOutStr, 64)
-		downHollowOut, _ := strconv.ParseFloat(downHollowOutStr, 64)
+		width, _ := strconv.ParseFloat(saveSizeStr[0], 64)
+		height, _ := strconv.ParseFloat(saveSizeStr[1], 64)
+		upperHollowOut, _ := strconv.ParseFloat(saveSizeStr[2], 64)
+		downHollowOut, _ := strconv.ParseFloat(saveSizeStr[3], 64)
+		number, _ := strconv.ParseFloat(saveSizeStr[4], 64)
 
-		width = width - 10 + reserve         // 单扇的宽
-		totalWidth := width * number         // 总宽
+		width = width - 10 + reserve // 单扇的宽
+		totalWidth := width * number // 总宽
+
 		height = height - 10 + (reserve + 1) // 单扇的高  折屏高要多预留1厘米
 
 		// 声明临时框架名字
@@ -627,17 +593,12 @@ func OldFrame6() {
 		// 定义单片名字
 		singleName := fmt.Sprintf("%s折屏", tempName)
 
-		generate.NewDocument(totalWidth, height, frameName, false)      // 创建ps文档
+		generate.NewDocument(totalWidth, height, frameName, false)        // 创建ps文档
 		generate.LineJs6(width, number)                                   // 生成专属参考线
 		go generate.Tailor6(width, height, number, frameName, singleName) // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                                    // 最大画布判断
+		generate.MaxCanvas(width, height)                                 // 最大画布判断
 
-		if viper.GetBool("openPs") { // 是否自动新建ps文档
-			// 创建一个协程使用cmd来运行脚本
-			dataPath := "config/jsx/newDocument.jsx"
-			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
-			go cmd.Run()
-		}
+		isOpenPs() // 是否打开自动新建文档
 
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
@@ -798,14 +759,9 @@ func OldFrame7() {
 		generate.NewDocument(widthSum, heightMax, frameName, false) // 创建ps文档
 		generate.LineJs7(widthSlice, heightSlice, heightMax, heightMin)
 		go generate.Tailor7(widthSlice, heightSlice, heightMax, frameName) // 生成暗号【-1】可以用的另存脚本// 生成参考线与遮罩层
-		generate.MaxCanvas(widthMax, heightMax)                               // 最大画布判断
+		generate.MaxCanvas(widthMax, heightMax)                            // 最大画布判断
 
-		if viper.GetBool("openPs") { // 是否自动新建ps文档
-			// 创建一个协程使用cmd来运行脚本
-			dataPath := "config/jsx/newDocument.jsx"
-			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
-			go cmd.Run()
-		}
+		isOpenPs() // 是否打开自动新建文档
 
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
@@ -861,15 +817,10 @@ func OldFrame8() {
 		frameName := fmt.Sprintf("%s_卷帘座屏_%.0fx%.0f", nowTime(), width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.Tailor(frameName)                         // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                         // 最大画布判断
+		go generate.Tailor(frameName)                        // 生成暗号【-1】可以用的另存脚本
+		generate.MaxCanvas(width, height)                    // 最大画布判断
 
-		if viper.GetBool("openPs") { // 是否自动新建ps文档
-			// 创建一个协程使用cmd来运行脚本
-			dataPath := "config/jsx/newDocument.jsx"
-			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
-			go cmd.Run()
-		}
+		isOpenPs()                    // 是否打开自动新建文档
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
@@ -912,18 +863,11 @@ func OldFrame9() {
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_补切画布_%.0fx%.0f", nowTime(), width, height)
 
-		go generate.Tailor(frameName)                         // 生成暗号【-1】可以用的另存脚本
+		go generate.Tailor(frameName)                        // 生成暗号【-1】可以用的另存脚本
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		generate.MaxCanvas(width, height)                         // 最大画布判断
-
-		if viper.GetBool("openPs") { // 是否自动新建ps文档
-			// 创建一个协程使用cmd来运行脚本
-			dataPath := "config/jsx/newDocument.jsx"
-			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
-			go cmd.Run()
-		}
-
-		if !viper.GetBool("memory") { // 是否记忆框架
+		generate.MaxCanvas(width, height)                    // 最大画布判断
+		isOpenPs()                                           // 是否打开自动新建文档
+		if !viper.GetBool("memory") {                        // 是否记忆框架
 			break
 		}
 	}

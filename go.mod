@@ -26,6 +26,7 @@ require (
 	github.com/pelletier/go-toml v1.7.0 // indirect
 	github.com/robotn/gohook v0.0.0-20200320164259-fceda58dd0dc // indirect
 	github.com/shirou/gopsutil v2.20.3+incompatible // indirect
+	github.com/sirupsen/logrus v1.2.0
 	github.com/smartystreets/assertions v1.0.1 // indirect
 	github.com/spf13/afero v1.2.2 // indirect
 	github.com/spf13/cast v1.3.1 // indirect

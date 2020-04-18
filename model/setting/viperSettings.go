@@ -41,7 +41,7 @@ func init() {
 		// 如果读取失败，就保存当前默认配置文件
 		err = viper.WriteConfig()
 		if err != nil {
-			fmt.Println("v.WriteConfig err: ", err)
+			fmt.Println("viper.WriteConfig err: ", err)
 			return
 		}
 	}

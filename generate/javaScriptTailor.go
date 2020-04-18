@@ -2,6 +2,7 @@ package generate
 
 import (
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/tools"
 	"os"
@@ -170,14 +171,14 @@ func Tailor3(width, height, hollowOut float64, frameName string) {
 	// 解析指定文件生成模板对象
 	tmpl, err := template.ParseFiles("config/jsx/template/leftAndRightCanvas.gohtml")
 	if err != nil {
-		fmt.Println("create template failed, err:", err)
+		logrus.Error(err)
 		return
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
 	f, err := os.Create(fmt.Sprintf("config/jsx/temp/tailor_%s.jsx", frameName))
 	if err != nil { // 如果有错误，打印错误，同时返回
-		fmt.Println("os.Create err:", err)
+		logrus.Error(err)
 		return
 	}
 	// 关闭文件
@@ -186,7 +187,7 @@ func Tailor3(width, height, hollowOut float64, frameName string) {
 	// 利用给定数据渲染模板，并将结果写入f
 	err = tmpl.Execute(f, info)
 	if err != nil {
-		fmt.Println("tmpl.Execute err:", err)
+		logrus.Error(err)
 	}
 }
 
@@ -207,14 +208,14 @@ func Tailor6(width, height, number float64, frameName, singleName string) {
 	// 解析指定文件生成模板对象
 	tmpl, err := template.ParseFiles("config/jsx/template/foldingScreens.gohtml")
 	if err != nil {
-		fmt.Println("create template failed, err:", err)
+		logrus.Error(err)
 		return
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
 	f, err := os.Create(fmt.Sprintf("config/jsx/temp/tailor_%s.jsx", frameName))
 	if err != nil { // 如果有错误，打印错误，同时返回
-		fmt.Println("os.Create err:", err)
+		logrus.Error(err)
 		return
 	}
 	// 关闭文件
@@ -223,7 +224,7 @@ func Tailor6(width, height, number float64, frameName, singleName string) {
 	// 利用给定数据渲染模板，并将结果写入f
 	err = tmpl.Execute(f, info)
 	if err != nil {
-		fmt.Println("tmpl.Execute err:", err)
+		logrus.Error(err)
 	}
 
 }
@@ -245,14 +246,14 @@ func Tailor7(widthSlice, heightSlice []float64, heightMax float64, frameName str
 	// 解析指定文件生成模板对象
 	tmpl, err := template.ParseFiles("config/jsx/template/multiScreen.gohtml")
 	if err != nil {
-		fmt.Println("create template failed, err:", err)
+		logrus.Error(err)
 		return
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
 	f, err := os.Create(fmt.Sprintf("config/jsx/temp/tailor_%s.jsx", frameName))
 	if err != nil { // 如果有错误，打印错误，同时返回
-		fmt.Println("os.Create err:", err)
+		logrus.Error(err)
 		return
 	}
 	// 关闭文件
@@ -261,7 +262,7 @@ func Tailor7(widthSlice, heightSlice []float64, heightMax float64, frameName str
 	// 利用给定数据渲染模板，并将结果写入f
 	err = tmpl.Execute(f, info)
 	if err != nil {
-		fmt.Println("tmpl.Execute err:", err)
+		logrus.Error(err)
 	}
 }
 
@@ -281,14 +282,14 @@ func TailorForMap6(width, height, number float64, frameName, singleName string) 
 	// 解析指定文件生成模板对象
 	tmpl, err := template.ParseFiles("config/jsx/template/foldingScreensForMap.gohtml")
 	if err != nil {
-		fmt.Println("create template failed, err:", err)
+		logrus.Error(err)
 		return
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
 	f, err := os.Create(fmt.Sprintf("config/jsx/temp/tailor_%s.jsx", frameName))
 	if err != nil { // 如果有错误，打印错误，同时返回
-		fmt.Println("os.Create err:", err)
+		logrus.Error(err)
 		return
 	}
 	// 关闭文件
@@ -297,6 +298,6 @@ func TailorForMap6(width, height, number float64, frameName, singleName string) 
 	// 利用给定数据渲染模板，并将结果写入f
 	err = tmpl.Execute(f, info)
 	if err != nil {
-		fmt.Println("tmpl.Execute err:", err)
+		logrus.Error(err)
 	}
 }

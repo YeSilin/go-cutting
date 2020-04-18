@@ -3,6 +3,7 @@ package generate
 import (
 	"fmt"
 	"github.com/gookit/color"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/tools"
 	"os"
@@ -112,7 +113,7 @@ function clearDocumentAncestorsForAllLayers(doc) {
 // 生成进度条函数
 function progressBar() {
     // 进度条调用清除元数据函数
-    app.doForcedProgress("正在清除源数据... ", "deleteDocumentAncestorsMetadata()")  // 添加进度条
+    app.doForcedProgress("正在清除元数据... ", "deleteDocumentAncestorsMetadata()")  // 添加进度条
 }
 
 
@@ -134,7 +135,7 @@ function main() {
 
 
         // 生成历史，历史调用进度条
-        app.activeDocument.suspendHistory("清除源数据", "progressBar()");  // 生成历史记录
+        app.activeDocument.suspendHistory("清除元数据", "progressBar()");  // 生成历史记录
     }
 }
 
@@ -153,7 +154,7 @@ main();`
 
 //生成清除元数据js，不清理智能对象，让文件跟小巧 无弹窗版本！
 func ClearMetadataNoPopUp() {
-	const script = `// 清除源数据无弹窗版，并且不会清理智能对象
+	const script = `// 清除元数据无弹窗版，并且不会清理智能对象
 function deleteDocumentAncestorsMetadata() {
     whatApp = String(app.name);  //String version of the app name
     if (whatApp.search("Photoshop") > 0) {  //Check for photoshop specifically, or this will cause errors
@@ -373,7 +374,7 @@ func SaveForWeb(originalPath string) {
 	// 返回绝对路径
 	originalPath, err := filepath.Abs(originalPath)
 	if err != nil {
-		fmt.Println("filepath.Abs err:", err)
+		logrus.Error(err)
 		return
 	}
 	// 全部换成正斜杠
@@ -384,14 +385,14 @@ func SaveForWeb(originalPath string) {
 	// 解析指定文件生成模板对象
 	tmpl, err := template.ParseFiles("config/jsx/template/saveForWeb.gohtml")
 	if err != nil {
-		fmt.Println("create template failed, err:", err)
+		logrus.Error(err)
 		return
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
 	f, err := os.Create("config/jsx/saveForWeb.jsx")
 	if err != nil { // 如果有错误，打印错误，同时返回
-		fmt.Println("os.Create err:", err)
+		logrus.Error(err)
 		return
 	}
 	// 关闭文件
@@ -557,7 +558,7 @@ func ReplaceDetailsPage(originalPath string) {
 	// 返回绝对路径
 	originalPath, err := filepath.Abs(originalPath)
 	if err != nil {
-		fmt.Println("filepath.Abs err:", err)
+		logrus.Error(err)
 		return
 	}
 	// 全部换成正斜杠
@@ -599,14 +600,14 @@ func ReplaceDetailsPage(originalPath string) {
 		// 解析指定文件生成模板对象
 		tmpl, err := template.ParseFiles("config/jsx/template/replaceDetailsPage.gohtml")
 		if err != nil {
-			fmt.Println("create template failed, err:", err)
+			logrus.Error(err)
 			return
 		}
 
 		// 创建文件，返回两个值，一是创建的文件，二是错误信息
 		f, err := os.Create("config/jsx/replaceDetailsPage.jsx")
 		if err != nil { // 如果有错误，打印错误，同时返回
-			fmt.Println("创建文件错误 =", err)
+			logrus.Error(err)
 			return
 		}
 

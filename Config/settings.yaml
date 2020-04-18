@@ -1,8 +1,8 @@
 automaticdeletion: false
 blackedge: true
 cipherlist: false
-memory: true
-openps: true
+memory: false
+openps: false
 picture: config\picture
 prefix: ""
 reserve: 5
