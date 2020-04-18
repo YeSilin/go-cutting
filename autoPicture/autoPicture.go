@@ -12,13 +12,13 @@ import (
 // 套图的选择
 func Choice() {
 	for {
-		model.EnglishTitle("Auto Picture", 79)
+		model.EnglishTitle("Auto picture", 79)
 		text := `
 【套图】[1]套图文件夹              [2]随机重命名              [3]备份文件夹
 
-【套图】[4]替换详情页              [5]通用版主图              [6]专属版主图
+【套图】[4]家具店主图              [5]通用版主图              [6]屏风店主图
 
-【套图】[7]修改分辨率              [8]功能未开发              [9]功能未开发`
+【套图】[7]修改分辨率              [8]替换详情页              [9]导出详情页`
 		fmt.Println(text)
 
 		layoutType := model.Input("\n【套图】请选择需要使用的功能：", false)
@@ -37,17 +37,23 @@ func Choice() {
 			fmt.Println("\n【提示】已打开备份文件夹，为了避免意外丢失文件，目前备份文件最大为 10 份！")
 
 		case "4":
-			tools.CallClear()                                       // 清屏
-			generate.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
+			tools.CallClear() // 清屏
+			furnitureMainPictureChoice()  // 家具店主图
 		case "5":
 			tools.CallClear()                                                                    // 清屏
 			UniversalMasterGraph(viper.GetString("picture"), viper.GetBool("automaticDeletion")) // 通用主图
 		case "6":
-			tools.CallClear()   // 清屏
-			mainPictureChoice() // 主图自动化
+			tools.CallClear()         // 清屏
+			screenMainPictureChoice() // 屏风店主图
 		case "7":
 			tools.CallClear()  // 清屏
 			modifyResolution() // 修改分辨率
+		case "8":
+			tools.CallClear()                                       // 清屏
+			generate.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
+		case"9":
+			tools.CallClear()
+			model.StartCode98() // 详情页导出
 		case "-", "--":
 			goto FLAG
 		default:

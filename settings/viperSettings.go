@@ -1,5 +1,5 @@
 // 这是一个名为毒蛇的配置
-package setting
+package settings
 
 import (
 	"fmt"

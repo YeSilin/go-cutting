@@ -13,7 +13,7 @@ import (
 // 贴图框架的选择
 func MapFrameChoice() {
 	for {
-		EnglishTitle("3ds Max Map Frame", 79)
+		EnglishTitle("3ds Max map frame", 79)
 		text := `
 【贴图】[1]常规座屏贴图            [2]左右镂空贴图            [3]左右画布贴图
 

@@ -119,7 +119,7 @@ func StartCode9() {
 }
 
 // 启动暗号-10 快捷另存为jpg
-func StartCode10(){
+func StartCode10() {
 	// 创建一个协程使用cmd启动外部程序
 	dataPath := "Config/JSX/SaveAsJPEG.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
@@ -127,22 +127,24 @@ func StartCode10(){
 
 // 启动暗号-98
 func StartCode98() {
-	// 自动套图工作路径
-	picturePath := viper.GetString("picture")
+	go func() {
+		// 自动套图工作路径
+		picturePath := viper.GetString("picture")
 
-	// 创建套图文件夹
-	_ = tools.CreateMkdirAll(fmt.Sprintf("%s/主图", picturePath))
-	// 创建一个协程使用cmd来运行脚本
-	dataPath := "Config/JSX/SaveForWeb.jsx"
-	exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+		// 创建套图文件夹
+		_ = tools.CreateMkdirAll(fmt.Sprintf("%s/主图", picturePath))
+		// 创建一个协程使用cmd来运行脚本
+		dataPath := "Config/JSX/SaveForWeb.jsx"
+		exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 
-	time.Sleep(time.Second) // 停一秒
-	// 如果存在images就打开
-	if ok, _ := tools.IsPathExists(fmt.Sprintf("%s/主图/images", picturePath)); ok {
-		go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s\\主图\\images", picturePath)).Run()
-	} else {
-		go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s\\主图", picturePath)).Run()
-	}
+		time.Sleep(time.Second) // 停一秒
+		// 如果存在images就打开
+		if ok, _ := tools.IsPathExists(fmt.Sprintf("%s/主图/images", picturePath)); ok {
+			exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s\\主图\\images", picturePath)).Run()
+		} else {
+			exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s\\主图", picturePath)).Run()
+		}
+	}()
 }
 
 // 启动暗号-99

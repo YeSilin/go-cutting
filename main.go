@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"github.com/gookit/color"
 	"github.com/wzshiming/ctc"
+	"github.com/yesilin/go-cutting/autoPicture"
 	"github.com/yesilin/go-cutting/logs"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/model/additional"
-	"github.com/yesilin/go-cutting/model/autoPicture"
-	"github.com/yesilin/go-cutting/model/setting"
 	"github.com/yesilin/go-cutting/model/web"
+	"github.com/yesilin/go-cutting/settings"
 	"github.com/yesilin/go-cutting/tools"
 	"github.com/zserge/webview"
 	"strings"
@@ -41,7 +41,7 @@ func main() {
 	// 定义私密文件路径
 	PrivateFile, _ := tools.Home()
 	PrivateFile = fmt.Sprintf("%s\\Documents\\Adobe\\Config.chx", PrivateFile)
-	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.001011, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
+	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.001012, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
 	// 如果权限不是true
 	if !power {
 		fmt.Println(tips)
@@ -51,7 +51,7 @@ func main() {
 
 	for {
 		fmt.Println(tips) // 提示信息
-		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.1.11 app " + strings.Repeat("-", 20))
+		color.LightCyan.Println("\n " + (strings.Repeat("-", 20)) + " Welcome to the GoCutting v1.1.12 app " + strings.Repeat("-", 20))
 		fmt.Println("\n【更新】添加新暗号【--】返回上一次输入，例如镂空大小输错，返回重新输入镂空大小！")
 
 		tips := `
@@ -87,8 +87,8 @@ func main() {
 			//go gui.RunWebview()
 
 		case "7":
-			tools.CallClear()       // 清屏
-			setting.ModifySetting() // 设置
+			tools.CallClear()        // 清屏
+			settings.ModifySetting() // 设置
 		case "8":
 			tools.CallClear() // 清屏
 			model.Help()      // 帮助

@@ -33,13 +33,10 @@ function replaceSmartObjects(doc) {
         }
         // 如果当前图层是智能对象
         if (curLayer.kind == "LayerKind.SMARTOBJECT") {
-            // 判断字符串是否以 dp 开头 upper and lower case
-            var upperCase = curLayer.name.indexOf("dp"); // 小写
-            var upperCase2 = curLayer.name.indexOf("dP"); // 小写
-            var lowerCase = curLayer.name.indexOf("DP");  // 大写
-            var lowerCase2 = curLayer.name.indexOf("Dp");  // 大写
+            // 得到图层名字后，统一转成大写，再判断字符串是否以 DP 开头
+            var upperCase = curLayer.name.toUpperCase().indexOf("DP");
 
-            if (upperCase == 0 || lowerCase == 0 || upperCase2 == 0 || lowerCase2 == 0) { // 表示curLayer.name是以dp开头；
+            if (upperCase == 0) { // 表示curLayer.name是以DP开头；
                 // 替换智能对象
                 replaceContents(new File(srcArray[src]), curLayer);
                 curLayer.name = "DP 此图层由GoCutting替换";
@@ -60,9 +57,9 @@ function replaceSmartObjects(doc) {
 }
 
 
-//  函数scrubs从文件中提取文档祖先
+// 没有打开的文档直接略过
 if (!documents.length) {
-    alert("没有打开的文档，请打开一个文档来运行此脚本！");
+    // alert("没有打开的文档，请打开一个文档来运行此脚本！");
 } else {
     try {
         var doc = app.activeDocument;
@@ -83,7 +80,7 @@ if (!documents.length) {
         progressBar();
 
         if (!isDP) {
-            alert("此文档没有以 dp 开头命名的智能对象图层！");
+            alert("此文档没有以 DP 开头命名的智能对象图层！");
         }
     } catch (error) {
         //发生错误执行的代码

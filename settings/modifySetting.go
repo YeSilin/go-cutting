@@ -1,6 +1,6 @@
 // 修改所有设置
 
-package setting
+package settings
 
 import (
 	"fmt"
