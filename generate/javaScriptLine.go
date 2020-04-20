@@ -63,7 +63,7 @@ func LineJs6(width, number float64) {
 // @param width2: 传入宽3
 func LineJs7(widthSlice, heightSlice []float64, heightMax, heightMin float64) {
 
-	// 如果高度最高和最低相等，那么就添加注释
+	// 如果高度最高和最低相等，那么就添加注释，就是没有必要添加遮罩层
 	var notes = ""
 	if heightMax == heightMin {
 		notes = "//"

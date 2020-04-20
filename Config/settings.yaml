@@ -2,7 +2,7 @@ automaticdeletion: false
 blackedge: true
 cipherlist: false
 memory: false
-openps: false
+openps: true
 picture: config\picture
 prefix: ""
 reserve: 5

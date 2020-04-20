@@ -61,7 +61,7 @@ func UniversalMasterGraph(originalPath string, delete bool) {
 	}
 	go func() {
 		// 为了防止文件丢失，在重命名之前先备份一次文件
-		_ = tools.CopyDir(originalPath, "Config/Backups/")
+		_ = tools.CopyDir(originalPath, "config/Backups/")
 
 		// 完成后的目标路径
 		resultPath := fmt.Sprintf("%s/主图", originalPath)
@@ -85,7 +85,7 @@ func UniversalMasterGraph(originalPath string, delete bool) {
 		}
 
 		// 删除多余备份，最大保留10个
-		tools.DeleteRedundantBackups("Config/Backups/*", 10)
+		tools.DeleteRedundantBackups("config/Backups/*", 10)
 	}()
 	fmt.Println("\n【提示】已转成 800*800 如果文件丢失，备份文件夹在上级目录下的 Backups！")
 }
