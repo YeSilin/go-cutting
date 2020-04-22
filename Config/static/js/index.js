@@ -1,3 +1,18 @@
+
+// 粒子动画背景
+// var $1 = $.noConflict(); // 第二个加载的jQuery对象变成了 $2
+$(document).ready(function() {
+    $('#particles').particleground({
+        dotColor: 'rgba(119,194,172,0.8)',
+        lineColor: 'rgba(119,194,172,0.6)',
+        density: 8000, // 每多少像素一个例子
+        particleRadius: 6, // 粒子半径
+        curvedLines: false, // 曲线
+        proximity: 80 // 两个点在连接之前需要多近，以像素为单位
+    });
+});
+
+
 /* 消息弹窗 */
 var $$ = mdui.JQ;
 $$('#signal-1').on('click', function () {
@@ -93,6 +108,8 @@ jQuery(document).ready(function ($) {
             });
     });
 });
+
+
 
 
 

@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"github.com/yesilin/go-cutting/model"
 	"io"
 	"net/http"
@@ -35,53 +36,43 @@ func responseWriter(w http.ResponseWriter, file string) {
 // 首页回调函数
 func indexHandle(w http.ResponseWriter, r *http.Request) {
 	// r:代表跟请求相关的所有内容
+	//fmt.Println(r.Method)
+
 	//获取请求的方法
 	if method := r.Method; method == "POST" {
-		_ = r.ParseForm() // 解析
+		err := r.ParseForm() // 解析
+		if err != nil {
+			logrus.Error(err)
+		}
 		// 获取表单中的数据
 		//fmt.Printf("%v\n", r.Form)
 
 		// 获取浏览器提交的数据
-		cipher1 := r.Form.Get("裁剪快捷键")
-		cipher2 := r.Form.Get("重建新文档")
-		cipher3 := r.Form.Get("深度清理PSD")
-		cipher4 := r.Form.Get("快捷文件夹")
-		cipher6 := r.Form.Get("快速清理PSD")
-		cipher7 := r.Form.Get("自动加黑边")
-		cipher9 := r.Form.Get("查切图历史")
-		cipher10 := r.Form.Get("优化版另存")
-		cipher98 := r.Form.Get("快速导出图片")
-		cipher99 := r.Form.Get("激活win10系统")
+		cipher := r.Form.Get("cipher")
 
-		switch {
-		case cipher1 == "true":
+		switch cipher {
+		case "1":
 			model.StartCode1()
-		case cipher2 == "true":
+		case "2":
 			model.StartCode2()
-		case cipher3 == "true":
+		case "3":
 			model.StartCode3() // 深度清除源数据
-		case cipher4 == "true":
-			model.StartCode4() // 工作目录
-		case cipher6 == "true":
+		case "4":
 			model.StartCode6() // 简单清除元数据
-		case cipher7 == "true":
+		case "7":
 			model.StartCode7() // 为当前文档添加黑边
-		case cipher9 == "true":
+		case "9":
 			model.StartCode9() // 打开历史记录
-		case cipher10 == "true":
+		case "10":
 			model.StartCode10() // 快捷另存为jpg
-		case cipher98 == "true":
+		case "98":
 			model.StartCode98()
-		case cipher99 == "true":
-			model.StartCode99()
 		}
-
 	} else {
 		// 返回页面
 		responseWriter(w, "config/static/html/index.html")
 	}
 }
-
 
 // 自动嵌套图片的回调函数
 func autoNestingPicturesHandle(w http.ResponseWriter, r *http.Request) {

@@ -4,10 +4,25 @@
     font-family: Microsoft YaHei, sans-serif; /*字体样式*/
 }
 
-body {
+html,body {
     background: #efecf0;
-
+    height: 100%;
+    overflow: hidden;
 }
+
+
+/*粒子动画背景*/
+#particles {
+    height: 100%;
+    overflow: hidden;
+}
+/*粒子动画背景里面的内容*/
+.intro {
+    position: absolute;
+    top: 0;
+}
+
+
 
 /* 无法选择样式 */
 .cannotSelect {
