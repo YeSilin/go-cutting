@@ -270,14 +270,14 @@ func Tailor7(widthSlice, heightSlice []float64, heightMax float64, frameName str
 //@param width 传入单扇宽度
 //@param height 传入高度
 //@param number 传入扇数
-func TailorForMap6(width, height, number float64, frameName, singleName string) {
+func TailorForMap6(width, height, number int, frameName, singleName string) {
 	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
 	info := struct {
 		Width      int // 像素没有小数点
 		Height     int
 		Number     int    // 几片折屏
 		SingleName string // 单片名字
-	}{int(width * 10), int(height * 10), int(number), singleName}
+	}{width, height, number, singleName}
 
 	// 解析指定文件生成模板对象
 	tmpl, err := template.ParseFiles("config/jsx/template/foldingScreensForMap.gohtml")

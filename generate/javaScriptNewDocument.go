@@ -71,15 +71,11 @@ func NewDocument(width, height float64, frameName string, wordLine bool) {
 // 生成用来新建ps文档3d作图js
 // @param width 传入宽度
 // @param height 传入高度
-func NewDocumentForMap(width, height float64, frameName string) {
-	// 把输入的高和宽转成自认为的像素
-	width *= 10
-	height *= 10
-
+func NewDocumentForMap(width, height int, frameName string) {
 	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
 	info := struct {
-		Width     float64
-		Height    float64
+		Width     int
+		Height    int
 		FrameName string // 新文档名
 	}{width, height, frameName}
 

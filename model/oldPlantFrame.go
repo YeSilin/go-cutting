@@ -17,6 +17,8 @@ func OldFrameChoice() {
 	for {
 		EnglishTitle("Cutting", 79)
 		text := `
+【提示】下方所有框架的切图单位均是厘米，支持使用小数点来表示毫米，但意义不大！
+
 【切图】[1]常规座屏                 [2]左右镂空                 [3]左右画布
 
 【切图】[4]上下镂空                 [5]顶天立地                 [6]各种折屏
@@ -679,6 +681,7 @@ func OldFrame7() {
 
 	// 计算最大的临时函数
 	maxSize := func(s []float64) (max float64) {
+		max = s[0]
 		for i := 1; i < len(s); i++ {
 			if max < s[i] {
 				max = s[i]
@@ -689,6 +692,7 @@ func OldFrame7() {
 
 	// 计算最小的临时函数
 	minSize := func(s []float64) (min float64) {
+		min = s[0]
 		for i := 1; i < len(s); i++ {
 			if min > s[i] {
 				min = s[i]
@@ -749,9 +753,11 @@ func OldFrame7() {
 
 		// 开始解码得到的值
 		widthStrSlice, heightStrSlice, downHollowOutStr := deSliceStacking(saveSizeStr)
+
 		// 将字符串转浮点数
 		widthSlice := parseFloatSlice(widthStrSlice)
 		heightSlice := parseFloatSlice(heightStrSlice)
+
 		downHollowOut, _ := strconv.ParseFloat(downHollowOutStr, 64)
 
 		if downHollowOut > 0 { // 如果有下镂空的话
@@ -773,6 +779,7 @@ func OldFrame7() {
 		// 遍历出最大的高度
 		heightMax := maxSize(heightSlice)
 
+
 		// 遍历出最小的高度
 		heightMin := minSize(heightSlice)
 
@@ -784,6 +791,9 @@ func OldFrame7() {
 			history += fmt.Sprintf("请输入第%s个座屏的高：%s\n", tools.Transfer(i+1), heightStrSlice[i])
 		}
 		history += fmt.Sprintf("每个座屏的下镂空均是：%s\n", downHollowOutStr)
+
+
+
 		//存储已计算的历史记录
 		history += fmt.Sprintf("多座屏：总宽 %.2f cm，高 %.2f cm\n", widthSum, heightMax)
 		go History(history) // 写入历史

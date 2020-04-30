@@ -1,7 +1,7 @@
 // 设置首选项新文档预设单位是厘米，PIXELS是像素
 app.preferences.rulerUnits = Units.PIXELS;
-var width = {{printf "%.0f" .Width}};  // 这里传参数！！！！！！！！！！！！！！！！！
-var height = {{printf "%.0f" .Height}};  // 这里传参数！！！！！！！！！！！！！！！！！
+var width = {{printf "%d" .Width}};  // 这里传参数！！！！！！！！！！！！！！！！！
+var height = {{printf "%d" .Height}};  // 这里传参数！！！！！！！！！！！！！！！！！
 // 定义一个变量[resolution]，表示新文档的分辨率。
 var resolution = 72;
 var docName = "{{.FrameName}}";  // 这里传参数！！！！！！！！！！！！！！！！！

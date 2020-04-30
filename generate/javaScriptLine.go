@@ -1,7 +1,6 @@
 package generate
 
 import (
-
 	"fmt"
 	"github.com/yesilin/go-cutting/tools"
 	"strings"
@@ -58,9 +57,6 @@ func LineJs6(width, number float64) {
 }
 
 // 生成多座屏参考线js
-// @param width1: 传入宽1
-// @param width2: 传入宽2
-// @param width2: 传入宽3
 func LineJs7(widthSlice, heightSlice []float64, heightMax, heightMin float64) {
 
 	// 如果高度最高和最低相等，那么就添加注释，就是没有必要添加遮罩层
@@ -103,8 +99,9 @@ func LineJs7(widthSlice, heightSlice []float64, heightMax, heightMin float64) {
 	jsx.WriteString(fmt.Sprintf("%sapp.activeDocument.suspendHistory(\"%s座屏遮罩图层\", \"mask()\");\n", notes, tools.Transfer(len(widthSlice))))
 
 	for i := 0; i < len(heightSlice); i++ { // 遍历每一片座屏的高
+
 		if heightSlice[i] < heightMax { // 如果其中某些比较矮
-			var x = 0.0 // x 默认是0
+			var x = 0.0              // x 默认是0
 			for j := 0; j < i; j++ { // 如果编号不是第一片
 				x += widthSlice[j]
 			}
@@ -153,14 +150,14 @@ func LineJs7(widthSlice, heightSlice []float64, heightMax, heightMin float64) {
 //生成折屏3d贴图参考线js
 //@param width: 传入宽
 //@param number: 传入扇数
-func Line3DMapJs6(width, number float64) {
+func Line3DMapJs6(width, number int) {
 	var line = strings.Builder{}
 
-	var i float64 = 1
+	var i = 1
 	for ; i < number; i++ {
 		w := width * i
 		// 追加参考线js代码
-		line.WriteString(fmt.Sprintf("\nactiveDocument.guides.add (Direction.VERTICAL,UnitValue(\"%fPIXELS\"));", w*10))
+		line.WriteString(fmt.Sprintf("\nactiveDocument.guides.add (Direction.VERTICAL,UnitValue(\"%dPIXELS\"));", w))
 	}
 	// 转成字符串格式
 	lineStr := line.String()
@@ -178,5 +175,3 @@ func Line3DMapJs6(width, number float64) {
 	// 追加写入
 	tools.WriteFile("config/jsx/newDocument.jsx", jsxStr)
 }
-
-

@@ -30,13 +30,13 @@ func (s ByPinyin) Less(i, j int) bool {
 	return true
 }
 
-//UTF82GBK : transform UTF8 rune into GBK byte array
+// UTF82GBK : transform UTF8 rune into GBK byte array
 func UTF82GBK(src string) ([]byte, error) {
 	GB18030 := simplifiedchinese.All[0]
 	return ioutil.ReadAll(transform.NewReader(bytes.NewReader([]byte(src)), GB18030.NewEncoder()))
 }
 
-//GBK2UTF8 : transform  GBK byte array into UTF8 string
+// GBK2UTF8 : transform  GBK byte array into UTF8 string
 func GBK2UTF8(src []byte) (string, error) {
 	GB18030 := simplifiedchinese.All[0]
 	bytes, err := ioutil.ReadAll(transform.NewReader(bytes.NewReader(src), GB18030.NewDecoder()))
@@ -137,7 +137,7 @@ func main44() {
 	//fmt.Printf("%q\n",s)
 	sort.Sort(ByPinyin(s))
 	//fmt.Printf("%q\n",s)
-	for _,v := range s {
+	for _, v := range s {
 		fmt.Println(v)
 	}
 }
