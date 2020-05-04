@@ -93,7 +93,7 @@ func RestrictingSoftwareUse2(path string, version float64, time, expire int64) (
 		_ = versionEncode(path, newSoftware)
 		// 求出剩余时间
 		day := tools.ToDay(newSoftware.Date - minTime)
-		return true, fmt.Sprintf("\n【验证】欢迎首次使用本切图软件，输入数字回车运行，此版本剩余可使用时间为 %d 天！", day)
+		return true, fmt.Sprintf("\n:: 欢迎首次使用本切图软件，输入数字回车运行，此版本剩余可使用时间为 %d 天！", day)
 	}
 
 	// 定义解码结果，把解码的结果存在software的地址中
@@ -108,7 +108,7 @@ func RestrictingSoftwareUse2(path string, version float64, time, expire int64) (
 		_ = versionEncode(path, newSoftware)
 		// 求出剩余时间
 		day := tools.ToDay(newSoftware.Date - minTime)
-		return true, fmt.Sprintf("\n【验证】欢迎首次使用本切图软件，输入数字回车运行，此版本剩余可使用时间为 %d 天！", day)
+		return true, fmt.Sprintf("\n:: 欢迎首次使用本切图软件，输入数字回车运行，此版本剩余可使用时间为 %d 天！", day)
 	}
 
 	// 到这一步说明文件已经解码成功，优先对比版本号了
@@ -120,9 +120,9 @@ func RestrictingSoftwareUse2(path string, version float64, time, expire int64) (
 		if dateCompare {
 			// 求出剩余时间
 			day := tools.ToDay(oldSoftware.Date - minTime)
-			return true, fmt.Sprintf("\n【验证】欢迎再次使用本切图软件，输入数字回车运行，此版本剩余可使用时间为 %d 天！", day)
+			return true, fmt.Sprintf("\n:: 欢迎再次使用本切图软件，输入数字回车运行，此版本剩余可使用时间为 %d 天！", day)
 		} else {
-			return false, "\n【验证】很遗憾此版本已过期，请在切图软件问题反馈群里，下载并安装最新版切图软件！"
+			return false, "\n:: 很遗憾此版本已过期，请在切图软件问题反馈群里，下载并安装最新版切图软件！"
 		}
 	}
 
@@ -132,19 +132,19 @@ func RestrictingSoftwareUse2(path string, version float64, time, expire int64) (
 		_ = versionEncode(path, newSoftware)
 		// 求出剩余时间
 		day := tools.ToDay(newSoftware.Date - minTime)
-		return true, fmt.Sprintf("\n【验证】新版本已更新成功，欢迎使用最新版切图软件，此版本剩余可使用时间为 %d 天！", day)
+		return true, fmt.Sprintf("\n:: 新版本已更新成功，欢迎使用最新版切图软件，此版本剩余可使用时间为 %d 天！", day)
 	}
 
 	// 如果版本直接相差大于5个小版本，就不让使用（安装了新版，但又重新安装旧版）
 	if versionCompare > 0.000005 { // 文件的版本大于当前版本说明新版本已存在
-		return false, "\n【验证】请继续使用新版本！此旧版本已被强制停用，若有出现Bug请及时在群里反馈！"
+		return false, "\n:: 请继续使用新版本！此旧版本已被强制停用，若有出现Bug请及时在群里反馈！"
 	} else { // 如果版本直接相差小于或等于5个小版本，可以使用，但还是会查水表 （安装了新版，但又重新安装旧版）
 		if dateCompare {
 			// 求出剩余时间
 			day := tools.ToDay(oldSoftware.Date - minTime)
-			return true, fmt.Sprintf("\n【验证】欢迎再次使用本切图软件，建议更新至最新版，此版本剩余可使用时间为 %d 天！", day)
+			return true, fmt.Sprintf("\n:: 欢迎再次使用本切图软件，建议更新至最新版，此版本剩余可使用时间为 %d 天！", day)
 		} else {
-			return false, "\n【验证】很遗憾此版本已过期，请在切图软件问题反馈群里，下载并安装最新版切图软件！"
+			return false, "\n:: 很遗憾此版本已过期，请在切图软件问题反馈群里，下载并安装最新版切图软件！"
 		}
 	}
 }

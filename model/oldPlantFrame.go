@@ -15,18 +15,18 @@ import (
 // 旧厂框架的选择
 func OldFrameChoice() {
 	for {
-		EnglishTitle("Cutting", 79)
+		EnglishTitle("Cutting", 74)
 		text := `
-【提示】下方所有框架的切图单位均是厘米，支持使用小数点来表示毫米，但意义不大！
+:: 下方所有框架的切图单位均是厘米，支持使用小数点来表示毫米，但是意义不大！
 
-【切图】[1]常规座屏                 [2]左右镂空                 [3]左右画布
+   [1]常规座屏                   [2]左右镂空                   [3]左右画布
 
-【切图】[4]上下镂空                 [5]顶天立地                 [6]各种折屏
+   [4]上下镂空                   [5]顶天立地                   [6]各种折屏
 
-【切图】[7]多个座屏                 [8]卷帘座屏                 [9]不扣补切`
+   [7]多个座屏                   [8]卷帘座屏                   [9]不扣补切`
 		fmt.Println(text)
 
-		frameType := Input("\n【切图】请选择上方的边框类型：", false)
+		frameType := Input("\n:: 请选择上方的边框类型：", false)
 
 		switch frameType {
 		case "1":
@@ -60,7 +60,7 @@ func OldFrameChoice() {
 			goto FLAG
 		default:
 			tools.CallClear() // 清屏
-			fmt.Printf("\n【错误】输入的 [%s] 不是已知的边框类型，请重新输入！\n", ColourString(frameType, ctc.ForegroundGreen))
+			fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入！\n", ColourString(frameType, ctc.ForegroundGreen))
 			continue
 		}
 	}
@@ -90,14 +90,14 @@ func OldFrame1() {
 	var reserve = viper.GetFloat64("reserve")
 
 	// 初始化输入提示的切片
-	inputPrompt := [2]string{"\n【切图】请输入常规座屏的宽：", "\n【切图】请输入常规座屏的高："}
+	inputPrompt := [2]string{"\n:: 请输入常规座屏的宽：", "\n:: 请输入常规座屏的高："}
 
 	// 保存尺寸的切片
 	saveSizeStr := [2]string{}
 
 	// 循环使用此框架
 	for {
-		ChineseTitle("当前框架常规座屏", 79) // 请注意切图的工厂与框架的选择
+		ChineseTitle("当前框架常规座屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
 			saveSizeStr[i] = Input(inputPrompt[i], true)
 
@@ -130,7 +130,7 @@ func OldFrame1() {
 		height = height - 10 + reserve
 
 		// 输出提示
-		color.Yellow.Printf("\n【切图】常规座屏：宽 %.2f cm，高 %.2f cm", width, height)
+		color.Yellow.Printf("\n:: 常规座屏：宽 %.2f cm，高 %.2f cm", width, height)
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("常规座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
@@ -157,15 +157,15 @@ func OldFrame2() {
 	var reserve = viper.GetFloat64("reserve")
 
 	// 初始化输入提示的切片
-	inputPrompt := [5]string{"\n【切图】请输入左右镂空的总宽：", "\n【切图】请输入左右镂空的总高：", "\n【切图】请输入左镂空的大小：",
-		"\n【切图】请输入右镂空的大小：", "\n【切图】请输入合页数量（若订单无备注请输入“0”）："}
+	inputPrompt := [5]string{"\n:: 请输入左右镂空的总宽：", "\n:: 请输入左右镂空的总高：", "\n:: 请输入左镂空的大小：",
+		"\n:: 请输入右镂空的大小：", "\n:: 请输入合页数量（若订单无备注请输入“0”）："}
 
 	// 保存尺寸的切片
 	saveSizeStr := [5]string{}
 
 	// 循环使用此框架
 	for {
-		ChineseTitle("当前框架左右镂空", 79) // 请注意切图的工厂与框架的选择
+		ChineseTitle("当前框架左右镂空", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
 
 			// 只有前两个需要开启画布模式
@@ -230,7 +230,7 @@ func OldFrame2() {
 		}
 		height = height - 10 + reserve
 
-		color.Yellow.Printf("\n【切图】%s：宽 %.2f cm，高 %.2f cm", tempName, width, height)
+		color.Yellow.Printf("\n:: %s：宽 %.2f cm，高 %.2f cm", tempName, width, height)
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("%s：宽 %.2f cm，高 %.2f cm\n", tempName, width, height)
@@ -258,15 +258,15 @@ func OldFrame3() {
 	var reserve = viper.GetFloat64("reserve")
 
 	// 初始化输入提示的切片
-	inputPrompt := [4]string{"\n【切图】请输入左右画布的总宽：", "\n【切图】请输入左右画布的总高：",
-		"\n【切图】请输入单边画布的大小：", "\n【切图】请输入合页数量（若订单无备注请输入“0”）："}
+	inputPrompt := [4]string{"\n:: 请输入左右画布的总宽：", "\n:: 请输入左右画布的总高：",
+		"\n:: 请输入单边画布的大小：", "\n:: 请输入合页数量（若订单无备注请输入“0”）："}
 
 	// 保存尺寸的切片
 	saveSizeStr := [4]string{}
 
 	// 循环使用此框架
 	for {
-		ChineseTitle("当前框架左右画布", 79) // 请注意切图的工厂与框架的选择
+		ChineseTitle("当前框架左右画布", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前3个需要开启画布模式
 			if i < 3 {
@@ -314,7 +314,7 @@ func OldFrame3() {
 		totalWidth := width + hollowOut*2
 		height = height - 10 + reserve
 
-		color.Yellow.Printf("\n【切图】左右画布：中间 %.2f cm，两边各 %.2f cm，高 %.2f cm", width, hollowOut, height)
+		color.Yellow.Printf("\n:: 左右画布：中间 %.2f cm，两边各 %.2f cm，高 %.2f cm", width, hollowOut, height)
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("左右画布：中间 %.2f cm，两边各 %.2f cm，高 %.2f cm\n", width, hollowOut, height)
@@ -343,15 +343,15 @@ func OldFrame4() {
 	var reserve = viper.GetFloat64("reserve")
 
 	// 初始化输入提示的切片
-	inputPrompt := [4]string{"\n【切图】请输入上下镂空的总宽：", "\n【切图】请输入上下镂空的总高：",
-		"\n【切图】请输入上镂空的大小：", "\n【切图】请输入下镂空的大小："}
+	inputPrompt := [4]string{"\n:: 请输入上下镂空的总宽：", "\n:: 请输入上下镂空的总高：",
+		"\n:: 请输入上镂空的大小：", "\n:: 请输入下镂空的大小："}
 
 	// 保存尺寸的切片
 	saveSizeStr := [4]string{}
 
 	// 循环使用此框架
 	for {
-		ChineseTitle("当前框架上下镂空", 79) // 请注意切图的工厂与框架的选择
+		ChineseTitle("当前框架上下镂空", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
@@ -409,7 +409,7 @@ func OldFrame4() {
 			height -= downHollowOut + 5 // 如果有下镂空的话
 		}
 
-		color.Yellow.Printf("\n【切图】%s：宽 %.2f cm，高 %.2f cm", tempName, width, height)
+		color.Yellow.Printf("\n:: %s：宽 %.2f cm，高 %.2f cm", tempName, width, height)
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("%s：宽 %.2f cm，高 %.2f cm\n", tempName, width, height)
@@ -437,14 +437,14 @@ func OldFrame5() {
 	var reserve = viper.GetFloat64("reserve")
 
 	// 初始化输入提示的切片
-	inputPrompt := [5]string{"\n【切图】请输入顶天立地的总宽：", "\n【切图】请输入顶天立地的总高：",
-		"\n【切图】请输入上镂空的大小：", "\n【切图】请输入下镂空的大小：", "\n【切图】请输入拥有几个贴地或贴顶横杆："}
+	inputPrompt := [5]string{"\n:: 请输入顶天立地的总宽：", "\n:: 请输入顶天立地的总高：",
+		"\n:: 请输入上镂空的大小：", "\n:: 请输入下镂空的大小：", "\n:: 请输入拥有几个贴地或贴顶横杆："}
 
 	// 保存尺寸的数组
 	saveSizeStr := [5]string{}
 
 	for {
-		ChineseTitle("当前框架顶天立地", 79) // 请注意切图的工厂与框架的选择
+		ChineseTitle("当前框架顶天立地", 74) // 请注意切图的工厂与框架的选择
 
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
@@ -486,7 +486,7 @@ func OldFrame5() {
 		width = width - 10 + reserve
 		height = height - upperHollowOut - downHollowOut - 10 - number*5 + reserve
 
-		color.Yellow.Printf("\n【切图】顶天立地：宽 %.2f cm，高 %.2f cm", width, height)
+		color.Yellow.Printf("\n:: 顶天立地：宽 %.2f cm，高 %.2f cm", width, height)
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("顶天立地：宽 %.2f cm，高 %.2f cm\n", width, height)
@@ -514,14 +514,14 @@ func OldFrame6() {
 	var reserve = viper.GetFloat64("reserve")
 
 	// 初始化输入提示的切片
-	inputPrompt := [5]string{"\n【切图】请输入折屏单扇的宽：", "\n【切图】请输入折屏单扇的高：",
-		"\n【切图】请输入上镂空的大小：", "\n【切图】请输入下镂空的大小：", "\n【切图】请输入共拥有几扇："}
+	inputPrompt := [5]string{"\n:: 请输入折屏单扇的宽：", "\n:: 请输入折屏单扇的高：",
+		"\n:: 请输入上镂空的大小：", "\n:: 请输入下镂空的大小：", "\n:: 请输入共拥有几扇："}
 
 	// 保存尺寸的数组
 	saveSizeStr := [5]string{}
 
 	for {
-		ChineseTitle("当前框架各种折屏", 79) // 请注意切图的工厂与框架的选择
+		ChineseTitle("当前框架各种折屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
@@ -582,7 +582,7 @@ func OldFrame6() {
 			tempName = "常规"
 		}
 
-		color.Yellow.Printf("\n【切图】%s折屏：总宽 %.2f cm，高 %.2f cm", tempName, totalWidth, height)
+		color.Yellow.Printf("\n:: %s折屏：总宽 %.2f cm，高 %.2f cm", tempName, totalWidth, height)
 		//存储已计算的历史记录
 		history += fmt.Sprintf("%s折屏：总宽 %.2f cm，高 %.2f cm\n", tempName, totalWidth, height)
 		go History(history) // 写入历史
@@ -703,8 +703,8 @@ func OldFrame7() {
 
 	// 循环使用此框架
 	for {
-		ChineseTitle("当前框架多座屏", 79) // 请注意切图的工厂与框架的选择
-		numberStr := Input("\n【切图】请输入拥有几个座屏：", false)
+		ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
+		numberStr := Input("\n:: 请输入拥有几个座屏：", false)
 		// 一开始就返回直接退出函数
 		if numberStr == "-" || numberStr == "--" {
 			return
@@ -715,14 +715,14 @@ func OldFrame7() {
 		number := int(number64)
 
 		// 替换宽度和高度文案
-		inputWidth := replaceText(number, "\n【切图】请输入第%s个座屏的宽：")
-		inputHeight := replaceText(number, "\n【切图】请输入第%s个座屏的高：")
+		inputWidth := replaceText(number, "\n:: 请输入第%s个座屏的宽：")
+		inputHeight := replaceText(number, "\n:: 请输入第%s个座屏的高：")
 
 		//fmt.Println(inputWidth)
 		//fmt.Println(inputHeight)
 
 		// 初始化输入提示的切片汇总
-		inputPrompt := enSliceStacking(inputWidth, inputHeight, "\n【切图】每个座屏的下镂空均是：")
+		inputPrompt := enSliceStacking(inputWidth, inputHeight, "\n:: 每个座屏的下镂空均是：")
 		// 保存尺寸的切片
 		saveSizeStr := make([]string, len(inputPrompt))
 
@@ -798,7 +798,7 @@ func OldFrame7() {
 		history += fmt.Sprintf("多座屏：总宽 %.2f cm，高 %.2f cm\n", widthSum, heightMax)
 		go History(history) // 写入历史
 
-		color.Yellow.Printf("\n【切图】多座屏：总宽 %.2f cm，高 %.2f cm", widthSum, heightMax)
+		color.Yellow.Printf("\n:: 多座屏：总宽 %.2f cm，高 %.2f cm", widthSum, heightMax)
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s座屏_%.0fx%.0f", nowTime(), tools.Transfer(len(widthSlice)), widthSum, heightMax)
@@ -822,8 +822,8 @@ func OldFrame7bk() {
 
 	for {
 	UP1: // 主要给宽返回
-		ChineseTitle("当前框架多座屏", 79) // 请注意切图的工厂与框架的选择
-		numberStr := Input("\n【切图】请输入拥有几个座屏：", false)
+		ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
+		numberStr := Input("\n:: 请输入拥有几个座屏：", false)
 		if numberStr == "-" {
 			break
 		}
@@ -859,7 +859,7 @@ func OldFrame7bk() {
 
 		UP2: // 主要给高返回
 			// 可以用 Sprintf 来将格式化后的字符串赋值给一个变量
-			widthTemp = Input(fmt.Sprintf("\n【切图】请输入第%s个座屏的宽：", tools.Transfer(i+1)), true)
+			widthTemp = Input(fmt.Sprintf("\n:: 请输入第%s个座屏的宽：", tools.Transfer(i+1)), true)
 			if widthTemp == "-" {
 				goto FLAG // 跳转到函数结束
 			}
@@ -875,7 +875,7 @@ func OldFrame7bk() {
 			widthStrSlice[i] = widthTemp
 		UP3: // 主要给宽返回
 			// 开始接收高度至列表
-			heightTemp := Input(fmt.Sprintf("\n【切图】请输入第%s个座屏的高：", tools.Transfer(i+1)), true)
+			heightTemp := Input(fmt.Sprintf("\n:: 请输入第%s个座屏的高：", tools.Transfer(i+1)), true)
 			if heightTemp == "-" {
 				goto FLAG // 跳转到函数结束
 			}
@@ -887,7 +887,7 @@ func OldFrame7bk() {
 			heightStrSlice[i] = heightTemp
 		}
 
-		downHollowOutStr := Input("\n【切图】每个座屏的下镂空均是：", false)
+		downHollowOutStr := Input("\n:: 每个座屏的下镂空均是：", false)
 		if downHollowOutStr == "-" {
 			break
 		}
@@ -960,7 +960,7 @@ func OldFrame7bk() {
 		history += fmt.Sprintf("多座屏：总宽 %.2f cm，高 %.2f cm\n", widthSum, heightMax)
 		go History(history) // 写入历史
 
-		color.Yellow.Printf("\n【切图】多座屏：总宽 %.2f cm，高 %.2f cm", widthSum, heightMax)
+		color.Yellow.Printf("\n:: 多座屏：总宽 %.2f cm，高 %.2f cm", widthSum, heightMax)
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s座屏_%.0fx%.0f", nowTime(), tools.Transfer(len(widthSlice)), widthSum, heightMax)
@@ -988,13 +988,13 @@ func OldFrame8() {
 	var reserve = viper.GetFloat64("reserve")
 
 	// 初始化输入提示的切片
-	inputPrompt := [2]string{"\n【切图】请输入卷帘座屏的宽：", "\n【切图】请输入卷帘座屏的高："}
+	inputPrompt := [2]string{"\n:: 请输入卷帘座屏的宽：", "\n:: 请输入卷帘座屏的高："}
 
 	// 保存尺寸的切片
 	saveSizeStr := [2]string{}
 
 	for {
-		ChineseTitle("当前框架卷帘座屏", 79) // 请注意切图的工厂与框架的选择
+		ChineseTitle("当前框架卷帘座屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
 			saveSizeStr[i] = Input(inputPrompt[i], true)
 
@@ -1026,7 +1026,7 @@ func OldFrame8() {
 		width = width - 20
 		height = height - 40 + reserve + 5 // 卷帘预留要而外 +5
 
-		color.Yellow.Printf("\n【切图】卷帘座屏：宽 %.2f cm，高 %.2f cm", width, height)
+		color.Yellow.Printf("\n:: 卷帘座屏：宽 %.2f cm，高 %.2f cm", width, height)
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("卷帘座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
@@ -1049,13 +1049,13 @@ func OldFrame8() {
 // 补切画布
 func OldFrame9() {
 	// 初始化输入提示的切片
-	inputPrompt := [2]string{"\n【切图】请输入补切画布的宽：", "\n【切图】请输入补切画布的高："}
+	inputPrompt := [2]string{"\n:: 请输入补切画布的宽：", "\n:: 请输入补切画布的高："}
 
 	// 保存尺寸的切片
 	saveSizeStr := [2]string{}
 
 	for {
-		ChineseTitle("当前框架补切画布", 79) // 请注意切图的工厂与框架的选择
+		ChineseTitle("当前框架补切画布", 74) // 请注意切图的工厂与框架的选择
 		fmt.Println("\n【补切】主要用来补切画布，不减去任何边框尺寸，适合不想手动新建画布时使用！")
 
 		for i := 0; i < len(saveSizeStr); i++ {

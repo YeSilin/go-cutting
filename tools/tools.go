@@ -16,7 +16,7 @@ func PrintLine(pattern int) {
 	case 1:
 		fmt.Println(strings.Repeat("-", 87)) // 重复打印89个减号
 	case 2:
-		color.LightCyan.Println(" " + strings.Repeat("-", 78)) // 返回专属的下划线装饰
+		color.LightCyan.Println(" " + strings.Repeat("-", 73)) // 返回专属的下划线装饰
 	case 3:
 		color.LightCyan.Println("\n" + strings.Repeat("-", 29) + " 请注意切图的框架选择 " + strings.Repeat("-", 28))
 	}

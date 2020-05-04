@@ -16,7 +16,6 @@ import (
 // 判断是否为数字，并根据指定值提供指定的全局功能
 func Input(text string, canvasMode bool) string {
 	var num string
-
 	for {
 		// 用户输入提示，获取键盘输入
 		fmt.Print(text)

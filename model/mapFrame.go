@@ -12,18 +12,18 @@ import (
 // 贴图框架的选择
 func MapFrameChoice() {
 	for {
-		EnglishTitle("3ds Max map frame", 79)
+		EnglishTitle("3ds Max map frame", 74)
 		text := `
-【提示】下方所有框架的切图单位均是像素，小数点位之后均会被舍弃，并非四舍五入！
+:: 下方所有框架的切图单位均是像素，小数点位之后值均会被舍弃，并非四舍五入！
 
-【贴图】[1]常规座屏贴图            [2]左右镂空贴图            [3]左右画布贴图
+   [1]常规座屏贴图             [2]左右镂空贴图             [3]左右画布贴图
 
-【贴图】[4]上下镂空贴图            [5]顶天立地贴图            [6]各种折屏贴图
+   [4]上下镂空贴图             [5]顶天立地贴图             [6]各种折屏贴图
 
-【贴图】[7]多个座屏贴图            [8]卷帘座屏贴图            [9]不扣补切贴图`
+   [7]多个座屏贴图             [8]卷帘座屏贴图             [9]不扣补切贴图`
 		fmt.Println(text)
 
-		frameType := Input("\n【贴图】请选择上方的边框类型：", false)
+		frameType := Input("\n:: 请选择上方的边框类型：", false)
 
 		switch frameType {
 		case "1":
@@ -54,17 +54,17 @@ FLAG:
 // 贴图小座屏
 func mapFrame1() {
 	for {
-		ChineseTitle("当前框架常规座屏贴图 ", 79) // 请注意切图的工厂与框架的选择
+		ChineseTitle("当前框架常规座屏贴图 ", 74) // 请注意切图的工厂与框架的选择
 
-		widthStr := Input("\n【贴图】请输入常规座屏的宽：", true)
+		widthStr := Input("\n:: 请输入常规座屏的宽：", true)
 		if widthStr == "-" {
 			break
 		}
-		heightStr := Input("\n【贴图】请输入常规座屏的高：", true)
+		heightStr := Input("\n:: 请输入常规座屏的高：", true)
 		if heightStr == "-" {
 			break
 		}
-		reserveStr := Input("\n【贴图】请输入要减去的单边框大小(一般为40)：", false)
+		reserveStr := Input("\n:: 请输入要减去的单边框大小(一般为40)：", false)
 		if reserveStr == "-" {
 			break
 		}
@@ -78,7 +78,7 @@ func mapFrame1() {
 		width -= reserve * 2
 		height -= reserve * 2
 
-		fmt.Printf("\n【贴图】常规座屏：宽 %d pixels，高 %d pixels", width, height)
+		fmt.Printf("\n:: 常规座屏：宽 %d pixels，高 %d pixels", width, height)
 		generate.MaxCanvas(float64(width)/10, float64(height)/10)
 
 		generate.NewDocumentForMap(width, height, "常规座屏贴图") // 生成创建ps文档脚本
@@ -97,33 +97,33 @@ func mapFrame1() {
 // 贴图折屏
 func mapFrame6() {
 	for {
-		ChineseTitle("当前框架各种折屏贴图", 79) // 请注意切图的工厂与框架的选择
+		ChineseTitle("当前框架各种折屏贴图", 74) // 请注意切图的工厂与框架的选择
 
-		widthStr := Input("\n【贴图】请输入折屏单扇的宽：", true)
+		widthStr := Input("\n:: 请输入折屏单扇的宽：", true)
 		if widthStr == "-" {
 			break
 		}
-		heightStr := Input("\n【贴图】请输入折屏单扇的高：", true)
+		heightStr := Input("\n:: 请输入折屏单扇的高：", true)
 		if heightStr == "-" {
 			break
 		}
-		upperHollowOutStr := Input("\n【贴图】请输入上镂空的大小：", false)
+		upperHollowOutStr := Input("\n:: 请输入上镂空的大小：", false)
 		if heightStr == "-" {
 			break
 		}
 
-		downHollowOutStr := Input("\n【贴图】请输入下镂空的大小：", false)
+		downHollowOutStr := Input("\n:: 请输入下镂空的大小：", false)
 		if heightStr == "-" {
 
 			break
 		}
 
-		numberStr := Input("\n【贴图】请输入共拥有几扇：", false)
+		numberStr := Input("\n:: 请输入共拥有几扇：", false)
 		if numberStr == "-" {
 			break
 		}
 
-		reserveStr := Input("\n【贴图】请输入要减去的单边框大小(一般为40)：", false)
+		reserveStr := Input("\n:: 请输入要减去的单边框大小(一般为40)：", false)
 		if reserveStr == "-" {
 			break
 		}
@@ -148,7 +148,7 @@ func mapFrame6() {
 			height -= downHollowOut + reserve
 		}
 
-		fmt.Printf("\n【贴图】常规折屏：宽 %d pixels，高 %d pixels", totalWidth, height)
+		fmt.Printf("\n:: 常规折屏：宽 %d pixels，高 %d pixels", totalWidth, height)
 		generate.MaxCanvas(float64(width)/10, float64(height)/10)
 
 		//获取当前时间，进行格式化 2006-01-02 15:04:05

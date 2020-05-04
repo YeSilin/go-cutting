@@ -57,8 +57,8 @@ func init() {
 
 // 当前状态
 func current() {
-	model.EnglishTitle("Settings", 79)
-	fmt.Println("\n【设置】这里提供简单的设置端口，如果大家有其他需要实现的功能设置可以在群里反馈！")
+	model.EnglishTitle("Settings", 74)
+	fmt.Println("\n:: 这里提供简单的设置端口，如果大家有其他需要实现的功能设置可以在群里反馈！")
 
 	var memoryStr string
 	switch viper.GetBool("memory") {
@@ -152,7 +152,7 @@ func current() {
 		automaticDeletionStr = model.ColourString(automaticDeletionStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	}
 
-	fmt.Printf("\n【状态】[1]记忆框架：%s\t[2]自动新建：%s\t[3]自动黑边：%s\n", memoryStr, openPsStr, blackEdgeStr)
-	fmt.Printf("\n【状态】[4]自定前缀：%s\t[5]切布预留：%s\t[6]暗号列表：%s\n", prefixStr, reserveStr,cipherListStr)
-	fmt.Printf("\n【状态】[7]套图位置：%s\t[8]主图自删：%s\t[9]全部恢复默认设置\n", pictureStr, automaticDeletionStr)
+	fmt.Printf("\n   [1]记忆框架：%s       [2]自动新建：%s       [3]自动黑边：%s\n", memoryStr, openPsStr, blackEdgeStr)
+	fmt.Printf("\n   [4]自定前缀：%s       [5]切布预留：%s       [6]暗号列表：%s\n", prefixStr, reserveStr,cipherListStr)
+	fmt.Printf("\n   [7]套图位置：%s       [8]主图自删：%s       [9]全部恢复默认设置\n", pictureStr, automaticDeletionStr)
 }

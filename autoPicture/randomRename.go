@@ -86,7 +86,7 @@ func RandomRename(originalPath string) {
 
 	// 如果png和jpg都小于一张就不执行
 	if len(jpgSlice) < 1 && len(pngSlice) < 1 {
-		fmt.Println("\n【提示】重命名失败，因为 Picture 文件夹下没有 jpg 或 png 格式图片！")
+		fmt.Println("\n:: 重命名失败，因为 Picture 文件夹下没有 jpg 或 png 格式图片！")
 		return
 	}
 
@@ -101,5 +101,5 @@ func RandomRename(originalPath string) {
 		tools.DeleteRedundantBackups("Config/Backups/*", 10)
 	}()
 
-	fmt.Println("\n【提示】随机重命名成功，现已支持所有尺寸的 jpg 或 png 格式图片！")
+	fmt.Println("\n:: 随机重命名成功，现已支持所有尺寸的 jpg 或 png 格式图片！")
 }

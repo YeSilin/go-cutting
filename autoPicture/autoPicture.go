@@ -12,29 +12,31 @@ import (
 // 套图的选择
 func Choice() {
 	for {
-		model.EnglishTitle("Auto picture", 79)
+		model.EnglishTitle("Auto picture", 74)
 		text := `
-【套图】[1]套图文件夹              [2]随机重命名              [3]备份文件夹
+:: 自动套图可以正确运行的前提是，款式图片均要放在套图文件夹下方可正确运行！
 
-【套图】[4]家具店主图              [5]通用版主图              [6]屏风店主图
+   [1]套图文件夹                [2]随机重命名                [3]备份文件夹
 
-【套图】[7]修改分辨率              [8]替换详情页              [9]导出详情页`
+   [4]家具店主图                [5]通用版主图                [6]屏风店主图
+
+   [7]修改分辨率                [8]替换详情页                [9]导出详情页`
 		fmt.Println(text)
 
-		layoutType := model.Input("\n【套图】请选择需要使用的功能：", false)
+		layoutType := model.Input("\n:: 请选择需要使用的功能：", false)
 
 		switch layoutType {
 		case "1":
 			tools.CallClear() // 清屏
 			go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", viper.GetString("picture"))).Run()
-			fmt.Println("\n【提示】已打开套图文件夹，请复制正方形的 jpg 或 png 高清图片以备自动套图使用！")
+			fmt.Println("\n:: 已打开套图文件夹，请复制正方形的 jpg 或 png 高清图片以备自动套图使用！")
 		case "2":
 			tools.CallClear() // 清屏
 			RandomRename(viper.GetString("picture"))
 		case "3":
 			tools.CallClear() // 清屏
 			go exec.Command("cmd.exe", "/c", "start Config\\Backups").Run()
-			fmt.Println("\n【提示】已打开备份文件夹，为了避免意外丢失文件，目前备份文件最大为 10 份！")
+			fmt.Println("\n:: 已打开备份文件夹，为了避免意外丢失文件，目前备份文件最大为 10 份！")
 
 		case "4":
 			tools.CallClear() // 清屏

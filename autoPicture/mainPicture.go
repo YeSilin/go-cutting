@@ -170,15 +170,15 @@ func WatermarkMasterGraph(originalPath, watermarkPath string, delete bool) {
 //  家具主图选择
 func furnitureMainPictureChoice() {
 	for {
-		model.EnglishTitle("Furniture main picture choice", 79)
+		model.EnglishTitle("Furniture main picture choice", 74)
 		text := `
-【主图】家具店主图会自动识别白底图，并排除白底图，为其他图片加上专属水印与Logo！
+:: 家具店主图会自动识别白底图，并排除白底图，为其他图片加上专属水印与Logo！
 
-【主图】[1]怡柟家具                [2]御尚家具                [3]素梵家具
+   [1]怡柟家具                   [2]御尚家具                   [3]素梵家具
 
-【主图】[4]棠语家具                [5]暂未开发                [6]暂未开发`
+   [4]棠语家具                   [5]暂未开发                   [6]暂未开发`
 		fmt.Println(text)
-		layoutType := model.Input("\n【主图】请选择需要使用的功能：", false)
+		layoutType := model.Input("\n:: 请选择需要使用的功能：", false)
 
 		switch layoutType {
 		case "1":
@@ -221,16 +221,16 @@ FLAG:
 //  屏风主图选择
 func screenMainPictureChoice() {
 	for {
-		model.EnglishTitle("Screen main picture choice", 79)
+		model.EnglishTitle("Screen main picture choice", 74)
 		text := `
-【主图】屏风店主图会自动识别白底图，并排除白底图，为其他图片加上专属水印与Logo！
+:: 屏风店主图会自动识别白底图，并排除白底图，为其他图片加上专属水印与Logo！
 
-【主图】[1]沐兰主图                [2]华府主图                [3]木韵主图
+   [1]沐兰主图                   [2]华府主图                   [3]木韵主图
 
-【主图】[4]御尚屏风                [5]金尊主图                [6]暂未开发`
+   [4]御尚屏风                   [5]金尊主图                   [6]暂未开发`
 		fmt.Println(text)
 
-		layoutType := model.Input("\n【主图】请选择需要使用的功能：", false)
+		layoutType := model.Input("\n:: 请选择需要使用的功能：", false)
 
 		switch layoutType {
 		case "1":

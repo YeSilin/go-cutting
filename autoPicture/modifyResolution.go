@@ -129,13 +129,13 @@ func PixelsPerInchChangedTo300(originalPath string) {
 // 修改图片分辨率
 func modifyResolution() {
 	for {
-		model.EnglishTitle("Modify resolution", 79)
+		model.EnglishTitle("Modify resolution", 74)
 		text := `
-【提示】在保持原来长宽像素不变的情况下，将分辨率强行修改至指定数值，请尽量少用！
+:: 在保持原来长宽像素不变的情况下，将分辨率强行修改至指定数值，请尽量少用！
 
-【提示】[1]全部修改为 72ppi                         [2]全部修改为 300ppi`
+   [1]全部改为72PPI         [2]全部改为300PPI         [3]全部改为自定义PPI`
 		fmt.Println(text)
-		layoutType := model.Input("\n【修改】请选择需要使用的功能：", false)
+		layoutType := model.Input("\n:: 请选择需要使用的功能：", false)
 
 		switch layoutType {
 		case "1":
