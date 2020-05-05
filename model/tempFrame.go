@@ -6,6 +6,7 @@ import (
 	"github.com/gookit/color"
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/generate"
+	"github.com/yesilin/go-cutting/tools"
 	"strconv"
 	"strings"
 )
@@ -22,11 +23,10 @@ func Choice() {
    [1]新建效果图      [2]置入小座屏      [3]置入单折屏      [4]置入单镂空`
 		fmt.Println(tips)
 		frameType := Input("\n:: 请选择上方的功能类型：", false)
-
+		tools.CallClear() // 清屏
 		switch frameType {
 		case "1":
 			generate.NewTempDocumentJs() // 新建临时文档
-
 		case "2":
 			tempFame1() // 小座屏
 		case "3":

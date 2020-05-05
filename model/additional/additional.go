@@ -39,13 +39,13 @@ func Additional() {
 		fmt.Println(tips)
 
 		var help = model.Input("\n:: 请选择需要使用的功能：", false)
+		tools.CallClear() // 清屏
 		switch help {
 		case "1": //激活win10系统
 			// 创建一个协程使用cmd启动外部程序
 			dataPath := "Config/W10DigitalActivation.exe /activate"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
-			tools.CallClear() // 清屏
 			fmt.Println("\n:: win10系统已激活，此项附加功能的命令需要右键管理员身份运行本软件方可生效！")
 
 		case "2": // 微信QQ防撤回
@@ -53,14 +53,12 @@ func Additional() {
 			dataPath := "Config/RevokeMsgPatcher.exe"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
-			tools.CallClear() // 清屏
 			fmt.Println("\n:: 正在打开附加微信QQ防撤回工具，请稍后...")
 		case "3": // 取得文件所有权
 
 			// 创建一个协程使用cmd启动外部程序
 			cmd := exec.Command("cmd.exe", "/c", "regedit /s .\\Config\\takeOwnership.reg")
 			go cmd.Run()
-			tools.CallClear() // 清屏
 			fmt.Println("\n:: 右键菜单已添加，此项附加功能的命令需要右键管理员身份运行本软件方可生效！")
 
 
@@ -68,20 +66,16 @@ func Additional() {
 			// 净化设备驱动器
 			CURRENT_USER_NoNameSpace()
 			LOCAL_MACHINE_NoNameSpace()
-			tools.CallClear() // 清屏
 		case "5":
 			// 重启资源管理器
 			// 创建一个协程使用cmd启动外部程序
 			go func() {
 				exec.Command("cmd.exe", "/c", "taskkill /f /im explorer.exe & start explorer.exe").Run()
 			}()
-			tools.CallClear() // 清屏
 		case "6":
-			tools.CallClear() // 清屏
 		case "7":
 			// 定时关机
 			s, Unsigned := tools.DistanceIsEighteen()
-			tools.CallClear() // 清屏
 			if Unsigned { // 无符号就设置
 				cmd := fmt.Sprintf("shutdown /s /t %d", s)
 				go exec.Command("cmd.exe", "/c", cmd).Run()
@@ -94,7 +88,6 @@ func Additional() {
 		case "8":
 			// 取消定时关机
 			go exec.Command("cmd.exe", "/c", "shutdown /a").Run()
-			tools.CallClear() // 清屏
 			fmt.Println("\n:: 定时关机已关闭，18点后不会自动关机！")
 
 
@@ -102,7 +95,6 @@ func Additional() {
 			// 创建一个协程使用cmd启动外部程序
 			dataPath := "Config/PSDRepairKit/PSDRepairKit.exe"
 			go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
-			tools.CallClear() // 清屏
 			fmt.Println("\n:: 正在打开附加PSD文件修复工具，请稍后...")
 		case "-":
 			goto FLAG //跳出循环

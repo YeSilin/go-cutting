@@ -1,0 +1,120 @@
+// 通用裁切脚本
+
+// 定义一个函数用来设置黑边
+function addEdge() {
+    // 保存当前背景颜色
+    var nowColor = app.backgroundColor;
+
+    // 定义一个对象颜色是黑色
+    var black = new SolidColor();
+    black.rgb.hexValue = "000000";
+    app.backgroundColor = black;
+
+    // 获取当前文档的高度与宽度
+    var width = app.activeDocument.width + 0.5;
+    var height = app.activeDocument.height + 0.5;
+
+    // 重设画布大小
+    app.activeDocument.resizeCanvas(UnitValue(width), UnitValue(height), AnchorPosition.MIDDLECENTER);
+
+    // 恢复之前的背景颜色
+    app.backgroundColor = nowColor;
+}
+
+// 创建一个透明图层
+function createLayer() {
+    // 新建一个图层
+    function layer() {
+        app.activeDocument.artLayers.add().name = "注意：已快捷裁剪成功！";
+    }
+
+    // 生成历史记录
+    app.activeDocument.suspendHistory("注意：已快捷裁剪成功！", "layer()");
+}
+
+
+// 清理元数据
+function deleteDocumentAncestorsMetadata() {
+    // 清理元数据四步骤
+    if (ExternalObject.AdobeXMPScript == undefined) ExternalObject.AdobeXMPScript = new ExternalObject("lib:AdobeXMPScript");
+    var xmp = new XMPMeta(activeDocument.xmpMetadata.rawData);
+    // Begone foul Document Ancestors!
+    xmp.deleteProperty(XMPConst.NS_PHOTOSHOP, "DocumentAncestors");
+    app.activeDocument.xmpMetadata.rawData = xmp.serialize();
+}
+
+// 全部整合在一起
+function optimized() {
+    // 设置首选项新文档预设单位是厘米，PIXELS是像素
+    app.preferences.rulerUnits = Units.CM;
+
+    // 新建一个空白图层用于合并
+    app.activeDocument.artLayers.add();
+    // 合并全部可见图层
+    app.activeDocument.mergeVisibleLayers();
+    // 转为背景图层不然添加黑边会无效
+    app.activeDocument.activeLayer.isBackgroundLayer = true
+
+    if (BlackEdge) {
+        // 添加黑边
+        addEdge();
+    }
+
+    // 清理元数据
+    deleteDocumentAncestorsMetadata()
+
+    //定义一个变量[exportOptionsSave]，用来表示导出文档为jpeg格式的设置属性。
+    var exportOptionsSave = new JPEGSaveOptions();
+
+    // 嵌入彩色配置文件
+    exportOptionsSave.embedColorProfile = true;
+
+    // 设置杂边为无
+    exportOptionsSave.matte = MatteType.NONE;
+
+    //设置导出文档时，图片的压缩质量。数字范围为1至12。
+    exportOptionsSave.quality = 12;
+
+    // 保存为基线已优化
+    exportOptionsSave.formatOptions = FormatOptions.OPTIMIZEDBASELINE;
+
+    // 获取当前文档的文件名
+    var name = app.activeDocument.name
+    var TmpFile1 = new File("~/Desktop/GoCutting/" + name);
+
+    // saveAs( 文件, 选项, 作为副本, 扩展名大小写 )
+    //调用[document]的[saveAs]另存方法，使用上面设置的各种参数，将当前文档导出并转换为JPEG格式的文档
+    app.activeDocument.saveAs(TmpFile1.saveDlg("优化另存为", "JPEG Files: *.jpg"), exportOptionsSave, true, Extension.LOWERCASE);
+}
+
+
+// 判断是否有打开的文件
+if (!documents.length) {
+    alert("没有打开的文档，请打开一个文档来运行此脚本！");
+    // return;
+} else {
+    // 是否自动黑边
+    var BlackEdge = {{.BlackEdge}};   // 这里传golang变量哦！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+
+    // 是否保存成功
+    var isSave = false;
+
+    // 保存开始的历史记录状态
+    var savedState = app.activeDocument.activeHistoryState;
+
+    // 如果出错就返回最开始
+    try {
+        // 生成历史记录
+        app.activeDocument.suspendHistory("优化另存", "optimized()");
+        isSave = true;
+    } catch (error) {
+        // 忽略错误
+    }
+    // 当你完成了你正在做的任何事情，返回这个状态
+    app.activeDocument.activeHistoryState = savedState;
+
+    // 保存成功就加个提示
+    if (isSave) {
+        createLayer()
+    }
+}

@@ -31,6 +31,18 @@ function addEdge() {
 }
 
 
+// 创建一个透明图层
+function createLayer() {
+    // 新建一个图层
+    function layer() {
+        app.activeDocument.artLayers.add().name = "注意：已快捷裁剪成功！";
+    }
+
+    // 生成历史记录
+    app.activeDocument.suspendHistory("注意：已快捷裁剪成功！", "layer()");
+}
+
+
 // 合并图层用于提速
 function speedUp() {
     // 设置首选项新文档预设单位是厘米，PIXELS是像素
@@ -134,6 +146,9 @@ function main() {
 
     // 生成历史记录并调用函数
     app.activeDocument.suspendHistory("优化另存为", "optimized(hollowOut+width,0,hollowOut+width+hollowOut,height,tempNameArr[2])");
+
+    // 全部保存成功
+    isSave = true;
 }
 
 
@@ -151,9 +166,11 @@ if (!documents.length) {
     // 中间大两边小的高
     var height = {{.Height}};    // 这里传golang变量哦！！！！！！！！！！！！！！
 
+    // 是否保存成功
+    var isSave = false;
+
     // 保存开始状态
     var savedState = app.activeDocument.activeHistoryState;
-
 
     // 为当前文档定义变量
     var document = app.activeDocument;
@@ -178,4 +195,9 @@ if (!documents.length) {
 
     // 当你完成了你正在做的任何事情，返回这个状态
     app.activeDocument.activeHistoryState = savedState;
+
+    // 保存成功就加个提示
+    if (isSave) {
+        createLayer();
+    }
 }

@@ -14,8 +14,7 @@ import (
 )
 
 // 判断是否为数字，并根据指定值提供指定的全局功能
-func Input(text string, canvasMode bool) string {
-	var num string
+func Input(text string, canvasMode bool) (num string) {
 	for {
 		// 用户输入提示，获取键盘输入
 		fmt.Print(text)
@@ -46,8 +45,6 @@ func Input(text string, canvasMode bool) string {
 		lastIndex := strings.LastIndex(num, "-")
 		// 如果减号出现在最后一位
 		if lastIndex == len(num)-1 {
-			tools.CallClear() // 清屏
-			//fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 35) + "\n")
 			return "-"
 		}
 
@@ -125,6 +122,12 @@ func Input(text string, canvasMode bool) string {
 		if strings.Count(num, ".") > 1 {
 			continue
 		}
+
+		// 如果包含中文就转拼音
+		if IncludeChinese2(num){
+			return strings.Join(ToPinyin(num)," ")
+		}
+
 
 		// 如果不是整数或浮点数就循环
 		integer, _ := regexp.MatchString(`^(\-|\+)?\d+(\.\d+)?$`, num)

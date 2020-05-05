@@ -38,6 +38,18 @@ function addEdge() {
 }
 
 
+// 创建一个透明图层
+function createLayer() {
+    // 新建一个图层
+    function layer() {
+        app.activeDocument.artLayers.add().name = "注意：已快捷裁剪成功！";
+    }
+
+    // 生成历史记录
+    app.activeDocument.suspendHistory("注意：已快捷裁剪成功！", "layer()");
+}
+
+
 // 清理元数据
 function deleteDocumentAncestorsMetadata() {
     // 清理元数据四步骤
@@ -145,6 +157,9 @@ function main() {
         // 返回上一级历史
         returnUpper();
     }
+
+    // 全部保存成功
+    isSave = true;
 }
 
 
@@ -152,8 +167,6 @@ function main() {
 if (!documents.length) {
     alert("没有打开的文档，请打开一个文档来运行此脚本！");
 } else {
-
-
     // 定义一个变量[exportOptionsSave]，用来表示导出文档为jpeg格式的设置属性。
     var exportOptionsSave = new JPEGSaveOptions();
 
@@ -168,6 +181,9 @@ if (!documents.length) {
 
     // 保存为基线已优化
     exportOptionsSave.formatOptions = FormatOptions.OPTIMIZEDBASELINE;
+
+    // 是否保存成功
+    var isSave = false;
 
     // 保存活动历史记录状态
     var savedState = app.activeDocument.activeHistoryState;
@@ -187,4 +203,9 @@ if (!documents.length) {
 
     // 当你完成了你正在做的任何事情，返回这个状态
     app.activeDocument.activeHistoryState = savedState;
+
+    // 保存成功就加个提示
+    if (isSave) {
+        createLayer();
+    }
 }

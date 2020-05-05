@@ -3,9 +3,9 @@ package model
 import (
 	"fmt"
 	"github.com/spf13/viper"
+	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/tools"
 )
-
 
 /**初始化*/
 func Help() {
@@ -14,20 +14,18 @@ func Help() {
 		fmt.Println("\n:: 此项目是通过注入JS脚本对PS进行短暂的间接控制，非实时监控，资源消耗极低！")
 		fmt.Println("\n   [1]查看快捷暗号             [2]查看切图规则             [3]查看功能说明")
 		var help = Input("\n:: 请选择需要查看的帮助：", false)
+		tools.CallClear() // 清屏
 		switch help {
 		case "1":
-			tools.CallClear() // 清屏
 			key() // 快捷键
 		case "2":
-			tools.CallClear() // 清屏
 			careful() // 注意事项
 		case "3":
-			tools.CallClear() // 清屏
 			skill() // 软件使用技巧
 		case "-":
 			goto FLAG //跳出循环
-
 		default:
+			fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入！\n", ColourString(help, ctc.ForegroundGreen))
 			continue
 		}
 	}
@@ -68,7 +66,7 @@ func careful() {
 	fmt.Println("\n   6. 四周是纯白底色的时候要加 0.5厘米的黑色描边 快捷键是 Alt + Ctrl + C")
 	fmt.Println("\n   7. 切图时半透最大148的宽，不透最大180的宽")
 	fmt.Println("\n   8. 切图遇到不透画布并且双面图案不一样时，每张需额外备注：“印一张”")
-	fmt.Printf("\n   9. 目前程序公式中，旧厂订布预留是 %.2f 厘米！\n", viper.GetFloat64("reserve"))
+	fmt.Printf("\n   9. 目前软件公式中，旧厂订布预留是 %.2f 厘米！\n", viper.GetFloat64("reserve"))
 
 	fmt.Println("\n\n:: 将已切好的图片发送给以下人员：")
 	fmt.Println("\n   大部分切图不透与半透 --> 直接发群里\t卷帘画布 --> 单独发给厂长")
@@ -76,12 +74,21 @@ func careful() {
 
 /**软件使用技巧*/
 func skill() {
-	fmt.Println("\n:: 大部分暗号可以任意调用，但有些暗号使用前需满足一些条件：")
-	fmt.Println("\n   暗号[-]这是一个全局通用的返回功能，不管在任何界面都将返回上一级菜单")
-	fmt.Println("\n   暗号[-1]优化另存快速裁剪，是主要优化的一个功能，快捷键是 Alt+X ")
-	fmt.Println("\n   暗号[-2]重建新文档功能，只能重建前一次使用本软件所创建的ps文档")
-	fmt.Println("\n   暗号[-3]清除元数据功能，顾名思义就是清除垃圾并且不损失清晰度")
-	fmt.Println("\n   暗号[-4]快捷文件夹功能，此功能创建的文件夹在桌面可以看到")
-	fmt.Println("\n   暗号[-7]自动加黑边功能，现在不管是打开任何ps文档都支持加黑边了")
-	fmt.Println("\n   暗号[-99]激活win10系统，这是一个集成大神之作的功能，只能激活win10系统")
+	tips := `
+:: 大部分暗号可以任意调用，但有些暗号使用前需满足一些条件：
+
+   暗号[-]这是一个全局通用的返回功能，不管在任何界面都将返回上一级菜单
+
+   暗号[-1]优化另存快速裁剪，是主要优化的一个功能，快捷键是 Alt+X 
+
+   暗号[-2]重建新文档功能，只能重建前一次使用本软件所创建的ps文档
+
+   暗号[-3]清除元数据功能，顾名思义就是清除垃圾并且不损失清晰度
+
+   暗号[-4]快捷文件夹功能，此功能创建的文件夹在桌面可以看到
+
+   暗号[-7]自动加黑边功能，现在不管是打开任何ps文档都支持加黑边了
+
+   暗号[-99]激活win10系统，这是一个集成大神之作的功能，只能激活win10系统`
+	fmt.Println(tips)
 }

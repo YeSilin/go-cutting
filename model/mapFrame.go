@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/generate"
+	"github.com/yesilin/go-cutting/tools"
 
 	"os/exec"
 	"strconv"
@@ -24,7 +25,7 @@ func MapFrameChoice() {
 		fmt.Println(text)
 
 		frameType := Input("\n:: 请选择上方的边框类型：", false)
-
+		tools.CallClear() // 清屏
 		switch frameType {
 		case "1":
 			mapFrame1() // 小座屏

@@ -27,39 +27,29 @@ func OldFrameChoice() {
 		fmt.Println(text)
 
 		frameType := Input("\n:: 请选择上方的边框类型：", false)
-
+		tools.CallClear() // 清屏
 		switch frameType {
 		case "1":
-			tools.CallClear() // 清屏
 			OldFrame1()       // 小座屏
 		case "2":
-			tools.CallClear() // 清屏
 			OldFrame2()       // 左右镂空
 		case "3":
-			tools.CallClear() // 清屏
 			OldFrame3()       // 左右画布
 		case "4":
-			tools.CallClear() // 清屏
 			OldFrame4()       // 上下镂空
 		case "5":
-			tools.CallClear() // 清屏
 			OldFrame5()       // 顶天立地
 		case "6":
-			tools.CallClear() // 清屏
 			OldFrame6()       // 常规折屏
 		case "7":
-			tools.CallClear() // 清屏
 			OldFrame7()       // 多座屏
 		case "8":
-			tools.CallClear() // 清屏
 			OldFrame8()       // 卷帘座屏
 		case "9":
-			tools.CallClear() // 清屏
 			OldFrame9()       // 补切画布
 		case "-", "--":
 			goto FLAG
 		default:
-			tools.CallClear() // 清屏
 			fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入！\n", ColourString(frameType, ctc.ForegroundGreen))
 			continue
 		}
@@ -140,7 +130,7 @@ func OldFrame1() {
 		frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", nowTime(), width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.Tailor(frameName)                        // 生成暗号【-1】可以用的另存脚本
+		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                    // 最大画布判断
 
 		isOpenPs()                    // 是否打开自动新建文档
@@ -240,7 +230,7 @@ func OldFrame2() {
 		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", nowTime(), tempName, width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.Tailor(frameName)                        // 生成暗号【-1】可以用的另存脚本
+		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                    // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
@@ -419,7 +409,7 @@ func OldFrame4() {
 		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", nowTime(), tempName, width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.Tailor(frameName)                        // 生成暗号【-1】可以用的另存脚本
+		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                    // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
@@ -496,7 +486,7 @@ func OldFrame5() {
 		frameName := fmt.Sprintf("%s_顶天立地_%.0fx%.0f", nowTime(), width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.Tailor(frameName)                        // 生成暗号【-1】可以用的另存脚本
+		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                    // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
@@ -1036,7 +1026,7 @@ func OldFrame8() {
 		frameName := fmt.Sprintf("%s_卷帘座屏_%.0fx%.0f", nowTime(), width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.Tailor(frameName)                        // 生成暗号【-1】可以用的另存脚本
+		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                    // 最大画布判断
 
 		isOpenPs()                    // 是否打开自动新建文档
@@ -1093,7 +1083,7 @@ func OldFrame9() {
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_补切画布_%.0fx%.0f", nowTime(), width, height)
 
-		go generate.Tailor(frameName)                        // 生成暗号【-1】可以用的另存脚本
+		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
 		generate.MaxCanvas(width, height)                    // 最大画布判断
 		isOpenPs()                                           // 是否打开自动新建文档
