@@ -22,7 +22,7 @@ func Choice() {
 
    [1]新建效果图      [2]置入小座屏      [3]置入单折屏      [4]置入单镂空`
 		fmt.Println(tips)
-		frameType := Input("\n:: 请选择上方的功能类型：", false)
+		frameType , info:= Input("\n:: 请选择上方的功能类型：", false,true)
 		tools.CallClear() // 清屏
 		switch frameType {
 		case "1":
@@ -43,6 +43,12 @@ func Choice() {
 			fmt.Println("未开发") // 补切画布
 		case "-":
 			goto FLAG
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
+			continue
 		default:
 			continue
 		}
@@ -56,7 +62,7 @@ func tempFame1() {
 		fmt.Println("\n" + strings.Repeat("-", 37) + " Size " + strings.Repeat("-", 36))
 		//tools.PrintLine(2)
 		fmt.Println("\n:: [1]80-180\t[2]100-180\t[3]120-180\t[4]自定义尺寸")
-		frameType := Input("\n:: 请选择上方的边框尺寸：", false)
+		frameType, info := Input("\n:: 请选择上方的边框尺寸：", false,true)
 
 		switch frameType {
 		case "1":
@@ -69,6 +75,12 @@ func tempFame1() {
 			tempFame1To4() // 小座屏自定义框架
 		case "-":
 			goto FLAG
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
+			continue
 		default:
 			continue
 		}
@@ -78,12 +90,12 @@ FLAG:
 
 func tempFame1To4() {
 	for {
-		widthStr := Input("\n:: 请输入小座屏的宽：", true)
+		widthStr, _ := Input("\n:: 请输入小座屏的宽：", true,false)
 		if widthStr == "-" {
 			break
 		}
 
-		heightStr := Input("\n:: 请输入小座屏的高：", true)
+		heightStr , _:= Input("\n:: 请输入小座屏的高：", true,false)
 		if heightStr == "-" {
 			break
 		}
@@ -110,7 +122,7 @@ func tempFame2() {
 		fmt.Println("\n" + strings.Repeat("-", 37) + " Size " + strings.Repeat("-", 36))
 		//tools.PrintLine(2)
 		fmt.Println("\n:: [1]45-180\t[2]50-190\t[3]60-190\t[4]60-200")
-		frameType := Input("\n:: 请选择上方的边框尺寸：", false)
+		frameType , info:= Input("\n:: 请选择上方的边框尺寸：", false,true)
 
 		switch frameType {
 		case "1":
@@ -123,6 +135,12 @@ func tempFame2() {
 			generate.SelectionTempFrameJS("Frame02", 3)
 		case "-":
 			goto FLAG
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
+			continue
 		default:
 			continue
 		}
@@ -136,7 +154,7 @@ func tempFame3() {
 		fmt.Println("\n" + strings.Repeat("-", 37) + " Size " + strings.Repeat("-", 36))
 		//tools.PrintLine(2)
 		fmt.Println("\n:: [1]回字形\t[2]竖条形\t[3]功能待定\t[4]功能待定")
-		frameType := Input("\n:: 请选择上方的镂空类型：", false)
+		frameType , info:= Input("\n:: 请选择上方的镂空类型：", false,true)
 
 		switch frameType {
 		case "1":
@@ -153,6 +171,12 @@ func tempFame3() {
 
 		case "-":
 			goto FLAG
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
+			continue
 		default:
 			continue
 		}

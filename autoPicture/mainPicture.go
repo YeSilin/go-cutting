@@ -178,40 +178,36 @@ func furnitureMainPictureChoice() {
 
    [4]棠语家具                   [5]暂未开发                   [6]暂未开发`
 		fmt.Println(text)
-		layoutType := model.Input("\n:: 请选择需要使用的功能：", false)
-
+		layoutType, info := model.Input("\n:: 请选择需要使用的功能：", false,true)
+		tools.CallClear() // 清屏
 		switch layoutType {
 		case "1":
-			tools.CallClear() // 清屏
 			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/yinanjj.png", viper.GetBool("automaticDeletion"))
 		case "2":
-			tools.CallClear() // 清屏
 			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/yushantanjj.png", viper.GetBool("automaticDeletion"))
 		case "3":
-			tools.CallClear() // 清屏
 			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/sufanjj.png", viper.GetBool("automaticDeletion"))
 		case "4":
-			tools.CallClear() // 清屏
 			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/tangyujj.png", viper.GetBool("automaticDeletion"))
 		case "5":
-			tools.CallClear() // 清屏
 
 		case "6":
-			tools.CallClear() // 清屏
 
 		case "7":
-			tools.CallClear() // 清屏
 
 		case "8":
-			tools.CallClear() // 清屏
 
 		case "9":
-			tools.CallClear() // 清屏
 
 		case "-", "--":
 			goto FLAG
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
+			continue
 		default:
-			tools.CallClear() // 清屏
 			continue
 		}
 	}
@@ -230,30 +226,29 @@ func screenMainPictureChoice() {
    [4]御尚屏风                   [5]金尊主图                   [6]暂未开发`
 		fmt.Println(text)
 
-		layoutType := model.Input("\n:: 请选择需要使用的功能：", false)
-
+		layoutType, info := model.Input("\n:: 请选择需要使用的功能：", false,true)
+		tools.CallClear() // 清屏
 		switch layoutType {
 		case "1":
-			tools.CallClear() // 清屏
 			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/mulan.png", viper.GetBool("automaticDeletion"))
 		case "2":
-			tools.CallClear() // 清屏
 			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/huafu.png", viper.GetBool("automaticDeletion"))
 		case "3":
-			tools.CallClear() // 清屏
 			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/muyunge.png", viper.GetBool("automaticDeletion"))
 		case "4":
-			tools.CallClear() // 清屏
 			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/yushantanpf.png", viper.GetBool("automaticDeletion"))
 		case "5":
-			tools.CallClear() // 清屏
 			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/jinzunfu.png", viper.GetBool("automaticDeletion"))
 		case "6":
-			tools.CallClear() // 清屏
 		case "-", "--":
 			goto FLAG
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
+			continue
 		default:
-			tools.CallClear() // 清屏
 			continue
 		}
 	}

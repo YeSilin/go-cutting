@@ -24,7 +24,7 @@ func Choice() {
    [7]修改分辨率                [8]替换详情页                [9]导出详情页`
 		fmt.Println(text)
 
-		layoutType := model.Input("\n:: 请选择需要使用的功能：", false)
+		layoutType, info := model.Input("\n:: 请选择需要使用的功能：", false,true)
 		tools.CallClear() // 清屏
 		switch layoutType {
 		case "1":
@@ -50,6 +50,12 @@ func Choice() {
 			model.StartCode98() // 详情页导出
 		case "-", "--":
 			goto FLAG
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
+			continue
 		default:
 			fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入！\n", model.ColourString(layoutType, ctc.ForegroundGreen))
 			continue

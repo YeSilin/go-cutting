@@ -19,7 +19,7 @@ func StartCode1() {
 	go tools.DeleteRedundantBackups("Config/JSX/Temp/*", 30)
 }
 
-// 启动暗号-2
+// 启动暗号-2 重建新文档
 func StartCode2() {
 	// 创建一个协程使用cmd来运行脚本
 	dataPath := "config/jsx/newDocument.jsx"

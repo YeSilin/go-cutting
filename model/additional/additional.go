@@ -38,7 +38,7 @@ func Additional() {
    [7]定时十八点关机          [8]取消十八点关机         [9]PSD文件修复`
 		fmt.Println(tips)
 
-		var help = model.Input("\n:: 请选择需要使用的功能：", false)
+		help , info:= model.Input("\n:: 请选择需要使用的功能：", false,true)
 		tools.CallClear() // 清屏
 		switch help {
 		case "1": //激活win10系统
@@ -98,7 +98,12 @@ func Additional() {
 			fmt.Println("\n:: 正在打开附加PSD文件修复工具，请稍后...")
 		case "-":
 			goto FLAG //跳出循环
-
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
+			continue
 		default:
 			continue
 		}

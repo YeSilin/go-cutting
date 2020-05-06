@@ -109,7 +109,7 @@ func modifyAutomaticAddBlackEdge() {
 func modifyLatestCanvasReservation() {
 	model.EnglishTitle("Modify Latest Canvas Reservation", 74)
 	fmt.Println("\n【警告】修改此项将直接影响最终的切图结果，如未出现特殊情况请勿修改")
-	var tempReserve = model.Input("\n【警告】请输入最新的切图预留：", false)
+	tempReserve, _ := model.Input("\n【警告】请输入最新的切图预留：", false,false)
 
 	switch tempReserve {
 	case "-":
@@ -228,7 +228,7 @@ func ModifySetting() {
 	for {
 		current() // 显示当前状态
 
-		var modify = model.Input("\n:: 请选择需要修改的设置：", false)
+		modify, info := model.Input("\n:: 请选择需要修改的设置：", false,true)
 		tools.CallClear() // 清屏
 		switch modify {
 		case "1":
@@ -241,7 +241,7 @@ func ModifySetting() {
 		case "4":
 			fmt.Println("\n:: 自定义前缀可以在使用【-1】暗号时自动添加，例如定义为【沐：】为前缀！")
 			fmt.Println("\n此功能未开发，设置无效")
-			var tempPrefixStr = model.Input("\n:: 请输入最新的切图前缀：", false)
+			tempPrefixStr, _ := model.Input("\n:: 请输入最新的切图前缀：", false,false)
 
 			switch tempPrefixStr {
 			case "-":
@@ -268,6 +268,12 @@ func ModifySetting() {
 			modifyToDefaultSetting() // 恢复默认设置
 		case "-":
 			goto FLAG // 跳到循环结束
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
+			continue
 		default:
 			continue
 		}

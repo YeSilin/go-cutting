@@ -41,7 +41,7 @@ func main() {
 	// 定义私密文件路径
 	PrivateFile, _ := tools.Home()
 	PrivateFile = fmt.Sprintf("%s\\Documents\\Adobe\\Config.chx", PrivateFile)
-	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.001017, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
+	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.001018, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
 	// 如果权限不是true
 	if !power {
 		fmt.Println(tips)
@@ -51,7 +51,7 @@ func main() {
 
 	for {
 		fmt.Println(tips) // 提示信息
-		color.LightCyan.Println("\n " + (strings.Repeat("-", 18)) + " Welcome to the GoCutting v1.1.17 app " + strings.Repeat("-", 17))
+		color.LightCyan.Println("\n " + (strings.Repeat("-", 18)) + " Welcome to the GoCutting v1.1.18 app " + strings.Repeat("-", 17))
 		fmt.Println("\n:: 添加新暗号【--】返回上一次输入，例如镂空大小输错，返回重新输入镂空大小！")
 
 		tips := `
@@ -59,7 +59,8 @@ func main() {
 
    [5]附加功能         [6]暗号列表         [7]设置中心         [8]帮助信息`
 		fmt.Println(tips)
-		factory := model.Input("\n:: 请选择上方的菜单功能：", false)
+
+		factory, info := model.Input("\n:: 请选择上方的菜单功能：", false, true)
 		tools.CallClear() // 清屏
 		switch factory {
 		case "1":
@@ -83,6 +84,12 @@ func main() {
 			model.Help() // 帮助
 		case "-", "--":
 			fmt.Println(":: 已经是最顶层菜单了，无需再返回，输入其他数字试下其他功能吧！")
+			continue
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
 			continue
 		default:
 			fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入！\n", model.ColourString(factory, ctc.ForegroundGreen))

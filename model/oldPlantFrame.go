@@ -26,7 +26,7 @@ func OldFrameChoice() {
    [7]多个座屏                   [8]卷帘座屏                   [9]不扣补切`
 		fmt.Println(text)
 
-		frameType := Input("\n:: 请选择上方的边框类型：", false)
+		frameType , info:= Input("\n:: 请选择上方的边框类型：", false,true)
 		tools.CallClear() // 清屏
 		switch frameType {
 		case "1":
@@ -49,6 +49,12 @@ func OldFrameChoice() {
 			OldFrame9()       // 补切画布
 		case "-", "--":
 			goto FLAG
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
+			continue
 		default:
 			fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入！\n", ColourString(frameType, ctc.ForegroundGreen))
 			continue
@@ -89,7 +95,7 @@ func OldFrame1() {
 	for {
 		ChineseTitle("当前框架常规座屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
-			saveSizeStr[i] = Input(inputPrompt[i], true)
+			saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
@@ -160,9 +166,9 @@ func OldFrame2() {
 
 			// 只有前两个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] = Input(inputPrompt[i], true)
+				saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
 			} else {
-				saveSizeStr[i] = Input(inputPrompt[i], false)
+				saveSizeStr[i] , _= Input(inputPrompt[i], false,false)
 			}
 
 			// 输入返回当然要返回啦
@@ -260,9 +266,9 @@ func OldFrame3() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前3个需要开启画布模式
 			if i < 3 {
-				saveSizeStr[i] = Input(inputPrompt[i], true)
+				saveSizeStr[i], _ = Input(inputPrompt[i], true,false)
 			} else {
-				saveSizeStr[i] = Input(inputPrompt[i], false)
+				saveSizeStr[i], _ = Input(inputPrompt[i], false,false)
 			}
 
 			// 输入返回当然要返回啦
@@ -345,9 +351,9 @@ func OldFrame4() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] = Input(inputPrompt[i], true)
+				saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
 			} else {
-				saveSizeStr[i] = Input(inputPrompt[i], false)
+				saveSizeStr[i] , _= Input(inputPrompt[i], false,false)
 			}
 
 			// 输入返回当然要返回啦
@@ -439,9 +445,9 @@ func OldFrame5() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] = Input(inputPrompt[i], true)
+				saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
 			} else {
-				saveSizeStr[i] = Input(inputPrompt[i], false)
+				saveSizeStr[i] , _= Input(inputPrompt[i], false,false)
 			}
 
 			// 输入返回当然要返回啦
@@ -515,9 +521,9 @@ func OldFrame6() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] = Input(inputPrompt[i], true)
+				saveSizeStr[i], _ = Input(inputPrompt[i], true,false)
 			} else {
-				saveSizeStr[i] = Input(inputPrompt[i], false)
+				saveSizeStr[i] , _= Input(inputPrompt[i], false,false)
 			}
 
 			// 输入返回当然要返回啦
@@ -694,7 +700,7 @@ func OldFrame7() {
 	// 循环使用此框架
 	for {
 		ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
-		numberStr := Input("\n:: 请输入拥有几个座屏：", false)
+		numberStr, _ := Input("\n:: 请输入拥有几个座屏：", false,false)
 		// 一开始就返回直接退出函数
 		if numberStr == "-" || numberStr == "--" {
 			return
@@ -720,9 +726,9 @@ func OldFrame7() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 除了最后一个都需要开启画布模式
 			if i != len(saveSizeStr)-1 {
-				saveSizeStr[i] = Input(inputPrompt[i], true)
+				saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
 			} else {
-				saveSizeStr[i] = Input(inputPrompt[i], false)
+				saveSizeStr[i], _ = Input(inputPrompt[i], false,false)
 			}
 
 			// 输入返回当然要返回啦
@@ -813,7 +819,7 @@ func OldFrame7bk() {
 	for {
 	UP1: // 主要给宽返回
 		ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
-		numberStr := Input("\n:: 请输入拥有几个座屏：", false)
+		numberStr, _ := Input("\n:: 请输入拥有几个座屏：", false,false)
 		if numberStr == "-" {
 			break
 		}
@@ -849,7 +855,7 @@ func OldFrame7bk() {
 
 		UP2: // 主要给高返回
 			// 可以用 Sprintf 来将格式化后的字符串赋值给一个变量
-			widthTemp = Input(fmt.Sprintf("\n:: 请输入第%s个座屏的宽：", tools.Transfer(i+1)), true)
+			widthTemp , _= Input(fmt.Sprintf("\n:: 请输入第%s个座屏的宽：", tools.Transfer(i+1)), true,false)
 			if widthTemp == "-" {
 				goto FLAG // 跳转到函数结束
 			}
@@ -865,7 +871,7 @@ func OldFrame7bk() {
 			widthStrSlice[i] = widthTemp
 		UP3: // 主要给宽返回
 			// 开始接收高度至列表
-			heightTemp := Input(fmt.Sprintf("\n:: 请输入第%s个座屏的高：", tools.Transfer(i+1)), true)
+			heightTemp , _:= Input(fmt.Sprintf("\n:: 请输入第%s个座屏的高：", tools.Transfer(i+1)), true,false)
 			if heightTemp == "-" {
 				goto FLAG // 跳转到函数结束
 			}
@@ -877,7 +883,7 @@ func OldFrame7bk() {
 			heightStrSlice[i] = heightTemp
 		}
 
-		downHollowOutStr := Input("\n:: 每个座屏的下镂空均是：", false)
+		downHollowOutStr, _ := Input("\n:: 每个座屏的下镂空均是：", false,false)
 		if downHollowOutStr == "-" {
 			break
 		}
@@ -986,7 +992,7 @@ func OldFrame8() {
 	for {
 		ChineseTitle("当前框架卷帘座屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
-			saveSizeStr[i] = Input(inputPrompt[i], true)
+			saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
@@ -1049,7 +1055,7 @@ func OldFrame9() {
 		fmt.Println("\n【补切】主要用来补切画布，不减去任何边框尺寸，适合不想手动新建画布时使用！")
 
 		for i := 0; i < len(saveSizeStr); i++ {
-			saveSizeStr[i] = Input(inputPrompt[i], true)
+			saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {

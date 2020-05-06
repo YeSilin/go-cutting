@@ -13,7 +13,7 @@ func Help() {
 		EnglishTitle("Help info", 74)
 		fmt.Println("\n:: 此项目是通过注入JS脚本对PS进行短暂的间接控制，非实时监控，资源消耗极低！")
 		fmt.Println("\n   [1]查看快捷暗号             [2]查看切图规则             [3]查看功能说明")
-		var help = Input("\n:: 请选择需要查看的帮助：", false)
+		help, info := Input("\n:: 请选择需要查看的帮助：", false,true)
 		tools.CallClear() // 清屏
 		switch help {
 		case "1":
@@ -24,6 +24,12 @@ func Help() {
 			skill() // 软件使用技巧
 		case "-":
 			goto FLAG //跳出循环
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
+			continue
 		default:
 			fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入！\n", ColourString(help, ctc.ForegroundGreen))
 			continue

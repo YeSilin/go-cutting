@@ -135,7 +135,7 @@ func modifyResolution() {
 
    [1]全部改为72PPI         [2]全部改为300PPI         [3]全部改为自定义PPI`
 		fmt.Println(text)
-		layoutType := model.Input("\n:: 请选择需要使用的功能：", false)
+		layoutType , info:= model.Input("\n:: 请选择需要使用的功能：", false,true)
 
 		switch layoutType {
 		case "1":
@@ -148,6 +148,12 @@ func modifyResolution() {
 			go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", viper.GetString("picture"))).Run() // 打开套图文件夹
 		case "-", "--":
 			goto FLAG
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
+			continue
 		default:
 			tools.CallClear() // 清屏
 			continue

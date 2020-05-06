@@ -24,7 +24,7 @@ func MapFrameChoice() {
    [7]多个座屏贴图             [8]卷帘座屏贴图             [9]不扣补切贴图`
 		fmt.Println(text)
 
-		frameType := Input("\n:: 请选择上方的边框类型：", false)
+		frameType , info:= Input("\n:: 请选择上方的边框类型：", false,true)
 		tools.CallClear() // 清屏
 		switch frameType {
 		case "1":
@@ -45,6 +45,12 @@ func MapFrameChoice() {
 			fmt.Println("未开发") // 补切画布
 		case "-":
 			goto FLAG
+		case "cls":
+			// 收到清屏命令
+			if len(info) != 0 {
+				fmt.Println(info)
+			}
+			continue
 		default:
 			continue
 		}
@@ -57,15 +63,15 @@ func mapFrame1() {
 	for {
 		ChineseTitle("当前框架常规座屏贴图 ", 74) // 请注意切图的工厂与框架的选择
 
-		widthStr := Input("\n:: 请输入常规座屏的宽：", true)
+		widthStr, _ := Input("\n:: 请输入常规座屏的宽：", true,false)
 		if widthStr == "-" {
 			break
 		}
-		heightStr := Input("\n:: 请输入常规座屏的高：", true)
+		heightStr, _ := Input("\n:: 请输入常规座屏的高：", true,false)
 		if heightStr == "-" {
 			break
 		}
-		reserveStr := Input("\n:: 请输入要减去的单边框大小(一般为40)：", false)
+		reserveStr, _ := Input("\n:: 请输入要减去的单边框大小(一般为40)：", false,false)
 		if reserveStr == "-" {
 			break
 		}
@@ -100,31 +106,31 @@ func mapFrame6() {
 	for {
 		ChineseTitle("当前框架各种折屏贴图", 74) // 请注意切图的工厂与框架的选择
 
-		widthStr := Input("\n:: 请输入折屏单扇的宽：", true)
+		widthStr, _ := Input("\n:: 请输入折屏单扇的宽：", true,false)
 		if widthStr == "-" {
 			break
 		}
-		heightStr := Input("\n:: 请输入折屏单扇的高：", true)
+		heightStr , _:= Input("\n:: 请输入折屏单扇的高：", true,false)
 		if heightStr == "-" {
 			break
 		}
-		upperHollowOutStr := Input("\n:: 请输入上镂空的大小：", false)
+		upperHollowOutStr, _ := Input("\n:: 请输入上镂空的大小：", false,false)
 		if heightStr == "-" {
 			break
 		}
 
-		downHollowOutStr := Input("\n:: 请输入下镂空的大小：", false)
+		downHollowOutStr , _:= Input("\n:: 请输入下镂空的大小：", false,false)
 		if heightStr == "-" {
 
 			break
 		}
 
-		numberStr := Input("\n:: 请输入共拥有几扇：", false)
+		numberStr , _:= Input("\n:: 请输入共拥有几扇：", false,false)
 		if numberStr == "-" {
 			break
 		}
 
-		reserveStr := Input("\n:: 请输入要减去的单边框大小(一般为40)：", false)
+		reserveStr, _ := Input("\n:: 请输入要减去的单边框大小(一般为40)：", false,false)
 		if reserveStr == "-" {
 			break
 		}
