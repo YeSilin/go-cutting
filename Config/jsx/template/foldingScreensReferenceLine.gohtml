@@ -1,0 +1,13 @@
+
+// ----------------------------------------------------------------------------------------------------------------------------
+// 定义一个函数用于新建参考线
+function addLine(width, num) {
+    for (var i = 1; i < num; i++) {
+        // 定义单扇宽度
+        var singleFan = i * width + "cm";
+        activeDocument.guides.add(Direction.VERTICAL, UnitValue(singleFan));
+    }
+}
+
+// 调用并生成历史记录
+app.activeDocument.suspendHistory("折屏参考线！", "addLine({{.Width}},{{.Number}})");  // 这里传golang参数！！！！！！！！！！！！！！！！！！！！！！！！！！
