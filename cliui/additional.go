@@ -1,34 +1,18 @@
-package additional
+package cliui
 
 import (
 	"fmt"
+	"github.com/yesilin/go-cutting/additional"
 
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
-	"os"
 	"os/exec"
-	"time"
 )
 
-// 批量文件改名
-func haoZipRename() {
-	dataPath := "Config/EXE/HaoZipRename/HaoZipRename.exe"
-	exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 
-	// 获取主目录
-	haozipPath, _ := tools.Home()
-	haozipPath = fmt.Sprintf("%s/AppData/Roaming/HaoZip", haozipPath)
-	// 删除文件残留
-	time.Sleep(1 * time.Second) // 休眠1秒
-	del := os.RemoveAll(haozipPath)
-	if del != nil {
-		fmt.Println(del)
-	}
-}
-
-func Additional() {
+func additionalChoice() {
 	for {
-		model.EnglishTitle("Additional", 74)
+		tools.EnglishTitle("Additional", 74)
 		fmt.Println("\n:: 这里提供一些实用的附加功能，例如常见问题与简单的系统优化一键式解决方案！")
 		tips := `
    [1]激活WIN10系统           [2]微信QQ防撤回           [3]取得文件所有权
@@ -64,8 +48,8 @@ func Additional() {
 
 		case "4":
 			// 净化设备驱动器
-			CURRENT_USER_NoNameSpace()
-			LOCAL_MACHINE_NoNameSpace()
+			additional.CURRENT_USER_NoNameSpace()
+			additional.LOCAL_MACHINE_NoNameSpace()
 		case "5":
 			// 重启资源管理器
 			// 创建一个协程使用cmd启动外部程序

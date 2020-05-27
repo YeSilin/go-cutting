@@ -181,3 +181,12 @@ func DeleteRedundantBackups(pattern string, max int) {
 		}
 	}
 }
+
+// 因为Go会自动存储1.003为1.002999...
+// 因此正整数添加0.5，负数减去0.5
+func Float64ToInt64(f float64) int64 {
+	if f < 0 {
+		return int64(f - 0.5)
+	}
+	return int64(f + 0.5)
+}

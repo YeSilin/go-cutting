@@ -4,70 +4,16 @@ import (
 	"fmt"
 	"github.com/gookit/color"
 	"github.com/spf13/viper"
-	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
 	"strconv"
-	"time"
 )
 
-// 旧厂框架的选择
-func OldFrameChoice() {
-	for {
-		EnglishTitle("Cutting", 74)
-		text := `
-:: 下方所有框架的切图单位均是厘米，支持使用小数点来表示毫米，但是意义不大！
 
-   [1]常规座屏                   [2]左右镂空                   [3]左右画布
 
-   [4]上下镂空                   [5]顶天立地                   [6]各种折屏
 
-   [7]多个座屏                   [8]卷帘座屏                   [9]不扣补切`
-		fmt.Println(text)
 
-		frameType , info:= Input("\n:: 请选择上方的边框类型：", false,true)
-		tools.CallClear() // 清屏
-		switch frameType {
-		case "1":
-			OldFrame1()       // 小座屏
-		case "2":
-			OldFrame2()       // 左右镂空
-		case "3":
-			OldFrame3()       // 左右画布
-		case "4":
-			OldFrame4()       // 上下镂空
-		case "5":
-			OldFrame5()       // 顶天立地
-		case "6":
-			OldFrame6()       // 常规折屏
-		case "7":
-			OldFrame7()       // 多座屏
-		case "8":
-			OldFrame8()       // 卷帘座屏
-		case "9":
-			OldFrame9()       // 补切画布
-		case "-", "--":
-			goto FLAG
-		case "cls":
-			// 收到清屏命令
-			if len(info) != 0 {
-				fmt.Println(info)
-			}
-			continue
-		default:
-			fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入！\n", ColourString(frameType, ctc.ForegroundGreen))
-			continue
-		}
-	}
-FLAG:
-}
-
-// 返回当前时间
-func nowTime() (now string) {
-	// 获取当前时间，进行格式化 2006-01-02 15:04:05
-	return time.Now().Format("060102150405")
-}
 
 // 是否打开自动新建文档
 func isOpenPs() {
@@ -78,6 +24,7 @@ func isOpenPs() {
 		go cmd.Run()
 	}
 }
+
 
 //旧厂小座屏
 //边框是5  扣掉两个边框5+5 然后再加回来5厘米  可以理解为扣5*/
@@ -93,7 +40,7 @@ func OldFrame1() {
 
 	// 循环使用此框架
 	for {
-		ChineseTitle("当前框架常规座屏", 74) // 请注意切图的工厂与框架的选择
+		tools.ChineseTitle("当前框架常规座屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
 			saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
 
@@ -133,18 +80,19 @@ func OldFrame1() {
 		go History(history) // 写入历史
 
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", nowTime(), width, height)
+		frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", tools.NowTime(), width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
 		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                    // 最大画布判断
 
-		isOpenPs()                    // 是否打开自动新建文档
+		//model.isOpenPs()                    // 是否打开自动新建文档
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}
 }
+
 
 //旧厂左右镂空
 //先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个竖边 空出的中间画面加5厘米  旧厂的边框实际厚度是5厘米
@@ -161,7 +109,7 @@ func OldFrame2() {
 
 	// 循环使用此框架
 	for {
-		ChineseTitle("当前框架左右镂空", 74) // 请注意切图的工厂与框架的选择
+		tools.ChineseTitle("当前框架左右镂空", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
 
 			// 只有前两个需要开启画布模式
@@ -233,7 +181,7 @@ func OldFrame2() {
 		go History(history) // 写入历史
 
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", nowTime(), tempName, width, height)
+		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), tempName, width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
 		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
@@ -262,7 +210,7 @@ func OldFrame3() {
 
 	// 循环使用此框架
 	for {
-		ChineseTitle("当前框架左右画布", 74) // 请注意切图的工厂与框架的选择
+		tools.ChineseTitle("当前框架左右画布", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前3个需要开启画布模式
 			if i < 3 {
@@ -317,7 +265,7 @@ func OldFrame3() {
 		go History(history) // 写入历史
 
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_左右画布_%.0fx%.0f", nowTime(), totalWidth, height)
+		frameName := fmt.Sprintf("%s_左右画布_%.0fx%.0f", tools.NowTime(), totalWidth, height)
 
 		generate.NewDocument(totalWidth, height, frameName, false) // 创建ps文档
 		generate.LineJs3(width, hollowOut)                         // 生成专属参考线
@@ -347,7 +295,7 @@ func OldFrame4() {
 
 	// 循环使用此框架
 	for {
-		ChineseTitle("当前框架上下镂空", 74) // 请注意切图的工厂与框架的选择
+		tools.ChineseTitle("当前框架上下镂空", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
@@ -412,7 +360,7 @@ func OldFrame4() {
 		go History(history) // 写入历史
 
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", nowTime(), tempName, width, height)
+		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), tempName, width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
 		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
@@ -440,7 +388,7 @@ func OldFrame5() {
 	saveSizeStr := [5]string{}
 
 	for {
-		ChineseTitle("当前框架顶天立地", 74) // 请注意切图的工厂与框架的选择
+		tools.ChineseTitle("当前框架顶天立地", 74) // 请注意切图的工厂与框架的选择
 
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
@@ -489,7 +437,7 @@ func OldFrame5() {
 		go History(history) // 写入历史
 
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_顶天立地_%.0fx%.0f", nowTime(), width, height)
+		frameName := fmt.Sprintf("%s_顶天立地_%.0fx%.0f", tools.NowTime(), width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
 		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
@@ -517,7 +465,7 @@ func OldFrame6() {
 	saveSizeStr := [5]string{}
 
 	for {
-		ChineseTitle("当前框架各种折屏", 74) // 请注意切图的工厂与框架的选择
+		tools.ChineseTitle("当前框架各种折屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
@@ -584,7 +532,7 @@ func OldFrame6() {
 		go History(history) // 写入历史
 
 		//获取当前时间，进行格式化 2006-01-02 15:04:05
-		now := nowTime()
+		now := tools.NowTime()
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s折屏_%.0fx%.0f", now, tempName, totalWidth, height)
@@ -699,7 +647,7 @@ func OldFrame7() {
 
 	// 循环使用此框架
 	for {
-		ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
+		tools.ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
 		numberStr, _ := Input("\n:: 请输入拥有几个座屏：", false,false)
 		// 一开始就返回直接退出函数
 		if numberStr == "-" || numberStr == "--" {
@@ -797,7 +745,7 @@ func OldFrame7() {
 		color.Yellow.Printf("\n:: 多座屏：总宽 %.2f cm，高 %.2f cm", widthSum, heightMax)
 
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_%s座屏_%.0fx%.0f", nowTime(), tools.Transfer(len(widthSlice)), widthSum, heightMax)
+		frameName := fmt.Sprintf("%s_%s座屏_%.0fx%.0f", tools.NowTime(), tools.Transfer(len(widthSlice)), widthSum, heightMax)
 
 		generate.NewDocument(widthSum, heightMax, frameName, false) // 创建ps文档
 		generate.LineJs7(widthSlice, heightSlice, heightMax, heightMin)
@@ -818,7 +766,7 @@ func OldFrame7bk() {
 
 	for {
 	UP1: // 主要给宽返回
-		ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
+		tools.ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
 		numberStr, _ := Input("\n:: 请输入拥有几个座屏：", false,false)
 		if numberStr == "-" {
 			break
@@ -959,7 +907,7 @@ func OldFrame7bk() {
 		color.Yellow.Printf("\n:: 多座屏：总宽 %.2f cm，高 %.2f cm", widthSum, heightMax)
 
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_%s座屏_%.0fx%.0f", nowTime(), tools.Transfer(len(widthSlice)), widthSum, heightMax)
+		frameName := fmt.Sprintf("%s_%s座屏_%.0fx%.0f", tools.NowTime(), tools.Transfer(len(widthSlice)), widthSum, heightMax)
 
 		generate.NewDocument(widthSum, heightMax, frameName, false) // 创建ps文档
 		generate.LineJs7(widthSlice, heightSlice, heightMax, heightMin)
@@ -990,7 +938,7 @@ func OldFrame8() {
 	saveSizeStr := [2]string{}
 
 	for {
-		ChineseTitle("当前框架卷帘座屏", 74) // 请注意切图的工厂与框架的选择
+		tools.ChineseTitle("当前框架卷帘座屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
 			saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
 
@@ -1029,7 +977,7 @@ func OldFrame8() {
 		go History(history) // 写入历史
 
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_卷帘座屏_%.0fx%.0f", nowTime(), width, height)
+		frameName := fmt.Sprintf("%s_卷帘座屏_%.0fx%.0f", tools.NowTime(), width, height)
 
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
 		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
@@ -1051,7 +999,7 @@ func OldFrame9() {
 	saveSizeStr := [2]string{}
 
 	for {
-		ChineseTitle("当前框架补切画布", 74) // 请注意切图的工厂与框架的选择
+		tools.ChineseTitle("当前框架补切画布", 74) // 请注意切图的工厂与框架的选择
 		fmt.Println("\n【补切】主要用来补切画布，不减去任何边框尺寸，适合不想手动新建画布时使用！")
 
 		for i := 0; i < len(saveSizeStr); i++ {
@@ -1087,7 +1035,7 @@ func OldFrame9() {
 		go History(history) // 写入历史
 
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_补切画布_%.0fx%.0f", nowTime(), width, height)
+		frameName := fmt.Sprintf("%s_补切画布_%.0fx%.0f", tools.NowTime(), width, height)
 
 		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档

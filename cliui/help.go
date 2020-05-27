@@ -1,19 +1,20 @@
-package model
+package cliui
 
 import (
 	"fmt"
 	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
+	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 )
 
 /**初始化*/
 func Help() {
 	for {
-		EnglishTitle("Help info", 74)
+		tools.EnglishTitle("Help info", 74)
 		fmt.Println("\n:: 此项目是通过注入JS脚本对PS进行短暂的间接控制，非实时监控，资源消耗极低！")
 		fmt.Println("\n   [1]查看快捷暗号             [2]查看切图规则             [3]查看功能说明")
-		help, info := Input("\n:: 请选择需要查看的帮助：", false,true)
+		help, info := model.Input("\n:: 请选择需要查看的帮助：", false,true)
 		tools.CallClear() // 清屏
 		switch help {
 		case "1":
@@ -31,7 +32,7 @@ func Help() {
 			}
 			continue
 		default:
-			fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入！\n", ColourString(help, ctc.ForegroundGreen))
+			fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入！\n", tools.ColourString(help, ctc.ForegroundGreen))
 			continue
 		}
 	}
@@ -51,11 +52,7 @@ func key() {
 
    [-6]快速清理PSD           [-7]自动加黑边             [-8]清屏快捷键
 
-   [-9]到切图历史            [-10]优化版另存            [-12]左右镂空
-
-   [-13]中间大两边小         [-14]上下镂空              [-15]顶天立地
-
-   [-16]常规折屏             [-17]三座屏                [-96]功能未开发
+   [-9]到切图历史            [-10]优化版另存            [-96]功能未开发
 
    [-97]替换详情页           [-98]快速导出图片          [-99]激活win10系统`
 	fmt.Println(tips)
@@ -70,7 +67,7 @@ func careful() {
 	fmt.Println("\n   4. 颜色配置文件是 工作中的CMYK:Japan color 2001 Coated")
 	fmt.Println("\n   5. 切图时动物和文字都不能被切到")
 	fmt.Println("\n   6. 四周是纯白底色的时候要加 0.5厘米的黑色描边 快捷键是 Alt + Ctrl + C")
-	fmt.Println("\n   7. 切图时半透最大148的宽，不透最大180的宽")
+	fmt.Println("\n   7. 切图时半透或透光不透影最大148的宽，不透最大180的宽")
 	fmt.Println("\n   8. 切图遇到不透画布并且双面图案不一样时，每张需额外备注：“印一张”")
 	fmt.Printf("\n   9. 目前软件公式中，旧厂订布预留是 %.2f 厘米！\n", viper.GetFloat64("reserve"))
 

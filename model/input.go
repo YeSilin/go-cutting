@@ -4,10 +4,9 @@ package model
 import (
 	"bufio"
 	"fmt"
-	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/clib"
-	"github.com/yesilin/go-cutting/generate"
+	"github.com/yesilin/go-cutting/code"
 	"github.com/yesilin/go-cutting/tools"
 	"os"
 	"regexp"
@@ -20,68 +19,41 @@ func runCode(num string) (ok bool, info string) {
 	// 开始指定功能
 	switch num {
 	case "-1":
-		StartCode1()
+		code.StartCode1()
 		return true, "\n:: 检测到输入的内容成功匹配暗号，正在调用快捷裁剪..."
 	case "-2":
-		StartCode2()
+		code.StartCode2()
 		return true, "\n:: 检测到输入的内容成功匹配暗号，正在重建新文档..."
 	case "-3":
-		StartCode3() // 深度清除源数据
+		code.StartCode3() // 深度清除源数据
 		return true, "\n:: 检测到输入的内容成功匹配暗号，正在深度清理PSD..."
 	case "-4":
-		StartCode4() // 工作目录
+		code.StartCode4() // 工作目录
 	case "-5":
 		return true, "\n:: 检测到输入的内容成功匹配暗号，但是此暗号未指定功能..."
 	case "-6":
-		StartCode6() // 简单清除元数据
+		code.StartCode6() // 简单清除元数据
 		return true, "\n:: 检测到输入的内容成功匹配暗号，正在快速清理PSD..."
 	case "-7":
-		StartCode7() // 为当前文档添加黑边
+		code.StartCode7() // 为当前文档添加黑边
 		return true, "\n:: 检测到输入的内容成功匹配暗号，正在为当前文档添加黑边..."
 	case "-8":
 		tools.CallClear() // 清屏
 		return true, ""
 	case "-9":
-		StartCode9() // 打开历史记录
+		code.StartCode9() // 打开历史记录
 		return true, "\n:: 检测到输入的内容成功匹配暗号，正在打开切图历史..."
 	case "-10":
-		StartCode10() // 快捷另存为jpg
-		return true, ""
-	case "-11":
-		OldFrame1()
-		return true, ""
-	case "-12":
-		OldFrame2()
-		return true, ""
-	case "-13":
-		OldFrame3()
-		return true, ""
-	case "-14":
-		OldFrame4()
-		return true, ""
-	case "-15":
-		OldFrame5()
-		return true, ""
-	case "-16":
-		OldFrame6()
-		return true, ""
-	case "-17":
-		OldFrame7()
-		return true, ""
-	case "-18":
-		OldFrame8()
-		return true, ""
-	case "-19":
-		OldFrame9()
+		code.StartCode10() // 快捷另存为jpg
 		return true, ""
 	case "-97":
-		generate.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
+		code.StartCode97()
 		return true, ""
 	case "-98":
-		StartCode98()
+		code.StartCode98()
 		return true, ""
 	case "-99":
-		StartCode99()
+		code.StartCode99()
 		return true, ""
 	}
 	return false, ""
@@ -155,10 +127,10 @@ func Input(tips string, canvasMode, cls bool) (num, info string) {
 		}
 
 		// 如果包含中文就转拼音
-		if IncludeChinese2(num) {
+		if tools.IncludeChinese2(num) {
 			if cls {
 				// 返回拼音
-				return strings.Join(ToPinyin(num), " "), ""
+				return strings.Join(tools.ToPinyin(num), " "), ""
 			}
 			// 覆盖之前的信息
 			refreshRow()
@@ -207,7 +179,7 @@ func Input(tips string, canvasMode, cls bool) (num, info string) {
 			// 查找当前提示信息中是否已包含 插入的提示信息
 			if !strings.Contains(tips, "（尺寸不可小于6厘米）") {
 				// 没有就插入
-				tips = tools.StrRightInsert(tips, ColourString("（尺寸不可小于6厘米）", ctc.ForegroundRed), 3)
+				tips = tools.StrRightInsert(tips, tools.ColourString("（尺寸不可小于6厘米）", ctc.ForegroundRed), 3)
 			}
 			// 覆盖之前的信息
 			refreshRow()

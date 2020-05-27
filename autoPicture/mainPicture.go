@@ -3,8 +3,6 @@ package autoPicture
 import (
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
-	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"os"
 	"os/exec"
@@ -167,90 +165,4 @@ func WatermarkMasterGraph(originalPath, watermarkPath string, delete bool) {
 	fmt.Println("\n【提示】已转成 800*800 如果文件丢失，备份文件夹在上级目录下的 Backups！")
 }
 
-//  家具主图选择
-func furnitureMainPictureChoice() {
-	for {
-		model.EnglishTitle("Furniture main picture choice", 74)
-		text := `
-:: 家具店主图会自动识别白底图，并排除白底图，为其他图片加上专属水印与Logo！
 
-   [1]怡柟家具                   [2]御尚家具                   [3]素梵家具
-
-   [4]棠语家具                   [5]暂未开发                   [6]暂未开发`
-		fmt.Println(text)
-		layoutType, info := model.Input("\n:: 请选择需要使用的功能：", false,true)
-		tools.CallClear() // 清屏
-		switch layoutType {
-		case "1":
-			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/yinanjj.png", viper.GetBool("automaticDeletion"))
-		case "2":
-			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/yushantanjj.png", viper.GetBool("automaticDeletion"))
-		case "3":
-			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/sufanjj.png", viper.GetBool("automaticDeletion"))
-		case "4":
-			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/tangyujj.png", viper.GetBool("automaticDeletion"))
-		case "5":
-
-		case "6":
-
-		case "7":
-
-		case "8":
-
-		case "9":
-
-		case "-", "--":
-			goto FLAG
-		case "cls":
-			// 收到清屏命令
-			if len(info) != 0 {
-				fmt.Println(info)
-			}
-			continue
-		default:
-			continue
-		}
-	}
-FLAG:
-}
-
-//  屏风主图选择
-func screenMainPictureChoice() {
-	for {
-		model.EnglishTitle("Screen main picture choice", 74)
-		text := `
-:: 屏风店主图会自动识别白底图，并排除白底图，为其他图片加上专属水印与Logo！
-
-   [1]沐兰主图                   [2]华府主图                   [3]木韵主图
-
-   [4]御尚屏风                   [5]金尊主图                   [6]暂未开发`
-		fmt.Println(text)
-
-		layoutType, info := model.Input("\n:: 请选择需要使用的功能：", false,true)
-		tools.CallClear() // 清屏
-		switch layoutType {
-		case "1":
-			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/mulan.png", viper.GetBool("automaticDeletion"))
-		case "2":
-			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/huafu.png", viper.GetBool("automaticDeletion"))
-		case "3":
-			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/muyunge.png", viper.GetBool("automaticDeletion"))
-		case "4":
-			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/yushantanpf.png", viper.GetBool("automaticDeletion"))
-		case "5":
-			WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/jinzunfu.png", viper.GetBool("automaticDeletion"))
-		case "6":
-		case "-", "--":
-			goto FLAG
-		case "cls":
-			// 收到清屏命令
-			if len(info) != 0 {
-				fmt.Println(info)
-			}
-			continue
-		default:
-			continue
-		}
-	}
-FLAG:
-}

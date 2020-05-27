@@ -1,9 +1,10 @@
 // 启动暗号的函数汇总
-package model
+package code
 
 import (
 	"fmt"
 	"github.com/spf13/viper"
+	"github.com/yesilin/go-cutting/autoPicture"
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
 	"time"
@@ -125,26 +126,14 @@ func StartCode10() {
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
+// 启动暗号-97
+func StartCode97() {
+	autoPicture.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
+}
+
 // 启动暗号-98
 func StartCode98() {
-	go func() {
-		// 自动套图工作路径
-		picturePath := viper.GetString("picture")
-
-		// 创建套图文件夹
-		_ = tools.CreateMkdirAll(fmt.Sprintf("%s/主图", picturePath))
-		// 创建一个协程使用cmd来运行脚本
-		dataPath := "Config/JSX/SaveForWeb.jsx"
-		exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
-
-		time.Sleep(time.Second) // 停一秒
-		// 如果存在images就打开
-		if ok, _ := tools.IsPathExists(fmt.Sprintf("%s/主图/images", picturePath)); ok {
-			exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s\\主图\\images", picturePath)).Run()
-		} else {
-			exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s\\主图", picturePath)).Run()
-		}
-	}()
+	autoPicture.SaveForWebDetailsPage()
 }
 
 // 启动暗号-99

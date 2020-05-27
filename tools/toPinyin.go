@@ -1,5 +1,5 @@
 // 汉字转拼音
-package model
+package tools
 
 import (
 	"github.com/mozillazg/go-pinyin"

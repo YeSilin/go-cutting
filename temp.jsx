@@ -140,10 +140,10 @@ if (!documents.length) {
         var doc = app.activeDocument;
 
         // dp源文件
-        {{.DPStr}}  // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
+        var dpArray = ["/E/淘宝美工/套图汇总/5.jpg"];  // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
 
         // de源文件
-        {{.DEStr}}  // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
+        var deArray = ["/E/淘宝美工/套图汇总/de4.jpg"];  // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
 
         // 这是源文件索引
         var dp = 0;

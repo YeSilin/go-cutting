@@ -3,8 +3,6 @@ package autoPicture
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
-	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"image"
 	"log"
@@ -21,7 +19,7 @@ func PixelsPerInchChangedTo72(originalPath string) {
 	files, _ := filepath.Glob(fmt.Sprintf("%s/*.jpg", originalPath))
 	// 如果jpg文件小于1个，就不执行
 	if len(files) < 1 {
-		fmt.Println("\n【提示】转换失败，因为套图文件夹下没有 jpg 格式图片！")
+		fmt.Println("\n:: 转换失败，因为套图文件夹下没有 jpg 格式图片！")
 		return
 	}
 
@@ -61,7 +59,7 @@ func PixelsPerInchChangedTo72(originalPath string) {
 		tools.DeleteRedundantBackups("Config/Backups/*", 10)
 	}()
 
-	fmt.Println("\n【提示】已转成 72ppi 如果文件丢失，备份文件夹在上级目录下的 Backups！")
+	fmt.Println("\n:: 已转成 72ppi 如果文件丢失，备份文件夹在上级目录下的 Backups！")
 }
 
 // 全部修改为300ppi
@@ -80,7 +78,7 @@ func PixelsPerInchChangedTo300(originalPath string) {
 
 	// 如果jpg文件小于1个，就不执行
 	if len(jpgSlice) < 1 {
-		fmt.Println("\n【提示】转换失败，因为套图文件夹下没有 jpg 格式图片！")
+		fmt.Println("\n:: 转换失败，因为套图文件夹下没有 jpg 格式图片！")
 		return
 	}
 
@@ -123,41 +121,7 @@ func PixelsPerInchChangedTo300(originalPath string) {
 		tools.DeleteRedundantBackups("Config/Backups/*", 10)
 	}()
 
-	fmt.Println("\n【提示】脚本注入成功，正在转成 300PPI 若文件丢失，备份文件在上级目录 Backups！")
+	fmt.Println("\n:: 脚本注入成功，正在转成 300PPI 若文件丢失，备份文件在上级目录 Backups！")
 }
 
-// 修改图片分辨率
-func modifyResolution() {
-	for {
-		model.EnglishTitle("Modify resolution", 74)
-		text := `
-:: 在保持原来长宽像素不变的情况下，将分辨率强行修改至指定数值，请尽量少用！
 
-   [1]全部改为72PPI         [2]全部改为300PPI         [3]全部改为自定义PPI`
-		fmt.Println(text)
-		layoutType , info:= model.Input("\n:: 请选择需要使用的功能：", false,true)
-
-		switch layoutType {
-		case "1":
-			tools.CallClear()
-			PixelsPerInchChangedTo72(viper.GetString("picture"))                                        // 改为72ppi
-			go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", viper.GetString("picture"))).Run() // 打开套图文件夹
-		case "2":
-			tools.CallClear()
-			PixelsPerInchChangedTo300(viper.GetString("picture"))
-			go exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", viper.GetString("picture"))).Run() // 打开套图文件夹
-		case "-", "--":
-			goto FLAG
-		case "cls":
-			// 收到清屏命令
-			if len(info) != 0 {
-				fmt.Println(info)
-			}
-			continue
-		default:
-			tools.CallClear() // 清屏
-			continue
-		}
-	}
-FLAG:
-}

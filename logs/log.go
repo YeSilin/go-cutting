@@ -15,7 +15,7 @@ import (
 func logMultiWriter() io.Writer {
 	writer1 := os.Stdout
 
-	fileName := time.Now().Format("2006-01-02")
+	fileName := time.Now().Format("2006-01")
 	fileName = "config/logs/" + fileName + ".log"
 	writer2, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE, 0644)
 	if err != nil {

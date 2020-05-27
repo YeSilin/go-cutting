@@ -41,8 +41,8 @@ func isStringInput(text string, isPath bool) string {
 }
 
 // 修改是否记忆框架
-func modifyMemoryFrame() {
-	model.EnglishTitle("Modify Memory Frame", 74)
+func ModifyMemoryFrame() {
+	tools.EnglishTitle("Modify Memory Frame", 74)
 	fmt.Println("\n:: 在快捷切图中是否记住框架的选择，如选择普通座屏就会一直停留在普通座屏")
 	var tempMemory = isStringInput("\n【更改】是否记住框架的选择，[1]是，[2]否：", false)
 	switch tempMemory {
@@ -62,8 +62,8 @@ func modifyMemoryFrame() {
 }
 
 // 修改是否自动新建切图文档
-func modifyAutomaticCreateDocuments() {
-	model.EnglishTitle("Modify Automatic Create Documents", 74)
+func ModifyAutomaticCreateDocuments() {
+	tools.EnglishTitle("Modify Automatic Create Documents", 74)
 	fmt.Println("\n:: 在快捷切图中是否在输入好尺寸信息后自动调用 PS 新建此文档")
 
 	var tempOpenPs = isStringInput("\n【更改】是否自动新建切图文档，[1]是，[2]否：", false)
@@ -83,8 +83,8 @@ func modifyAutomaticCreateDocuments() {
 }
 
 // 修改是否自动添加黑边
-func modifyAutomaticAddBlackEdge() {
-	model.EnglishTitle("Modify Automatic Add Black Edge", 74)
+func ModifyAutomaticAddBlackEdge() {
+	tools.EnglishTitle("Modify Automatic Add Black Edge", 74)
 	fmt.Println("\n:: 在快捷切图中是否在使用【-1】保存时自动为当前文档添加黑边")
 
 	var tempBlackEdge = isStringInput("\n【更改】是否切图自动添加黑边，[1]是，[2]否：", false)
@@ -106,8 +106,8 @@ func modifyAutomaticAddBlackEdge() {
 }
 
 // 修改最新的切图预留
-func modifyLatestCanvasReservation() {
-	model.EnglishTitle("Modify Latest Canvas Reservation", 74)
+func ModifyLatestCanvasReservation() {
+	tools.EnglishTitle("Modify Latest Canvas Reservation", 74)
 	fmt.Println("\n【警告】修改此项将直接影响最终的切图结果，如未出现特殊情况请勿修改")
 	tempReserve, _ := model.Input("\n【警告】请输入最新的切图预留：", false,false)
 
@@ -125,8 +125,8 @@ func modifyLatestCanvasReservation() {
 }
 
 // 修改是否自动打开暗号列表
-func modifyCipherList() {
-	model.EnglishTitle("Modify Cipher List", 74)
+func ModifyCipherList() {
+	tools.EnglishTitle("Modify Cipher List", 74)
 	fmt.Println("\n:: 在每次打开切图软件时，是否同时打开暗号列表的 UI 操作界面")
 	var tempMemory = isStringInput("\n【更改】是否自启动暗号列表，[1]是，[2]否：", false)
 	switch tempMemory {
@@ -144,8 +144,8 @@ func modifyCipherList() {
 }
 
 // 修改自动套图路径
-func modifyPicturePath() {
-	model.EnglishTitle("Modify Picture Path", 74)
+func ModifyPicturePath() {
+	tools.EnglishTitle("Modify Picture Path", 74)
 	fmt.Printf("\n:: 正在修改自动套图文件夹路径，当前路径是【%s】\n", viper.GetString("picture"))
 	// 套图文件夹位置
 	var tempPictureStr = isStringInput("\n:: 请输入最新的套图文件夹位置：", true)
@@ -181,8 +181,8 @@ func modifyPicturePath() {
 }
 
 // 自动主图时删除来源
-func modifyAutomaticDeletion() {
-	model.EnglishTitle("Modify Automatic Deletion", 74)
+func ModifyAutomaticDeletion() {
+	tools.EnglishTitle("Modify Automatic Deletion", 74)
 	fmt.Println("\n:: 在自动套图中是否在使用一键主图的时候，自动删除转换之前的源文件")
 
 	var tempAutomaticDeletion = isStringInput("\n【更改】是否自动删除源文件，[1]是，[2]否：", false)
@@ -204,7 +204,7 @@ func modifyAutomaticDeletion() {
 }
 
 // 修改为默认设置
-func modifyToDefaultSetting() {
+func ModifyToDefaultSetting() {
 	fmt.Println("\n:: 已恢复默认设置成功，配置信息已重新加载并生效！")
 
 	go func() {
@@ -223,60 +223,4 @@ func modifyToDefaultSetting() {
 	}()
 }
 
-// 选择要修改的配置
-func ModifySetting() {
-	for {
-		current() // 显示当前状态
 
-		modify, info := model.Input("\n:: 请选择需要修改的设置：", false,true)
-		tools.CallClear() // 清屏
-		switch modify {
-		case "1":
-			modifyMemoryFrame() // 是否记住框架
-		case "2":
-			modifyAutomaticCreateDocuments() // 是否自动新建切图文档
-		case "3":
-			modifyAutomaticAddBlackEdge() // 是否切图自动添加黑边
-		// 最新的切图前缀
-		case "4":
-			fmt.Println("\n:: 自定义前缀可以在使用【-1】暗号时自动添加，例如定义为【沐：】为前缀！")
-			fmt.Println("\n此功能未开发，设置无效")
-			tempPrefixStr, _ := model.Input("\n:: 请输入最新的切图前缀：", false,false)
-
-			switch tempPrefixStr {
-			case "-":
-				goto FLAG // 跳到循环结束
-			case "0": // 直接回车代表删除前缀
-				// 设置前缀
-				viper.Set("prefix", "")
-			default:
-				// 设置前缀
-				viper.Set("prefix", tempPrefixStr)
-				fmt.Printf("\n:: 切图前缀已更改成 【%s】，输入内容为空代表删除！\n", tempPrefixStr)
-				// 保存最新配置
-				_ = viper.WriteConfig()
-			}
-		case "5":
-			modifyLatestCanvasReservation() // 最新的切图预留
-		case "6":
-			modifyCipherList() // 自动开启暗号列表
-		case "7":
-			modifyPicturePath() // 自动套图文件夹路径
-		case "8":
-			modifyAutomaticDeletion() // 自动主图时删除来源
-		case "9":
-			modifyToDefaultSetting() // 恢复默认设置
-		case "-":
-			goto FLAG // 跳到循环结束
-		case "cls":
-			// 收到清屏命令
-			if len(info) != 0 {
-				fmt.Println(info)
-			}
-			continue
-		default:
-			continue
-		}
-	}
-FLAG: //为了跳出for循环
-}

@@ -202,7 +202,7 @@ func IsWhiteBackground(fileInput string) (bool, int64, error) {
 }
 
 
-// 得到一个文件夹所有白底图的，最小白底图
+// 得到一个文件夹的白底图的，如果有多个白底图就返回最小的一个白底图
 func MinWhiteBackground(pattern string) (result string, exist bool) {
 	// 可能的白底图
 	var probablyName []string

@@ -3,7 +3,7 @@ package web
 import (
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"github.com/yesilin/go-cutting/model"
+	"github.com/yesilin/go-cutting/code"
 	"io"
 	"net/http"
 	"os"
@@ -52,21 +52,21 @@ func indexHandle(w http.ResponseWriter, r *http.Request) {
 
 		switch cipher {
 		case "1":
-			model.StartCode1()
+			code.StartCode1()
 		case "2":
-			model.StartCode2()
+			code.StartCode2()
 		case "3":
-			model.StartCode3() // 深度清除源数据
+			code.StartCode3() // 深度清除源数据
 		case "4":
-			model.StartCode6() // 简单清除元数据
+			code.StartCode6() // 简单清除元数据
 		case "7":
-			model.StartCode7() // 为当前文档添加黑边
+			code.StartCode7() // 为当前文档添加黑边
 		case "9":
-			model.StartCode9() // 打开历史记录
+			code.StartCode9() // 打开历史记录
 		case "10":
-			model.StartCode10() // 快捷另存为jpg
+			code.StartCode10() // 快捷另存为jpg
 		case "98":
-			model.StartCode98()
+			code.StartCode98()
 		}
 	} else {
 		// 返回页面

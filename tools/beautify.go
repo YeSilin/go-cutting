@@ -1,5 +1,5 @@
 // 美化终端的显示
-package model
+package tools
 
 import (
 	"fmt"

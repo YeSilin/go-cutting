@@ -2,17 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/gookit/color"
-	"github.com/wzshiming/ctc"
-	"github.com/yesilin/go-cutting/autoPicture"
+	"github.com/yesilin/go-cutting/cliui"
 	"github.com/yesilin/go-cutting/logs"
 	"github.com/yesilin/go-cutting/model"
-	"github.com/yesilin/go-cutting/model/additional"
 	"github.com/yesilin/go-cutting/model/web"
-	"github.com/yesilin/go-cutting/settings"
 	"github.com/yesilin/go-cutting/tools"
-	"github.com/zserge/webview"
-	"strings"
 	"time"
 )
 
@@ -37,11 +31,14 @@ func main() {
 	// 使用权限
 	var power bool
 
+	// 这是版本信息
+	const version = 1.001021
+
 	// 限制软件使用 2019.7.19
 	// 定义私密文件路径
 	PrivateFile, _ := tools.Home()
 	PrivateFile = fmt.Sprintf("%s\\Documents\\Adobe\\Config.chx", PrivateFile)
-	power, tips = model.RestrictingSoftwareUse2(PrivateFile, 1.001019, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
+	power, tips = model.RestrictingSoftwareUse2(PrivateFile, version, tools.GetNtpTime(), 30) // 这里改版本信息！！！！！！！！！！！！！！！！！！！！
 	// 如果权限不是true
 	if !power {
 		fmt.Println(tips)
@@ -49,51 +46,6 @@ func main() {
 		return
 	}
 
-	for {
-		fmt.Println(tips) // 提示信息
-		color.LightCyan.Println("\n " + (strings.Repeat("-", 18)) + " Welcome to the GoCutting v1.1.19 app " + strings.Repeat("-", 17))
-		fmt.Println("\n:: 添加新暗号【--】返回上一次输入，例如镂空大小输错，返回重新输入镂空大小！")
-
-		tips := `
-   [1]快捷切图         [2]快捷贴图         [3]快捷效果         [4]自动套图
-
-   [5]附加功能         [6]暗号列表         [7]设置中心         [8]帮助信息`
-		fmt.Println(tips)
-
-		factory, info := model.Input("\n:: 请选择上方的菜单功能：", false, true)
-		tools.CallClear() // 清屏
-		switch factory {
-		case "1":
-			model.OldFrameChoice() // 切图
-		case "2":
-			model.MapFrameChoice() // 贴图
-		case "3":
-			model.Choice() // 效果图
-		case "4":
-			autoPicture.Choice() // 套图
-		case "5":
-			additional.Additional() // 附加
-		case "6":
-			// 启动gui
-			// 搭建web窗口
-			go webview.Open("GoCutting", "http://localhost:12110/index", 350, 600, true)
-			//go gui.RunWebview()
-		case "7":
-			settings.ModifySetting() // 设置
-		case "8":
-			model.Help() // 帮助
-		case "-", "--":
-			fmt.Println(":: 已经是最顶层菜单了，无需再返回，输入其他数字试下其他功能吧！")
-			continue
-		case "cls":
-			// 收到清屏命令
-			if len(info) != 0 {
-				fmt.Println(info)
-			}
-			continue
-		default:
-			fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入！\n", model.ColourString(factory, ctc.ForegroundGreen))
-			continue
-		}
-	}
+	// 运行主体
+	cliui.Run(tips, version)
 }
