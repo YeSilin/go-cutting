@@ -2,12 +2,14 @@ package cliui
 
 import (
 	"fmt"
+	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 )
 
 // 贴图框架的选择
 func mapFrameChoice() {
+OuterLoop:
 	for {
 		tools.EnglishTitle("3ds Max map frame", 74)
 		text := `
@@ -20,7 +22,7 @@ func mapFrameChoice() {
    [7]多个座屏贴图             [8]卷帘座屏贴图             [9]不扣补切贴图`
 		fmt.Println(text)
 
-		frameType , info:= model.Input("\n:: 请选择上方的边框类型：", false,true)
+		frameType, info := model.InputMenuSelection("\n:: 请选择上方的边框类型：")
 		tools.CallClear() // 清屏
 		switch frameType {
 		case "1":
@@ -40,16 +42,13 @@ func mapFrameChoice() {
 		case "8":
 			fmt.Println("未开发") // 补切画布
 		case "-":
-			goto FLAG
-		case "cls":
-			// 收到清屏命令
+			break OuterLoop
+		default:
 			if len(info) != 0 {
 				fmt.Println(info)
+			} else {
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入...\n", tools.ColourString(frameType, ctc.ForegroundGreen))
 			}
-			continue
-		default:
-			continue
 		}
 	}
-FLAG:
 }

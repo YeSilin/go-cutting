@@ -2,6 +2,7 @@ package cliui
 
 import (
 	"fmt"
+	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
@@ -9,6 +10,7 @@ import (
 
 // 临时框架的选择
 func temporaryChoice() {
+OuterLoop:
 	for {
 		tools.EnglishTitle("Temporary", 74)
 
@@ -18,7 +20,7 @@ func temporaryChoice() {
 
    [1]新建效果图      [2]置入小座屏      [3]置入单折屏      [4]置入单镂空`
 		fmt.Println(tips)
-		frameType , info:= model.Input("\n:: 请选择上方的功能类型：", false,true)
+		frameType, info := model.InputMenuSelection("\n:: 请选择上方的功能类型：")
 		tools.CallClear() // 清屏
 		switch frameType {
 		case "1":
@@ -38,16 +40,13 @@ func temporaryChoice() {
 		case "8":
 			fmt.Println("未开发") // 补切画布
 		case "-":
-			goto FLAG
-		case "cls":
-			// 收到清屏命令
+			break OuterLoop
+		default:
 			if len(info) != 0 {
 				fmt.Println(info)
+			} else {
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的框架类型，请重新输入...\n", tools.ColourString(frameType, ctc.ForegroundGreen))
 			}
-			continue
-		default:
-			continue
 		}
 	}
-FLAG:
 }

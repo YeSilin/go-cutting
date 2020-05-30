@@ -35,6 +35,8 @@ require (
 	github.com/spf13/viper v1.7.0
 	github.com/stretchr/testify v1.5.1 // indirect
 	github.com/wzshiming/ctc v1.2.3
+	github.com/ying32/dylib v0.0.0-20200305075302-6eba4f831b29 // indirect
+	github.com/ying32/govcl v2.0.2+incompatible
 	github.com/zserge/webview v0.0.0-20200121135717-9c1b0a888aa4
 	golang.org/x/sys v0.0.0-20200523222454-059865788121
 	golang.org/x/text v0.3.2

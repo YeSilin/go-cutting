@@ -107,16 +107,17 @@ func current() {
 	}
 
 	fmt.Printf("\n   [1]记忆框架：%s       [2]自动新建：%s       [3]自动黑边：%s\n", memoryStr, openPsStr, blackEdgeStr)
-	fmt.Printf("\n   [4]自定前缀：%s       [5]切布预留：%s       [6]暗号列表：%s\n", prefixStr, reserveStr,cipherListStr)
+	fmt.Printf("\n   [4]自定前缀：%s       [5]切布预留：%s       [6]暗号列表：%s\n", prefixStr, reserveStr, cipherListStr)
 	fmt.Printf("\n   [7]套图位置：%s       [8]主图自删：%s       [9]全部恢复默认设置\n", pictureStr, automaticDeletionStr)
 }
 
 // 选择要修改的配置
 func ModifySetting() {
+OuterLoop:
 	for {
 		current() // 显示当前状态
 
-		modify, info := model.Input("\n:: 请选择需要修改的设置：", false,true)
+		modify, info := model.InputMenuSelection("\n:: 请选择需要修改的设置：")
 		tools.CallClear() // 清屏
 		switch modify {
 		case "1":
@@ -129,11 +130,11 @@ func ModifySetting() {
 		case "4":
 			fmt.Println("\n:: 自定义前缀可以在使用【-1】暗号时自动添加，例如定义为【沐：】为前缀！")
 			fmt.Println("\n此功能未开发，设置无效")
-			tempPrefixStr, _ := model.Input("\n:: 请输入最新的切图前缀：", false,false)
+			tempPrefixStr, _ := model.Input("\n:: 请输入最新的切图前缀：", false, false)
 
 			switch tempPrefixStr {
 			case "-":
-				goto FLAG // 跳到循环结束
+				break
 			case "0": // 直接回车代表删除前缀
 				// 设置前缀
 				viper.Set("prefix", "")
@@ -155,16 +156,13 @@ func ModifySetting() {
 		case "9":
 			settings.ModifyToDefaultSetting() // 恢复默认设置
 		case "-":
-			goto FLAG // 跳到循环结束
-		case "cls":
-			// 收到清屏命令
+			break OuterLoop // 跳到循环结束
+		default:
 			if len(info) != 0 {
 				fmt.Println(info)
+			} else {
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(modify, ctc.ForegroundGreen))
 			}
-			continue
-		default:
-			continue
 		}
 	}
-FLAG: //为了跳出for循环
 }

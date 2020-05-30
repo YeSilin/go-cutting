@@ -12,6 +12,7 @@ import (
 
 //  家具主图选择
 func furnitureMainPictureChoice() {
+OuterLoop:
 	for {
 		tools.EnglishTitle("Furniture main picture choice", 74)
 		text := `
@@ -21,7 +22,7 @@ func furnitureMainPictureChoice() {
 
    [4]棠语家具                   [5]暂未开发                   [6]暂未开发`
 		fmt.Println(text)
-		layoutType, info := model.Input("\n:: 请选择需要使用的功能：", false, true)
+		layoutType, info := model.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
 		switch layoutType {
 		case "1":
@@ -42,19 +43,16 @@ func furnitureMainPictureChoice() {
 
 		case "9":
 
-		case "-", "--":
-			goto FLAG
-		case "cls":
-			// 收到清屏命令
+		case "-":
+			break OuterLoop
+		default:
 			if len(info) != 0 {
 				fmt.Println(info)
+			} else {
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(layoutType, ctc.ForegroundGreen))
 			}
-			continue
-		default:
-			continue
 		}
 	}
-FLAG:
 }
 
 //  屏风主图选择
@@ -133,6 +131,7 @@ FLAG:
 
 // 套图的选择
 func autoPictureChoice() {
+OuterLoop:
 	for {
 		tools.EnglishTitle("Auto picture", 74)
 		text := `
@@ -145,7 +144,7 @@ func autoPictureChoice() {
    [7]修改分辨率                [8]替换详情页                [9]导出详情页`
 		fmt.Println(text)
 
-		layoutType, info := model.Input("\n:: 请选择需要使用的功能：", false, true)
+		layoutType, info := model.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
 		switch layoutType {
 		case "1":
@@ -156,7 +155,6 @@ func autoPictureChoice() {
 		case "3":
 			go exec.Command("cmd.exe", "/c", "start Config\\Backups").Run()
 			fmt.Println("\n:: 已打开备份文件夹，为了避免意外丢失文件，目前备份文件最大为 10 份！")
-
 		case "4":
 			furnitureMainPictureChoice() // 家具店主图
 		case "5":
@@ -169,18 +167,14 @@ func autoPictureChoice() {
 			autoPicture.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
 		case "9":
 			autoPicture.SaveForWebDetailsPage() // 导出web格式详情页
-		case "-", "--":
-			goto FLAG
-		case "cls":
-			// 收到清屏命令
+		case "-":
+			break OuterLoop
+		default:
 			if len(info) != 0 {
 				fmt.Println(info)
+			} else {
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(layoutType, ctc.ForegroundGreen))
 			}
-			continue
-		default:
-			fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入！\n", tools.ColourString(layoutType, ctc.ForegroundGreen))
-			continue
 		}
 	}
-FLAG:
 }

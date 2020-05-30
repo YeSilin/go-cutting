@@ -398,7 +398,7 @@ func SaveForWeb(originalPath string) {
 	defer f.Close()
 
 	// 保存路径定义
-	savePath := fmt.Sprintf("%s/主图/dp.jpg", originalPath)
+	savePath := fmt.Sprintf("%s/主图/DP.jpg", originalPath)
 
 	// 利用给定数据渲染模板，并将结果写入f
 	_ = tmpl.Execute(f, savePath)
@@ -551,10 +551,3 @@ if (!documents.length) {
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
 	tools.CreateFile("config/jsx/saveAsJPEG.jsx", script)
 }
-
-
-
-
-
-
-

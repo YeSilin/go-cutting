@@ -25,7 +25,9 @@ func Run(tips string, version float64) {
    [5]附加功能         [6]暗号列表         [7]设置中心         [8]帮助信息`
 		fmt.Println(tips)
 
-		factory, info := model.Input("\n:: 请选择上方的菜单功能：", false, true)
+		//factory, info := model.Input("\n:: 请选择上方的菜单功能：", false, true)
+		factory, info := model.InputMenuSelection("\n:: 请选择上方的菜单功能：")
+
 		tools.CallClear() // 清屏
 		switch factory {
 		case "1":
@@ -47,19 +49,15 @@ func Run(tips string, version float64) {
 			ModifySetting() // 设置
 		case "8":
 			Help() // 帮助
-		case "-", "--":
+		case "-":
 			fmt.Println(":: 已经是最顶层菜单了，无需再返回，输入其他数字试下其他功能吧！")
 			continue
-		case "cls":
-			// 收到清屏命令
+		default:
 			if len(info) != 0 {
 				fmt.Println(info)
+			} else{
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(factory, ctc.ForegroundGreen))
 			}
-			continue
-		default:
-			fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入！\n", tools.ColourString(factory, ctc.ForegroundGreen))
-			continue
 		}
 	}
-
 }
