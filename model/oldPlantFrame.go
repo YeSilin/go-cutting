@@ -10,11 +10,6 @@ import (
 	"strconv"
 )
 
-
-
-
-
-
 // 是否打开自动新建文档
 func isOpenPs() {
 	if viper.GetBool("openPs") { // 是否自动新建ps文档
@@ -24,7 +19,6 @@ func isOpenPs() {
 		go cmd.Run()
 	}
 }
-
 
 //旧厂小座屏
 //边框是5  扣掉两个边框5+5 然后再加回来5厘米  可以理解为扣5*/
@@ -42,7 +36,7 @@ func OldFrame1() {
 	for {
 		tools.ChineseTitle("当前框架常规座屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
-			saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
+			saveSizeStr[i] = InputCanvas(inputPrompt[i],6)
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
@@ -86,13 +80,12 @@ func OldFrame1() {
 		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                    // 最大画布判断
 
-		//model.isOpenPs()                    // 是否打开自动新建文档
+		isOpenPs()                    // 是否打开自动新建文档
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
 	}
 }
-
 
 //旧厂左右镂空
 //先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个竖边 空出的中间画面加5厘米  旧厂的边框实际厚度是5厘米
@@ -114,9 +107,9 @@ func OldFrame2() {
 
 			// 只有前两个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
+				saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] , _= Input(inputPrompt[i], false,false)
+				saveSizeStr[i] = InputCanvas(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -214,9 +207,9 @@ func OldFrame3() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前3个需要开启画布模式
 			if i < 3 {
-				saveSizeStr[i], _ = Input(inputPrompt[i], true,false)
+				saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i], _ = Input(inputPrompt[i], false,false)
+				saveSizeStr[i] = InputCanvas(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -299,9 +292,9 @@ func OldFrame4() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
+				saveSizeStr[i]= InputCanvas(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] , _= Input(inputPrompt[i], false,false)
+				saveSizeStr[i] = InputCanvas(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -393,9 +386,9 @@ func OldFrame5() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
+				saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] , _= Input(inputPrompt[i], false,false)
+				saveSizeStr[i] = InputCanvas(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -469,9 +462,9 @@ func OldFrame6() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i], _ = Input(inputPrompt[i], true,false)
+				saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] , _= Input(inputPrompt[i], false,false)
+				saveSizeStr[i] = InputCanvas(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -648,7 +641,7 @@ func OldFrame7() {
 	// 循环使用此框架
 	for {
 		tools.ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
-		numberStr, _ := Input("\n:: 请输入拥有几个座屏：", false,false)
+		numberStr := InputCanvas("\n:: 请输入拥有几个座屏：", 0)
 		// 一开始就返回直接退出函数
 		if numberStr == "-" || numberStr == "--" {
 			return
@@ -674,9 +667,9 @@ func OldFrame7() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 除了最后一个都需要开启画布模式
 			if i != len(saveSizeStr)-1 {
-				saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
+				saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i], _ = Input(inputPrompt[i], false,false)
+				saveSizeStr[i] = InputCanvas(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -723,7 +716,6 @@ func OldFrame7() {
 		// 遍历出最大的高度
 		heightMax := maxSize(heightSlice)
 
-
 		// 遍历出最小的高度
 		heightMin := minSize(heightSlice)
 
@@ -736,8 +728,6 @@ func OldFrame7() {
 		}
 		history += fmt.Sprintf("每个座屏的下镂空均是：%s\n", downHollowOutStr)
 
-
-
 		//存储已计算的历史记录
 		history += fmt.Sprintf("多座屏：总宽 %.2f cm，高 %.2f cm\n", widthSum, heightMax)
 		go History(history) // 写入历史
@@ -760,170 +750,7 @@ func OldFrame7() {
 	}
 }
 
-func OldFrame7bk() {
-	// 定义一个预留尺寸
-	var reserve = viper.GetFloat64("reserve")
 
-	for {
-	UP1: // 主要给宽返回
-		tools.ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
-		numberStr, _ := Input("\n:: 请输入拥有几个座屏：", false,false)
-		if numberStr == "-" {
-			break
-		}
-
-		// 字符串转换成int64后再转int
-		number64, _ := strconv.ParseInt(numberStr, 10, 64)
-		number := int(number64)
-
-		// 定义一个宽度切片，长度为number
-		widthSlice := make([]float64, number)
-		// 定义一个高度切片，长度为number
-		heightSlice := make([]float64, number)
-
-		// 定义一个宽度切片，长度为number
-		widthStrSlice := make([]string, number)
-		// 定义一个高度切片，长度为number
-		heightStrSlice := make([]string, number)
-
-		// 定义镂空是否返回
-		var lr = false
-	UP4: // 主要给镂空返回
-
-		for i := 0; i < number; i++ {
-			// 提前声明临时宽
-			var widthTemp string
-
-			// 如果镂空要返回
-			if lr {
-				i = number - 1
-				lr = false // 用完返回要复位
-				goto UP3
-			}
-
-		UP2: // 主要给高返回
-			// 可以用 Sprintf 来将格式化后的字符串赋值给一个变量
-			widthTemp , _= Input(fmt.Sprintf("\n:: 请输入第%s个座屏的宽：", tools.Transfer(i+1)), true,false)
-			if widthTemp == "-" {
-				goto FLAG // 跳转到函数结束
-			}
-			if widthTemp == "--" {
-				if i > 0 {
-					i--
-					goto UP3
-				}
-				goto UP1
-			}
-
-			// 赋值到切片
-			widthStrSlice[i] = widthTemp
-		UP3: // 主要给宽返回
-			// 开始接收高度至列表
-			heightTemp , _:= Input(fmt.Sprintf("\n:: 请输入第%s个座屏的高：", tools.Transfer(i+1)), true,false)
-			if heightTemp == "-" {
-				goto FLAG // 跳转到函数结束
-			}
-			if heightTemp == "--" {
-				goto UP2
-			}
-
-			// 赋值到切片
-			heightStrSlice[i] = heightTemp
-		}
-
-		downHollowOutStr, _ := Input("\n:: 每个座屏的下镂空均是：", false,false)
-		if downHollowOutStr == "-" {
-			break
-		}
-		if downHollowOutStr == "--" {
-			lr = true // 更新镂空要返回
-			goto UP4
-		}
-
-		// 将字符串转浮点数
-		for i := 0; i < len(widthStrSlice); i++ {
-			width, _ := strconv.ParseFloat(widthStrSlice[i], 64)
-			// 计算一下实际切图尺寸，赋值到切片
-			widthSlice[i] = width - 10 + reserve
-		}
-		for i := 0; i < len(heightStrSlice); i++ {
-			height, _ := strconv.ParseFloat(heightStrSlice[i], 64)
-			// 计算一下实际切图尺寸，赋值到切片
-			heightSlice[i] = height - 10 + reserve
-		}
-
-		downHollowOut, _ := strconv.ParseFloat(downHollowOutStr, 64)
-
-		if downHollowOut > 0 { // 如果有下镂空的话
-			// 顺序遍历
-			for i := 0; i < len(heightSlice); i++ {
-				heightSlice[i] = heightSlice[i] - (downHollowOut + 5)
-			}
-
-		}
-
-		// 遍历出总宽
-		var widthSum float64
-		for i := 0; i < len(widthSlice); i++ {
-			widthSum += widthSlice[i]
-		}
-
-		// 遍历出最大的宽度
-		var widthMax = widthSlice[0]
-		for i := 1; i < len(widthSlice); i++ {
-			if widthMax < widthSlice[i] {
-				widthMax = widthSlice[i]
-			}
-		}
-
-		// 遍历出最大的高度
-		var heightMax = heightSlice[0]
-		for i := 1; i < len(heightSlice); i++ {
-			if heightMax < heightSlice[i] {
-				heightMax = heightSlice[i]
-			}
-		}
-
-		// 遍历出最小的高度
-		var heightMin = heightSlice[0]
-		for i := 1; i < len(heightSlice); i++ {
-			if heightMin > heightSlice[i] {
-				heightMin = heightSlice[i]
-			}
-		}
-
-		// 定义历史变量
-		var history string
-		//存储未计算时的历史记录
-		for i := 0; i < len(widthStrSlice); i++ {
-			history += fmt.Sprintf("请输入第%s个座屏的宽：%s\n", tools.Transfer(i+1), widthStrSlice[i])
-			history += fmt.Sprintf("请输入第%s个座屏的高：%s\n", tools.Transfer(i+1), heightStrSlice[i])
-		}
-		history += fmt.Sprintf("每个座屏的下镂空均是：%s\n", downHollowOutStr)
-		//存储已计算的历史记录
-		history += fmt.Sprintf("多座屏：总宽 %.2f cm，高 %.2f cm\n", widthSum, heightMax)
-		go History(history) // 写入历史
-
-		color.Yellow.Printf("\n:: 多座屏：总宽 %.2f cm，高 %.2f cm", widthSum, heightMax)
-
-		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_%s座屏_%.0fx%.0f", tools.NowTime(), tools.Transfer(len(widthSlice)), widthSum, heightMax)
-
-		generate.NewDocument(widthSum, heightMax, frameName, false) // 创建ps文档
-		generate.LineJs7(widthSlice, heightSlice, heightMax, heightMin)
-		go generate.Tailor7(widthSlice, heightSlice, heightMax, frameName) // 生成暗号【-1】可以用的另存脚本// 生成参考线与遮罩层
-		generate.MaxCanvas(widthMax, heightMax)                            // 最大画布判断
-
-		isOpenPs() // 是否打开自动新建文档
-
-		if !viper.GetBool("memory") { // 是否记忆框架
-			break
-		}
-	}
-
-	// 标签
-FLAG:
-}
 
 // 卷帘座屏
 // 宽-20   高上下各镂空15 长度要预留10
@@ -940,7 +767,7 @@ func OldFrame8() {
 	for {
 		tools.ChineseTitle("当前框架卷帘座屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
-			saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
+			saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
@@ -1003,7 +830,7 @@ func OldFrame9() {
 		fmt.Println("\n【补切】主要用来补切画布，不减去任何边框尺寸，适合不想手动新建画布时使用！")
 
 		for i := 0; i < len(saveSizeStr); i++ {
-			saveSizeStr[i] , _= Input(inputPrompt[i], true,false)
+			saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {

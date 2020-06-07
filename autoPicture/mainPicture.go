@@ -82,8 +82,8 @@ func UniversalMasterGraph(originalPath string, delete bool) {
 			delAllFiles(pngSlice) // 删除之前复制的png
 		}
 
-		// 删除多余备份，最大保留10个
-		tools.DeleteRedundantBackups("config/Backups/*", 10)
+		// 删除多余备份，最大保留15个
+		tools.DeleteRedundantBackups("config/Backups/*", 15)
 	}()
 	fmt.Println("\n【提示】已转成 800*800 如果文件丢失，备份文件夹在上级目录下的 Backups！")
 }
@@ -160,7 +160,7 @@ func WatermarkMasterGraph(originalPath, watermarkPath string, delete bool) {
 		}
 
 		// 删除多余备份，最大保留10个
-		tools.DeleteRedundantBackups("config/Backups/*", 10)
+		tools.DeleteRedundantBackups("config/Backups/*", 15)
 	}()
 	fmt.Println("\n【提示】已转成 800*800 如果文件丢失，备份文件夹在上级目录下的 Backups！")
 }

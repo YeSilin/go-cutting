@@ -56,7 +56,7 @@ func PixelsPerInchChangedTo72(originalPath string) {
 		}
 
 		// 删除多余备份，最大保留10个
-		tools.DeleteRedundantBackups("Config/Backups/*", 10)
+		tools.DeleteRedundantBackups("Config/Backups/*", 15)
 	}()
 
 	fmt.Println("\n:: 已转成 72ppi 如果文件丢失，备份文件夹在上级目录下的 Backups！")
@@ -118,7 +118,7 @@ func PixelsPerInchChangedTo300(originalPath string) {
 		exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 
 		// 删除多余备份，最大保留10个
-		tools.DeleteRedundantBackups("Config/Backups/*", 10)
+		tools.DeleteRedundantBackups("Config/Backups/*", 15)
 	}()
 
 	fmt.Println("\n:: 脚本注入成功，正在转成 300PPI 若文件丢失，备份文件在上级目录 Backups！")

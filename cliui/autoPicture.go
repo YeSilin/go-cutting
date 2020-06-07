@@ -57,6 +57,7 @@ OuterLoop:
 
 //  屏风主图选择
 func screenMainPictureChoice() {
+OuterLoop:
 	for {
 		tools.EnglishTitle("Screen main picture choice", 74)
 		text := `
@@ -67,7 +68,7 @@ func screenMainPictureChoice() {
    [4]御尚屏风                   [5]金尊主图                   [6]暂未开发`
 		fmt.Println(text)
 
-		layoutType, info := model.Input("\n:: 请选择需要使用的功能：", false, true)
+		layoutType, info := model.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
 		switch layoutType {
 		case "1":
@@ -81,23 +82,21 @@ func screenMainPictureChoice() {
 		case "5":
 			autoPicture.WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/jinzunfu.png", viper.GetBool("automaticDeletion"))
 		case "6":
-		case "-", "--":
-			goto FLAG
-		case "cls":
-			// 收到清屏命令
+		case "-":
+			break OuterLoop
+		default:
 			if len(info) != 0 {
 				fmt.Println(info)
+			} else {
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(layoutType, ctc.ForegroundGreen))
 			}
-			continue
-		default:
-			continue
 		}
 	}
-FLAG:
 }
 
 // 修改图片分辨率的选择
 func modifyResolution() {
+OuterLoop:
 	for {
 		tools.EnglishTitle("Modify resolution", 74)
 		text := `
@@ -105,7 +104,7 @@ func modifyResolution() {
 
    [1]全部改为72PPI         [2]全部改为300PPI         [3]全部改为自定义PPI`
 		fmt.Println(text)
-		layoutType, info := model.Input("\n:: 请选择需要使用的功能：", false, true)
+		layoutType, info := model.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear()
 		switch layoutType {
 		case "1":
@@ -115,18 +114,15 @@ func modifyResolution() {
 		case "3":
 			fmt.Println("\n:: 因需求不高，所以暂未开发...")
 		case "-", "--":
-			goto FLAG
-		case "cls":
-			// 收到清屏命令
+			break OuterLoop
+		default:
 			if len(info) != 0 {
 				fmt.Println(info)
+			} else {
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(layoutType, ctc.ForegroundGreen))
 			}
-			continue
-		default:
-			continue
 		}
 	}
-FLAG:
 }
 
 // 套图的选择
@@ -154,7 +150,7 @@ OuterLoop:
 			autoPicture.RandomRename(viper.GetString("picture"))
 		case "3":
 			go exec.Command("cmd.exe", "/c", "start Config\\Backups").Run()
-			fmt.Println("\n:: 已打开备份文件夹，为了避免意外丢失文件，目前备份文件最大为 10 份！")
+			fmt.Println("\n:: 已打开备份文件夹，为了避免意外丢失文件，目前备份文件最大为 15 份！")
 		case "4":
 			furnitureMainPictureChoice() // 家具店主图
 		case "5":

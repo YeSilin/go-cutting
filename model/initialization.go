@@ -73,6 +73,7 @@ func InitScript() {
 		generate.BlackEdge()                            // 生成添加黑边脚本备用
 		generate.SaveForWeb(viper.GetString("picture")) // 生成详情页指定保存位置
 		generate.SaveAsJPEG()                           // 生成带自带清除元数据的另存脚本
+		generate.SaveAllJPEG()                           // 生成另存全部文件脚本
 	}()
 }
 

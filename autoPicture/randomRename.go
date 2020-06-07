@@ -98,7 +98,7 @@ func RandomRename(originalPath string) {
 		randomRename(originalPath, "jpg")
 
 		// 删除多余备份，最大保留10个
-		tools.DeleteRedundantBackups("Config/Backups/*", 10)
+		tools.DeleteRedundantBackups("Config/Backups/*", 15)
 	}()
 
 	fmt.Println("\n:: 随机重命名成功，现已支持所有尺寸的 jpg 或 png 格式图片！")

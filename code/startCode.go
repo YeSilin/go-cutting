@@ -126,6 +126,15 @@ func StartCode10() {
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
+// 启动暗号-11 快捷另存全部jpg
+func StartCode11() {
+	// 创建一个协程使用cmd启动外部程序
+	dataPath := "Config/JSX/saveAllJPEG.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+}
+
+
+
 // 启动暗号-97
 func StartCode97() {
 	autoPicture.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
