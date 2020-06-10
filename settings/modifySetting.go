@@ -109,7 +109,7 @@ func ModifyAutomaticAddBlackEdge() {
 func ModifyLatestCanvasReservation() {
 	tools.EnglishTitle("Modify Latest Canvas Reservation", 74)
 	fmt.Println("\n【警告】修改此项将直接影响最终的切图结果，如未出现特殊情况请勿修改")
-	tempReserve, _ := model.Input("\n【警告】请输入最新的切图预留：", false,false)
+	tempReserve:= model.InputCanvasSize("\n【警告】请输入最新的切图预留：", 0)
 
 	switch tempReserve {
 	case "-":
@@ -127,7 +127,7 @@ func ModifyLatestCanvasReservation() {
 // 修改是否自动打开暗号列表
 func ModifyCipherList() {
 	tools.EnglishTitle("Modify Cipher List", 74)
-	fmt.Println("\n:: 在每次打开切图软件时，是否同时打开暗号列表的 UI 操作界面")
+	fmt.Println("\n:: 在启动软件时，是否同时打开暗号列表的 UI 操作界面，如果造成卡顿请关闭")
 	var tempMemory = isStringInput("\n【更改】是否自启动暗号列表，[1]是，[2]否：", false)
 	switch tempMemory {
 	case "1":

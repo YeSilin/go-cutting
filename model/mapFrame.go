@@ -10,22 +10,20 @@ import (
 	"strconv"
 )
 
-
-
 // 贴图小座屏
 func MapFrame1() {
 	for {
 		tools.ChineseTitle("当前框架常规座屏贴图 ", 74) // 请注意切图的工厂与框架的选择
 
-		widthStr, _ := Input("\n:: 请输入常规座屏的宽：", true,false)
+		widthStr := InputCanvasSize("\n:: 请输入常规座屏的宽：", 6)
 		if widthStr == "-" {
 			break
 		}
-		heightStr, _ := Input("\n:: 请输入常规座屏的高：", true,false)
+		heightStr := InputCanvasSize("\n:: 请输入常规座屏的高：", 6)
 		if heightStr == "-" {
 			break
 		}
-		reserveStr, _ := Input("\n:: 请输入要减去的单边框大小(一般为40)：", false,false)
+		reserveStr := InputCanvasSize("\n:: 请输入要减去的单边框大小(一般为40)：", 0)
 		if reserveStr == "-" {
 			break
 		}
@@ -60,31 +58,31 @@ func MapFrame6() {
 	for {
 		tools.ChineseTitle("当前框架各种折屏贴图", 74) // 请注意切图的工厂与框架的选择
 
-		widthStr, _ := Input("\n:: 请输入折屏单扇的宽：", true,false)
+		widthStr := InputCanvasSize("\n:: 请输入折屏单扇的宽：", 6)
 		if widthStr == "-" {
 			break
 		}
-		heightStr , _:= Input("\n:: 请输入折屏单扇的高：", true,false)
+		heightStr := InputCanvasSize("\n:: 请输入折屏单扇的高：", 6)
 		if heightStr == "-" {
 			break
 		}
-		upperHollowOutStr, _ := Input("\n:: 请输入上镂空的大小：", false,false)
+		upperHollowOutStr := InputCanvasSize("\n:: 请输入上镂空的大小：", 0)
 		if heightStr == "-" {
 			break
 		}
 
-		downHollowOutStr , _:= Input("\n:: 请输入下镂空的大小：", false,false)
+		downHollowOutStr := InputCanvasSize("\n:: 请输入下镂空的大小：", 0)
 		if heightStr == "-" {
 
 			break
 		}
 
-		numberStr , _:= Input("\n:: 请输入共拥有几扇：", false,false)
+		numberStr := InputCanvasSize("\n:: 请输入共拥有几扇：", 1)
 		if numberStr == "-" {
 			break
 		}
 
-		reserveStr, _ := Input("\n:: 请输入要减去的单边框大小(一般为40)：", false,false)
+		reserveStr := InputCanvasSize("\n:: 请输入要减去的单边框大小(一般为40)：", 0)
 		if reserveStr == "-" {
 			break
 		}

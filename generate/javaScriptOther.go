@@ -631,7 +631,7 @@ function start(userSavePath) {
 
     // 删除刚刚新建的空白图层
     app.activeDocument.activeLayer.remove()
- 
+
     // 另存文件
     saveFileAs(userSavePath)
 
@@ -653,6 +653,21 @@ function pathSplit(path) {
     path = path.replace(after, "")
 
     return [path, after]
+}
+
+
+// 把循环保存归成函数，用于添加进度条
+function saveAll(fileNameArr) {
+    // 开始循环保存
+    for (var i = 0; i < app.documents.length; i++) {
+        app.activeDocument = app.documents[i]
+
+        // 清理元数据
+        deleteDocumentAncestorsMetadata()
+
+        // 生成历史记录并调用函数
+        app.activeDocument.suspendHistory("更新所有修改的智能对象（储存为）", "start(fileNameArr[i])");
+    }
 }
 
 
@@ -701,16 +716,8 @@ function main() {
     }
 
 
-    // 开始循环保存
-    for (var i = 0; i < app.documents.length; i++) {
-        app.activeDocument = app.documents[i]
-
-        // 清理元数据
-        deleteDocumentAncestorsMetadata()
-
-        // 生成历史记录并调用函数
-        app.activeDocument.suspendHistory("更新所有修改的智能对象（储存为）", "start(fileNameArr[i])");
-    }
+    // 生成进度条调并调用函数
+    app.doForcedProgress("正在另存全部... ", "saveAll(fileNameArr)")
 }
 
 

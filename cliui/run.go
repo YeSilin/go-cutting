@@ -50,7 +50,7 @@ func Run(tips string, version float64) {
 		case "8":
 			Help() // 帮助
 		case "-":
-			fmt.Println(":: 已经是最顶层菜单了，无需再返回，输入其他数字试下其他功能吧！")
+			fmt.Println("\n:: 已经是最顶层菜单了，无需再返回，输入其他数字试下其他功能吧！")
 			continue
 		default:
 			if len(info) != 0 {

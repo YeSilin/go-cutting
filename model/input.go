@@ -84,118 +84,6 @@ func readTerminalInput(tips string) (input string) {
 	return
 }
 
-// 判断是否为数字，并根据指定值提供指定的全局功能，是否输入的是画布，是否支持 cls 清屏
-func Input(tips string, canvasMode, cls bool) (num, info string) {
-	// 回到一开始光标的位置重新输入
-	refreshRow := func(x, y int) {
-		// 重新指定xy位置，覆盖之前的输入
-		clib.GotoPostion(x-1, y)
-		// 打一些空格覆盖之前的内容
-		fmt.Print("                                                                                           ")
-
-		// 重新指定xy位置，覆盖之前的输入
-		clib.GotoPostion(x-1, y-1)
-	}
-
-	for {
-		// 获取还没开始打印提示信息之前的光标位置
-		x, y := clib.WhereXY()
-
-		// 获取用户输入
-		num = readTerminalInput(tips)
-
-		// 如果输入空内容
-		if num == "" {
-			if cls {
-				// 返回一个清屏命令
-				return "cls", ""
-			}
-			// 覆盖之前的信息
-			refreshRow(x, y)
-			continue
-		}
-
-		// 二级返回
-		if num == "--" {
-
-			return "--", ""
-		}
-
-		// 在字符串中最后出现位置的索引，如果返回 -1 表示字符串不包含要检索的字符串
-		lastIndex := strings.LastIndex(num, "-")
-		// 如果减号出现在最后一位
-		if lastIndex == len(num)-1 {
-			//fmt.Printf("%#v", num)
-			return "-", ""
-		}
-
-		// 如果包含中文就转拼音
-		if tools.IncludeChinese2(num) {
-			if cls {
-				// 返回拼音
-				return strings.Join(tools.ToPinyin(num), " "), ""
-			}
-			// 覆盖之前的信息
-			refreshRow(x, y)
-
-			continue
-		}
-
-		// 如果是暗号
-		if ok, info := runCode(num); ok {
-			if cls {
-
-				// 返回一个清屏命令
-				return "cls", info
-			}
-			// 覆盖之前的信息
-			refreshRow(x, y)
-
-			continue
-		}
-
-		// 如果小数点多于一个就循环
-		if strings.Count(num, ".") > 1 {
-			if cls {
-				// 返回一个清屏命令
-				return "cls", ""
-			}
-			// 覆盖之前的信息
-			refreshRow(x, y)
-
-			continue
-		}
-
-		// 如果不是整数或浮点数就循环
-		integer, _ := regexp.MatchString(`^(\-|\+)?\d+(\.\d+)?$`, num)
-		if !integer {
-			if cls {
-				// 返回一个清屏命令
-				return "cls", ""
-			}
-			// 覆盖之前的信息
-			refreshRow(x, y)
-
-			continue
-		}
-
-		// 如果输入的数字小于6就循环
-		tempNum, _ := strconv.ParseFloat(num, 64)
-		if tempNum < 6 && canvasMode {
-			// 查找当前提示信息中是否已包含 插入的提示信息
-			if !strings.Contains(tips, "（尺寸不可小于6厘米）") {
-				// 没有就插入
-				tips = tools.StrRightInsert(tips, tools.ColourString("（尺寸不可小于6厘米）", ctc.ForegroundRed), 3)
-			}
-			// 覆盖之前的信息
-			refreshRow(x, y)
-
-			continue
-		}
-		return num, ""
-	}
-}
-
 // 支持暗号的获取用户输入的内容
 func InputMenuSelection(tips string) (num, info string) {
 	for {
@@ -232,7 +120,7 @@ func InputMenuSelection(tips string) (num, info string) {
 }
 
 // 只返回属于数字的字符串，并且支持暗号，用作画布输入
-func InputCanvas(tips string, minimum int) (num string) {
+func InputCanvasSize(tips string, minimum int) (num string) {
 	// 回到一开始光标的位置重新输入
 	refreshRow := func(x, y int) {
 		/// 重新指定xy位置，覆盖之前的输入

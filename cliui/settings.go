@@ -128,23 +128,7 @@ OuterLoop:
 			settings.ModifyAutomaticAddBlackEdge() // 是否切图自动添加黑边
 		// 最新的切图前缀
 		case "4":
-			fmt.Println("\n:: 自定义前缀可以在使用【-1】暗号时自动添加，例如定义为【沐：】为前缀！")
-			fmt.Println("\n此功能未开发，设置无效")
-			tempPrefixStr, _ := model.Input("\n:: 请输入最新的切图前缀：", false, false)
 
-			switch tempPrefixStr {
-			case "-":
-				break
-			case "0": // 直接回车代表删除前缀
-				// 设置前缀
-				viper.Set("prefix", "")
-			default:
-				// 设置前缀
-				viper.Set("prefix", tempPrefixStr)
-				fmt.Printf("\n:: 切图前缀已更改成 【%s】，输入内容为空代表删除！\n", tempPrefixStr)
-				// 保存最新配置
-				_ = viper.WriteConfig()
-			}
 		case "5":
 			settings.ModifyLatestCanvasReservation() // 最新的切图预留
 		case "6":

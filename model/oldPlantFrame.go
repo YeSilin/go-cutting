@@ -36,10 +36,11 @@ func OldFrame1() {
 	for {
 		tools.ChineseTitle("当前框架常规座屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
-			saveSizeStr[i] = InputCanvas(inputPrompt[i],6)
+			saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
+				tools.CallClear() // 清屏
 				return
 			}
 
@@ -107,13 +108,14 @@ func OldFrame2() {
 
 			// 只有前两个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvas(inputPrompt[i], 0)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
+				tools.CallClear() // 清屏
 				return
 			}
 
@@ -207,13 +209,14 @@ func OldFrame3() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前3个需要开启画布模式
 			if i < 3 {
-				saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvas(inputPrompt[i], 0)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
+				tools.CallClear() // 清屏
 				return
 			}
 
@@ -292,13 +295,14 @@ func OldFrame4() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i]= InputCanvas(inputPrompt[i], 6)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvas(inputPrompt[i], 0)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
+				tools.CallClear() // 清屏
 				return
 			}
 
@@ -386,13 +390,14 @@ func OldFrame5() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvas(inputPrompt[i], 0)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
+				tools.CallClear() // 清屏
 				return
 			}
 
@@ -462,13 +467,14 @@ func OldFrame6() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvas(inputPrompt[i], 0)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
+				tools.CallClear() // 清屏
 				return
 			}
 
@@ -641,9 +647,10 @@ func OldFrame7() {
 	// 循环使用此框架
 	for {
 		tools.ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
-		numberStr := InputCanvas("\n:: 请输入拥有几个座屏：", 0)
+		numberStr := InputCanvasSize("\n:: 请输入拥有几个座屏：", 0)
 		// 一开始就返回直接退出函数
 		if numberStr == "-" || numberStr == "--" {
+			tools.CallClear() // 清屏
 			return
 		}
 		// 字符串转换成int64后再转int
@@ -667,13 +674,14 @@ func OldFrame7() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 除了最后一个都需要开启画布模式
 			if i != len(saveSizeStr)-1 {
-				saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvas(inputPrompt[i], 0)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
+				tools.CallClear() // 清屏
 				return
 			}
 
@@ -750,8 +758,6 @@ func OldFrame7() {
 	}
 }
 
-
-
 // 卷帘座屏
 // 宽-20   高上下各镂空15 长度要预留10
 func OldFrame8() {
@@ -767,10 +773,11 @@ func OldFrame8() {
 	for {
 		tools.ChineseTitle("当前框架卷帘座屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
-			saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
+			saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
+				tools.CallClear() // 清屏
 				return
 			}
 
@@ -830,10 +837,11 @@ func OldFrame9() {
 		fmt.Println("\n【补切】主要用来补切画布，不减去任何边框尺寸，适合不想手动新建画布时使用！")
 
 		for i := 0; i < len(saveSizeStr); i++ {
-			saveSizeStr[i] = InputCanvas(inputPrompt[i], 6)
+			saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
+				tools.CallClear() // 清屏
 				return
 			}
 

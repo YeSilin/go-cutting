@@ -16,12 +16,12 @@ func tempFame1To4() {
 	for {
 		tools.EnglishTitle("Custom size", 74)
 
-		widthStr, _ := model.Input("\n:: 请输入小座屏的宽：", true, false)
+		widthStr := model.InputCanvasSize("\n:: 请输入小座屏的宽：", 6)
 		if widthStr == "-" {
 			break
 		}
 
-		heightStr, _ := model.Input("\n:: 请输入小座屏的高：", true, false)
+		heightStr := model.InputCanvasSize("\n:: 请输入小座屏的高：", 6)
 		if heightStr == "-" {
 			break
 		}
