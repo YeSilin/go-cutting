@@ -51,7 +51,7 @@ OuterLoop:
 		tips := `
 :: 以下为常见小座屏边框尺寸也可自定义，置入成功的前提是已新建好效果图背景！
 
-   [1]80-180         [2]100-180         [3]120-180         [4]自定义尺寸`
+   [1]80-180         [2]100-180         [3]120-180         [4]自定义尺寸.`
 		fmt.Println(tips)
 
 		frameType, info := model.InputMenuSelection("\n:: 请选择上方的边框尺寸：")
@@ -162,7 +162,7 @@ OuterLoop:
 		tips := `
 :: 提供简单框架的自动效果图一键生成，由于效果图框架复杂暂时只提供如下功能！
 
-   [1]新建背景         [2]常规座屏         [3]单扇折屏         [4]单侧镂空`
+   [1]新建背景         [2]常规座屏.        [3]单扇折屏.        [4]单侧镂空.`
 		fmt.Println(tips)
 		frameType, info := model.InputMenuSelection("\n:: 请选择上方的功能类型：")
 		tools.CallClear() // 清屏

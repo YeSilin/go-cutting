@@ -14,7 +14,7 @@ OuterLoop:
 	for {
 		tools.EnglishTitle("Help info", 74)
 		fmt.Println("\n:: 此项目是通过注入JS脚本对PS进行短暂的间接控制，非实时监控，资源消耗极低！")
-		fmt.Println("\n   [1]查看快捷暗号             [2]查看切图规则             [3]查看功能说明")
+		fmt.Println("\n   [1]查看快捷暗号.            [2]查看切图规则.            [3]查看功能说明.")
 		help, info := model.InputMenuSelection("\n:: 请选择需要查看的帮助：")
 		tools.CallClear() // 清屏
 		switch help {

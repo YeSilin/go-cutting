@@ -20,7 +20,7 @@ OuterLoop:
 
    [1]怡柟家具                   [2]御尚家具                   [3]素梵家具
 
-   [4]棠语家具                   [5]暂未开发                   [6]暂未开发`
+   [4]棠语家具                   [5]凌轩家具                   [6]暂未开发`
 		fmt.Println(text)
 		layoutType, info := model.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
@@ -34,7 +34,7 @@ OuterLoop:
 		case "4":
 			autoPicture.WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/tangyujj.png", viper.GetBool("automaticDeletion"))
 		case "5":
-
+			autoPicture.WatermarkMasterGraph(viper.GetString("picture"), "config/static/img/lingxuan.png", viper.GetBool("automaticDeletion"))
 		case "6":
 
 		case "7":
@@ -102,7 +102,7 @@ OuterLoop:
 		text := `
 :: 在保持原来长宽像素不变的情况下，将分辨率强行修改至指定数值，请尽量少用！
 
-   [1]全部改为72PPI         [2]全部改为300PPI         [3]全部改为自定义PPI`
+   [1]全部改为72PPI         [2]全部改为300PPI         [3]全部改为自定义PPI.`
 		fmt.Println(text)
 		layoutType, info := model.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear()
@@ -135,9 +135,9 @@ OuterLoop:
 
    [1]套图文件夹                [2]随机重命名                [3]备份文件夹
 
-   [4]家具店主图                [5]通用版主图                [6]屏风店主图
+   [4]家具店主图.               [5]通用版主图                [6]屏风店主图.
 
-   [7]修改分辨率                [8]替换详情页                [9]导出详情页`
+   [7]修改分辨率.               [8]替换详情页                [9]导出详情页`
 		fmt.Println(text)
 
 		layoutType, info := model.InputMenuSelection("\n:: 请选择需要使用的功能：")

@@ -19,10 +19,14 @@ func Run(tips string, version float64) {
 		color.LightCyan.Println("\n " + (strings.Repeat("-", 18)) + fmt.Sprintf(" Welcome to the GoCutting v%s app ", versionStr) + strings.Repeat("-", 17))
 		fmt.Println("\n:: 添加新暗号【--】返回上一次输入，例如镂空大小输错，返回重新输入镂空大小！")
 
+	//	tips := `
+   //[1]快捷切图         [2]快捷贴图         [3]快捷效果         [4]自动套图
+   //
+   //[5]附加功能         [6]暗号列表         [7]设置中心         [8]帮助信息`
 		tips := `
-   [1]快捷切图         [2]快捷贴图         [3]快捷效果         [4]自动套图
+   [1]快捷切图.        [2]快捷贴图.        [3]快捷效果.        [4]自动套图.
 
-   [5]附加功能         [6]暗号列表         [7]设置中心         [8]帮助信息`
+   [5]附加功能.        [6]暗号列表         [7]设置中心.        [8]帮助信息.`
 		fmt.Println(tips)
 
 		//factory, info := model.Input("\n:: 请选择上方的菜单功能：", false, true)
