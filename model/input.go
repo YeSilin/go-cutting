@@ -29,6 +29,7 @@ func runCode(num string) (ok bool, info string) {
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在深度清理PSD..."
 	case "-4":
 		code.StartCode4() // 工作目录
+		return true, ""
 	case "-5":
 		return true, "\n:: 检测到输入的内容为隐藏暗号，但是此暗号未指定功能..."
 	case "-6":
@@ -49,6 +50,9 @@ func runCode(num string) (ok bool, info string) {
 	case "-11":
 		code.StartCode11() // 快捷另存全部打开的文件
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在另存全部打开的文件..."
+	case "-12":
+		code.StartCode12() // 快捷保存并关闭全部文档
+		return true, "\n:: 检测到输入的内容为隐藏暗号，正在保存并关闭全部文档..."
 	case "-97":
 		code.StartCode97()
 		return true, ""

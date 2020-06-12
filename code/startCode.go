@@ -82,16 +82,16 @@ func StartCode4() {
 	cmd.Run()
 }
 
+// 启动暗号-6 简单清除元数据
+func StartCode6() {
+	dataPath := "config/jsx/clearMetadataNoPopUp.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+}
+
 // 启动暗号-7 为当前文档添加黑边
 func StartCode7() {
 	// 创建一个协程使用cmd来运行脚本
 	dataPath := "config/jsx/blackEdge.jsx"
-	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
-}
-
-// 启动暗号-6 简单清除元数据
-func StartCode6() {
-	dataPath := "config/jsx/clearMetadataNoPopUp.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
@@ -132,6 +132,14 @@ func StartCode11() {
 	dataPath := "Config/JSX/saveAllJPEG.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
+
+// 启动暗号-12 快捷保存并关闭全部文档
+func StartCode12() {
+	// 创建一个协程使用cmd启动外部程序
+	dataPath := "config/jsx/saveAndCloseAllDocuments.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+}
+
 
 
 

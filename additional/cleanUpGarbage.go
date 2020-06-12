@@ -8,27 +8,26 @@ import (
 )
 
 // 清理系统垃圾
-func CleanUpGarbage()  {
+func CleanUpGarbage() {
 	fmt.Println()
-	str := []string{"[>>>                >]", "[]>>>>              []", "[]  >>>>            []", "[]    >>>>          []", "[]      >>>>        []", "[]        >>>>      []",  "[]            >>>>  []", "[]              >>>>[]", "[>                >>>]"}
+	str := []string{"[>>>                >]", "[]>>>>              []", "[]  >>>>            []", "[]    >>>>          []", "[]      >>>>        []", "[]        >>>>      []", "[]            >>>>  []", "[]              >>>>[]", "[>                >>>]"}
 
 	// 新建一个微调器
 	//s:=spinner.New(spinner.CharSets[43],100*time.Millisecond)
-	s:=spinner.New(str,100*time.Millisecond)
+	s := spinner.New(str, 100*time.Millisecond)
 
 	// 为微调器添加前缀
 	s.Prefix = "【附加】正在安全清理: "
 
-
 	// 为微调器添加后缀
 	//s.Suffix="00"
 	// 执行完成后的提示
-	s.FinalMSG="【附加】系统垃圾已清理完毕！                                       "
+	s.FinalMSG = "【附加】系统垃圾已清理完毕！                                       "
 
 	// 设置颜色
 	s.Color("green")
 
-	go func(){
+	go func() {
 		// 开始
 		s.Start()
 
@@ -79,6 +78,4 @@ func CleanUpGarbage()  {
 		s.Stop()
 		fmt.Println()
 	}()
-
 }
-

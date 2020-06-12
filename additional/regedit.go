@@ -2,16 +2,13 @@ package additional
 
 import (
 	"fmt"
-	"github.com/yesilin/go-cutting/tools"
 	"golang.org/x/sys/windows/registry"
 )
 
-
-
 // 干掉百度网盘，wps，腾讯微云等一系列花里胡哨的磁盘驱动器旁边的图标
 func CURRENT_USER_NoNameSpace() {
-	
-	fmt.Print("\n【附加】CURRENT_USER：")
+
+	fmt.Print("\n:: CURRENT_USER：")
 
 	// 定义一个变量获取指定路径注册表的值 例如 NameSpace 的
 	key, _ := registry.OpenKey(registry.CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace", registry.ALL_ACCESS)
@@ -40,8 +37,8 @@ func CURRENT_USER_NoNameSpace() {
 	fmt.Println("等恶意盘符！")
 }
 
-func LOCAL_MACHINE_NoNameSpace()  {
-	fmt.Print("\n【附加】LOCAL_MACHINE：")
+func LOCAL_MACHINE_NoNameSpace() {
+	fmt.Print("\n:: LOCAL_MACHINE：")
 
 	// 定义一个变量获取指定路径注册表的值 例如 NameSpace 的
 	key, _ := registry.OpenKey(registry.LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MyComputer\\NameSpace", registry.ALL_ACCESS)
@@ -67,7 +64,5 @@ func LOCAL_MACHINE_NoNameSpace()  {
 
 	fmt.Println("等恶意盘符！")
 
-	fmt.Println("\n【注意】已清除恶意盘符，此项附加功能的命令需要右键管理员身份运行本软件方可生效！")
-	tools.PrintLine(2)
+	fmt.Println("\n:: 已清除恶意盘符，此项附加功能的命令需要右键管理员身份运行本软件方可生效！")
 }
-

@@ -149,9 +149,9 @@ func NewTempDocumentJs() {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("Config/JSX/NewTempDocument.jsx", jsxStr)
+	tools.CreateFile("config/jsx/newTempDocument.jsx", jsxStr)
 
 	// 创建一个协程使用cmd来运行脚本
-	dataPath := "Config/jsx/NewTempDocument.jsx"
+	dataPath := "config/jsx/newTempDocument.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
