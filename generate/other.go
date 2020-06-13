@@ -364,3 +364,75 @@ func SelectionTempFrameJS(frame string, layer int) {
 	dataPath := "Config/JSX/SelectionTempFrame.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
+
+// 生成复制并关闭其他文档脚本
+func CopyAndCloseOtherDocuments() {
+	const script = `// 复制所有图层到指定目录
+function copyAllLayers(srcDoc, dstDoc) {
+    // 先激活文档
+    app.activeDocument = srcDoc
+
+    // 遍历所有图层，从下到到上复制
+    for (var i = srcDoc.layers.length - 1; i >= 0; i--) {
+        // 复制到主文档
+        srcDoc.layers[i].duplicate(dstDoc);
+    }
+}
+
+
+//  复制并关闭其他文档
+function copyAndCloseOtherDocuments() {
+    // 循环保存所有
+    for (var i = 0; i < documents.length; i++) {
+        // 如果是自己就不复制
+        if (documents[i] == masterDocument) {
+            continue
+        }
+
+        // 复制全部图层到指定文档
+        copyAllLayers(documents[i], masterDocument)
+
+        // 关闭文档而不保存更改
+        documents[i].close(SaveOptions.DONOTSAVECHANGES);
+    }
+}
+
+
+// 添加进度条
+function progressBar() {
+    app.doForcedProgress("正在复制并关闭其他文档... ", "copyAndCloseOtherDocuments()")
+}
+
+// 添加历史记录
+function history() {
+    // 生成历史记录并调用函数
+    app.activeDocument.suspendHistory("复制并关闭其他文档", "progressBar()");
+}
+
+
+// 主函数
+function main() {
+    if (!documents.length) {
+        //alert("没有打开的文档，请打开一个文档来运行此脚本！");
+        return;
+    }
+
+    // 主文档等于当前激活的文档
+    masterDocument = app.activeDocument
+
+    // 运行历史记录
+    history()
+}
+
+
+// 先申明主文档
+var masterDocument
+
+// 运行
+main()`
+
+	// 71.0 更新 先强制生成的文本写覆盖入目标文件
+	tools.CreateFile("config/jsx/copyAndCloseOtherDocuments.jsx", script)
+}
+
+

@@ -82,6 +82,14 @@ func StartCode4() {
 	cmd.Run()
 }
 
+// 启动暗号-5 复制并关闭其他文档
+func StartCode5() {
+	// 创建一个协程使用cmd启动外部程序
+	dataPath := "config/jsx/copyAndCloseOtherDocuments.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+}
+
+
 // 启动暗号-6 简单清除元数据
 func StartCode6() {
 	dataPath := "config/jsx/clearMetadataNoPopUp.jsx"

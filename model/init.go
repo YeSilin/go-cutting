@@ -75,6 +75,7 @@ func InitScript() {
 		generate.SaveAsJPEG()                           // 生成带自带清除元数据的另存脚本
 		generate.SaveAllJPEG()                          // 生成另存全部文件脚本
 		generate.SaveAndCloseAllDocuments()             // 生成保存并关闭全部文档的脚本
+		generate.CopyAndCloseOtherDocuments()           // 生成复制并关闭其他文档脚本
 	}()
 }
 
