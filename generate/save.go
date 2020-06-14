@@ -385,13 +385,21 @@ if (!documents.length) {
 func SaveAndCloseAllDocuments() {
 	const script = `//  保存并关闭所有文件
 function saveAndClose() {
-    // 循环保存所有
+    // 把所有要保存关闭的文档保存到组
+    var documentsArr = new Array
+
+    // 得到要保存关闭的文档，主要是documents关闭后会直接刷新，所以存自定义的数组里
     for (var i = 0; i < documents.length; i++) {
-        // 先激活文档
-        app.activeDocument = documents[i]
+        // 追加到数组
+        documentsArr.push(documents[i])
+    }
+
+
+    // 循环保存所有
+    for (var i = 0; i < documentsArr.length; i++) {
         try {
             // 最后保存并关闭
-            app.activeDocument.close(SaveOptions.SAVECHANGES);
+            documentsArr[i].close(SaveOptions.SAVECHANGES);
         } catch (error) {
             // 忽略错误
         }

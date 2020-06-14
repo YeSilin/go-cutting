@@ -1,6 +1,7 @@
 package web
 
 import (
+	"github.com/zserge/webview"
 	"log"
 	"net/http"
 )
@@ -20,11 +21,12 @@ func RunWebServer() {
 }
 
 // 新版本不好用
-//func RunWebview() {
-//	w := webview.New(false)
-//	defer w.Destroy()
-//	w.SetTitle("Minimal webview example")
-//	w.SetSize(300, 600, webview.HintNone)
-//	w.Navigate("http://localhost:9090/index")
-//	w.Run()
-//}
+func RunWebview() {
+	w := webview.New(false)
+	defer w.Destroy()
+	w.SetTitle("GoCutting")
+	w.SetSize(350, 600, webview.HintFixed )
+	w.Navigate("http://localhost:12110/index")
+
+	w.Run()
+}

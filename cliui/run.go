@@ -5,8 +5,8 @@ import (
 	"github.com/gookit/color"
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/model"
+	"github.com/yesilin/go-cutting/model/web"
 	"github.com/yesilin/go-cutting/tools"
-	"github.com/zserge/webview"
 	"strings"
 )
 
@@ -47,8 +47,8 @@ func Run(tips string, version float64) {
 		case "6":
 			// 启动gui
 			// 搭建web窗口
-			go webview.Open("GoCutting", "http://localhost:12110/index", 350, 600, true)
-			//go gui.RunWebview()
+			//go webview.Open("GoCutting", "http://localhost:12110/index", 350, 600, true)
+			go web.RunWebview()
 		case "7":
 			ModifySetting() // 设置
 		case "8":

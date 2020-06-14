@@ -15,7 +15,7 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.6 // indirect
 	github.com/mitchellh/mapstructure v1.3.2 // indirect
-	github.com/mozillazg/go-pinyin v0.17.0
+	github.com/mozillazg/go-pinyin v0.18.0
 	github.com/muesli/smartcrop v0.3.0
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
@@ -27,7 +27,7 @@ require (
 	github.com/pelletier/go-toml v1.8.0 // indirect
 	github.com/shirou/gopsutil v2.20.5+incompatible // indirect
 	github.com/sirupsen/logrus v1.6.0
-	github.com/smartystreets/assertions v1.1.0 // indirect
+	github.com/smartystreets/assertions v1.1.1 // indirect
 	github.com/spf13/afero v1.2.2 // indirect
 	github.com/spf13/cast v1.3.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
@@ -35,7 +35,7 @@ require (
 	github.com/spf13/viper v1.7.0
 	github.com/stretchr/testify v1.6.1 // indirect
 	github.com/wzshiming/ctc v1.2.3
-	github.com/zserge/webview v0.0.0-20200121135717-9c1b0a888aa4
+	github.com/zserge/webview v0.0.0-20200516134046-4caf698fad53
 	golang.org/x/image v0.0.0-20200609002522-3f4726a040e8 // indirect
 	golang.org/x/net v0.0.0-20200602114024-627f9648deb9 // indirect
 	golang.org/x/sys v0.0.0-20200610111108-226ff32320da

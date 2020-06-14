@@ -89,7 +89,6 @@ func StartCode5() {
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
-
 // 启动暗号-6 简单清除元数据
 func StartCode6() {
 	dataPath := "config/jsx/clearMetadataNoPopUp.jsx"
@@ -147,9 +146,6 @@ func StartCode12() {
 	dataPath := "config/jsx/saveAndCloseAllDocuments.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
-
-
-
 
 // 启动暗号-97
 func StartCode97() {

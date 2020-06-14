@@ -367,33 +367,115 @@ func SelectionTempFrameJS(frame string, layer int) {
 
 // 生成复制并关闭其他文档脚本
 func CopyAndCloseOtherDocuments() {
-	const script = `// 复制所有图层到指定目录
+	const script = `// For code readability. 图层操作要用到的函数
+function cTID(s) {
+    return charIDToTypeID(s)
+}
+
+function sTID(s) {
+    return stringIDToTypeID(s)
+}
+
+// =============================  
+
+// 将选中的图层编组  
+function groupSelected(name) {
+    var m_Dsc01 = new ActionDescriptor();
+    var m_Ref01 = new ActionReference();
+    m_Ref01.putClass(sTID("layerSection"));
+    m_Dsc01.putReference(cTID("null"), m_Ref01);
+    var m_Ref02 = new ActionReference();
+    m_Ref02.putEnumerated(cTID("Lyr "), cTID("Ordn"), cTID("Trgt"));
+    m_Dsc01.putReference(cTID("From"), m_Ref02);
+    var m_Dsc02 = new ActionDescriptor();
+    m_Dsc02.putString(cTID("Nm  "), name);
+    m_Dsc01.putObject(cTID("Usng"), sTID("layerSection"), m_Dsc02);
+    executeAction(cTID("Mk  "), m_Dsc01, DialogModes.NO);
+
+    return activeDocument.activeLayer;
+}
+
+
+// 解锁背景图层
+function unlockBackgroundLayer() {
+    var idsetd = charIDToTypeID("setd");
+    var desc8 = new ActionDescriptor();
+    var idnull = charIDToTypeID("null");
+    var ref2 = new ActionReference();
+    var idLyr = charIDToTypeID("Lyr ");
+    var idBckg = charIDToTypeID("Bckg");
+    ref2.putProperty(idLyr, idBckg);
+    desc8.putReference(idnull, ref2);
+    var idT = charIDToTypeID("T   ");
+    var desc9 = new ActionDescriptor();
+    var idLyr = charIDToTypeID("Lyr ");
+    desc8.putObject(idT, idLyr, desc9);
+    executeAction(idsetd, desc8, DialogModes.NO);
+}
+
+// 选择全部图层，但不包括背景图层
+function selectAllLayers() {
+    var desc29 = new ActionDescriptor();
+    var ref23 = new ActionReference();
+    ref23.putEnumerated(charIDToTypeID('Lyr '), charIDToTypeID('Ordn'), charIDToTypeID('Trgt'));
+    desc29.putReference(charIDToTypeID('null'), ref23);
+    executeAction(stringIDToTypeID('selectAllLayers'), desc29, DialogModes.NO);
+}
+
+
+// 复制所有图层到指定文档
 function copyAllLayers(srcDoc, dstDoc) {
     // 先激活文档
     app.activeDocument = srcDoc
 
-    // 遍历所有图层，从下到到上复制
-    for (var i = srcDoc.layers.length - 1; i >= 0; i--) {
-        // 复制到主文档
-        srcDoc.layers[i].duplicate(dstDoc);
+    // 如果图层只有一个就不用解锁
+    if (srcDoc.layers.length == 1) {
+        // 直接复制到主文档
+        srcDoc.activeLayer.duplicate(dstDoc);
+        return
     }
+
+
+    // 解锁背景图层
+    unlockBackgroundLayer()
+
+    // 选择全部图层
+    selectAllLayers()
+
+    // 只有图层数大于1的才打包
+    if (srcDoc.layers.length > 1) {
+        // 将选中的图层编组 
+        groupSelected(srcDoc.name)
+    }
+
+    // 复制到主文档
+    srcDoc.activeLayer.duplicate(dstDoc);
 }
 
 
 //  复制并关闭其他文档
 function copyAndCloseOtherDocuments() {
-    // 循环保存所有
+    // 把所有要复制的文档保存到组
+    var documentsArr = new Array
+
+    // 得到要复制的文档，主要是documents关闭后会直接刷新，所以存自定义的数组里
     for (var i = 0; i < documents.length; i++) {
         // 如果是自己就不复制
         if (documents[i] == masterDocument) {
             continue
         }
+        // 追加到数组
+        documentsArr.push(documents[i])
+    }
+
+    // 循环关闭所有
+    for (var i = 0; i < documentsArr.length; i++) {
 
         // 复制全部图层到指定文档
-        copyAllLayers(documents[i], masterDocument)
+        copyAllLayers(documentsArr[i], masterDocument)
 
         // 关闭文档而不保存更改
-        documents[i].close(SaveOptions.DONOTSAVECHANGES);
+        documentsArr[i].close(SaveOptions.DONOTSAVECHANGES);
     }
 }
 
@@ -416,7 +498,6 @@ function main() {
         //alert("没有打开的文档，请打开一个文档来运行此脚本！");
         return;
     }
-
     // 主文档等于当前激活的文档
     masterDocument = app.activeDocument
 
