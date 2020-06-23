@@ -28,18 +28,18 @@ require (
 	github.com/shirou/gopsutil v2.20.5+incompatible // indirect
 	github.com/sirupsen/logrus v1.6.0
 	github.com/smartystreets/assertions v1.1.1 // indirect
-	github.com/spf13/afero v1.2.2 // indirect
+	github.com/spf13/afero v1.3.0 // indirect
 	github.com/spf13/cast v1.3.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.7.0
 	github.com/stretchr/testify v1.6.1 // indirect
 	github.com/wzshiming/ctc v1.2.3
-	github.com/zserge/webview v0.0.0-20200516134046-4caf698fad53
-	golang.org/x/image v0.0.0-20200609002522-3f4726a040e8 // indirect
+	github.com/zserge/webview v0.0.0-20200620192713-a087738b3256
+	golang.org/x/image v0.0.0-20200618115811-c13761719519 // indirect
 	golang.org/x/net v0.0.0-20200602114024-627f9648deb9 // indirect
-	golang.org/x/sys v0.0.0-20200610111108-226ff32320da
-	golang.org/x/text v0.3.2
+	golang.org/x/sys v0.0.0-20200622214017-ed371f2e16b4
+	golang.org/x/text v0.3.3
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/ini.v1 v1.57.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200605160147-a5ece683394c // indirect

@@ -1,5 +1,5 @@
 // 启动暗号的函数汇总
-package code
+package model
 
 import (
 	"fmt"

@@ -164,7 +164,7 @@ func Tailor7(widthSlice, heightSlice []float64, heightMax float64, frameName str
 		HeightMax     float64 // 最大的高
 		ScreenName    string  // 是几座屏
 		BlackEdge     bool    // 是否自动黑边
-	}{tools.ToJsArray(widthSlice), tools.ToJsArray(heightSlice), heightMax, tools.Transfer(len(widthSlice)), viper.GetBool("blackEdge")}
+	}{tools.Float64SliceToJsArray(widthSlice), tools.Float64SliceToJsArray(heightSlice), heightMax, tools.Transfer(len(widthSlice)), viper.GetBool("blackEdge")}
 
 	// 解析指定文件生成模板对象
 	tmpl, err := template.ParseFiles("config/jsx/template/multiScreen.gohtml")
@@ -203,7 +203,41 @@ func TailorForMap6(width, height, number int, frameName, singleName string) {
 	}{width, height, number, singleName}
 
 	// 解析指定文件生成模板对象
-	tmpl, err := template.ParseFiles("config/jsx/template/foldingScreensForMap.gohtml")
+	tmpl, err := template.ParseFiles("config/jsx/template/map/foldingScreensCutting.gohtml")
+	if err != nil {
+		logrus.Error(err)
+		return
+	}
+
+	// 创建文件，返回两个值，一是创建的文件，二是错误信息
+	f, err := os.Create(fmt.Sprintf("config/jsx/temp/tailor_%s.jsx", frameName))
+	if err != nil { // 如果有错误，打印错误，同时返回
+		logrus.Error(err)
+		return
+	}
+	// 关闭文件
+	defer f.Close()
+
+	// 利用给定数据渲染模板，并将结果写入f
+	err = tmpl.Execute(f, info)
+	if err != nil {
+		logrus.Error(err)
+	}
+}
+
+
+// 生成多座屏贴图的自动裁剪
+func TailorForMap7(widthSlice, heightSlice []int, heightMax int, frameName string) {
+	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
+	info := struct {
+		WidthSliceJS  string
+		HeightSliceJS string
+		HeightMax     int // 最大的高
+		ScreenName    string  // 是几座屏
+	}{tools.IntSliceToJsArray(widthSlice), tools.IntSliceToJsArray(heightSlice), heightMax, tools.Transfer(len(widthSlice))}
+
+	// 解析指定文件生成模板对象
+	tmpl, err := template.ParseFiles("config/jsx/template/map/multiScreenCutting.gohtml")
 	if err != nil {
 		logrus.Error(err)
 		return

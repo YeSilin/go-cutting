@@ -80,7 +80,7 @@ func NewDocumentForMap(width, height int, frameName string) {
 	}{width, height, frameName}
 
 	// 解析指定文件生成模板对象
-	tmpl, err := template.ParseFiles("config/jsx/template/newDocumentForMap.gohtml")
+	tmpl, err := template.ParseFiles("config/jsx/template/map/newDocument.gohtml")
 	if err != nil {
 		logrus.Error(err)
 		return

@@ -38,7 +38,7 @@ OuterLoop:
 		case "6":
 			model.MapFrame6() // 常规折屏
 		case "7":
-			fmt.Println("未开发") // 多座屏
+			model.MapFrame7() // 多座屏
 		case "8":
 			fmt.Println("未开发") // 补切画布
 		case "-":

@@ -5,8 +5,6 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/wzshiming/ctc"
-	"github.com/yesilin/go-cutting/clib"
-	"github.com/yesilin/go-cutting/code"
 	"github.com/yesilin/go-cutting/tools"
 	"os"
 	"regexp"
@@ -19,49 +17,49 @@ func runCode(num string) (ok bool, info string) {
 	// 开始指定功能
 	switch num {
 	case "-1":
-		code.StartCode1()
+		StartCode1()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在调用快捷裁剪..."
 	case "-2":
-		code.StartCode2()
+		StartCode2()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在重建新文档..."
 	case "-3":
-		code.StartCode3() // 深度清除源数据
+		StartCode3() // 深度清除源数据
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在深度清理PSD..."
 	case "-4":
-		code.StartCode4() // 工作目录
+		StartCode4() // 工作目录
 		return true, ""
 	case "-5":
-		code.StartCode5() // 复制并关闭其他文档
+		StartCode5() // 复制并关闭其他文档
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在复制并关闭其他文档..."
 	case "-6":
-		code.StartCode6() // 简单清除元数据
+		StartCode6() // 简单清除元数据
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在快速清理PSD..."
 	case "-7":
-		code.StartCode7() // 为当前文档添加黑边
+		StartCode7() // 为当前文档添加黑边
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在为当前文档添加黑边..."
 	case "-8":
 		tools.CallClear() // 清屏
 		return true, ""
 	case "-9":
-		code.StartCode9() // 打开历史记录
+		StartCode9() // 打开历史记录
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在打开切图历史..."
 	case "-10":
-		code.StartCode10() // 快捷另存为jpg
+		StartCode10() // 快捷另存为jpg
 		return true, ""
 	case "-11":
-		code.StartCode11() // 快捷另存全部打开的文件
+		StartCode11() // 快捷另存全部打开的文件
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在另存全部打开的文件..."
 	case "-12":
-		code.StartCode12() // 快捷保存并关闭全部文档
+		StartCode12() // 快捷保存并关闭全部文档
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在保存并关闭全部文档..."
 	case "-97":
-		code.StartCode97()
+		StartCode97()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在替换详情页DP智能对象..."
 	case "-98":
-		code.StartCode98()
+		StartCode98()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在导出为Web所用格式..."
 	case "-99":
-		code.StartCode99()
+		StartCode99()
 		return true, ""
 	}
 	return false, ""
@@ -129,20 +127,20 @@ func InputCanvasSize(tips string, minimum int) (num string) {
 	// 回到一开始光标的位置重新输入
 	refreshRow := func(x, y int) {
 		/// 重新指定xy位置，覆盖之前的输入
-		clib.GotoPostion(0, y-1)
+		tools.GotoPostion(0, y-1)
 
 		// 打一些空格覆盖之前的内容
 		fmt.Print("                                                                                           ")
 
 		// 重新指定xy位置，覆盖之前的输入
-		clib.GotoPostion(x, y-2)
+		tools.GotoPostion(x, y-2)
 	}
 	for {
 		// 用户输入提示，获取键盘输入
 		fmt.Print(tips)
 
 		// 获取光标位置
-		x, y := clib.WhereXY()
+		x, y := tools.WhereXY()
 
 		// 换行也是一次输入结束
 		_, err := fmt.Scanln(&num)
@@ -150,7 +148,7 @@ func InputCanvasSize(tips string, minimum int) (num string) {
 		if err != nil && minimum <= 0 {
 
 			// 重新指定xy位置
-			clib.GotoPostion(x-1, y-1)
+			tools.GotoPostion(x-1, y-1)
 			fmt.Println("0")
 			return "0"
 		}

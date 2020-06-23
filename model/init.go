@@ -6,7 +6,6 @@ import (
 	"github.com/gookit/color"
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/generate"
-	"github.com/yesilin/go-cutting/model/web"
 	"github.com/yesilin/go-cutting/tools"
 	"os"
 	"time"
@@ -87,7 +86,7 @@ func InitCipherList() {
 		if viper.GetBool("cipherList") {
 			// 搭建web窗口
 			//webview.Open("GoCutting", "http://localhost:12110/index", 350, 600, true)
-			web.RunWebview()
+			RunWebview()
 		}
 	}()
 }
