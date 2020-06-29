@@ -552,7 +552,7 @@ func OldFrame6() {
 }
 
 //旧厂多座屏
-func OldFrame7test() {
+func OldFrame7() {
 	// 定义一个预留尺寸
 	var reserve = viper.GetFloat64("reserve")
 
@@ -567,7 +567,7 @@ func OldFrame7test() {
 
 	// 切片叠加的编码临时函数，宽和高交叉叠加，上下镂空直接追加
 	enSliceStacking := func(w, h []string, s ...string) (ret []string) {
-		sum := len(w) + len(h)+len(s)
+		sum := len(w) + len(h) + len(s)
 
 		// 为结果分配内存
 		ret = make([]string, sum)
@@ -575,10 +575,11 @@ func OldFrame7test() {
 		// 最后镂空
 		//ret[sum] = s
 
-		// 计算宽和高的使用次数
+		// 计算使用次数
 		countW, countH := 0, 0
-		for i := 0; i < len(w) + len(h); i++ {
-			if i%2 == 0 { // 偶数给宽
+		// 先把宽和高互相叠加进切片
+		for i := 0; i < len(w)+len(h); i++ {
+			if i%2 == 0 { // 偶数给宽，0也是偶数
 				ret[i] = w[countW]
 				countW++
 			} else {
@@ -586,25 +587,43 @@ func OldFrame7test() {
 				countH++
 			}
 		}
+
+		// 得到开始追加的索引
+		index := len(w) + len(h)
+		// 最后把上下镂空追加到切片
+		for i := 0; i < len(s); i++ {
+			ret[index] = s[i]
+			index++
+		}
+
 		return
 	}
 
 	// 切片叠加的解码临时函数
-	deSliceStacking := func(ret []string) (w, h []string, s string) {
-		sum := len(ret) - 1
-		// 最后一个是下镂空
-		s = ret[sum]
+	deSliceStacking := func(ret []string) (w, h []string, up, down string) {
+		// 剪切上下镂空后的切片长度
+		sum := len(ret) - 2
+
+		// 为宽和高的切片分配一次内存
+		w = make([]string, sum/2)
+		h = make([]string, sum/2)
+
 		// 计算宽和高的使用次数
 		countW, countH := 0, 0
+		// 宽和高的切片先求出
 		for i := 0; i < sum; i++ {
 			if i%2 == 0 { // 偶数给宽
-				w = append(w, ret[i])
+				w[countW] = ret[i]
 				countW++
 			} else {
-				h = append(h, ret[i])
+				h[countH] = ret[i]
 				countH++
 			}
 		}
+
+		// 得到上下镂空的值
+		up = ret[sum]
+		down = ret[sum+1]
 		return
 	}
 
@@ -647,7 +666,7 @@ func OldFrame7test() {
 	// 循环使用此框架
 	for {
 		tools.ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
-		numberStr := InputCanvasSize("\n:: 请输入拥有几个座屏：", 0)
+		numberStr := InputCanvasSize("\n:: 请输入拥有几个座屏：", 1)
 		// 一开始就返回直接退出函数
 		if numberStr == "-" || numberStr == "--" {
 			tools.CallClear() // 清屏
@@ -663,14 +682,14 @@ func OldFrame7test() {
 		inputHeight := replaceText(number, "\n:: 请输入第%s个座屏的高：")
 
 		// 初始化输入提示的切片汇总
-		inputPrompt := enSliceStacking(inputWidth, inputHeight, "\n:: 每个座屏的下镂空均是：")
+		inputPrompt := enSliceStacking(inputWidth, inputHeight, "\n:: 每个座屏的上镂空均是：", "\n:: 每个座屏的下镂空均是：")
 		// 保存尺寸的切片
 		saveSizeStr := make([]string, len(inputPrompt))
 
 		// 循环输入尺寸信息
 		for i := 0; i < len(saveSizeStr); i++ {
-			// 除了最后一个都需要开启画布模式
-			if i != len(saveSizeStr)-1 {
+			// 除了最后两个都需要开启画布模式
+			if i < len(saveSizeStr)-2 {
 				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
 			} else {
 				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
@@ -694,15 +713,24 @@ func OldFrame7test() {
 		}
 
 		// 开始解码得到的值
-		widthStrSlice, heightStrSlice, downHollowOutStr := deSliceStacking(saveSizeStr)
+		widthStrSlice, heightStrSlice, upperHollowOutStr, downHollowOutStr := deSliceStacking(saveSizeStr)
 
 		// 将字符串转浮点数
 		widthSlice := parseFloatSlice(widthStrSlice)
 		heightSlice := parseFloatSlice(heightStrSlice)
-
+		upperHollowOut, _ := strconv.ParseFloat(upperHollowOutStr, 64)
 		downHollowOut, _ := strconv.ParseFloat(downHollowOutStr, 64)
 
-		if downHollowOut > 0 { // 如果有下镂空的话
+		// 如果有上镂空的话
+		if upperHollowOut > 0 {
+			// 顺序遍历
+			for i := 0; i < len(heightSlice); i++ {
+				heightSlice[i] -= upperHollowOut + 5
+			}
+		}
+
+		// 如果有下镂空的话
+		if downHollowOut > 0 {
 			// 顺序遍历
 			for i := 0; i < len(heightSlice); i++ {
 				heightSlice[i] = heightSlice[i] - (downHollowOut + 5)
@@ -731,8 +759,8 @@ func OldFrame7test() {
 			history += fmt.Sprintf("请输入第%s个座屏的宽：%s\n", tools.Transfer(i+1), widthStrSlice[i])
 			history += fmt.Sprintf("请输入第%s个座屏的高：%s\n", tools.Transfer(i+1), heightStrSlice[i])
 		}
+		history += fmt.Sprintf("每个座屏的上镂空均是：%s\n", upperHollowOutStr)
 		history += fmt.Sprintf("每个座屏的下镂空均是：%s\n", downHollowOutStr)
-
 		//存储已计算的历史记录
 		history += fmt.Sprintf("多座屏：总宽 %.2f cm，高 %.2f cm\n", widthSum, heightMax)
 		go History(history) // 写入历史
@@ -755,7 +783,7 @@ func OldFrame7test() {
 	}
 }
 
-func OldFrame7() {
+func OldFrame7bk() {
 	// 定义一个预留尺寸
 	var reserve = viper.GetFloat64("reserve")
 

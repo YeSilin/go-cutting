@@ -158,7 +158,6 @@ func SaveForWebDetailsPage() {
 	go func() {
 		// 自动套图工作路径
 		picturePath := viper.GetString("picture")
-
 		// 创建套图文件夹
 		_ = tools.CreateMkdirAll(fmt.Sprintf("%s/主图", picturePath))
 		// 创建一个协程使用cmd来运行脚本

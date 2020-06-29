@@ -111,5 +111,8 @@ app.activeDocument.suspendHistory(frameName + "宽度参考线", "addWidthLine(w
 // 生成高度参考线并写入历史
 app.activeDocument.suspendHistory(frameName + "高度参考线", "addHeightLine(heightArray,heightMax,equal)");
 
-// 设置激活的图层
-app.activeDocument.activeLayer = app.activeDocument.layers[1]
+// 当前文档只有1个背景图层时不激活其他图层
+if (app.activeDocument.layers.length != 1){
+    // 设置激活的图层
+    app.activeDocument.activeLayer = app.activeDocument.layers[1]
+}

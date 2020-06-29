@@ -7,7 +7,7 @@ import (
 )
 
 // 初始化
-func init() {
+func Init() {
 	// 初始化的 Viper实例
 	//v := viper.New()
 
