@@ -25,7 +25,8 @@ require (
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d // indirect
 	github.com/otiai10/mint v1.3.1 // indirect
 	github.com/pelletier/go-toml v1.8.0 // indirect
-	github.com/shirou/gopsutil v2.20.5+incompatible // indirect
+	github.com/robotn/gohook v0.30.3 // indirect
+	github.com/shirou/gopsutil v2.20.6+incompatible // indirect
 	github.com/sirupsen/logrus v1.6.0
 	github.com/smartystreets/assertions v1.1.1 // indirect
 	github.com/spf13/afero v1.3.1 // indirect

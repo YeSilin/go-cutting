@@ -12,14 +12,13 @@ import (
 
 func init() {
 	logs.InitLog()           // 初始化日志
-	settings.Init()       //初始化设置
+	settings.Init()          //初始化设置
 	model.InitNetwork()      // 没有网络不让使用
 	model.InitNotification() // ps 未运行就进行通知
 	model.InitFolder()       // 创建必须提前存在的文件夹
 	model.InitScript()       // 创建必须提前准备的脚本
 	go model.RunWebServer()  // 必须提前运行web服务器
 	model.InitCipherList()   // 判断是否打开暗号列表
-
 
 	// 实现快捷键 -1
 	//go model.NegativeOne()
@@ -32,7 +31,7 @@ func main() {
 	var power bool
 
 	// 这是版本信息
-	const version = 1.001039
+	const version = 1.001042
 
 	// 限制软件使用 2019.7.19
 	// 定义私密文件路径
