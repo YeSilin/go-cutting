@@ -10,7 +10,7 @@ require (
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/go-toast/toast v0.0.0-20190211030409-01e6764cf0a4
 	github.com/go-vgo/robotgo v0.90.2
-	github.com/gookit/color v1.2.5
+	github.com/gookit/color v1.2.6
 	github.com/gopherjs/gopherjs v0.0.0-20200217142428-fce0ec30dd00 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/mattn/go-colorable v0.1.7 // indirect
@@ -29,14 +29,14 @@ require (
 	github.com/shirou/gopsutil v2.20.6+incompatible // indirect
 	github.com/sirupsen/logrus v1.6.0
 	github.com/smartystreets/assertions v1.1.1 // indirect
-	github.com/spf13/afero v1.3.1 // indirect
+	github.com/spf13/afero v1.3.2 // indirect
 	github.com/spf13/cast v1.3.1 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.7.0
 	github.com/stretchr/testify v1.6.1 // indirect
 	github.com/wzshiming/ctc v1.2.3
-	github.com/zserge/webview v0.0.0-20200620192713-a087738b3256
+	github.com/zserge/webview v0.0.0-20200712140540-e08a32b4ebab
 	golang.org/x/image v0.0.0-20200618115811-c13761719519 // indirect
 	golang.org/x/net v0.0.0-20200602114024-627f9648deb9 // indirect
 	golang.org/x/sys v0.0.0-20200625212154-ddb9806d33ae

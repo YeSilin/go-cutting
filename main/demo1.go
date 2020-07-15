@@ -5,5 +5,5 @@ import (
 )
 
 func main0() {
-	fmt.Println(2713+3597+583.3+7000)
+	fmt.Println(3480+2925+7000)
 }
