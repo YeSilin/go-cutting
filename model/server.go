@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/zserge/webview"
+	"github.com/webview/webview"
 	"log"
 	"net/http"
 	"os"

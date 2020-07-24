@@ -3,10 +3,12 @@ package main
 import (
 	"fmt"
 	"github.com/yesilin/go-cutting/cliui"
+	"github.com/yesilin/go-cutting/gui"
 	"github.com/yesilin/go-cutting/logs"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/settings"
 	"github.com/yesilin/go-cutting/tools"
+	"sync"
 	"time"
 )
 
@@ -31,7 +33,7 @@ func main() {
 	var power bool
 
 	// 这是版本信息
-	const version = 1.001043
+	const version = 1.001046
 
 	// 限制软件使用 2019.7.19
 	// 定义私密文件路径
@@ -45,6 +47,15 @@ func main() {
 		return
 	}
 
+	// 不让自动退出
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+
 	// 运行主体
-	cliui.Start(tips, version)
+	go cliui.Start(tips, version)
+
+	// 运行gui
+	gui.Start()
+
+	wg.Wait()
 }

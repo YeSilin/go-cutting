@@ -65,6 +65,44 @@ func runCode(num string) (ok bool, info string) {
 	return false, ""
 }
 
+// 运行暗号,给gui用
+func RunCodeGui(num string) {
+	// 开始指定功能
+	switch num {
+	case "-1":
+		StartCode1()
+	case "-2":
+		StartCode2()
+	case "-3":
+		StartCode3() // 深度清除源数据
+	case "-4":
+		StartCode4() // 工作目录
+	case "-5":
+		StartCode5() // 复制并关闭其他文档
+	case "-6":
+		StartCode6() // 简单清除元数据
+	case "-7":
+		StartCode7() // 为当前文档添加黑边
+	case "-8":
+		tools.CallClear() // 清屏
+	case "-9":
+		StartCode9() // 打开历史记录
+	case "-10":
+		StartCode10() // 快捷另存为jpg
+	case "-11":
+		StartCode11() // 快捷另存全部打开的文件
+	case "-12":
+		StartCode12() // 快捷保存并关闭全部文档
+	case "-97":
+		StartCode97()
+	case "-98":
+		StartCode98()
+	case "-99":
+		StartCode99()
+	}
+}
+
+
 // 从终端读取一行输入
 func readTerminalInput(tips string) (input string) {
 	// 用户输入提示，获取键盘输入

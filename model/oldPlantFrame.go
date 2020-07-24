@@ -88,6 +88,39 @@ func OldFrame1() {
 	}
 }
 
+// 小座屏公式
+func FormulaFrame1(widthStr, heightStr string) {
+	// 定义一个预留尺寸
+	var reserve = viper.GetFloat64("reserve")
+
+	//存储未计算时的历史记录
+	history := fmt.Sprintf("常规座屏的宽：%s\n", widthStr)
+	history += fmt.Sprintf("常规座屏的高：%s\n", heightStr)
+
+	// 强制类型转换成浮点数
+	width, _ := strconv.ParseFloat(widthStr, 64)
+	height, _ := strconv.ParseFloat(heightStr, 64)
+
+	// 进行框架公式计算
+	width = width - 10 + reserve
+	height = height - 10 + reserve
+
+	//存储已计算的历史记录
+	history += fmt.Sprintf("常规座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
+	go History(history) // 写入历史
+
+	// 为当前框架指定名字
+	frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", tools.NowTime(), width, height)
+
+	generate.NewDocument(width, height, frameName, true) // 创建ps文档
+	go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
+	generate.MaxCanvas(width, height)                    // 最大画布判断
+
+	isOpenPs() // 是否打开自动新建文档
+}
+
+
+
 //旧厂左右镂空
 //先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个竖边 空出的中间画面加5厘米  旧厂的边框实际厚度是5厘米
 func OldFrame2() {

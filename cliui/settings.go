@@ -70,17 +70,17 @@ func current() {
 	var reserveStr = fmt.Sprintf("%.2fcm", viper.GetFloat64("reserve"))
 	reserveStr = tools.ColourString(reserveStr, ctc.ForegroundCyan) // 设置带颜色的字符串
 
-	// 自动开启暗号列表
-	var cipherListStr string
-	switch viper.GetBool("cipherList") {
+	// 自启管理
+	var selfStartingManagementStr string
+	switch viper.GetBool("quickCut")||viper.GetBool("cipherList") {
 	case true:
-		cipherListStr = "自启动"
-		cipherListStr = tools.ColourString(cipherListStr, ctc.ForegroundCyan) // 设置带颜色的字符串
+		selfStartingManagementStr = "自启动"
+		selfStartingManagementStr = tools.ColourString(selfStartingManagementStr, ctc.ForegroundCyan) // 设置带颜色的字符串
 	case false:
-		cipherListStr = "已关闭"
+		selfStartingManagementStr = "已关闭"
 		//cipherListStr = model.ColourString(cipherListStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	default:
-		cipherListStr = "参数错误"
+		selfStartingManagementStr = "参数错误"
 		//cipherListStr = model.ColourString(cipherListStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	}
 
@@ -109,7 +109,7 @@ func current() {
 	}
 
 	fmt.Printf("\n   [1]记忆框架：%s       [2]自动新建：%s       [3]自动黑边：%s\n", memoryStr, openPsStr, blackEdgeStr)
-	fmt.Printf("\n   [4]自定前缀：%s       [5]切布预留：%s       [6]暗号列表：%s\n", prefixStr, reserveStr, cipherListStr)
+	fmt.Printf("\n   [4]自定前缀：%s       [5]切布预留：%s       [6]自启管理：%s\n", prefixStr, reserveStr, selfStartingManagementStr)
 	fmt.Printf("\n   [7]套图位置：%s       [8]主图自删：%s       [9]全部恢复默认设置\n", pictureStr, automaticDeletionStr)
 }
 
@@ -225,11 +225,66 @@ func modifyLatestCanvasReservation() {
 	go viper.WriteConfig()
 }
 
+// 设置快捷自启
+func settingsSelfStartingManagement() {
+OuterLoop:
+	for {
+		tools.EnglishTitle("Settings Self Starting Management", 74)
+		text := `
+:: 设置启动软件时，自启动一些快捷小窗口减轻切图压力，现有两种版本可供选择！
+
+   [1]自启操作界面             [2]自启暗号列表            [3]功能暂未开发`
+		fmt.Println(text)
+		choice, info := model.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		tools.CallClear() // 清屏
+		switch choice {
+		case "1":
+			modifyQuickCut()
+		case "2":
+			modifyCipherList()
+		case "3":
+
+		case "-":
+			break OuterLoop
+		default:
+			if len(info) != 0 {
+				fmt.Println(info)
+			} else {
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(choice, ctc.ForegroundGreen))
+			}
+		}
+	}
+}
+
+
+// 修改是否自启操作界面
+func modifyQuickCut() {
+	tools.EnglishTitle("Modify Quick Cut", 74)
+	fmt.Println("\n:: 在启动软件时，自动打开自启操作界面小窗口！")
+	var tempMemory = isStringInput("\n:: 是否自启动快捷裁剪小窗口，[1]是，[2]否：", false)
+	switch tempMemory {
+	case "1":
+		viper.Set("gui", true)
+		fmt.Println("\n:: 设置成功 - 自启操作界面已开启！")
+	case "2":
+		viper.Set("gui", false)
+		fmt.Println("\n:: 设置成功 - 自启操作界面已关闭！")
+	case "-":
+		return
+	}
+	// 保存最新配置
+	go viper.WriteConfig()
+}
+
+
+
+
+
 // 修改是否自动打开暗号列表
 func modifyCipherList() {
 	tools.EnglishTitle("Modify Cipher List", 74)
 	fmt.Println("\n:: 在启动软件时，是否同时打开暗号列表的 UI 操作界面，如果造成卡顿请关闭")
-	var tempMemory = isStringInput("\n【更改】是否自启动暗号列表，[1]是，[2]否：", false)
+	var tempMemory = isStringInput("\n:: 是否自启动暗号列表，[1]是，[2]否：", false)
 	switch tempMemory {
 	case "1":
 		viper.Set("cipherList", true)
@@ -345,7 +400,7 @@ OuterLoop:
 		case "5":
 			modifyLatestCanvasReservation() // 最新的切图预留
 		case "6":
-			modifyCipherList() // 自动开启暗号列表
+			settingsSelfStartingManagement() // 自动开启暗号列表
 		case "7":
 			modifyPicturePath() // 自动套图文件夹路径
 		case "8":

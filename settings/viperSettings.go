@@ -17,6 +17,7 @@ func Init() {
 	viper.SetDefault("blackEdge", true)
 	viper.SetDefault("prefix", "")
 	viper.SetDefault("reserve", 5)
+	viper.SetDefault("gui", true)   // 自动开启快捷裁剪小窗口
 	viper.SetDefault("cipherList", false)  // 自动开启暗号列表
 	viper.SetDefault("picture", "config\\picture") // 正斜杠会出错
 	viper.SetDefault("automaticDeletion", false)   // 自动主图时删除来源

@@ -41,8 +41,6 @@ func Start(tips string, version float64) {
 			additionalChoice() // 附加
 		case "6":
 			// 启动gui
-			// 搭建web窗口
-			//go webview.Open("GoCutting", "http://localhost:12110/index", 350, 600, true)
 			go model.RunWebview()
 		case "7":
 			ModifySetting() // 设置
