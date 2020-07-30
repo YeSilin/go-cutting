@@ -35,7 +35,7 @@ func makeMainMenu() *fyne.MainMenu {
 // 初始化暗号列表
 func makeCode() fyne.CanvasObject {
 	inputCode := widget.NewEntry()
-	inputCode.SetPlaceHolder("使用其他暗号")
+	inputCode.SetPlaceHolder("其他暗号 ~")
 
 	form := &widget.Form{
 		Items: []*widget.FormItem{
@@ -56,21 +56,27 @@ func makeCode() fyne.CanvasObject {
 
 	code := widget.NewGroup("暗号",
 
+
 		//fyne.NewContainerWithLayout(layout.NewGridLayout(1),
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("裁剪快捷键", func() {
 			model.StartCode1()
 		}),
+
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("重建新文档", func() {
 			model.StartCode2()
 		}),
 		// 新建一个按钮，点击后执行匿名函数
-		widget.NewButton(" 深度清理PSD ", func() {
+		widget.NewButton("深度清理PSD", func() {
 			model.StartCode3()
 		}),
 		// 新建一个按钮，点击后执行匿名函数
-		widget.NewButton(" 快速清理PSD ", func() {
+		widget.NewButton("复制其他层", func() {
+			model.StartCode5()
+		}),
+		// 新建一个按钮，点击后执行匿名函数
+		widget.NewButton("快速清理PSD", func() {
 			model.StartCode6()
 		}),
 		// 新建一个按钮，点击后执行匿名函数
@@ -80,6 +86,14 @@ func makeCode() fyne.CanvasObject {
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("查切图历史", func() {
 			model.StartCode9()
+		}),
+		// 新建一个按钮，点击后执行匿名函数
+		widget.NewButton("全文档另存", func() {
+			model.StartCode11()
+		}),
+		// 新建一个按钮，点击后执行匿名函数
+		widget.NewButton("全文档关存", func() {
+			model.StartCode12()
 		}),
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("快速导出图片", func() {
@@ -92,41 +106,6 @@ func makeCode() fyne.CanvasObject {
 	)
 	//code.Resize(fyne.NewSize(300, 800))
 	return code
-}
-
-// 初始化首页
-func makeIndex(a fyne.App) fyne.CanvasObject {
-
-	info := widget.NewGroup("软件介绍",
-		widget.NewLabelWithStyle(" 一个简单快速的切图软件 ", fyne.TextAlignCenter, fyne.TextStyle{}),
-		widget.NewLabelWithStyle("目的是为了帮助大家", fyne.TextAlignCenter, fyne.TextStyle{}),
-		widget.NewLabelWithStyle("快速切图", fyne.TextAlignCenter, fyne.TextStyle{}),
-		widget.NewLabelWithStyle("~", fyne.TextAlignCenter, fyne.TextStyle{}),
-
-
-	)
-
-	theme := widget.NewGroup("主题设置",
-		fyne.NewContainerWithLayout(layout.NewGridLayout(1),
-
-			widget.NewButton("   深色   ", func() {
-				a.Settings().SetTheme(theme.DarkTheme())
-			}),
-			widget.NewButton("   浅色   ", func() {
-				a.Settings().SetTheme(theme.LightTheme())
-			}),
-
-
-		),
-	)
-
-	return widget.NewVBox(
-
-		info,
-		theme,
-
-	)
-
 }
 
 func Start() {
@@ -142,8 +121,18 @@ func Start() {
 	// New返回一个具有默认驱动程序且没有唯一ID的新应用程序实例
 	app := app.New()
 
-	// 主题默认设置成白色
-	app.Settings().SetTheme(theme.LightTheme())
+	// 获取主题设置
+	getTheme := viper.GetString("theme")
+	switch {
+	case "darkTheme" == getTheme:
+		// 主题默认设置成深色
+		app.Settings().SetTheme(theme.DarkTheme())
+	case "lightTheme" == getTheme:
+		// 主题默认设置成白色
+		app.Settings().SetTheme(theme.LightTheme())
+	}
+
+
 
 	// 为应用程序创建新窗口。第一个打开的窗口被认为是“主窗口”，当它关闭时应用程序将退出。
 	w := app.NewWindow("GoCutting")
@@ -152,7 +141,7 @@ func Start() {
 	// 设置主菜单栏
 	w.SetMainMenu(makeMainMenu())
 	// 修改窗口大小
-	//w.Resize(fyne.NewSize(500, 70))
+	//w.Resize(fyne.NewSize(500, 1000))
 
 	// 新建一个标签集合
 	mainTabs := widget.NewTabContainer(
@@ -169,36 +158,18 @@ func Start() {
 		widget.NewTabItemWithIcon("套图", theme.MailReplyIcon(), widget.NewVBox()),
 		widget.NewTabItemWithIcon("附加", theme.MailAttachmentIcon(), widget.NewVBox()),
 		widget.NewTabItemWithIcon("设置", theme.SettingsIcon(), widget.NewVBox()),
-		widget.NewTabItemWithIcon("帮助", theme.HelpIcon(), widget.NewVBox()),
+		widget.NewTabItemWithIcon("帮助", theme.HelpIcon(), makeHelp(w)),
 	)
 	// 设置位置为左对齐
 	mainTabs.SetTabLocation(widget.TabLocationLeading)
 
-	//// 创建一个新的折叠构件
-	//ac :=widget.NewAccordionContainer(
-	//	widget.NewAccordionItem("常规座屏", widget.NewLabel("Two")),
-	//	widget.NewAccordionItem("左右镂空", widget.NewLabel("Two")),
-	//	widget.NewAccordionItem("左右画布", widget.NewLabel("Two")),
-	//	widget.NewAccordionItem("上下镂空", widget.NewLabel("Two")),
-	//	widget.NewAccordionItem("顶天立地", widget.NewLabel("Two")),
-	//	widget.NewAccordionItem("各种折屏", widget.NewLabel("Two")),
-	//	widget.NewAccordionItem("多个座屏", widget.NewLabel("Two")),
-	//	widget.NewAccordionItem("卷帘座屏", widget.NewLabel("Two")),
-	//	widget.NewAccordionItem("不扣补切", widget.NewLabel("Two")),
-	//
-	//	)
-
-	// 设置此窗口的内容。更改布局为两列 fyne.NewContainerWithLayout(layout.NewGridLayout(2)
+	// 设置此窗口的内容。更改布局为可调节大小的两列  fyne.NewContainerWithLayout(layout.NewGridLayout(2)
 	w.SetContent(widget.NewHSplitContainer(
 		// 主标签
 		mainTabs,
 
 		// 右侧暗号列表
 		makeCode(),
-
-		//tabs,
-		//ac,
-
 	))
 
 	// 显示并运行
