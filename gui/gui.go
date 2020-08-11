@@ -35,7 +35,7 @@ func makeMainMenu() *fyne.MainMenu {
 // 初始化暗号列表
 func makeCode() fyne.CanvasObject {
 	inputCode := widget.NewEntry()
-	inputCode.SetPlaceHolder("其他暗号 ~")
+	inputCode.SetPlaceHolder("使用其他快捷暗号 ~    ")
 
 	form := &widget.Form{
 		Items: []*widget.FormItem{
@@ -132,8 +132,6 @@ func Start() {
 		app.Settings().SetTheme(theme.LightTheme())
 	}
 
-
-
 	// 为应用程序创建新窗口。第一个打开的窗口被认为是“主窗口”，当它关闭时应用程序将退出。
 	w := app.NewWindow("GoCutting")
 	w.SetIcon(theme.FyneLogo())
@@ -145,20 +143,20 @@ func Start() {
 
 	// 新建一个标签集合
 	mainTabs := widget.NewTabContainer(
-		widget.NewTabItemWithIcon(`首页`, theme.HomeIcon(), makeIndex(app)),
+		widget.NewTabItemWithIcon(`首页介绍`, theme.HomeIcon(), makeIndex(app)),
 		//widget.NewTabItemWithIcon(`首页`,theme.HomeIcon(), welcomeScreen(app)),
 
-		widget.NewTabItemWithIcon("切图", theme.ContentCutIcon(), makeCut()),
+		widget.NewTabItemWithIcon("快捷切图", theme.ContentCutIcon(), makeCut()),
 
 
-		widget.NewTabItemWithIcon("贴图", theme.ContentPasteIcon(), widget.NewVBox()),
+		widget.NewTabItemWithIcon("快捷贴图", theme.ContentPasteIcon(), widget.NewVBox()),
 
 
-		widget.NewTabItemWithIcon("效果", theme.DocumentCreateIcon(), widget.NewVBox()),
-		widget.NewTabItemWithIcon("套图", theme.MailReplyIcon(), widget.NewVBox()),
-		widget.NewTabItemWithIcon("附加", theme.MailAttachmentIcon(), widget.NewVBox()),
-		widget.NewTabItemWithIcon("设置", theme.SettingsIcon(), widget.NewVBox()),
-		widget.NewTabItemWithIcon("帮助", theme.HelpIcon(), makeHelp(w)),
+		widget.NewTabItemWithIcon("快捷效果", theme.DocumentCreateIcon(), widget.NewVBox()),
+		widget.NewTabItemWithIcon("自动套图", theme.MailReplyIcon(), widget.NewVBox()),
+		widget.NewTabItemWithIcon("附加功能", theme.MailAttachmentIcon(), widget.NewVBox()),
+		widget.NewTabItemWithIcon("设置中心", theme.SettingsIcon(), widget.NewVBox()),
+		widget.NewTabItemWithIcon("帮助信息", theme.HelpIcon(), makeHelp(w)),
 	)
 	// 设置位置为左对齐
 	mainTabs.SetTabLocation(widget.TabLocationLeading)

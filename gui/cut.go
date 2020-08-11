@@ -37,6 +37,17 @@ func makeFame1() fyne.Widget {
 
 // 初始化切图
 func makeCut() fyne.CanvasObject {
+	// 要显示的框架
+	//var showFame fyne.Widget
+
+	//frameSelect := widget.NewSelect([]string{"常规座屏", "左右镂空", "左右画布", "上下镂空", "顶天立地", "各种折屏", "多个座屏", "卷帘座屏", "不扣补切"}, func(s string) {
+	//	switch s{
+	//	case "常规座屏" :
+	//		//showFame = makeFame1()
+	//	}
+	//})
+	//frameSelect.Selected = "左右镂空"
+
 	// 新建一个标签集合
 	tabs := widget.NewTabContainer(
 
@@ -53,5 +64,5 @@ func makeCut() fyne.CanvasObject {
 	// 设置位置为左对齐
 	tabs.SetTabLocation(widget.TabLocationLeading)
 	//tabs.Resize(fyne.NewSize(500, 1000))
-	return widget.NewGroup("框架选择", tabs)
+	return widget.NewGroup("框架选择",  tabs)
 }

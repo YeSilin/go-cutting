@@ -20,6 +20,19 @@ func makeIndex(a fyne.App) fyne.CanvasObject {
 
 	)
 
+	start := widget.NewGroup("自启设置",
+		widget.NewButton("启用", func() {
+			viper.Set("gui", true)
+			// 保存最新配置
+			go viper.WriteConfig()
+		}),
+		widget.NewButton("关闭", func() {
+			viper.Set("gui", false)
+			// 保存最新配置
+			go viper.WriteConfig()
+		}),
+	)
+
 	theme := widget.NewGroup("主题设置",
 		fyne.NewContainerWithLayout(layout.NewGridLayout(1),
 
@@ -27,14 +40,14 @@ func makeIndex(a fyne.App) fyne.CanvasObject {
 				a.Settings().SetTheme(theme.DarkTheme())
 				viper.Set("theme", "darkTheme")
 				// 保存最新配置
-				viper.WriteConfig()
+				go viper.WriteConfig()
 			}),
 			widget.NewButton("   浅色   ", func() {
 
 				a.Settings().SetTheme(theme.LightTheme())
 				viper.Set("theme", "lightTheme")
 				// 保存最新配置
-				viper.WriteConfig()
+				go viper.WriteConfig()
 			}),
 		),
 	)
@@ -42,8 +55,10 @@ func makeIndex(a fyne.App) fyne.CanvasObject {
 	return widget.NewVBox(
 
 		info,
+		start,
+		layout.NewSpacer(),
 		theme,
-
+		layout.NewSpacer(),
 	)
 
 }

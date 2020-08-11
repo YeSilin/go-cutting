@@ -33,7 +33,7 @@ func main() {
 	var power bool
 
 	// 这是版本信息
-	const version = 1.001047
+	const version = 1.001048
 
 	// 限制软件使用 2019.7.19
 	// 定义私密文件路径
