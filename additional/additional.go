@@ -2,7 +2,10 @@ package additional
 
 import (
 	"fmt"
+	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
+	"path/filepath"
+	"strings"
 )
 
 // 运行PSD修复工具
@@ -52,4 +55,33 @@ func ImportNewTextFile() {
 	cmd := exec.Command("cmd.exe", "/c", "regedit /s .\\config\\regedit\\newTextFile.reg")
 	go cmd.Run()
 	fmt.Println("\n:: 右键菜单已添加，此项附加功能的命令需要右键管理员身份运行本软件方可生效！")
+}
+
+// 刷新文件属性的时间信息，例如创建时间，最后修改时间与访问时间
+func RefreshFileTime(srcPath, dstPath string) {
+	// 获取所有文件名，类型是字符串切片
+	files, _ := filepath.Glob(fmt.Sprintf("%s/*", srcPath))
+
+	// 没有文件就不执行
+	if len(files) < 1 {
+		fmt.Println("\n:: 刷新文件时间失败，因为工作文件夹下没有任何文件！")
+		return
+	}
+
+	// 创建输出的目录
+	_ = tools.CreateMkdirAll(dstPath)
+
+	// 先准备要储存的位置
+	newFiles := make([]string, len(files))
+	// 遍历出新路径
+	for i, v := range files {
+		newFiles[i] = strings.Replace(v, srcPath, dstPath, 1)
+	}
+
+	// 直接复制到结果目录
+	for i, v := range newFiles {
+		tools.CopyFile(files[i], v)
+	}
+
+	fmt.Println("\n:: 文件属性时间已刷新，结果文件在工作文件夹下的 Result 目录下！")
 }

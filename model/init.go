@@ -49,15 +49,15 @@ func InitNotification() {
 func InitFolder() {
 	go func() {
 		// 创建jsx文件夹
-		_ = tools.CreateMkdirAll("config/jsx/temp")
+		_ = tools.CreateMkdirAll("Config/jsx/temp")
 		// 创建历史记录文件夹
 		now := time.Now().Format("2006-01")
 		_ = tools.CreateMkdirAll(fmt.Sprintf("Config/History/%s", now))
 		// 创建套图文件夹
-		_ = tools.CreateMkdirAll("config/Picture")
+		_ = tools.CreateMkdirAll("Config/Picture")
 
 		// 创建备份文件夹
-		_ = tools.CreateMkdirAll("config/Backups")
+		_ = tools.CreateMkdirAll("Config/Backups")
 	}()
 }
 

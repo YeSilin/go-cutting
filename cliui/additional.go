@@ -2,6 +2,7 @@ package cliui
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/additional"
 	"github.com/yesilin/go-cutting/model"
@@ -17,7 +18,7 @@ OuterLoop:
 		text := `
 :: 以下为从其他网站收集来的恢复工具，解决一些突发情况，请低调使用请勿传播！
 
-   [1]PSD文件修复              [2]XLS文件修复              [3]功能暂未开发`
+   [1]PSD文件修复              [2]XLS文件修复              [3]刷新文件时间`
 		fmt.Println(text)
 		choice, info := model.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
@@ -27,7 +28,8 @@ OuterLoop:
 		case "2":
 			additional.RunAdvancedExcelRepair() // 运行XLS修复工具
 		case "3":
-
+		// 刷新文件时间
+			additional.RefreshFileTime(viper.GetString("picture"), viper.GetString("picture")+"/Result")
 		case "-":
 			break OuterLoop
 		default:
