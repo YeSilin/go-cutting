@@ -20,6 +20,37 @@ func isOpenPs() {
 	}
 }
 
+// 小座屏公式 gui用了
+func FormulaFrame1(widthStr, heightStr string) {
+	// 定义一个预留尺寸
+	var reserve = viper.GetFloat64("reserve")
+
+	//存储未计算时的历史记录
+	history := fmt.Sprintf("常规座屏的宽：%s\n", widthStr)
+	history += fmt.Sprintf("常规座屏的高：%s\n", heightStr)
+
+	// 强制类型转换成浮点数
+	width, _ := strconv.ParseFloat(widthStr, 64)
+	height, _ := strconv.ParseFloat(heightStr, 64)
+
+	// 进行框架公式计算
+	width = width - 10 + reserve
+	height = height - 10 + reserve
+
+	//存储已计算的历史记录
+	history += fmt.Sprintf("常规座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
+	go History(history) // 写入历史
+
+	// 为当前框架指定名字
+	frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", tools.NowTime(), width, height)
+
+	generate.NewDocument(width, height, frameName, true) // 创建ps文档
+	go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
+	generate.MaxCanvas(width, height)                    // 最大画布判断
+
+	isOpenPs() // 是否打开自动新建文档
+}
+
 //旧厂小座屏
 //边框是5  扣掉两个边框5+5 然后再加回来5厘米  可以理解为扣5*/
 func OldFrame1() {
@@ -87,39 +118,6 @@ func OldFrame1() {
 		}
 	}
 }
-
-// 小座屏公式
-func FormulaFrame1(widthStr, heightStr string) {
-	// 定义一个预留尺寸
-	var reserve = viper.GetFloat64("reserve")
-
-	//存储未计算时的历史记录
-	history := fmt.Sprintf("常规座屏的宽：%s\n", widthStr)
-	history += fmt.Sprintf("常规座屏的高：%s\n", heightStr)
-
-	// 强制类型转换成浮点数
-	width, _ := strconv.ParseFloat(widthStr, 64)
-	height, _ := strconv.ParseFloat(heightStr, 64)
-
-	// 进行框架公式计算
-	width = width - 10 + reserve
-	height = height - 10 + reserve
-
-	//存储已计算的历史记录
-	history += fmt.Sprintf("常规座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
-	go History(history) // 写入历史
-
-	// 为当前框架指定名字
-	frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", tools.NowTime(), width, height)
-
-	generate.NewDocument(width, height, frameName, true) // 创建ps文档
-	go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
-	generate.MaxCanvas(width, height)                    // 最大画布判断
-
-	isOpenPs() // 是否打开自动新建文档
-}
-
-
 
 //旧厂左右镂空
 //先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个竖边 空出的中间画面加5厘米  旧厂的边框实际厚度是5厘米
@@ -311,7 +309,7 @@ func OldFrame3() {
 
 //旧厂上下镂空
 //先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个横边 空出的中间画面加5厘米
-func OldFrame4() {
+func OldFrame4to1() {
 	// 定义一个预留尺寸
 	var reserve = viper.GetFloat64("reserve")
 
@@ -395,6 +393,113 @@ func OldFrame4() {
 		generate.NewDocument(width, height, frameName, true) // 创建ps文档
 		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
 		generate.MaxCanvas(width, height)                    // 最大画布判断
+
+		isOpenPs() // 是否打开自动新建文档
+
+		if !viper.GetBool("memory") { // 是否记忆框架
+			break
+		}
+	}
+}
+
+// 上下座屏
+// 上下镂空 先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个横边 空出的中间画面加5厘米
+// 上下画布 一般没有合页，上下画布的两边是不扣的 例如 总高：180 上下分别：30+5  中间为：100+5，也就是说边框5都中中间画布扣了
+func OldFrame4to2() {
+	// 定义一个预留尺寸
+	var reserve = viper.GetFloat64("reserve")
+
+	// 初始化输入提示的切片
+	inputPrompt := [4]string{"\n:: 请输入上下画布的总宽：", "\n:: 请输入上下画布的总高：",
+		"\n:: 请输入上画布的大小：", "\n:: 请输入下画布的大小："}
+
+	// 保存尺寸的切片
+	saveSizeStr := [4]string{}
+
+	// 循环使用此框架
+	for {
+		tools.ChineseTitle("当前框架上下画布", 74) // 请注意切图的工厂与框架的选择
+		for i := 0; i < len(saveSizeStr); i++ {
+			// 只有前2个需要开启画布模式
+			if i < 2 {
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
+			} else {
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
+			}
+
+			// 输入返回当然要返回啦
+			if saveSizeStr[i] == "-" {
+				tools.CallClear() // 清屏
+				return
+			}
+
+			// 第一次就输入返回就退出此框架
+			if i == 0 && saveSizeStr[i] == "--" {
+				return
+			}
+
+			// 退回上一级输入
+			if saveSizeStr[i] == "--" {
+				i -= 2
+			}
+		}
+
+		//存储未计算时的历史记录
+		history := fmt.Sprintf("上下画布的总宽：%s\n", saveSizeStr[0])
+		history += fmt.Sprintf("上下画布的总高：%s\n", saveSizeStr[1])
+		history += fmt.Sprintf("上画布的大小：%s\n", saveSizeStr[2])
+		history += fmt.Sprintf("下画布的大小：%s\n", saveSizeStr[3])
+
+		// 强制类型转换成浮点数
+		width, _ := strconv.ParseFloat(saveSizeStr[0], 64)
+		height, _ := strconv.ParseFloat(saveSizeStr[1], 64)
+		upperHollowOut, _ := strconv.ParseFloat(saveSizeStr[2], 64)
+		downHollowOut, _ := strconv.ParseFloat(saveSizeStr[3], 64)
+
+		// 声明临时框架名字
+		var tempName = "上下画布"
+
+		// 镂空判断
+		if upperHollowOut > 0 && downHollowOut == 0 {
+			tempName = "上画布"
+		}
+		if upperHollowOut == 0 && downHollowOut > 0 {
+			tempName = "下画布"
+		}
+
+		// 进行框架公式计算
+		width = width - 10 + reserve
+		height = height - 10 + reserve
+		if upperHollowOut > 0 {
+			height -= upperHollowOut + 5 // 如果有上镂空的话
+		}
+		if downHollowOut > 0 {
+			height -= downHollowOut + 5 // 如果有下镂空的话
+		}
+
+		// 上下画布要有画布预留
+		upperHollowOut += reserve
+		downHollowOut += reserve
+
+		totalheight := upperHollowOut + downHollowOut + height
+
+		//color.Yellow.Printf("\n:: 左右画布：中间 %.2f cm，两边各 %.2f cm，高 %.2f cm", width, hollowOut, height)
+		color.Yellow.Printf("\n:: %s：宽 %.2f cm，上高 %.2f cm，中高 %.2f cm，下高 %.2f cm", tempName, width, upperHollowOut, height, downHollowOut)
+
+		//存储已计算的历史记录
+		history += fmt.Sprintf("%s：宽 %.2f cm，上高 %.2f cm，中高 %.2f cm，下高 %.2f cm\n", tempName, width, upperHollowOut, height, downHollowOut)
+		go History(history) // 写入历史
+
+		// 为当前框架指定名字
+		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), tempName, width, totalheight)
+
+		generate.NewDocument(width, totalheight, frameName, false) // 创建ps文档
+
+		// TODO 生成专属参考线
+		// TODO 生成-1脚本也是专属的
+		//go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
+
+		generate.MaxCanvas(width, height) // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
 

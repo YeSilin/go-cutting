@@ -7,6 +7,43 @@ import (
 	"github.com/yesilin/go-cutting/tools"
 )
 
+
+
+// 上下座屏的选择
+func upperAndLowerScreenChoice(){
+OuterLoop:
+	for {
+		tools.EnglishTitle("Upper And Lower Screen Choice", 74)
+		text := `
+:: 下方所有框架的切图单位均是厘米，支持使用小数点来表示毫米，但是意义不大！
+
+   [1]上下镂空.                  [2]上下画布.                  [3]暂未开发.`
+		fmt.Println(text)
+
+		frameType, info := model.InputMenuSelection("\n:: 请选择上方的边框类型：")
+		tools.CallClear() // 清屏
+		switch frameType {
+		case "1":
+			model.OldFrame4to1() // 上下镂空
+		case "2":
+			model.OldFrame4to2() // 上下画布
+		case "-":
+			break OuterLoop
+		default:
+			if len(info) != 0 {
+				fmt.Println(info)
+			} else {
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入...\n", tools.ColourString(frameType, ctc.ForegroundGreen))
+			}
+		}
+	}
+
+}
+
+
+
+
+
 // 旧厂框架的选择
 func oldFrameChoice() {
 OuterLoop:
@@ -17,7 +54,7 @@ OuterLoop:
 
    [1]常规座屏.                  [2]左右镂空.                  [3]左右画布.
 
-   [4]上下镂空.                  [5]顶天立地.                  [6]各种折屏.
+   [4]上下座屏.                  [5]顶天立地.                  [6]各种折屏.
 
    [7]多个座屏.                  [8]卷帘座屏.                  [9]不扣补切.`
 		fmt.Println(text)
@@ -32,7 +69,7 @@ OuterLoop:
 		case "3":
 			model.OldFrame3() // 左右画布
 		case "4":
-			model.OldFrame4() // 上下镂空
+			upperAndLowerScreenChoice()  // 上下座屏框架选择
 		case "5":
 			model.OldFrame5() // 顶天立地
 		case "6":
