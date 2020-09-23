@@ -403,7 +403,6 @@ func OldFrame4to1() {
 }
 
 // 上下座屏
-// 上下镂空 先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个横边 空出的中间画面加5厘米
 // 上下画布 一般没有合页，上下画布的两边是不扣的 例如 总高：180 上下分别：30+5  中间为：100+5，也就是说边框5都中中间画布扣了
 func OldFrame4to2() {
 	// 定义一个预留尺寸
@@ -472,16 +471,17 @@ func OldFrame4to2() {
 		height = height - 10 + reserve
 		if upperHollowOut > 0 {
 			height -= upperHollowOut + 5 // 如果有上镂空的话
+			// 上下画布要有画布预留
+			upperHollowOut += reserve
 		}
 		if downHollowOut > 0 {
 			height -= downHollowOut + 5 // 如果有下镂空的话
+			// 上下画布要有画布预留
+			downHollowOut += reserve
 		}
 
-		// 上下画布要有画布预留
-		upperHollowOut += reserve
-		downHollowOut += reserve
-
-		totalheight := upperHollowOut + downHollowOut + height
+		// 总高度
+		totalHeight := upperHollowOut + downHollowOut + height
 
 		//color.Yellow.Printf("\n:: 左右画布：中间 %.2f cm，两边各 %.2f cm，高 %.2f cm", width, hollowOut, height)
 		color.Yellow.Printf("\n:: %s：宽 %.2f cm，上高 %.2f cm，中高 %.2f cm，下高 %.2f cm", tempName, width, upperHollowOut, height, downHollowOut)
@@ -491,13 +491,15 @@ func OldFrame4to2() {
 		go History(history) // 写入历史
 
 		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), tempName, width, totalheight)
+		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), tempName, width, totalHeight)
 
-		generate.NewDocument(width, totalheight, frameName, false) // 创建ps文档
+		generate.NewDocument(width, totalHeight, frameName, false) // 创建ps文档
 
-		// TODO 生成专属参考线
-		// TODO 生成-1脚本也是专属的
-		//go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
+		// 生成专属参考线
+		generate.LineJs4to2(upperHollowOut, height)
+
+		// 生成暗号【-1】可以用的另存脚本
+		go generate.Tailor4to2(width, upperHollowOut, height, downHollowOut, tempName, frameName)
 
 		generate.MaxCanvas(width, height) // 最大画布判断
 

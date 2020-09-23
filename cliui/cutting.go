@@ -17,7 +17,7 @@ OuterLoop:
 		text := `
 :: 下方所有框架的切图单位均是厘米，支持使用小数点来表示毫米，但是意义不大！
 
-   [1]上下镂空.                  [2]上下画布.                  [3]暂未开发.`
+   [1]上下镂空.                  [2]上下画布.                  [3]暂未开发`
 		fmt.Println(text)
 
 		frameType, info := model.InputMenuSelection("\n:: 请选择上方的边框类型：")
