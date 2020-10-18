@@ -16,7 +16,6 @@ String.prototype.format = function () {
 };
 
 
-
 // 清理元数据
 function deleteDocumentAncestorsMetadata() {
     // 清理元数据四步骤
@@ -57,51 +56,23 @@ function returnUpper() {
     executeAction(idslct, desc, DialogModes.NO);
 }
 
-//  获取用户想要保存的位置加文件名
-function getPathName(saveName) {
-    // 裁剪之后进行保存的位置和你想要的默认名称
-    var tempFile = new File("~/Desktop/GoCutting/" + saveName);
-    // 返回带路径的名字，注意要先数字解码
-    return decodeURI(tempFile.saveDlg("优化另存为",["不要带扩展名:*","默认保存为 JPG 文件:*"]))
-}
-
 
 // 这是负责裁剪另存的函数
-function optimized(x1, y1, x2, y2, savePath) {
+function optimized(x1, y1, x2, y2, fileName) {
     var bounds = [x1, y1, x2, y2];
     app.activeDocument.crop(bounds, 0);
 
     // 裁剪之后进行保存的位置和你想要的默认名称
-    var TmpFile = new File(savePath);
+    var name = "~/Desktop/GoCutting/" + fileName;
+    var TmpFile = new File(name);
 
     // saveAs( 文件, 选项, 作为副本, 扩展名大小写 )
     //调用[document]的[saveAs]另存方法，使用上面设置的各种参数，将当前文档导出并转换为JPEG格式的文档。
-    app.activeDocument.saveAs(TmpFile, exportOptionsSave, true, Extension.LOWERCASE);
+    app.activeDocument.saveAs(TmpFile.saveDlg("优化另存为", "JPEG Files:*.JPG"), exportOptionsSave, true, Extension.LOWERCASE);
 }
 
 // 主函数
 function main() {
-    // 得到用户想要保存的位置
-    var userSavePath = getPathName("请输入订单编号");
-    // 没有得到路径就返回
-    if (userSavePath == "null") {
-        return
-    }
-
-    // 得到最终会保存出来的文件名
-    var fileNameArr = new Array();
-    for (var i = 0; i < widthArray.length; i++) {
-        fileNameArr[i] = "{0}_{1}_{2}-{3}_".format(userSavePath, screenName, i + 1, widthArray.length) + widthArray[i] + "x" + heightArray[i];
-    }
-
-    // 遍历全部可能覆盖的文件名
-    for (var i = 0; i < fileNameArr.length; i++) {
-        // 避免覆盖已保存的文件
-        if (new File(fileNameArr[i] + ".jpg").exists) {
-            alert("输入的编号重复，已自动取消操作！");
-            return
-        }
-    }
 
     // 生成历史记录并调用函数
     app.activeDocument.suspendHistory("性能加速", "speedUp()");
@@ -109,7 +80,8 @@ function main() {
     // 清除元数据
     deleteDocumentAncestorsMetadata();
 
-
+// 监控异常
+try {
     // 开始自动保存文件
     for (i = 0; i < widthArray.length; i++) {
         // 求出x1 坐标的值
@@ -130,13 +102,16 @@ function main() {
         // 求出y2 坐标的值
         var y2 = heightMax;
 
-        // 生成历史记录并调用函数
-        app.activeDocument.suspendHistory("优化另存", "optimized(x1, y1, x2, y2, fileNameArr[i])");
 
+        var fileName = "{0}_{1}-{2}_".format(screenName, i + 1, widthArray.length) + widthArray[i] + "x" + heightArray[i]
+        // 生成历史记录并调用函数
+        app.activeDocument.suspendHistory("优化另存", "optimized(x1, y1, x2, y2, fileName)")
         // 返回上一级历史
         returnUpper();
     }
-
+} catch (error) {
+    //发生错误执行的代码
+    }
 }
 
 

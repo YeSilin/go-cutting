@@ -44,11 +44,11 @@ function addMaskLayer(layerName, widthArray, heightArray, equal) {
         if (heightArray[i] == heightMax) {
 
             // 就算不绘制也要更新 x 轴位置
-            x += widthArray[i] * 39.37
+            x += widthArray[i]
             continue
         }
         //alert (heightArray[i])
-        // 开始填充遮罩，这里乘39.37是因为要把厘米转成像素
+        // 开始填充遮罩
         makeSelection(x, 0, widthArray[i], (heightMax - heightArray[i]))
         x += widthArray[i]
     }

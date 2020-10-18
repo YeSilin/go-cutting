@@ -16,12 +16,12 @@ function addEdge() {
 
     // 定义一个对象颜色是黑色
     var black = new SolidColor();
-    black.rgb.hexValue = "000000";
+    black.rgb.hexValue = "d5d5d5";
     app.backgroundColor = black;
 
     // 获取当前文档的高度与宽度
-    var width = app.activeDocument.width + 0.5;
-    var height = app.activeDocument.height + 0.5;
+    var width = app.activeDocument.width + 0.1;
+    var height = app.activeDocument.height + 0.1;
 
     // 重设画布大小
     app.activeDocument.resizeCanvas(UnitValue(width), UnitValue(height), AnchorPosition.MIDDLECENTER);

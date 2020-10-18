@@ -2,6 +2,7 @@ package cliui
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
@@ -25,8 +26,14 @@ OuterLoop:
 		switch frameType {
 		case "1":
 			model.OldFrame4to1() // 上下镂空
+			if !viper.GetBool("memory") { // 是否记忆框架
+				return
+			}
 		case "2":
 			model.OldFrame4to2() // 上下画布
+			if !viper.GetBool("memory") { // 是否记忆框架
+				return
+			}
 		case "-":
 			break OuterLoop
 		default:
