@@ -383,27 +383,22 @@ if (!documents.length) {
 
 // 生成保存并关闭全部文档的脚本
 func SaveAndCloseAllDocuments() {
-	const script = `//  保存并关闭所有文件
+	const script = `// 保存并关闭所有文件
 function saveAndClose() {
-    // 把所有要保存关闭的文档保存到组
-    var documentsArr = new Array
-
-    // 得到要保存关闭的文档，主要是documents关闭后会直接刷新，所以存自定义的数组里
-    for (var i = 0; i < documents.length; i++) {
-        // 追加到数组
-        documentsArr.push(documents[i])
-    }
-
-
+    // 得到要保存关闭的文档的数量，主要是documents关闭后会直接刷新
+    const count = documents.length
+ 
     // 循环保存所有
-    for (var i = 0; i < documentsArr.length; i++) {
+    for (var i = 0; i < count; i++) {
+
         try {
             // 最后保存并关闭
-            documentsArr[i].close(SaveOptions.SAVECHANGES);
+            app.activeDocument.close(SaveOptions.SAVECHANGES);
         } catch (error) {
             // 忽略错误
         }
     }
+
 }
 
 // 添加进度条
