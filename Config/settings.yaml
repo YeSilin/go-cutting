@@ -1,11 +1,10 @@
 automaticdeletion: false
 blackedge: true
 cipherlist: false
-gui: true
+gui: false
 memory: false
 openps: true
 picture: E:\淘宝美工\套图汇总
 prefix: ""
-quickcut: true
 reserve: 5
 theme: darkTheme

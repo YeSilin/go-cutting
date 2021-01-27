@@ -7,18 +7,18 @@ import (
 )
 
 // 初始化
-func Init() {
+func InitSetting() {
 	// 初始化的 Viper实例
 	//v := viper.New()
 
 	// 设置默认值
-	viper.SetDefault("memory", false)
-	viper.SetDefault("openPs", true)
-	viper.SetDefault("blackEdge", true)
-	viper.SetDefault("prefix", "")
-	viper.SetDefault("reserve", 5)
-	viper.SetDefault("gui", true)   // 自动开启gui
-	viper.SetDefault("cipherList", false)  // 自动开启暗号列表
+	viper.SetDefault("memory", false)              // 记忆框架
+	viper.SetDefault("openPs", true)               // 自动新建文档
+	viper.SetDefault("blackEdge", true)            // 黑边
+	viper.SetDefault("prefix", "")                 // 前缀
+	viper.SetDefault("reserve", 5)                 // 画布预留
+	viper.SetDefault("gui", true)                  // 自动开启gui
+	viper.SetDefault("cipherList", false)          // 自动开启暗号列表
 	viper.SetDefault("picture", "config\\picture") // 正斜杠会出错
 	viper.SetDefault("automaticDeletion", false)   // 自动主图时删除来源
 
@@ -53,5 +53,3 @@ func Init() {
 	//	fmt.Println("【提示】配置文件已更新，来自：", e.Name)
 	//})
 }
-
-

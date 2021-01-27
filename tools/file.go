@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
+	"syscall"
 )
 
 // 创建文件并写入数据的函数
@@ -117,7 +119,7 @@ func FormatReadLine(name, filePath string) {
 		buf, err := r.ReadBytes('\n')
 
 		// 先将字节转成字符串，然后再使用字符串替换的方法
-		bufStr := fmt.Sprintf("%q",string(buf))
+		bufStr := fmt.Sprintf("%q", string(buf))
 
 		// 添加前后缀
 		bufStr = fmt.Sprintf("%s.WriteString(%s)", name, bufStr)
@@ -125,12 +127,11 @@ func FormatReadLine(name, filePath string) {
 		// 打印出来
 		fmt.Println(bufStr)
 
-		if  err == io.EOF { // 文件读取结束
+		if err == io.EOF { // 文件读取结束
 			break
 		}
 	}
 }
-
 
 // 判断所给路径文件/文件夹是否存在(返回true是存在)
 func IsPathExists(path string) (bool, error) {
@@ -185,7 +186,6 @@ func CreateMkdirAll(filePath string) error {
 	}
 	return nil
 }
-
 
 // 获取指定目录的最小文件名，带完整路径
 func GetMinFile(pattern string) (minFile string) {
@@ -308,4 +308,13 @@ func CopyFile(src, dst string) (int64, error) {
 	defer destination.Close()
 	nBytes, err := io.Copy(destination, source)
 	return nBytes, err
+}
+
+//无黑框的方式打开windows文件夹
+func OpenFolder(path string) {
+	//必须要转换下，cmd不支持正斜杆
+	path = strings.ReplaceAll(path, "/", "\\")
+	cmd := exec.Command("cmd", "/c", "start "+ path)
+	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true} // 不显示黑框
+	cmd.Run()
 }

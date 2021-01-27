@@ -5,6 +5,7 @@ import (
 	"github.com/gookit/color"
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/generate"
+	"github.com/yesilin/go-cutting/input"
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
 	"strconv"
@@ -67,7 +68,7 @@ func OldFrame1() {
 	for {
 		tools.ChineseTitle("当前框架常规座屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
-			saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
+			saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
@@ -139,9 +140,9 @@ func OldFrame2() {
 
 			// 只有前两个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -240,9 +241,9 @@ func OldFrame3() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前3个需要开启画布模式
 			if i < 3 {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -326,9 +327,9 @@ func OldFrame4to1() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -421,9 +422,9 @@ func OldFrame4to2() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -530,9 +531,9 @@ func OldFrame5() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -607,9 +608,9 @@ func OldFrame6() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -806,7 +807,7 @@ func OldFrame7() {
 	// 循环使用此框架
 	for {
 		tools.ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
-		numberStr := InputCanvasSize("\n:: 请输入拥有几个座屏：", 1)
+		numberStr := input.InputCanvasSize("\n:: 请输入拥有几个座屏：", 1)
 		// 一开始就返回直接退出函数
 		if numberStr == "-" || numberStr == "--" {
 			tools.CallClear() // 清屏
@@ -830,9 +831,9 @@ func OldFrame7() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 除了最后两个都需要开启画布模式
 			if i < len(saveSizeStr)-2 {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -1018,7 +1019,7 @@ func OldFrame7bk() {
 	// 循环使用此框架
 	for {
 		tools.ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
-		numberStr := InputCanvasSize("\n:: 请输入拥有几个座屏：", 0)
+		numberStr := input.InputCanvasSize("\n:: 请输入拥有几个座屏：", 0)
 		// 一开始就返回直接退出函数
 		if numberStr == "-" || numberStr == "--" {
 			tools.CallClear() // 清屏
@@ -1045,9 +1046,9 @@ func OldFrame7bk() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 除了最后一个都需要开启画布模式
 			if i != len(saveSizeStr)-1 {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
+				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -1144,7 +1145,7 @@ func OldFrame8() {
 	for {
 		tools.ChineseTitle("当前框架卷帘座屏", 74) // 请注意切图的工厂与框架的选择
 		for i := 0; i < len(saveSizeStr); i++ {
-			saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
+			saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
@@ -1208,7 +1209,7 @@ func OldFrame9() {
 		fmt.Println("\n【补切】主要用来补切画布，不减去任何边框尺寸，适合不想手动新建画布时使用！")
 
 		for i := 0; i < len(saveSizeStr); i++ {
-			saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
+			saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
 
 			// 输入返回当然要返回啦
 			if saveSizeStr[i] == "-" {
