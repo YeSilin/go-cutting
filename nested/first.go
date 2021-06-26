@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"sync"
 )
 
 // 拷贝所有TXT文件到指定目录
@@ -36,18 +37,28 @@ func delAllFiles(files []string) {
 }
 
 // 修改所有图片大小到指定目录
-func modifyAllImgSize(images []string, dstPath string) {
+func modifyAllImgSize(images []string, dstPath string, width, height, mode int) {
+	//多线程处理，加个等待
+	var wg sync.WaitGroup
+
 	// jpg修改全部大小为800，到主图文件夹
 	for i := range images {
-		// 得到文件名
-		_, file := filepath.Split(images[i])
-		ret := dstPath + "/" + file
-		tools.ImageResize(images[i], ret, 800, 800, 98)
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			// 得到文件名
+			_, file := filepath.Split(images[i])
+			ret := dstPath + "/" + file
+			tools.ImageResize(images[i], ret, width, height, mode, 98)
+		}(i)
 	}
+	// 等待所有线程执行完毕
+	wg.Wait()
 }
 
-// 通用主图第二版
-func UniversalMainImage(originalPath string, delete bool) {
+//通用主图第二版
+//裁剪模式：1智能 2居中 3居上 4居下 5居左 6居右
+func UniversalMainImage(originalPath string, width, height, mode int, delete bool) {
 	// 获取所有扩展名是jpg的文件名，类型是字符串切片
 	jpgSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.jpg", originalPath))
 	// 获取所有扩展名是png的文件名，类型是字符串切片
@@ -55,7 +66,7 @@ func UniversalMainImage(originalPath string, delete bool) {
 
 	// 如果png和jpg都小于一张就不执行
 	if len(jpgSlice) < 1 && len(pngSlice) < 1 {
-		fmt.Println("\n【提示】转换失败，因为套图文件夹下没有 jpg 或 png 格式图片！")
+		fmt.Println("\n:: 转换失败，因为套图文件夹下没有 jpg 或 png 格式图片！")
 		return
 	}
 	go func() {
@@ -69,10 +80,10 @@ func UniversalMainImage(originalPath string, delete bool) {
 		_ = tools.CreateMkdirAll(resultPath)
 
 		// jpg修改全部大小为800，到主图文件夹
-		modifyAllImgSize(jpgSlice, resultPath)
+		modifyAllImgSize(jpgSlice, resultPath, width, height, mode)
 
 		// png修改全部大小为800，到主图文件夹
-		modifyAllImgSize(pngSlice, resultPath)
+		modifyAllImgSize(pngSlice, resultPath, width, height, mode)
 
 		// 复制所有文本到主图文件夹
 		copyAllTXT(originalPath, resultPath)
@@ -86,7 +97,7 @@ func UniversalMainImage(originalPath string, delete bool) {
 		// 删除多余备份，最大保留15个
 		tools.DeleteRedundantBackups("config/Backups/*", 15)
 	}()
-	fmt.Println("\n【提示】已转成 800*800 如果文件丢失，备份文件夹在上级目录下的 Backups！")
+	fmt.Printf("\n:: 已转成 %d*%d 如果文件丢失，备份文件夹在上级目录下的 Backups！\n", width, height)
 }
 
 // 带水印主图，水印路径，是否有白底图
@@ -98,7 +109,7 @@ func WatermarkMainImage(originalPath, watermarkPath string, delete bool) {
 
 	// 如果png和jpg都小于一张就不执行
 	if len(jpgSlice) < 1 && len(pngSlice) < 1 {
-		fmt.Println("\n【提示】转换失败，因为套图文件夹下没有 jpg 或 png 格式图片！")
+		fmt.Println("\n:: 转换失败，因为套图文件夹下没有 jpg 或 png 格式图片！")
 		// 打开套图文件夹
 		exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s", originalPath)).Run()
 		return
@@ -106,7 +117,7 @@ func WatermarkMainImage(originalPath, watermarkPath string, delete bool) {
 
 	go func() {
 		// 为了防止文件丢失，在重命名之前先备份一次文件
-		_ = tools.CopyDir(originalPath, "Config/Backups/")
+		_ = tools.CopyDir(originalPath, "config/Backups/")
 
 		// 完成后的主图路径
 		resultPath := fmt.Sprintf("%s/主图", originalPath)
@@ -117,7 +128,7 @@ func WatermarkMainImage(originalPath, watermarkPath string, delete bool) {
 		_ = tools.CreateMkdirAll(noWatermarkPath)
 
 		// 无水印主图操作，jpg修改全部大小为800，到 主图/无水印 文件夹
-		modifyAllImgSize(jpgSlice, noWatermarkPath)
+		modifyAllImgSize(jpgSlice, noWatermarkPath, 800, 800, 2)
 
 		// 带水印操作，获取白底图
 		minImage, isMinImage := tools.MinWhiteBackground(fmt.Sprintf("%s/*.jpg", originalPath))
@@ -128,7 +139,7 @@ func WatermarkMainImage(originalPath, watermarkPath string, delete bool) {
 			for _, v := range jpgSlice {
 				if v == minImage { // 只改大小不加水印
 					dstPath := strings.Replace(minImage, originalPath, resultPath, 1)
-					tools.ImageResize(minImage, dstPath, 800, 800, 99)
+					tools.ImageResize(minImage, dstPath, 800, 800, 2, 99)
 					continue
 				}
 				srcPath := v                                                      // 源图像
@@ -149,7 +160,7 @@ func WatermarkMainImage(originalPath, watermarkPath string, delete bool) {
 		}
 
 		// png修改全部大小为800，png不加水印只改大小，到主图文件夹
-		modifyAllImgSize(pngSlice, resultPath)
+		modifyAllImgSize(pngSlice, resultPath, 800, 800, 2)
 
 		// 复制所有文本到主图文件夹
 		copyAllTXT(originalPath, resultPath)
@@ -163,5 +174,5 @@ func WatermarkMainImage(originalPath, watermarkPath string, delete bool) {
 		// 删除多余备份，最大保留10个
 		tools.DeleteRedundantBackups("config/Backups/*", 15)
 	}()
-	fmt.Println("\n【提示】已转成 800*800 如果文件丢失，备份文件夹在上级目录下的 Backups！")
+	fmt.Println("\n:: 已转成 800*800 如果文件丢失，备份文件夹在上级目录下的 Backups！")
 }

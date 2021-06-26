@@ -1,7 +1,7 @@
 automaticdeletion: false
 blackedge: true
 cipherlist: false
-gui: false
+gui: true
 memory: false
 openps: true
 picture: E:\淘宝美工\套图汇总

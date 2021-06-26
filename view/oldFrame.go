@@ -1,4 +1,4 @@
-package cli
+package view
 
 import (
 	"fmt"
@@ -9,10 +9,8 @@ import (
 	"github.com/yesilin/go-cutting/tools"
 )
 
-
-
 // 上下座屏的选择
-func upperAndLowerScreenChoice(){
+func (this *CliView) upperAndLowerScreenChoice(){
 OuterLoop:
 	for {
 		tools.EnglishTitle("Upper And Lower Screen Choice", 74)
@@ -22,9 +20,9 @@ OuterLoop:
    [1]上下镂空.                  [2]上下画布.                  [3]暂未开发`
 		fmt.Println(text)
 
-		frameType, info := input.InputMenuSelection("\n:: 请选择上方的边框类型：")
+		this.key, this.info = input.InputMenuSelection("\n:: 请选择上方的边框类型：")
 		tools.CallClear() // 清屏
-		switch frameType {
+		switch this.key {
 		case "1":
 			model.OldFrame4to1() // 上下镂空
 			if !viper.GetBool("memory") { // 是否记忆框架
@@ -38,10 +36,10 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(info) != 0 {
-				fmt.Println(info)
+			if len(this.info) != 0 {
+				fmt.Println(this.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入...\n", tools.ColourString(frameType, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
 			}
 		}
 	}
@@ -50,10 +48,8 @@ OuterLoop:
 
 
 
-
-
 // 旧厂框架的选择
-func oldFrameChoice() {
+func (this *CliView) oldFrameChoice() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Cutting", 74)
@@ -67,9 +63,9 @@ OuterLoop:
    [7]多个座屏.                  [8]卷帘座屏.                  [9]不扣补切.`
 		fmt.Println(text)
 
-		frameType, info := input.InputMenuSelection("\n:: 请选择上方的边框类型：")
+		this.key, this.info = input.InputMenuSelection("\n:: 请选择上方的边框类型：")
 		tools.CallClear() // 清屏
-		switch frameType {
+		switch this.key {
 		case "1":
 			model.OldFrame1() // 小座屏
 		case "2":
@@ -77,7 +73,7 @@ OuterLoop:
 		case "3":
 			model.OldFrame3() // 左右画布
 		case "4":
-			upperAndLowerScreenChoice()  // 上下座屏框架选择
+			this.upperAndLowerScreenChoice()  // 上下座屏框架选择
 		case "5":
 			model.OldFrame5() // 顶天立地
 		case "6":
@@ -91,11 +87,13 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(info) != 0 {
-				fmt.Println(info)
+			if len(this.info) != 0 {
+				fmt.Println(this.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入...\n", tools.ColourString(frameType, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
+
+

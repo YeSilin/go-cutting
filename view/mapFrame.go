@@ -1,4 +1,4 @@
-package cli
+package view
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 )
 
 // 贴图框架的选择
-func mapFrameChoice() {
+func (this *CliView) mapFrameChoice() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("3ds Max map frame", 74)
@@ -23,9 +23,9 @@ OuterLoop:
    [7]多个座屏贴图.            [8]卷帘座屏贴图.            [9]不扣补切贴图.`
 		fmt.Println(text)
 
-		frameType, info := input.InputMenuSelection("\n:: 请选择上方的边框类型：")
+		this.key, this.info = input.InputMenuSelection("\n:: 请选择上方的边框类型：")
 		tools.CallClear() // 清屏
-		switch frameType {
+		switch this.key {
 		case "1":
 			model.MapFrame1() // 小座屏
 		case "2":
@@ -45,10 +45,10 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(info) != 0 {
-				fmt.Println(info)
+			if len(this.info) != 0 {
+				fmt.Println(this.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入...\n", tools.ColourString(frameType, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
 			}
 		}
 	}

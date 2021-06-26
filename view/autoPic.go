@@ -1,4 +1,4 @@
-package cli
+package view
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 )
 
 //  家具主图选择
-func furnitureMainPictureChoice() {
+func (this *CliView)furnitureMainPictureChoice() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Furniture main picture choice", 74)
@@ -21,11 +21,11 @@ OuterLoop:
 
    [1]怡柟家具                   [2]御尚家具                   [3]素梵家具
 
-   [4]棠语家具                   [5]凌轩家具                   [6]暂未开发`
+   [4]棠语家具                   [5]凌轩家具                   [6]通用长图`
 		fmt.Println(text)
-		layoutType, info := input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		this.key, this.info =  input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
-		switch layoutType {
+		switch this.key {
 		case "1":
 			nested.WatermarkMainImage(viper.GetString("picture"), "config/static/img/yinanjj.png", viper.GetBool("automaticDeletion"))
 		case "2":
@@ -37,7 +37,7 @@ OuterLoop:
 		case "5":
 			nested.WatermarkMainImage(viper.GetString("picture"), "config/static/img/lingxuan.png", viper.GetBool("automaticDeletion"))
 		case "6":
-
+			nested.UniversalMainImage(viper.GetString("picture"),1125,1500 ,4,viper.GetBool("automaticDeletion")) // 通用长图
 		case "7":
 
 		case "8":
@@ -47,17 +47,63 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(info) != 0 {
-				fmt.Println(info)
+			if len(this.info) != 0 {
+				fmt.Println(this.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(layoutType, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
 
+//通用主图选择
+func (this *CliView)universalMainImageChoice() {
+OuterLoop:
+	for {
+		tools.EnglishTitle("Universal Main Image choice", 74)
+		text := `
+:: 通用主图不会叠加任何水印，并且根据下方的裁剪模式，最终裁剪生成正方形图！
+
+   [1]智能裁剪                   [2]居中裁剪                   [3]居上裁剪
+
+   [4]居下裁剪                   [5]居左裁剪                   [6]居右裁剪`
+		fmt.Println(text)
+		this.key, this.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		tools.CallClear() // 清屏
+		switch this.key {
+		case "1":
+			nested.UniversalMainImage(viper.GetString("picture"),800,800 ,1,viper.GetBool("automaticDeletion")) // 通用主图
+		case "2":
+			nested.UniversalMainImage(viper.GetString("picture"),800,800 ,2,viper.GetBool("automaticDeletion")) // 通用主图
+		case "3":
+			nested.UniversalMainImage(viper.GetString("picture"),800,800 ,3,viper.GetBool("automaticDeletion")) // 通用主图
+		case "4":
+			nested.UniversalMainImage(viper.GetString("picture"),800,800 ,4,viper.GetBool("automaticDeletion")) // 通用主图
+		case "5":
+			nested.UniversalMainImage(viper.GetString("picture"),800,800 ,5,viper.GetBool("automaticDeletion")) // 通用主图
+		case "6":
+			nested.UniversalMainImage(viper.GetString("picture"),800,800 ,6,viper.GetBool("automaticDeletion")) // 通用主图
+		case "7":
+
+		case "8":
+
+		case "9":
+
+		case "-":
+			break OuterLoop
+		default:
+			if len(this.info) != 0 {
+				fmt.Println(this.info)
+			} else {
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
+			}
+		}
+	}
+}
+
+
 //  屏风主图选择
-func screenMainPictureChoice() {
+func (this *CliView)screenMainPictureChoice() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Screen main picture choice", 74)
@@ -69,9 +115,9 @@ OuterLoop:
    [4]御尚屏风                   [5]金尊主图                   [6]暂未开发`
 		fmt.Println(text)
 
-		layoutType, info := input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		this.key, this.info =  input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
-		switch layoutType {
+		switch this.key {
 		case "1":
 			nested.WatermarkMainImage(viper.GetString("picture"), "config/static/img/mulan.png", viper.GetBool("automaticDeletion"))
 		case "2":
@@ -86,17 +132,17 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(info) != 0 {
-				fmt.Println(info)
+			if len(this.info) != 0 {
+				fmt.Println(this.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(layoutType, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
 
 // 修改图片分辨率的选择
-func modifyResolution() {
+func (this *CliView)modifyResolution() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Modify resolution", 74)
@@ -105,9 +151,9 @@ OuterLoop:
 
    [1]全部改为72PPI         [2]全部改为300PPI         [3]全部改为自定义PPI.`
 		fmt.Println(text)
-		layoutType, info := input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		this.key, this.info =  input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear()
-		switch layoutType {
+		switch this.key {
 		case "1":
 			nested.PixelsPerInchChangedTo72(viper.GetString("picture")) // 改为72ppi
 		case "2":
@@ -117,17 +163,17 @@ OuterLoop:
 		case "-", "--":
 			break OuterLoop
 		default:
-			if len(info) != 0 {
-				fmt.Println(info)
+			if len(this.info) != 0 {
+				fmt.Println(this.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(layoutType, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
 
 // 套图的选择
-func autoPictureChoice() {
+func (this *CliView)autoPictureChoice() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Auto picture", 74)
@@ -136,14 +182,14 @@ OuterLoop:
 
    [1]套图文件夹                [2]随机重命名                [3]备份文件夹
 
-   [4]家具店主图.               [5]通用版主图                [6]屏风店主图.
+   [4]家具店主图.               [5]通用版主图.               [6]屏风店主图.
 
    [7]修改分辨率.               [8]替换详情页                [9]导出详情页`
 		fmt.Println(text)
 
-		layoutType, info := input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		this.key, this.info =  input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
-		switch layoutType {
+		switch this.key {
 		case "1":
 			signal.ExecuteSignal41()
 			fmt.Println("\n:: 已打开套图文件夹，请复制正方形的 jpg 或 png 高清图片以备自动套图使用！")
@@ -153,13 +199,13 @@ OuterLoop:
 			go exec.Command("cmd.exe", "/c", "start Config\\Backups").Run()
 			fmt.Println("\n:: 已打开备份文件夹，为了避免意外丢失文件，目前备份文件最大为 15 份！")
 		case "4":
-			furnitureMainPictureChoice() // 家具店主图
+			this.furnitureMainPictureChoice() // 家具店主图
 		case "5":
-			nested.UniversalMainImage(viper.GetString("picture"), viper.GetBool("automaticDeletion")) // 通用主图
+			this.universalMainImageChoice() // 通用主图
 		case "6":
-			screenMainPictureChoice() // 屏风店主图
+			this.screenMainPictureChoice() // 屏风店主图
 		case "7":
-			modifyResolution() // 修改分辨率
+			this.modifyResolution() // 修改分辨率
 		case "8":
 			nested.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
 		case "9":
@@ -167,10 +213,10 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(info) != 0 {
-				fmt.Println(info)
+			if len(this.info) != 0 {
+				fmt.Println(this.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(layoutType, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-package cli
+package view
 
 import (
 	"fmt"
@@ -379,7 +379,7 @@ func modifyToDefaultSetting() {
 }
 
 // 选择要修改的配置
-func ModifySetting() {
+func (this *CliView)settingsChoice() {
 OuterLoop:
 	for {
 		current() // 显示当前状态

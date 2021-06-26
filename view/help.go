@@ -1,4 +1,4 @@
-package cli
+package view
 
 import (
 	"fmt"
@@ -8,33 +8,7 @@ import (
 	"github.com/yesilin/go-cutting/tools"
 )
 
-/**初始化*/
-func Help() {
-OuterLoop:
-	for {
-		tools.EnglishTitle("Help info", 74)
-		fmt.Println("\n:: 此项目是通过注入JS脚本对PS进行短暂的间接控制，非实时监控，资源消耗极低！")
-		fmt.Println("\n   [1]查看快捷暗号.            [2]查看切图规则.            [3]查看功能说明.")
-		help, info := input.InputMenuSelection("\n:: 请选择需要查看的帮助：")
-		tools.CallClear() // 清屏
-		switch help {
-		case "1":
-			key() // 快捷键
-		case "2":
-			careful() // 注意事项
-		case "3":
-			skill() // 软件使用技巧
-		case "-":
-			break OuterLoop //跳出循环
-		default:
-			if len(info) != 0 {
-				fmt.Println(info)
-			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(help, ctc.ForegroundGreen))
-			}
-		}
-	}
-}
+
 
 /**快捷键说明*/
 func key() {
@@ -101,4 +75,32 @@ func skill() {
 	
    [-99]激活win10系统，这是一个集成大神之作的功能，只能激活win10系统`
 	fmt.Println(tips)
+}
+
+/**初始化*/
+func (this *CliView) help() {
+OuterLoop:
+	for {
+		tools.EnglishTitle("Help info", 74)
+		fmt.Println("\n:: 此项目是通过注入JS脚本对PS进行短暂的间接控制，非实时监控，资源消耗极低！")
+		fmt.Println("\n   [1]查看快捷暗号.            [2]查看切图规则.            [3]查看功能说明.")
+		help, info := input.InputMenuSelection("\n:: 请选择需要查看的帮助：")
+		tools.CallClear() // 清屏
+		switch help {
+		case "1":
+			key() // 快捷键
+		case "2":
+			careful() // 注意事项
+		case "3":
+			skill() // 软件使用技巧
+		case "-":
+			break OuterLoop //跳出循环
+		default:
+			if len(info) != 0 {
+				fmt.Println(info)
+			} else {
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(help, ctc.ForegroundGreen))
+			}
+		}
+	}
 }

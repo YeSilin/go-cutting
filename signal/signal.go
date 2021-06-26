@@ -149,7 +149,7 @@ func ExecuteSignal12() {
 
 // 执行暗号-41 快速打开套图文件夹
 func ExecuteSignal41() {
-	go tools.OpenFolder(viper.GetString("picture"))
+	go tools.OpenFolder(viper.GetString("picture"),false)
 }
 
 // 执行暗号-97

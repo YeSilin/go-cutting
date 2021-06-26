@@ -11,6 +11,68 @@ import (
 	"syscall"
 )
 
+//ReadFile 读取文件，返回字符切片
+func ReadFile(Path string) (content []byte, err error) {
+	var f *os.File
+
+	// 只读方式打开文件
+	f, err = os.Open(Path)
+	if err != nil {
+		fmt.Println("os.Open err", err)
+		return
+	}
+	defer f.Close()
+
+	// 读取内容保存到这个切片
+	buf := make([]byte, 4096)
+	for {
+		var n int
+		n, err = f.Read(buf)
+		//如果错误不是空，并且也不是文件末尾，那就表示出错了
+		if err != nil && err != io.EOF {
+			fmt.Println("f.Read err:", err)
+			return
+		}
+		if err == io.EOF {
+			break
+		}
+		// 合并切片
+		content = append(content, buf[:n]...)
+	}
+	return
+}
+
+//ReadFileEasy 读取文件，返回字符切片，不返回错误
+func ReadFileEasy(Path string) (content []byte) {
+	// 只读方式打开文件
+	f, err := os.Open(Path)
+	if err != nil {
+		fmt.Println("os.Open err", err)
+		return
+	}
+	defer f.Close()
+
+	// 读取内容保存到这个切片
+	buf := make([]byte, 4096)
+	for {
+		n, err := f.Read(buf)
+		//如果错误不是空，并且也不是文件末尾，那就表示出错了
+		if err != nil && err != io.EOF {
+			fmt.Println("f.Read err:", err)
+			return
+		}
+		if err == io.EOF {
+			break
+		}
+		// 合并切片
+		content = append(content, buf[:n]...)
+	}
+	return
+}
+
+
+
+
 // 创建文件并写入数据的函数
 func CreateFile(path, data string) {
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
@@ -44,28 +106,6 @@ func WriteFile(path, data string) {
 	}
 	// 在退出整个函数时，关闭文件
 	defer f.Close()
-}
-
-// 读取文件
-func ReadFile(filePath string) {
-	// 打开文件
-	f, err := os.Open(filePath)
-	if err != nil {
-		fmt.Println("打开文件错误 =", err)
-	}
-
-	// 关闭文件
-	defer f.Close()
-
-	// 定义字节切片大小，2K大小
-	buf := make([]byte, 1024*2)
-	// n代表从文件读取内容的长度
-	n, err1 := f.Read(buf)
-	if err1 != nil && err1 != io.EOF { // 文件出错，同时没有到结尾
-		fmt.Println("读取文件错误 =", err1)
-	}
-
-	fmt.Println("buf = ", string(buf[:n]))
 }
 
 // 用行读取文件
@@ -311,10 +351,14 @@ func CopyFile(src, dst string) (int64, error) {
 }
 
 //无黑框的方式打开windows文件夹
-func OpenFolder(path string) {
+func OpenFolder(path string, hideWindow bool) {
 	//必须要转换下，cmd不支持正斜杆
 	path = strings.ReplaceAll(path, "/", "\\")
-	cmd := exec.Command("cmd", "/c", "start "+ path)
-	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true} // 不显示黑框
+	cmd := exec.Command("cmd", "/c", "start "+path)
+
+	// 是否隐藏cmd窗口
+	if hideWindow {
+		cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true} // 不显示黑框
+	}
 	cmd.Run()
 }

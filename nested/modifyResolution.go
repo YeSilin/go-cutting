@@ -44,7 +44,7 @@ func PixelsPerInchChangedTo72(originalPath string) {
 			height := c.Height
 			file.Close() // 必须关闭文件
 			// 修改大小
-			tools.ImageResize(srcPath, files[i], width, height, 100)
+			tools.ImageResize(srcPath, files[i], width, height, 2,100)
 		}
 
 		// 删除之前自动生成的gcTemp
