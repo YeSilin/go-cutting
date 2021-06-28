@@ -24,7 +24,7 @@ func init() {
 func main() {
 	//实例一个视图结构体
 	cliView := view.NewCliView()
-	cliView.Version = 1.001071 //设置版本号！！！！！！！！！！！！！！！！！！！！！！！
+	cliView.Version = 1.001072 //设置版本号！！！！！！！！！！！！！！！！！！！！！！！
 	cliView.Expire = 60        //这里改版本最长有效期！！！！！！！！！！！！！！！！！！！！
 
 	// 限制软件使用 2019.7.19
@@ -44,11 +44,12 @@ func main() {
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 
-	// 运行主菜单
+	// 运行cli主菜单
 	go cliView.MainMenu()
 
-	// 运行gui
-	view.Start()
+	// 运行gui界面
+	guiView:= view.NewGuiView()
+	guiView.ShowAndRun()
 
 	wg.Wait()
 }

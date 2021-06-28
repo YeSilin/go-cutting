@@ -1,10 +1,10 @@
 automaticdeletion: false
 blackedge: true
 cipherlist: false
+darktheme: false
 gui: true
 memory: false
 openps: true
-picture: E:\淘宝美工\套图汇总
+picture: config\picture
 prefix: ""
 reserve: 5
-theme: darkTheme

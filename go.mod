@@ -3,7 +3,7 @@ module github.com/yesilin/go-cutting
 go 1.14
 
 require (
-	fyne.io/fyne v1.4.3
+
 	fyne.io/fyne/v2 v2.0.3
 	github.com/briandowns/spinner v1.15.0
 	github.com/cenkalti/dominantcolor v0.0.0-20210411190141-70117844b8ca
