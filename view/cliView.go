@@ -34,12 +34,12 @@ func NewCliView() *CliView {
 
 
 //MainMenu 显示主菜单
-func (this *CliView) MainMenu() {
+func (v *CliView) MainMenu() {
 
 	for {
-		fmt.Println(this.Tips) // 提示信息
+		fmt.Println(v.Tips) // 提示信息
 		// 装换版本为字符串
-		versionStr := fmt.Sprintf("%d.%d.%d", int(this.Version), int64(this.Version*1000000/1000)%1000, tools.Float64ToInt64(this.Version*1000000)%1000)
+		versionStr := fmt.Sprintf("%d.%d.%d", int(v.Version), int64(v.Version*1000000/1000)%1000, tools.Float64ToInt64(v.Version*1000000)%1000)
 		color.LightCyan.Println("\n " + (strings.Repeat("-", 18)) + fmt.Sprintf(" Welcome to the GoCutting v%s app ", versionStr) + strings.Repeat("-", 17))
 		fmt.Println("\n:: 添加新暗号【--】返回上一次输入，例如镂空大小输错，返回重新输入镂空大小！")
 
@@ -49,36 +49,36 @@ func (this *CliView) MainMenu() {
    [5]附加功能.        [6]暗号列表         [7]设置中心.        [8]帮助信息.`
 		fmt.Println(tips)
 
-		//factory, info := model.Input("\n:: 请选择上方的菜单功能：", false, true)
-		this.key, this.info = input.InputMenuSelection("\n:: 请选择上方的菜单功能：")
+		//factory, info := unclassified.Input("\n:: 请选择上方的菜单功能：", false, true)
+		v.key, v.info = input.InputMenuSelection("\n:: 请选择上方的菜单功能：")
 
 		tools.CallClear() // 清屏
-		switch this.key {
+		switch v.key {
 		case "1":
-			this.oldFrameChoice() // 切图
+			v.oldFrameChoice() // 切图
 		case "2":
-			this.mapFrameChoice() // 贴图
+			v.mapFrameChoice() // 贴图
 		case "3":
-			this.temporaryChoice() // 效果图
+			v.temporaryChoice() // 效果图
 		case "4":
-			this.autoPictureChoice() // 套图
+			v.autoPictureChoice() // 套图
 		case "5":
-			this.extendChoice() // 附加
+			v.extendChoice() // 附加
 		case "6":
 			// 启动gui
-			//go model.RunWebview()
+			//go unclassified.RunWebview()
 		case "7":
-			this.settingsChoice() // 设置
+			v.settingsChoice() // 设置
 		case "8":
-			this.help() // 帮助
+			v.help() // 帮助
 		case "-":
 			fmt.Println("\n:: 已经是最顶层菜单了，无需再返回，输入其他数字试下其他功能吧！")
 			continue
 		default:
-			if len(this.info) != 0 {
-				fmt.Println(this.info)
+			if len(v.info) != 0 {
+				fmt.Println(v.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
 			}
 		}
 	}

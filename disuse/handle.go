@@ -3,7 +3,7 @@ package disuse
 import (
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"github.com/yesilin/go-cutting/signal"
+	"github.com/yesilin/go-cutting/controller"
 	"io"
 	"net/http"
 	"os"
@@ -52,21 +52,21 @@ func indexHandle(w http.ResponseWriter, r *http.Request) {
 
 		switch cipher {
 		case "1":
-			signal.ExecuteSignal1()
+			controller.Command1()
 		case "2":
-			signal.ExecuteSignal2()
+			controller.Command2()
 		case "3":
-			signal.ExecuteSignal3() // 深度清除源数据
+			controller.Command3() // 深度清除源数据
 		case "4":
-			signal.ExecuteSignal6() // 简单清除元数据
+			controller.Command6() // 简单清除元数据
 		case "7":
-			signal.ExecuteSignal7() // 为当前文档添加黑边
+			controller.Command7() // 为当前文档添加黑边
 		case "9":
-			signal.ExecuteSignal9() // 打开历史记录
+			controller.Command9() // 打开历史记录
 		case "10":
-			signal.ExecuteSignal10() // 快捷另存为jpg
+			controller.Command10() // 快捷另存为jpg
 		case "98":
-			signal.ExecuteSignal98()
+			controller.Command98()
 		}
 	} else {
 		// 返回页面

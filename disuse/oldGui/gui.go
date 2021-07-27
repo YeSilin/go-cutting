@@ -7,8 +7,8 @@ import (
 	"fyne.io/fyne/theme"
 	"fyne.io/fyne/widget"
 	"github.com/spf13/viper"
+	"github.com/yesilin/go-cutting/controller"
 	"github.com/yesilin/go-cutting/input"
-	"github.com/yesilin/go-cutting/signal"
 	"os"
 )
 
@@ -17,13 +17,13 @@ func makeMainMenu() *fyne.MainMenu {
 	fileMenu := fyne.NewMenu("文件")
 	deitMenu := fyne.NewMenu("编辑")
 	codeMenu := fyne.NewMenu("暗号",
-		fyne.NewMenuItem("裁剪快捷键", func() { signal.ExecuteSignal1() }),
-		fyne.NewMenuItem("重建新文档", func() { signal.ExecuteSignal2() }),
-		fyne.NewMenuItem("深度清理PSD", func() { signal.ExecuteSignal3() }),
-		fyne.NewMenuItem("快速清理PSD", func() { signal.ExecuteSignal6() }),
-		fyne.NewMenuItem("自动加黑边", func() { signal.ExecuteSignal7() }),
-		fyne.NewMenuItem("查切图历史", func() { signal.ExecuteSignal9() }),
-		fyne.NewMenuItem("快速导出图片", func() { signal.ExecuteSignal98() }),
+		fyne.NewMenuItem("裁剪快捷键", func() { controller.Command1() }),
+		fyne.NewMenuItem("重建新文档", func() { controller.Command2() }),
+		fyne.NewMenuItem("深度清理PSD", func() { controller.Command3() }),
+		fyne.NewMenuItem("快速清理PSD", func() { controller.Command6() }),
+		fyne.NewMenuItem("自动加黑边", func() { controller.Command7() }),
+		fyne.NewMenuItem("查切图历史", func() { controller.Command9() }),
+		fyne.NewMenuItem("快速导出图片", func() { controller.Command98() }),
 	)
 
 	return fyne.NewMainMenu(
@@ -61,44 +61,44 @@ func makeCode() fyne.CanvasObject {
 		//fyne.NewContainerWithLayout(layout.NewGridLayout(1),
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("裁剪快捷键", func() {
-			signal.ExecuteSignal1()
+			controller.Command1()
 		}),
 
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("重建新文档", func() {
-			signal.ExecuteSignal2()
+			controller.Command2()
 		}),
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("深度清理PSD", func() {
-			signal.ExecuteSignal3()
+			controller.Command3()
 		}),
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("复制其他层", func() {
-			signal.ExecuteSignal5()
+			controller.Command5()
 		}),
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("快速清理PSD", func() {
-			signal.ExecuteSignal6()
+			controller.Command6()
 		}),
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("自动加黑边", func() {
-			signal.ExecuteSignal7()
+			controller.Command7()
 		}),
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("查切图历史", func() {
-			signal.ExecuteSignal9()
+			controller.Command9()
 		}),
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("全文档另存", func() {
-			signal.ExecuteSignal11()
+			controller.Command11()
 		}),
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("全文档关存", func() {
-			signal.ExecuteSignal12()
+			controller.Command12()
 		}),
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("快速导出图片", func() {
-			signal.ExecuteSignal98()
+			controller.Command98()
 		}),
 		layout.NewSpacer(),
 		form,

@@ -9,6 +9,19 @@ function deleteDocumentAncestorsMetadata() {
 }
 
 
+// 删掉扩展名，一般用在文件名上
+function deleteExtension(data) {
+    return data.substring(0, data.indexOf("."));
+}
+
+
+// 打开资源管理器文件夹窗口
+function openFolder(path) {
+    // execute在操作系统中打开文件或运行程序
+    Folder(path).execute();
+}
+
+
 // 另存为web
 function saveAsWeb() {
     // 更新进度条
@@ -19,8 +32,14 @@ function saveAsWeb() {
     // 更新进度条
     updateProgress(2, 4);
 
+    // 用户设置的路径路径
+    const userPath = "{{.}}"  // 这里传golang变量哦！！！！！！！！！！！
+
+    //要保存的文件名，已删掉原来的扩展名
+    var saveName = userPath + deleteExtension(app.activeDocument.name) + ".jpg"
+
     // 定义文件保存位置
-    var savePath = new File("{{.}}");
+    var saveFile = new File(saveName);
 
     var jpgOpt = new ExportOptionsSaveForWeb();
     jpgOpt.format = SaveDocumentType.JPEG;  // 保存为jpg
@@ -36,10 +55,17 @@ function saveAsWeb() {
 
     // 更新进度条
     updateProgress(3, 4);
-    activeDocument.exportDocument(savePath, ExportType.SAVEFORWEB,);
+    activeDocument.exportDocument(saveFile, ExportType.SAVEFORWEB,);
 
     // 更新进度条
     updateProgress(4, 4);
+
+    // 完成后打开文件夹
+    if (Folder(userPath + "images").exists) {
+        openFolder(userPath + "images")
+    } else {
+        openFolder(userPath)
+    }
 }
 
 

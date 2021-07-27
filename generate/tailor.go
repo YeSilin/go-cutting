@@ -9,7 +9,7 @@ import (
 	"text/template"
 )
 
-// 根据当前文档名选择正确的快捷裁剪脚本
+//SelectTailor 根据当前文档名选择正确的快捷裁剪脚本
 func SelectTailor() {
 	const script = `// 声明：这是一个调用针对当前文档的自动裁剪脚本
 
@@ -41,11 +41,12 @@ if (!documents.length) {
 	tools.CreateFile("config/jsx/selectTailor.jsx", script)
 }
 
-// 生成大部分框架的自动裁剪，例如左右镂空，小座屏等
-func GeneralCutting(frameName string) {
+//GeneralCutting 生成大部分框架的自动裁剪，例如左右镂空，小座屏等
+func GeneralCutting(frameName string ) {
 	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
 	info := struct {
 		BlackEdge bool // 是否自动黑边
+
 	}{viper.GetBool("blackEdge")}
 
 	// 解析指定文件生成模板对象
@@ -78,7 +79,7 @@ func GeneralCutting(frameName string) {
 	}
 }
 
-// 生成中间大两边小的自动裁剪js
+//Tailor3 生成中间大两边小的自动裁剪js
 // @param width 传入中间宽度
 // @param height 传入高度
 // @param hollowOut 传入镂空
@@ -114,7 +115,7 @@ func Tailor3(width, height, hollowOut float64, frameName string) {
 	}
 }
 
-//  生成上下画布的自动裁剪JavaScript
+//Tailor4to2  生成上下画布的自动裁剪JavaScript
 func Tailor4to2(width, upperCanvas, middleCanvas ,downCanvas float64, shortName ,frameName string) {
 	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
 	info := struct {
@@ -151,7 +152,7 @@ func Tailor4to2(width, upperCanvas, middleCanvas ,downCanvas float64, shortName 
 
 
 
-//生成折屏的自动裁剪js
+//Tailor6 生成折屏的自动裁剪js
 //@param width 传入单扇宽度
 //@param height 传入高度
 //@param number 传入扇数
@@ -189,7 +190,7 @@ func Tailor6(width, height, number float64, frameName, singleName string) {
 
 }
 
-// 生成多座屏的自动裁剪js
+//Tailor7 生成多座屏的自动裁剪js
 // @param width 传入中间宽度
 // @param height 传入高度
 // @param hollowOut 传入镂空
@@ -226,7 +227,7 @@ func Tailor7(widthSlice, heightSlice []float64, heightMax float64, frameName str
 	}
 }
 
-//生成贴图折屏的自动裁剪js
+//TailorForMap6 生成贴图折屏的自动裁剪js
 //@param width 传入单扇宽度
 //@param height 传入高度
 //@param number 传入扇数
@@ -262,7 +263,7 @@ func TailorForMap6(width, height, number int, frameName, singleName string) {
 	}
 }
 
-// 生成多座屏贴图的自动裁剪
+//TailorForMap7 生成多座屏贴图的自动裁剪
 func TailorForMap7(widthSlice, heightSlice []int, heightMax int, frameName string) {
 	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
 	info := struct {

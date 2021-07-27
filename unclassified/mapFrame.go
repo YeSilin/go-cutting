@@ -1,4 +1,4 @@
-package model
+package unclassified
 
 import (
 	"fmt"
@@ -7,7 +7,6 @@ import (
 	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/input"
 	"github.com/yesilin/go-cutting/tools"
-
 	"os/exec"
 	"strconv"
 )

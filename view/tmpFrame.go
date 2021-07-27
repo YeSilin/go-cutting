@@ -12,7 +12,7 @@ import (
 )
 
 // 小座屏自定义框架
-func (this *CliView) tempFame1To4() {
+func (v *CliView) tempFame1To4() {
 	for {
 		tools.EnglishTitle("Custom size", 74)
 
@@ -43,7 +43,7 @@ func (this *CliView) tempFame1To4() {
 }
 
 // 临时效果图小座屏框架细分
-func (this *CliView) tempFame1() {
+func (v *CliView) tempFame1() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Size selection", 74)
@@ -54,10 +54,10 @@ OuterLoop:
    [1]80-180         [2]100-180         [3]120-180         [4]自定义尺寸.`
 		fmt.Println(tips)
 
-		this.key, this.info = input.InputMenuSelection("\n:: 请选择上方的边框尺寸：")
+		v.key, v.info = input.InputMenuSelection("\n:: 请选择上方的边框尺寸：")
 		tools.CallClear() // 清屏
 
-		switch this.key {
+		switch v.key {
 		case "1":
 			generate.SelectionTempFrameJS("Frame01", 0)
 		case "2":
@@ -65,21 +65,21 @@ OuterLoop:
 		case "3":
 			generate.SelectionTempFrameJS("Frame01", 2)
 		case "4":
-			this.tempFame1To4() // 小座屏自定义框架
+			v.tempFame1To4() // 小座屏自定义框架
 		case "-":
 			break OuterLoop
 		default:
-			if len(this.info) != 0 {
-				fmt.Println(this.info)
+			if len(v.info) != 0 {
+				fmt.Println(v.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的框架类型，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的框架类型，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
 
 // 临时效果图折屏框架细分
-func (this *CliView) tempFame2() {
+func (v *CliView) tempFame2() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Size selection", 74)
@@ -90,10 +90,10 @@ OuterLoop:
    [1]45-180           [2]50-190           [3]60-190           [4]60-200`
 		fmt.Println(tips)
 
-		this.key, this.info = input.InputMenuSelection("\n:: 请选择上方的边框尺寸：")
+		v.key, v.info = input.InputMenuSelection("\n:: 请选择上方的边框尺寸：")
 		tools.CallClear() // 清屏
 
-		switch this.key {
+		switch v.key {
 		case "1":
 			generate.SelectionTempFrameJS("Frame02", 0)
 		case "2":
@@ -105,17 +105,17 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(this.info) != 0 {
-				fmt.Println(this.info)
+			if len(v.info) != 0 {
+				fmt.Println(v.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的框架类型，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的框架类型，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
 
 // 镂空框架细分
-func (this *CliView) tempFame3() {
+func (v *CliView) tempFame3() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Hollow type selection", 74)
@@ -126,10 +126,10 @@ OuterLoop:
    [1]回字镂空         [2]竖条镂空         [3]功能待定         [4]功能待定`
 		fmt.Println(tips)
 
-		this.key, this.info = input.InputMenuSelection("\n:: 请选择上方的镂空类型：")
+		v.key, v.info = input.InputMenuSelection("\n:: 请选择上方的镂空类型：")
 		tools.CallClear() // 清屏
 
-		switch this.key {
+		switch v.key {
 		case "1":
 			generate.SelectionTempFrameJS("HollowFrame", 0)
 		case "2":
@@ -143,17 +143,17 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(this.info) != 0 {
-				fmt.Println(this.info)
+			if len(v.info) != 0 {
+				fmt.Println(v.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的镂空类型，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的镂空类型，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
 
 // 临时框架的选择
-func (this *CliView) temporaryChoice() {
+func (v *CliView) temporaryChoice() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Temporary renderings", 74)
@@ -164,17 +164,17 @@ OuterLoop:
 
    [1]新建背景         [2]常规座屏.        [3]单扇折屏.        [4]单侧镂空.`
 		fmt.Println(tips)
-		this.key, this.info = input.InputMenuSelection("\n:: 请选择上方的功能类型：")
+		v.key, v.info = input.InputMenuSelection("\n:: 请选择上方的功能类型：")
 		tools.CallClear() // 清屏
-		switch this.key {
+		switch v.key {
 		case "1":
 			generate.NewTempDocumentJs() // 新建临时文档
 		case "2":
-			this.tempFame1() // 小座屏
+			v.tempFame1() // 小座屏
 		case "3":
-			this.tempFame2() // 折屏
+			v.tempFame2() // 折屏
 		case "4":
-			this.tempFame3() // 镂空
+			v.tempFame3() // 镂空
 		case "5":
 			fmt.Println("未开发") // 顶天立地
 		case "6":
@@ -186,10 +186,10 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(this.info) != 0 {
-				fmt.Println(this.info)
+			if len(v.info) != 0 {
+				fmt.Println(v.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的框架类型，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的框架类型，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
 			}
 		}
 	}

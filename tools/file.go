@@ -70,10 +70,7 @@ func ReadFileEasy(Path string) (content []byte) {
 	return
 }
 
-
-
-
-// 创建文件并写入数据的函数
+// CreateFile 创建文件并写入数据的函数
 func CreateFile(path, data string) {
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
 	f, err := os.Create(path)
@@ -90,7 +87,7 @@ func CreateFile(path, data string) {
 	}
 }
 
-// 追加写入数据
+// WriteFile 追加写入数据
 func WriteFile(path, data string) {
 	// 打开文件,追加模式，读权限与写权限
 	f, err := os.OpenFile(path, os.O_APPEND, 6)
@@ -108,7 +105,7 @@ func WriteFile(path, data string) {
 	defer f.Close()
 }
 
-// 用行读取文件
+// ReadLine 用行读取文件
 func ReadLine(name, filePath string) {
 	// 打开文件
 	f, err := os.Open(filePath)
@@ -141,7 +138,7 @@ func ReadLine(name, filePath string) {
 	}
 }
 
-// 用go格式，行读取文件(目前这个函数用来生成js脚本字符串)
+// FormatReadLine 用go格式，行读取文件(目前这个函数用来生成js脚本字符串)
 func FormatReadLine(name, filePath string) {
 	// 打开文件
 	f, err := os.Open(filePath)
@@ -173,7 +170,7 @@ func FormatReadLine(name, filePath string) {
 	}
 }
 
-// 判断所给路径文件/文件夹是否存在(返回true是存在)
+// IsPathExists 判断所给路径文件/文件夹是否存在(返回true是存在)
 func IsPathExists(path string) (bool, error) {
 	_, err := os.Stat(path) //os.Stat获取文件信息
 	if err == nil {
@@ -212,7 +209,7 @@ func CreateMkdir(filePath string) {
 	}
 }
 
-// 调用os.MkdirAll递归创建文件夹
+// CreateMkdirAll 调用os.MkdirAll递归创建文件夹
 func CreateMkdirAll(filePath string) error {
 	exist, err := IsPathExists(filePath)
 	if err != nil {
@@ -227,7 +224,7 @@ func CreateMkdirAll(filePath string) error {
 	return nil
 }
 
-// 获取指定目录的最小文件名，带完整路径
+// GetMinFile 获取指定目录的最小文件名，带完整路径
 func GetMinFile(pattern string) (minFile string) {
 	// 获取所有扩展名是jpg的文件名，类型是字符串切片
 	files, _ := filepath.Glob(pattern)
@@ -267,7 +264,7 @@ func GetMinFile(pattern string) (minFile string) {
 	return files[minFileIndex]
 }
 
-// 判断所给路径是否为文件夹
+// IsDir 判断所给路径是否为文件夹
 func IsDir(path string) bool {
 	s, err := os.Stat(path)
 	if err != nil {
@@ -276,7 +273,7 @@ func IsDir(path string) bool {
 	return s.IsDir()
 }
 
-// 获取指定目录中的子目录，以map形式
+// SubdirectoryMap 获取指定目录中的子目录，以map形式
 func SubdirectoryMap(originalPath string) (files map[string][]string) {
 	// 字典和切片需要先分配内存空间
 	files = make(map[string][]string)
@@ -324,7 +321,7 @@ func SubdirectoryMap(originalPath string) (files map[string][]string) {
 	return
 }
 
-// 拷贝单个文件到指定位置
+// CopyFile 拷贝单个文件到指定位置
 func CopyFile(src, dst string) (int64, error) {
 	sourceFileStat, err := os.Stat(src)
 	if err != nil {
@@ -350,13 +347,13 @@ func CopyFile(src, dst string) (int64, error) {
 	return nBytes, err
 }
 
-//无黑框的方式打开windows文件夹
+// OpenFolder 无黑框的方式打开windows文件夹
 func OpenFolder(path string, hideWindow bool) {
 	//必须要转换下，cmd不支持正斜杆
 	path = strings.ReplaceAll(path, "/", "\\")
 	cmd := exec.Command("cmd", "/c", "start "+path)
 
-	// 是否隐藏cmd窗口
+	// 是否隐藏cmd窗口，适合在有gui界面的情况下使用
 	if hideWindow {
 		cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true} // 不显示黑框
 	}

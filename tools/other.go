@@ -3,6 +3,7 @@ package tools
 import (
 	"bytes"
 	"github.com/go-toast/toast"
+	"golang.org/x/sys/windows/registry"
 	"log"
 	"os/exec"
 	"path/filepath"
@@ -34,7 +35,7 @@ func IsExeRuning(strKey string, strExeName string) bool {
 	}
 }
 
-// win 通知
+// WinNotification win 通知
 func WinNotification(title, message string) {
 	// 转换成绝对路径
 	icon, _ := filepath.Abs("config\\static\\img\\logo7-1.png")
@@ -54,4 +55,18 @@ func WinNotification(title, message string) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+}
+
+// Get2345PicInstallPath 获取2345看图王安装路径
+func Get2345PicInstallPath() string {
+	// 定义一个变量获取指定路径注册表的值 例如 NameSpace 的
+	key, _ := registry.OpenKey(registry.CLASSES_ROOT, `2345Pic.jpg\DefaultIcon`, registry.ALL_ACCESS)
+	defer key.Close()
+
+	// 读取：字符串
+	str, _, _ := key.GetStringValue(``)
+
+	// 去掉尾部 \icon\jpg.ico
+	str = strings.TrimSuffix(str, `\icon\jpg.ico`)
+	return str
 }

@@ -10,14 +10,13 @@ import (
 	"fyne.io/fyne/v2/widget"
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/controller"
-	"github.com/yesilin/go-cutting/signal"
 	"github.com/yesilin/go-cutting/tools"
 )
 
 type GuiView struct {
 	app        fyne.App    //新应用程序实例
 	mainWindow fyne.Window //主窗口
-
+	setupWindow fyne.Window // 设置窗口
 }
 
 //Logo 返回实现资源接口的logo图标
@@ -54,17 +53,17 @@ func NewGuiView() *GuiView {
 }
 
 //选择暗号，同时修改一个标签的文字
-func (g *GuiView) choiceCode(tips *widget.Label) *fyne.Container {
+func (v *GuiView) choiceCode(tips *widget.Label) fyne.CanvasObject {
 	//实例一个容器对象，此容器每行可以放两个画布对象
 	return container.New(layout.NewGridLayout(2),
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("[-1]", func() {
 			//只有在Photoshop已经打开的情景下运行脚本
 			if controller.IsPhotoshopRun() {
-				signal.ExecuteSignal1()
+				controller.Command1()
 				tips.SetText("You just pressed [-1]!~")
 			} else {
-				dialog.ShowInformation("Info", "Photoshop is not running!", g.mainWindow)
+				dialog.ShowInformation("Info", "Photoshop is not running!", v.mainWindow)
 			}
 		}),
 
@@ -72,10 +71,10 @@ func (g *GuiView) choiceCode(tips *widget.Label) *fyne.Container {
 		widget.NewButton("[-3]", func() {
 			//只有在Photoshop已经打开的情景下运行脚本
 			if controller.IsPhotoshopRun() {
-				signal.ExecuteSignal3()
+				controller.Command3()
 				tips.SetText("You just pressed [-3]!~")
 			} else {
-				dialog.ShowInformation("Info", "Photoshop is not running!", g.mainWindow)
+				dialog.ShowInformation("Info", "Photoshop is not running!", v.mainWindow)
 			}
 		}),
 	)
@@ -86,21 +85,21 @@ func (g *GuiView) choiceCode(tips *widget.Label) *fyne.Container {
 
 
 //ShowAndRun 显示并运行
-func (g *GuiView) ShowAndRun() {
+func (v *GuiView) ShowAndRun() {
 
 	//实例一个标签对象，用于文本提示
 	tips := widget.NewLabelWithStyle("Quick operation code!~", fyne.TextAlignCenter, fyne.TextStyle{})
 
 	//对窗口进行设置内容，设置内容的时候先新建一个垂直对齐的盒子
-	g.mainWindow.SetContent(container.NewVBox(
+	v.mainWindow.SetContent(container.NewVBox(
 		tips,
-		g.choiceCode(tips),
-		//g.switchTheme(),
-		g.settings(),
+		v.choiceCode(tips),
+		//v.switchTheme(),
+		v.settings(),
 	))
 
 	// 显示并运行
-	g.mainWindow.ShowAndRun()
+	v.mainWindow.ShowAndRun()
 
 }
 

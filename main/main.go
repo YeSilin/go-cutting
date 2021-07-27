@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/controller"
 	"github.com/yesilin/go-cutting/initialize"
 	"github.com/yesilin/go-cutting/logs"
@@ -14,7 +15,7 @@ import (
 func init() {
 	logs.InitLog()                // 初始化日志
 	controller.InitSetting()      //初始化设置
-	initialize.InitNetwork()      // 没有网络不让使用
+	view.VerifyNetwork()          // 没有网络不让使用
 	initialize.InitNotification() // ps 未运行就进行通知
 	initialize.InitFolder()       // 创建必须提前存在的文件夹
 	initialize.InitScript()       // 创建必须提前准备的脚本
@@ -24,7 +25,7 @@ func init() {
 func main() {
 	//实例一个视图结构体
 	cliView := view.NewCliView()
-	cliView.Version = 1.001072 //设置版本号！！！！！！！！！！！！！！！！！！！！！！！
+	cliView.Version = 1.001076 //设置版本号！！！！！！！！！！！！！！！！！！！！！！！
 	cliView.Expire = 60        //这里改版本最长有效期！！！！！！！！！！！！！！！！！！！！
 
 	// 限制软件使用 2019.7.19
@@ -48,8 +49,10 @@ func main() {
 	go cliView.MainMenu()
 
 	// 运行gui界面
-	guiView:= view.NewGuiView()
-	guiView.ShowAndRun()
+	if viper.GetBool("gui") {
+		guiView := view.NewGuiView()
+		guiView.ShowAndRun()
+	}
 
 	wg.Wait()
 }

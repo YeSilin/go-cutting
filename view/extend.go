@@ -6,12 +6,13 @@ import (
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/additional"
 	"github.com/yesilin/go-cutting/input"
+	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
 )
 
 // 文件修复工具选择
-func (this *CliView)fileRepairToolSelection() {
+func (v *CliView)fileRepairToolSelection() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("File repair tool selection", 74)
@@ -20,9 +21,9 @@ OuterLoop:
 
    [1]PSD文件修复              [2]XLS文件修复              [3]刷新文件时间`
 		fmt.Println(text)
-		this.key, this.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		v.key, v.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
-		switch this.key {
+		switch v.key {
 		case "1":
 			additional.RunPSDRepairKit() //PSD文件修复
 		case "2":
@@ -33,17 +34,17 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(this.info) != 0 {
-				fmt.Println(this.info)
+			if len(v.info) != 0 {
+				fmt.Println(v.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
 
 // 定时关机工具选择
-func (this *CliView)timingShutdownToolSelection() {
+func (v *CliView)timingShutdownToolSelection() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Timing shutdown tool selection", 74)
@@ -52,9 +53,9 @@ OuterLoop:
 
    [1]定时十八点关机           [2]取消十八点关机           [3]功能暂未开发`
 		fmt.Println(text)
-		this.key, this.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		v.key, v.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
-		switch this.key {
+		switch v.key {
 		case "1":
 			// 定时关机
 			s, Unsigned := tools.DistanceIsEighteen()
@@ -74,16 +75,16 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(this.info) != 0 {
-				fmt.Println(this.info)
+			if len(v.info) != 0 {
+				fmt.Println(v.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
 
-func (this *CliView)extendChoice() {
+func (v *CliView)extendChoice() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Extend", 74)
@@ -96,9 +97,9 @@ OuterLoop:
    [7]定时关机工具.           [8]看图王去广告           [9]新建文本修复`
 		fmt.Println(tips)
 
-		this.key, this.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		v.key, v.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
-		switch this.key {
+		switch v.key {
 		case "1":
 			additional.RunW10DigitalActivation() //激活win10系统
 		case "2":
@@ -116,20 +117,20 @@ OuterLoop:
 				exec.Command("cmd.exe", "/c", "taskkill /f /im explorer.exe & start explorer.exe").Run()
 			}()
 		case "6":
-			this.fileRepairToolSelection() // 文件修复工具选择
+			v.fileRepairToolSelection() // 文件修复工具选择
 		case "7":
-			this.timingShutdownToolSelection() // 定时关机工具选择
+			v.timingShutdownToolSelection() // 定时关机工具选择
 		case "8":
-			additional.CleanUp2345Pic() // 净化2345看图王
+			model.CleanUp2345Pic() // 净化2345看图王
 		case "9":
 			additional.ImportNewTextFile() // 注册表导入右键新建文本文档
 		case "-":
 			break OuterLoop //跳出循环
 		default:
-			if len(this.info) != 0 {
-				fmt.Println(this.info)
+			if len(v.info) != 0 {
+				fmt.Println(v.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(this.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
 			}
 		}
 	}

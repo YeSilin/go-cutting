@@ -10,18 +10,18 @@ import (
 )
 
 //进行切换主题
-func (g *GuiView) switchTheme() *fyne.Container {
-	//返回一个容器，布局是每行只能放一个元素
+func (v *GuiView) switchTheme() fyne.CanvasObject {
+	//返回一个容器，布局是每行只能放一个画布对象
 	return container.New(layout.NewGridLayout(1),
 
 		//添加一个带图标的按钮
-		widget.NewButtonWithIcon("SwitchTheme", theme.SettingsIcon(), func() {
+		widget.NewButtonWithIcon("SwitchTheme", theme.ViewRefreshIcon(), func() {
 			//如果是深色主题就切换成浅色
 			if viper.GetBool("darkTheme") {
-				g.app.Settings().SetTheme(theme.LightTheme())
+				v.app.Settings().SetTheme(theme.LightTheme())
 				viper.Set("darkTheme", false)
 			} else {
-				g.app.Settings().SetTheme(theme.DarkTheme())
+				v.app.Settings().SetTheme(theme.DarkTheme())
 				viper.Set("darkTheme", true)
 			}
 			//保存最新配置
@@ -31,24 +31,38 @@ func (g *GuiView) switchTheme() *fyne.Container {
 }
 
 
+
+//设置自动描边颜色
+func (v *GuiView) strokeColor() fyne.CanvasObject {
+	//返回一个容器，布局是每行只能放一个画布对象
+	return container.New(layout.NewGridLayout(1),
+		//添加一个带图标的按钮
+		widget.NewButtonWithIcon("StrokeColor", theme.SettingsIcon(), func() {
+
+		}),
+
+	)
+}
+
 //单独的设置窗口
-func (g *GuiView) settings() *fyne.Container {
+func (v *GuiView) settings() fyne.CanvasObject {
 	return container.New(layout.NewGridLayout(1),
 		//添加一个带图标的按钮
 		widget.NewButtonWithIcon("Settings", theme.SettingsIcon(), func() {
-			w := g.app.NewWindow("Settings")
+			//新建一个设置窗口并且赋值给结构体
+			v.setupWindow = v.app.NewWindow("Settings")
 			//设置一个默认图标
-			w.SetIcon(logo())
-			w.Resize(fyne.NewSize(220, 40))
+			v.setupWindow.SetIcon(logo())
+			v.setupWindow.Resize(fyne.NewSize(220, 40))
 
 			//对窗口布置内容
-			w.SetContent(container.NewVBox(
-				g.switchTheme(),
+			v.setupWindow.SetContent(container.NewVBox(
+				v.switchTheme(),
 				//这里放各种功能对象
-
+				v.strokeColor(),
 			))
 
-			w.Show()
+			v.setupWindow.Show()
 
 		}),
 

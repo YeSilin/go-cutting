@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-//生成用来新建ps文档js
+// NewDocument 生成用来新建ps文档js
 //@param width 传入宽度
 //@param height 传入高度
 //@param wordLine 是否创建文字不要超过的参考线

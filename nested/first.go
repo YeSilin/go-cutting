@@ -9,7 +9,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"sync"
 )
 
 // 拷贝所有TXT文件到指定目录
@@ -38,25 +37,34 @@ func delAllFiles(files []string) {
 
 // 修改所有图片大小到指定目录
 func modifyAllImgSize(images []string, dstPath string, width, height, mode int) {
-	//多线程处理，加个等待
-	var wg sync.WaitGroup
+	////多线程处理，加个等待
+	//var wg sync.WaitGroup
+	//
+	//// jpg修改全部大小为800，到主图文件夹
+	//for i := range images {
+	//	wg.Add(1)
+	//	go func(i int) {
+	//		defer wg.Done()
+	//		// 得到文件名
+	//		_, file := filepath.Split(images[i])
+	//		ret := dstPath + "/" + file
+	//		tools.ImageResize(images[i], ret, width, height, mode, 98)
+	//	}(i)
+	//}
+	//// 等待所有线程执行完毕
+	//wg.Wait()
 
 	// jpg修改全部大小为800，到主图文件夹
 	for i := range images {
-		wg.Add(1)
-		go func(i int) {
-			defer wg.Done()
-			// 得到文件名
-			_, file := filepath.Split(images[i])
-			ret := dstPath + "/" + file
-			tools.ImageResize(images[i], ret, width, height, mode, 98)
-		}(i)
+		// 得到文件名
+		_, file := filepath.Split(images[i])
+		ret := dstPath + "/" + file
+		tools.ImageResize(images[i], ret, width, height, mode, 98)
 	}
-	// 等待所有线程执行完毕
-	wg.Wait()
 }
 
-//通用主图第二版
+
+// UniversalMainImage 通用主图第二版
 //裁剪模式：1智能 2居中 3居上 4居下 5居左 6居右
 func UniversalMainImage(originalPath string, width, height, mode int, delete bool) {
 	// 获取所有扩展名是jpg的文件名，类型是字符串切片

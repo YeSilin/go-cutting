@@ -3,7 +3,7 @@ package oldGui
 import (
 	"fyne.io/fyne"
 	"fyne.io/fyne/widget"
-	"github.com/yesilin/go-cutting/model"
+	"github.com/yesilin/go-cutting/unclassified"
 )
 
 // 初始化小座屏的输入界面
@@ -24,7 +24,7 @@ func makeFame1() fyne.Widget {
 		//},
 		OnSubmit: func() {
 			// 调用框架公式
-			model.FormulaFrame1(widthStr.Text, heightStr.Text)
+			unclassified.FormulaFrame1(widthStr.Text, heightStr.Text)
 		},
 
 

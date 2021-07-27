@@ -6,6 +6,7 @@ import (
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/input"
+	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"strconv"
 	"strings"
@@ -23,10 +24,10 @@ func current() {
 		memoryStr = tools.ColourString(memoryStr, ctc.ForegroundCyan) // 设置带颜色的字符串
 	case false:
 		memoryStr = "已关闭"
-		//memoryStr = model.ColourString(memoryStr, ctc.ForegroundBright) // 设置带颜色的字符串
+		//memoryStr = unclassified.ColourString(memoryStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	default:
 		memoryStr = "参数错误"
-		//memoryStr = model.ColourString(memoryStr, ctc.ForegroundBright) // 设置带颜色的字符串
+		//memoryStr = unclassified.ColourString(memoryStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	}
 
 	var openPsStr string
@@ -36,10 +37,10 @@ func current() {
 		openPsStr = tools.ColourString(openPsStr, ctc.ForegroundCyan) // 设置带颜色的字符串
 	case false:
 		openPsStr = "已关闭"
-		//openPsStr = model.ColourString(openPsStr, ctc.ForegroundBright) // 设置带颜色的字符串
+		//openPsStr = unclassified.ColourString(openPsStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	default:
 		openPsStr = "参数错误"
-		//openPsStr = model.ColourString(openPsStr, ctc.ForegroundBright) // 设置带颜色的字符串
+		//openPsStr = unclassified.ColourString(openPsStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	}
 
 	// 自动黑边状态
@@ -50,10 +51,10 @@ func current() {
 		blackEdgeStr = tools.ColourString(blackEdgeStr, ctc.ForegroundCyan) // 设置带颜色的字符串
 	case false:
 		blackEdgeStr = "已关闭"
-		//blackEdgeStr = model.ColourString(blackEdgeStr, ctc.ForegroundBright) // 设置带颜色的字符串
+		//blackEdgeStr = unclassified.ColourString(blackEdgeStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	default:
 		blackEdgeStr = "参数错误"
-		//blackEdgeStr = model.ColourString(blackEdgeStr, ctc.ForegroundBright) // 设置带颜色的字符串
+		//blackEdgeStr = unclassified.ColourString(blackEdgeStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	}
 
 	// 自定前缀状态
@@ -63,7 +64,7 @@ func current() {
 		prefixStr = tools.ColourString(prefixStr, ctc.ForegroundCyan) // 设置带颜色的字符串
 	} else {
 		prefixStr = "未定义"
-		//prefixStr = model.ColourString(prefixStr, ctc.ForegroundBright) // 设置带颜色的字符串
+		//prefixStr = unclassified.ColourString(prefixStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	}
 
 	// 带颜色的预留画布提示
@@ -72,18 +73,16 @@ func current() {
 
 	// 自启管理
 	var selfStartingManagementStr string
-	switch viper.GetBool("gui") || viper.GetBool("cipherList") {
+	switch viper.GetBool("gui") {
 	case true:
-		//fmt.Println("quickCut",viper.GetBool("quickCut"))
-		//fmt.Println("cipherList",viper.GetBool("cipherList"))
 		selfStartingManagementStr = "已自启"
 		selfStartingManagementStr = tools.ColourString(selfStartingManagementStr, ctc.ForegroundCyan) // 设置带颜色的字符串
 	case false:
 		selfStartingManagementStr = "已关闭"
-		//cipherListStr = model.ColourString(cipherListStr, ctc.ForegroundBright) // 设置带颜色的字符串
+		//cipherListStr = unclassified.ColourString(cipherListStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	default:
 		selfStartingManagementStr = "参数错误"
-		//cipherListStr = model.ColourString(cipherListStr, ctc.ForegroundBright) // 设置带颜色的字符串
+		//cipherListStr = unclassified.ColourString(cipherListStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	}
 
 	// 修改套图文件夹位置
@@ -93,7 +92,7 @@ func current() {
 		pictureStr = tools.ColourString(pictureStr, ctc.ForegroundCyan) // 设置带颜色的字符串
 	} else {
 		pictureStr = "默认值"
-		//pictureStr = model.ColourString(pictureStr, ctc.ForegroundBright) // 设置带颜色的字符串
+		//pictureStr = unclassified.ColourString(pictureStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	}
 
 	// 主图自动删除来源
@@ -104,10 +103,10 @@ func current() {
 		automaticDeletionStr = tools.ColourString(automaticDeletionStr, ctc.ForegroundCyan) // 设置带颜色的字符串
 	case false:
 		automaticDeletionStr = "已关闭"
-		//automaticDeletionStr = model.ColourString(automaticDeletionStr, ctc.ForegroundBright) // 设置带颜色的字符串
+		//automaticDeletionStr = unclassified.ColourString(automaticDeletionStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	default:
 		automaticDeletionStr = "参数错误"
-		//automaticDeletionStr = model.ColourString(automaticDeletionStr, ctc.ForegroundBright) // 设置带颜色的字符串
+		//automaticDeletionStr = unclassified.ColourString(automaticDeletionStr, ctc.ForegroundBright) // 设置带颜色的字符串
 	}
 
 	fmt.Printf("\n   [1]记忆框架：%s       [2]自动新建：%s       [3]自动黑边：%s\n", memoryStr, openPsStr, blackEdgeStr)
@@ -227,49 +226,20 @@ func modifyLatestCanvasReservation() {
 	go viper.WriteConfig()
 }
 
-// 设置快捷自启
-func settingsSelfStartingManagement() {
-OuterLoop:
-	for {
-		tools.EnglishTitle("Settings Self Starting Management", 74)
-		text := `
-:: 设置启动软件时，自启动一些快捷小窗口减轻切图压力，现有两种版本可供选择！
 
-   [1]自启操作界面             [2]自启暗号列表            [3]功能暂未开发`
-		fmt.Println(text)
-		choice, info := input.InputMenuSelection("\n:: 请选择需要使用的功能：")
-		tools.CallClear() // 清屏
-		switch choice {
-		case "1":
-			modifyQuickCut()
-		case "2":
-			modifyCipherList()
-		case "3":
 
-		case "-":
-			break OuterLoop
-		default:
-			if len(info) != 0 {
-				fmt.Println(info)
-			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(choice, ctc.ForegroundGreen))
-			}
-		}
-	}
-}
-
-// 修改是否自启操作界面
+// 修改是否自启快捷操作界面
 func modifyQuickCut() {
 	tools.EnglishTitle("Modify Quick Cut", 74)
-	fmt.Println("\n:: 在启动软件时，自动打开自启操作界面小窗口！")
-	var tempMemory = isStringInput("\n:: 是否自启动操作界面小窗口，[1]是，[2]否：", false)
+	fmt.Println("\n:: 在启动软件时，自动打开自启快捷操作小窗口！")
+	var tempMemory = isStringInput("\n:: 是否自启动快捷操作界面小窗口，[1]是，[2]否：", false)
 	switch tempMemory {
 	case "1":
 		viper.Set("gui", true)
-		fmt.Println("\n:: 设置成功 - 自启操作界面已开启！")
+		fmt.Println("\n:: 设置成功 - 自启快捷操作界面已开启！")
 	case "2":
 		viper.Set("gui", false)
-		fmt.Println("\n:: 设置成功 - 自启操作界面已关闭！")
+		fmt.Println("\n:: 设置成功 - 自启快捷操作界面已关闭！")
 	case "-":
 		return
 	}
@@ -295,6 +265,41 @@ func modifyCipherList() {
 	// 保存最新配置
 	go viper.WriteConfig()
 }
+
+
+
+// 设置快捷自启
+func settingsSelfStartingManagement() {
+OuterLoop:
+	for {
+		tools.EnglishTitle("Settings Self Starting Management", 74)
+		text := `
+:: 设置启动软件时，自启动一些快捷小窗口减轻切图压力，现有两种版本可供选择！
+
+   [1]自启快捷操作             [2]功能暂未开发            [3]功能暂未开发`
+		fmt.Println(text)
+		choice, info := input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		tools.CallClear() // 清屏
+		switch choice {
+		case "1":
+			modifyQuickCut()
+		case "2":
+			//modifyCipherList()
+		case "3":
+
+		case "-":
+			break OuterLoop
+		default:
+			if len(info) != 0 {
+				fmt.Println(info)
+			} else {
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(choice, ctc.ForegroundGreen))
+			}
+		}
+	}
+}
+
+
 
 // 修改自动套图路径
 func modifyPicturePath() {
@@ -327,7 +332,7 @@ func modifyPicturePath() {
 
 	// 生成详情页指定保存位置
 	go func() {
-		generate.SaveForWeb(viper.GetString("picture"))
+		model.SaveForWebInit(viper.GetString("picture"))
 		// 保存最新配置
 		viper.WriteConfig()
 	}()
@@ -379,7 +384,7 @@ func modifyToDefaultSetting() {
 }
 
 // 选择要修改的配置
-func (this *CliView)settingsChoice() {
+func (v *CliView) settingsChoice() {
 OuterLoop:
 	for {
 		current() // 显示当前状态

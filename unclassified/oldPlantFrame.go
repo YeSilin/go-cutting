@@ -1,4 +1,4 @@
-package model
+package unclassified
 
 import (
 	"fmt"

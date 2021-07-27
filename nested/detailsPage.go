@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
-	"time"
 )
 
 // 获取指定目录下的所有jpg图片，并且排除白底图
@@ -97,7 +96,7 @@ func splitDetails(images []string) (dp, de []string) {
 	return
 }
 
-// 生成详情页替换智能对象的脚本
+// ReplaceDetailsPage 生成详情页替换智能对象的脚本
 func ReplaceDetailsPage(path string) {
 	// 获取指定目录下的所有jpg图片
 	images, err := getAllImages(path)
@@ -152,24 +151,3 @@ func ReplaceDetailsPage(path string) {
 }
 
 
-
-// 导出web格式详情页
-func SaveForWebDetailsPage() {
-	go func() {
-		// 自动套图工作路径
-		picturePath := viper.GetString("picture")
-		// 创建套图文件夹
-		_ = tools.CreateMkdirAll(fmt.Sprintf("%s/主图", picturePath))
-		// 创建一个协程使用cmd来运行脚本
-		dataPath := "Config/JSX/SaveForWeb.jsx"
-		exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
-
-		time.Sleep(time.Second) // 停一秒
-		// 如果存在images就打开
-		if ok, _ := tools.IsPathExists(fmt.Sprintf("%s/主图/images", picturePath)); ok {
-			exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s\\主图\\images", picturePath)).Run()
-		} else {
-			exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s\\主图", picturePath)).Run()
-		}
-	}()
-}
