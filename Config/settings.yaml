@@ -1,6 +1,6 @@
 automaticdeletion: false
 blackedge: true
-darktheme: false
+darktheme: true
 gui: false
 memory: false
 openps: true

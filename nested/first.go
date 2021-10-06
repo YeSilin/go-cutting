@@ -1,14 +1,16 @@
-//自动套图 - 对主图的操作
+// Package nested 自动套图 - 对主图的操作
 package nested
 
 import (
 	"fmt"
+	"github.com/panjf2000/ants/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/yesilin/go-cutting/tools"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"sync"
 )
 
 // 拷贝所有TXT文件到指定目录
@@ -37,10 +39,10 @@ func delAllFiles(files []string) {
 
 // 修改所有图片大小到指定目录
 func modifyAllImgSize(images []string, dstPath string, width, height, mode int) {
+	// 第一代
 	////多线程处理，加个等待
 	//var wg sync.WaitGroup
-	//
-	//// jpg修改全部大小为800，到主图文件夹
+	// jpg修改全部大小为800，到主图文件夹
 	//for i := range images {
 	//	wg.Add(1)
 	//	go func(i int) {
@@ -54,13 +56,70 @@ func modifyAllImgSize(images []string, dstPath string, width, height, mode int) 
 	//// 等待所有线程执行完毕
 	//wg.Wait()
 
-	// jpg修改全部大小为800，到主图文件夹
-	for i := range images {
-		// 得到文件名
-		_, file := filepath.Split(images[i])
-		ret := dstPath + "/" + file
-		tools.ImageResize(images[i], ret, width, height, mode, 98)
+
+	// 第二代
+	//t1 := time.Now().Unix()
+	//// jpg修改全部大小为800，到主图文件夹
+	//for i := range images {
+	//	// 得到文件名
+	//	_, file := filepath.Split(images[i])
+	//	ret := dstPath + "/" + file
+	//	tools.ImageResize(images[i], ret, width, height, mode, 98)
+	//}
+	//
+	//fmt.Println(time.Now().Unix() - t1)
+
+
+	//// 第三代
+	//t1 := time.Now().Unix()
+	////多线程处理，加个等待
+	//var wg sync.WaitGroup
+	//// 声明一个工人函数，用来执行任务
+	//task := func(i interface{}){
+	//	defer wg.Done()
+	//	// 类型断言成int类型
+	//	n := i.(int)
+	//	// 得到文件名
+	//	_, file := filepath.Split(images[n])
+	//	ret := dstPath + "/" + file
+	//	tools.ImageResize(images[n], ret, width, height, mode, 98)
+	//}
+	//// 创建一个线程池
+	//pool,_ := ants.NewPoolWithFunc(8,task)
+	//// 记得释放线程池
+	//defer pool.Release()
+	//for i := range images {
+	//	wg.Add(1)
+	//	_ = pool.Invoke(i)
+	//}
+	//// 等待所有线程执行完毕
+	//wg.Wait()
+	//fmt.Println(time.Now().Unix() - t1)
+
+	// 第四代
+	//多线程处理，加个等待
+	var wg sync.WaitGroup
+	// 声明一个工人函数，用来执行任务
+	taskFunc := func(i int) func() {
+		return func() {
+			defer wg.Done()
+			// 得到文件名
+			_, file := filepath.Split(images[i])
+			ret := dstPath + "/" + file
+			tools.ImageResize(images[i], ret, width, height, mode, 98)
+		}
 	}
+	// 创建一个线程池
+	pool,_ := ants.NewPool(8)
+	// 记得释放线程池
+	defer pool.Release()
+	// 开始执行任务
+	for i := range images {
+		wg.Add(1)
+		_ = pool.Submit(taskFunc(i))
+	}
+	// 等待所有线程执行完毕
+	wg.Wait()
 }
 
 
@@ -108,7 +167,7 @@ func UniversalMainImage(originalPath string, width, height, mode int, delete boo
 	fmt.Printf("\n:: 已转成 %d*%d 如果文件丢失，备份文件夹在上级目录下的 Backups！\n", width, height)
 }
 
-// 带水印主图，水印路径，是否有白底图
+// WatermarkMainImage 带水印主图，水印路径，是否有白底图
 func WatermarkMainImage(originalPath, watermarkPath string, delete bool) {
 	// 获取所有扩展名是jpg的文件名，类型是字符串切片
 	jpgSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.jpg", originalPath))

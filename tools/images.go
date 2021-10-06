@@ -14,7 +14,7 @@ import (
 	"sync"
 )
 
-//保存图像文件到本地
+// ImageSave 保存图像文件到本地
 //保存路径；要保存的图像；保存的图像质量1~100
 func ImageSave(img image.Image, dstPath string, quality int) bool {
 	//保存图片，扩展名可以不一致，质量99，避免超500k
@@ -26,10 +26,10 @@ func ImageSave(img image.Image, dstPath string, quality int) bool {
 	return true
 }
 
-//返回最佳裁剪比例，不改变比例的情况下，剪去多余的尺寸并且尽量保持最大的像素
-//原图的宽；原图的高；希望得到的宽；希望得到的高
+// ImageFit 返回最佳裁剪比例，不改变比例的情况下，剪去多余的尺寸并且尽量保持最大的像素
+// 原图的宽；原图的高；希望得到的宽；希望得到的高
 func ImageFit(srcWidth, srcHeight, dstWidth, dstHeight int) (fitWidth, fitHeight int) {
-	//先求出倍数
+	// 先求出倍数，用于得到最大可保留的裁剪尺寸
 	fit := float64(srcWidth) / float64(dstWidth)
 	//使用倍数求出合适的尺寸
 	fitWidth = int(float64(dstWidth) * fit)
@@ -47,41 +47,122 @@ func ImageFit(srcWidth, srcHeight, dstWidth, dstHeight int) (fitWidth, fitHeight
 	return
 }
 
-//对图像进行智能裁剪，返回裁剪后的图像
-//要裁剪的图像；希望得到的宽；希望得到的高
+// ImageSmartCrop 对图像进行智能裁剪，返回裁剪后的图像
+// 要裁剪的图像；希望得到的宽；希望得到的高
 func ImageSmartCrop(img image.Image, width, height int) image.Image {
-	//创建解析器
+	// 创建解析器
 	analyzer := smartcrop.NewAnalyzer(nfnt.NewDefaultResizer())
-	//裁剪图像长宽比为最小的原图宽或高
+	// 裁剪图像长宽比为最小的原图宽或高
 	topCrop, _ := analyzer.FindBestCrop(img, width, height)
-	//为各种类型图像的 SubImage 统一做成接口调用
+	// 为各种类型图像的 SubImage 统一做成接口调用
 	type SubImager interface {
 		SubImage(r image.Rectangle) image.Image
 	}
-	//调用方法，其实这个方法早在标准库实现
+	// 调用方法，其实这个方法早在标准库实现
 	return img.(SubImager).SubImage(topCrop)
 }
 
-//裁剪图像大小，不改变比例，多出的部分会被删掉，返回是否裁剪成功
-//源路径；保存路径；宽度；高度；裁剪模式：1智能 2居中 3居上 4居下 5居左 6居右；保存质量1~100
+// ImageResize 裁剪图像大小，不改变比例，多出的部分会被删掉，返回是否裁剪成功
+// 源路径；保存路径；宽度；高度；裁剪模式：1智能 2居中 3居上 4居下 5居左 6居右；保存质量1~100
 func ImageResize(srcPath, dstPath string, width, height, mode, quality int) bool {
-	//打开原始图像
+	// 打开原始图像
 	src, err := imaging.Open(srcPath)
 	if err != nil {
 		log.Fatalf("failed to open image: %v", err)
 		return false
 	}
 
-	//获取源图片的长度和宽度
+	// 获取源图片的长度和宽度
 	b := src.Bounds()
 	srcWidth := b.Max.X
 	srcHeight := b.Max.Y
 
-	//如果图片比例一致就直接缩小好了，这里必须转成浮点数
+	// 如果图片比例一致就直接缩小好了，这里必须转成浮点数
 	if float64(width)/float64(height) == float64(srcWidth)/float64(srcHeight) {
 		//对图像进行缩小，imaging.Lanczos 是最高清的
 		dst := imaging.Resize(src, width, height, imaging.Lanczos)
-		//保存图片，扩展名可以不一致，质量99，避免超500k
+		//保存图片，扩展名可以不一致，建议质量99，避免超500k
+		return ImageSave(dst, dstPath, quality)
+	}
+
+	//执行相应的模式进行裁剪
+	switch mode {
+	case 1: //智能
+		// 先处理需要裁剪成正方形的需求
+		if width == height {
+			// 判断原图的宽高中，是不是宽度的值最小
+			isWidthMin := srcWidth<srcHeight
+			// 用于保存缩放裁剪后的结果
+			var dst image.Image
+			// 如果宽最小，就按照宽最小的来等比例缩放图片
+			if isWidthMin {
+				dst = imaging.Resize(src, width, 0, imaging.Lanczos)
+			}else {
+				dst = imaging.Resize(src,0 , height, imaging.Lanczos)
+			}
+			// 再进行智能裁剪
+			dst = ImageSmartCrop(dst, width, height)
+			//保存图片，扩展名可以不一致，质量99，避免超500k
+			return ImageSave(dst, dstPath, quality)
+
+		} else {// 再处理需要裁剪成长方形的需求
+			//先得到最佳缩放的宽和高
+			fitWidth, fitHeight := ImageFit(srcWidth, srcHeight, width, height)
+			//对图像进行智能裁剪并缩放至需求尺寸
+			dst := ImageSmartCrop(src, fitWidth, fitHeight)
+			dst = imaging.Resize(dst, width, height, imaging.Lanczos)
+			//保存图片，扩展名可以不一致，质量99，避免超500k
+			return ImageSave(dst, dstPath, quality)
+		}
+
+	case 2: //居中
+		// 不拉伸的情况下获得正确的纵横比，将对源图像进行裁剪。imaging.Lanczos 是最高清的
+		dst := imaging.Fill(src, width, height, imaging.Center, imaging.Lanczos)
+		return ImageSave(dst, dstPath, quality)
+
+	case 3: //居上
+		// 不拉伸的情况下获得正确的纵横比，将对源图像进行裁剪。imaging.Lanczos 是最高清的
+		dst := imaging.Fill(src, width, height, imaging.Top, imaging.Lanczos)
+		return ImageSave(dst, dstPath, quality)
+
+	case 4: //居下
+		// 不拉伸的情况下获得正确的纵横比，将对源图像进行裁剪。imaging.Lanczos 是最高清的
+		dst := imaging.Fill(src, width, height, imaging.Bottom, imaging.Lanczos)
+		return ImageSave(dst, dstPath, quality)
+
+	case 5: //居左
+		// 不拉伸的情况下获得正确的纵横比，将对源图像进行裁剪。imaging.Lanczos 是最高清的
+		dst := imaging.Fill(src, width, height, imaging.Left, imaging.Lanczos)
+		return ImageSave(dst, dstPath, quality)
+
+	case 6: //居右
+		// 不拉伸的情况下获得正确的纵横比，将对源图像进行裁剪。imaging.Lanczos 是最高清的
+		dst := imaging.Fill(src, width, height, imaging.Right, imaging.Lanczos)
+		return ImageSave(dst, dstPath, quality)
+	}
+	return false
+}
+
+// ImageResize 裁剪图像大小，不改变比例，多出的部分会被删掉，返回是否裁剪成功
+// 源路径；保存路径；宽度；高度；裁剪模式：1智能 2居中 3居上 4居下 5居左 6居右；保存质量1~100
+func ImageResizeBK(srcPath, dstPath string, width, height, mode, quality int) bool {
+	// 打开原始图像
+	src, err := imaging.Open(srcPath)
+	if err != nil {
+		log.Fatalf("failed to open image: %v", err)
+		return false
+	}
+
+	// 获取源图片的长度和宽度
+	b := src.Bounds()
+	srcWidth := b.Max.X
+	srcHeight := b.Max.Y
+
+	// 如果图片比例一致就直接缩小好了，这里必须转成浮点数
+	if float64(width)/float64(height) == float64(srcWidth)/float64(srcHeight) {
+		//对图像进行缩小，imaging.Lanczos 是最高清的
+		dst := imaging.Resize(src, width, height, imaging.Lanczos)
+		//保存图片，扩展名可以不一致，建议质量99，避免超500k
 		return ImageSave(dst, dstPath, quality)
 	}
 
@@ -90,12 +171,13 @@ func ImageResize(srcPath, dstPath string, width, height, mode, quality int) bool
 	case 1: //智能
 		//先处理正方形需求
 		if width == height {
-			//先为智能裁剪提前得到源图中宽和高哪个最小
+			// 先为智能裁剪提前得到源图中宽和高哪个最小
 			minSize := srcWidth
+			// 默认宽最小，如果不是那就是高最小
 			if srcHeight < srcWidth {
 				minSize = srcHeight
 			}
-			//对图像进行智能裁剪并缩放至需求尺寸
+			// 对图像进行智能裁剪并缩放至需求尺寸
 			dst := ImageSmartCrop(src, minSize, minSize)
 			dst = imaging.Resize(dst, width, height, imaging.Lanczos)
 			//保存图片，扩展名可以不一致，质量99，避免超500k
@@ -138,7 +220,7 @@ func ImageResize(srcPath, dstPath string, width, height, mode, quality int) bool
 	return false
 }
 
-// 给图片加水印，保存路径，源图像，水印图像，左上角的定位 x,y，
+// ImageWatermark 给图片加水印，保存路径，源图像，水印图像，左上角的定位 x,y，
 func ImageWatermark(savePath, originalPath, watermarkPath string, x, y int) {
 	// 打开源图像
 	originalImage, err1 := imaging.Open(originalPath)
@@ -161,7 +243,7 @@ func ImageWatermark(savePath, originalPath, watermarkPath string, x, y int) {
 	}
 }
 
-// 修改图片大小并且加水印；
+// ImageResizeAndWatermark 修改图片大小并且加水印；
 // savePath 保存路径；
 // originalPath 源图像路径，宽和高；
 // watermarkPath 水印图像路径，左上角的定位 x,y，
@@ -210,7 +292,7 @@ func ImageResizeAndWatermark(savePath, originalPath string, width, height int, w
 	}
 }
 
-// 检测这张图片的主要颜色
+// FindDomiantColor 检测这张图片的主要颜色
 func FindDomiantColor(fileInput string) (string, error) {
 	f, err := os.Open(fileInput)
 	defer f.Close()
@@ -226,7 +308,7 @@ func FindDomiantColor(fileInput string) (string, error) {
 	return dominantcolor.Hex(dominantcolor.Find(img)), nil
 }
 
-// 检测单张 是否是白底图，返回 图像大小
+// IsWhiteBackground 检测单张 是否是白底图，返回 图像大小
 func IsWhiteBackground(fileInput string) (bool, int64, error) {
 	fInfo, err := os.Stat(fileInput)
 	if err != nil {
@@ -285,7 +367,7 @@ func IsWhiteBackground(fileInput string) (bool, int64, error) {
 	return true, fSize, err
 }
 
-// 得到一个文件夹的白底图的，如果有多个白底图就返回最小的一个白底图
+// MinWhiteBackground 得到一个文件夹的白底图的，如果有多个白底图就返回最小的一个白底图
 func MinWhiteBackground(pattern string) (result string, exist bool) {
 	// 可能的白底图
 	var probablyName []string

@@ -1,4 +1,4 @@
-package view
+package cli
 
 import (
 	"fmt"
@@ -6,14 +6,14 @@ import (
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/controller"
 	"github.com/yesilin/go-cutting/input"
-	"github.com/yesilin/go-cutting/unclassified"
 	"github.com/yesilin/go-cutting/nested"
 	"github.com/yesilin/go-cutting/tools"
+	"github.com/yesilin/go-cutting/unclassified"
 	"os/exec"
 )
 
 //  家具主图选择
-func (v *CliView)furnitureMainPictureChoice() {
+func (c *CLI)furnitureMainPictureChoice() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Furniture main picture choice", 74)
@@ -24,9 +24,9 @@ OuterLoop:
 
    [4]棠语家具                   [5]凌轩家具                   [6]通用长图`
 		fmt.Println(text)
-		v.key, v.info =  input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		c.key, c.info =  input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
-		switch v.key {
+		switch c.key {
 		case "1":
 			nested.WatermarkMainImage(viper.GetString("picture"), "config/static/img/yinanjj.png", viper.GetBool("automaticDeletion"))
 		case "2":
@@ -48,17 +48,17 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(v.info) != 0 {
-				fmt.Println(v.info)
+			if len(c.info) != 0 {
+				fmt.Println(c.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
 
 //通用主图选择
-func (v *CliView)universalMainImageChoice() {
+func (c *CLI)universalMainImageChoice() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Universal Main Image choice", 74)
@@ -69,9 +69,9 @@ OuterLoop:
 
    [4]居下裁剪                   [5]居左裁剪                   [6]居右裁剪`
 		fmt.Println(text)
-		v.key, v.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		c.key, c.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
-		switch v.key {
+		switch c.key {
 		case "1":
 			nested.UniversalMainImage(viper.GetString("picture"),800,800 ,1,viper.GetBool("automaticDeletion")) // 通用主图
 		case "2":
@@ -93,10 +93,10 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(v.info) != 0 {
-				fmt.Println(v.info)
+			if len(c.info) != 0 {
+				fmt.Println(c.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
 			}
 		}
 	}
@@ -104,7 +104,7 @@ OuterLoop:
 
 
 //  屏风主图选择
-func (v *CliView)screenMainPictureChoice() {
+func (c *CLI)screenMainPictureChoice() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Screen main picture choice", 74)
@@ -116,9 +116,9 @@ OuterLoop:
    [4]御尚屏风                   [5]金尊主图                   [6]暂未开发`
 		fmt.Println(text)
 
-		v.key, v.info =  input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		c.key, c.info =  input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
-		switch v.key {
+		switch c.key {
 		case "1":
 			nested.WatermarkMainImage(viper.GetString("picture"), "config/static/img/mulan.png", viper.GetBool("automaticDeletion"))
 		case "2":
@@ -133,17 +133,17 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(v.info) != 0 {
-				fmt.Println(v.info)
+			if len(c.info) != 0 {
+				fmt.Println(c.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
 
 // 修改图片分辨率的选择
-func (v *CliView)modifyResolution() {
+func (c *CLI)modifyResolution() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Modify resolution", 74)
@@ -152,9 +152,9 @@ OuterLoop:
 
    [1]全部改为72PPI         [2]全部改为300PPI         [3]全部改为自定义PPI.`
 		fmt.Println(text)
-		v.key, v.info =  input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		c.key, c.info =  input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear()
-		switch v.key {
+		switch c.key {
 		case "1":
 			unclassified.PixelsPerInchChangedTo72(viper.GetString("picture")) // 改为72ppi
 		case "2":
@@ -164,17 +164,17 @@ OuterLoop:
 		case "-", "--":
 			break OuterLoop
 		default:
-			if len(v.info) != 0 {
-				fmt.Println(v.info)
+			if len(c.info) != 0 {
+				fmt.Println(c.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
 
 // 套图的选择
-func (v *CliView)autoPictureChoice() {
+func (c *CLI)autoPictureChoice() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Auto picture", 74)
@@ -188,9 +188,9 @@ OuterLoop:
    [7]修改分辨率.               [8]替换详情页                [9]导出详情页`
 		fmt.Println(text)
 
-		v.key, v.info =  input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		c.key, c.info =  input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
-		switch v.key {
+		switch c.key {
 		case "1":
 			controller.Command41()
 			fmt.Println("\n:: 已打开套图文件夹，请复制正方形的 jpg 或 png 高清图片以备自动套图使用！")
@@ -200,13 +200,13 @@ OuterLoop:
 			go exec.Command("cmd.exe", "/c", "start Config\\Backups").Run()
 			fmt.Println("\n:: 已打开备份文件夹，为了避免意外丢失文件，目前备份文件最大为 15 份！")
 		case "4":
-			v.furnitureMainPictureChoice() // 家具店主图
+			c.furnitureMainPictureChoice() // 家具店主图
 		case "5":
-			v.universalMainImageChoice() // 通用主图
+			c.universalMainImageChoice() // 通用主图
 		case "6":
-			v.screenMainPictureChoice() // 屏风店主图
+			c.screenMainPictureChoice() // 屏风店主图
 		case "7":
-			v.modifyResolution() // 修改分辨率
+			c.modifyResolution() // 修改分辨率
 		case "8":
 			nested.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
 		case "9":
@@ -215,10 +215,10 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(v.info) != 0 {
-				fmt.Println(v.info)
+			if len(c.info) != 0 {
+				fmt.Println(c.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
 			}
 		}
 	}

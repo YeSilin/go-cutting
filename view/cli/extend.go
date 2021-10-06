@@ -1,4 +1,4 @@
-package view
+package cli
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 )
 
 // 文件修复工具选择
-func (v *CliView)fileRepairToolSelection() {
+func (c *CLI) fileRepairToolSelection() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("File repair tool selection", 74)
@@ -21,9 +21,9 @@ OuterLoop:
 
    [1]PSD文件修复              [2]XLS文件修复              [3]刷新文件时间`
 		fmt.Println(text)
-		v.key, v.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		c.key, c.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
-		switch v.key {
+		switch c.key {
 		case "1":
 			additional.RunPSDRepairKit() //PSD文件修复
 		case "2":
@@ -34,17 +34,17 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(v.info) != 0 {
-				fmt.Println(v.info)
+			if len(c.info) != 0 {
+				fmt.Println(c.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
 
 // 定时关机工具选择
-func (v *CliView)timingShutdownToolSelection() {
+func (c *CLI) timingShutdownToolSelection() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Timing shutdown tool selection", 74)
@@ -53,9 +53,9 @@ OuterLoop:
 
    [1]定时十八点关机           [2]取消十八点关机           [3]功能暂未开发`
 		fmt.Println(text)
-		v.key, v.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		c.key, c.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
-		switch v.key {
+		switch c.key {
 		case "1":
 			// 定时关机
 			s, Unsigned := tools.DistanceIsEighteen()
@@ -75,16 +75,16 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(v.info) != 0 {
-				fmt.Println(v.info)
+			if len(c.info) != 0 {
+				fmt.Println(c.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
 			}
 		}
 	}
 }
 
-func (v *CliView)extendChoice() {
+func (c *CLI) extendChoice() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Extend", 74)
@@ -97,9 +97,9 @@ OuterLoop:
    [7]定时关机工具.           [8]看图王去广告           [9]新建文本修复`
 		fmt.Println(tips)
 
-		v.key, v.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		c.key, c.info = input.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
-		switch v.key {
+		switch c.key {
 		case "1":
 			additional.RunW10DigitalActivation() //激活win10系统
 		case "2":
@@ -108,8 +108,8 @@ OuterLoop:
 			additional.ImportTakeOwnership() // 取得文件所有权
 		case "4":
 			// 净化设备驱动器
-			additional.CURRENT_USER_NoNameSpace()
-			additional.LOCAL_MACHINE_NoNameSpace()
+			tools.CleanUpExplorer()
+			fmt.Println("\n:: 已清除恶意盘符，此项附加功能的命令需要右键管理员身份运行本软件方可生效！")
 		case "5":
 			// 重启资源管理器
 			// 创建一个协程使用cmd启动外部程序
@@ -117,9 +117,9 @@ OuterLoop:
 				exec.Command("cmd.exe", "/c", "taskkill /f /im explorer.exe & start explorer.exe").Run()
 			}()
 		case "6":
-			v.fileRepairToolSelection() // 文件修复工具选择
+			c.fileRepairToolSelection() // 文件修复工具选择
 		case "7":
-			v.timingShutdownToolSelection() // 定时关机工具选择
+			c.timingShutdownToolSelection() // 定时关机工具选择
 		case "8":
 			model.CleanUp2345Pic() // 净化2345看图王
 		case "9":
@@ -127,10 +127,10 @@ OuterLoop:
 		case "-":
 			break OuterLoop //跳出循环
 		default:
-			if len(v.info) != 0 {
-				fmt.Println(v.info)
+			if len(c.info) != 0 {
+				fmt.Println(c.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
 			}
 		}
 	}

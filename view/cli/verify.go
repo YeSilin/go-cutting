@@ -1,4 +1,4 @@
-package view
+package cli
 
 import (
 	"github.com/gookit/color"

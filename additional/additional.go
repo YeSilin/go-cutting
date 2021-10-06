@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// 运行PSD修复工具
+// RunPSDRepairKit 运行PSD修复工具
 func RunPSDRepairKit() {
 	// 创建一个协程使用cmd启动外部程序
 	dataPath := "config/software/PSDRepairKit/PSDRepairKit.exe"
@@ -16,7 +16,7 @@ func RunPSDRepairKit() {
 	fmt.Println("\n:: 正在打开附加工具PSD文件修复，请稍后...")
 }
 
-// 运行XLS修复工具
+// RunAdvancedExcelRepair 运行XLS修复工具
 func RunAdvancedExcelRepair() {
 	// 创建一个协程使用cmd启动外部程序
 	dataPath := "config/software/AdvancedExcelRepair/AER.exe"
@@ -24,7 +24,7 @@ func RunAdvancedExcelRepair() {
 	fmt.Println("\n:: 正在打开附加工具XLS文件修复，请稍后...")
 }
 
-// 运行QQ微信QQ防撤回工具
+// RunRevokeMsgPatcher 运行QQ微信QQ防撤回工具
 func RunRevokeMsgPatcher() {
 	// 创建一个协程使用cmd启动外部程序
 	dataPath := "config/software/RevokeMsgPatcher.exe"
@@ -32,7 +32,7 @@ func RunRevokeMsgPatcher() {
 	fmt.Println("\n:: 正在打开附加工具微信QQ防撤回，请稍后...")
 }
 
-// 运行win10数字激活工具
+// RunW10DigitalActivation 运行win10数字激活工具
 func RunW10DigitalActivation() {
 	// 创建一个协程使用cmd启动外部程序
 	dataPath := "config/software/W10DigitalActivation.exe /activate"
@@ -41,7 +41,7 @@ func RunW10DigitalActivation() {
 	fmt.Println("\n:: win10系统已激活，此项附加功能的命令需要右键管理员身份运行本软件方可生效！")
 }
 
-// 注册表导入取得文件所有权
+// ImportTakeOwnership 注册表导入取得文件所有权
 func ImportTakeOwnership() {
 	// 创建一个协程使用cmd启动外部程序
 	cmd := exec.Command("cmd.exe", "/c", "regedit /s .\\config\\regedit\\takeOwnership.reg")
@@ -49,7 +49,7 @@ func ImportTakeOwnership() {
 	fmt.Println("\n:: 右键菜单已添加，此项附加功能的命令需要右键管理员身份运行本软件方可生效！")
 }
 
-// 注册表导入右键新建文本文档
+// ImportNewTextFile 注册表导入右键新建文本文档
 func ImportNewTextFile() {
 	// 创建一个协程使用cmd启动外部程序
 	cmd := exec.Command("cmd.exe", "/c", "regedit /s .\\config\\regedit\\newTextFile.reg")
@@ -57,7 +57,7 @@ func ImportNewTextFile() {
 	fmt.Println("\n:: 右键菜单已添加，此项附加功能的命令需要右键管理员身份运行本软件方可生效！")
 }
 
-// 刷新文件属性的时间信息，例如创建时间，最后修改时间与访问时间
+// RefreshFileTime 刷新文件属性的时间信息，例如创建时间，最后修改时间与访问时间
 func RefreshFileTime(srcPath, dstPath string) {
 	// 获取所有文件名，类型是字符串切片
 	files, _ := filepath.Glob(fmt.Sprintf("%s/*", srcPath))

@@ -75,7 +75,7 @@ func versionDecode(path string) (oldSoftware versionDate, err error) {
 	return
 }
 
-// 验证版本的函数2 传入私密路径、当前版本、当前从网络获取的时间、限制最长使用时间
+// RestrictingSoftwareUse2 验证版本的函数2 传入私密路径、当前版本、当前从网络获取的时间、限制最长使用时间
 func RestrictingSoftwareUse2(path string, version float64, time, expire int64) (bool, string) {
 	// 预定义编码信息
 	var newSoftware = versionDate{version, time}

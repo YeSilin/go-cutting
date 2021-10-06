@@ -1,16 +1,16 @@
-package view
+package cli
 
 import (
 	"fmt"
 	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/input"
-	"github.com/yesilin/go-cutting/unclassified"
 	"github.com/yesilin/go-cutting/tools"
+	"github.com/yesilin/go-cutting/unclassified"
 )
 
 // 上下座屏的选择
-func (v *CliView) upperAndLowerScreenChoice(){
+func (c *CLI) upperAndLowerScreenChoice(){
 OuterLoop:
 	for {
 		tools.EnglishTitle("Upper And Lower Screen Choice", 74)
@@ -20,9 +20,9 @@ OuterLoop:
    [1]上下镂空.                  [2]上下画布.                  [3]暂未开发`
 		fmt.Println(text)
 
-		v.key, v.info = input.InputMenuSelection("\n:: 请选择上方的边框类型：")
+		c.key, c.info = input.InputMenuSelection("\n:: 请选择上方的边框类型：")
 		tools.CallClear() // 清屏
-		switch v.key {
+		switch c.key {
 		case "1":
 			unclassified.OldFrame4to1()   // 上下镂空
 			if !viper.GetBool("memory") { // 是否记忆框架
@@ -36,10 +36,10 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(v.info) != 0 {
-				fmt.Println(v.info)
+			if len(c.info) != 0 {
+				fmt.Println(c.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
 			}
 		}
 	}
@@ -49,7 +49,7 @@ OuterLoop:
 
 
 // 旧厂框架的选择
-func (v *CliView) oldFrameChoice() {
+func (c *CLI) oldFrameChoice() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Cutting", 74)
@@ -63,9 +63,9 @@ OuterLoop:
    [7]多个座屏.                  [8]卷帘座屏.                  [9]不扣补切.`
 		fmt.Println(text)
 
-		v.key, v.info = input.InputMenuSelection("\n:: 请选择上方的边框类型：")
+		c.key, c.info = input.InputMenuSelection("\n:: 请选择上方的边框类型：")
 		tools.CallClear() // 清屏
-		switch v.key {
+		switch c.key {
 		case "1":
 			unclassified.OldFrame1() // 小座屏
 		case "2":
@@ -73,7 +73,7 @@ OuterLoop:
 		case "3":
 			unclassified.OldFrame3() // 左右画布
 		case "4":
-			v.upperAndLowerScreenChoice() // 上下座屏框架选择
+			c.upperAndLowerScreenChoice() // 上下座屏框架选择
 		case "5":
 			unclassified.OldFrame5() // 顶天立地
 		case "6":
@@ -87,10 +87,10 @@ OuterLoop:
 		case "-":
 			break OuterLoop
 		default:
-			if len(v.info) != 0 {
-				fmt.Println(v.info)
+			if len(c.info) != 0 {
+				fmt.Println(c.info)
 			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入...\n", tools.ColourString(v.key, ctc.ForegroundGreen))
+				fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
 			}
 		}
 	}

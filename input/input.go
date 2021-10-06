@@ -69,7 +69,7 @@ func runCode(num string) (ok bool, info string) {
 	return false, ""
 }
 
-// 运行暗号,给gui用
+// RunCodeGui 运行暗号,给gui用
 func RunCodeGui(num string) {
 	// 开始指定功能
 	switch num {
@@ -129,7 +129,7 @@ func readTerminalInput(tips string) (input string) {
 	return
 }
 
-// 支持暗号的获取用户输入的内容
+// InputMenuSelection 支持暗号的获取用户输入的内容
 func InputMenuSelection(tips string) (num, info string) {
 	for {
 		// 获取用户输入
@@ -137,7 +137,7 @@ func InputMenuSelection(tips string) (num, info string) {
 
 		// 如果输入空内容
 		if num == "" {
-			return num, "\n:: 输入的内容为空，请重新输入，若输入中文可快捷转换为拼音..."
+			return num, "\n:: 输入的内容为空，请重新输入..."
 		}
 
 		// 在字符串中最后出现位置的索引，如果返回 -1 表示字符串不包含要检索的字符串
@@ -148,12 +148,12 @@ func InputMenuSelection(tips string) (num, info string) {
 			return "-", ""
 		}
 
-		// 如果包含中文就转拼音
-		if tools.IncludeChinese2(num) {
-			return num, fmt.Sprintf("\n:: 检测到输入的 [%s] 为中文，转换成拼音为 [%s]",
-				tools.ColourString(num, ctc.ForegroundGreen),
-				tools.ColourString(strings.Join(tools.ToPinyin(num), " "), ctc.ForegroundGreen))
-		}
+		//// 如果包含中文就转拼音
+		//if tools.IncludeChinese2(num) {
+		//	return num, fmt.Sprintf("\n:: 检测到输入的 [%s] 为中文，转换成拼音为 [%s]",
+		//		tools.ColourString(num, ctc.ForegroundGreen),
+		//		tools.ColourString(strings.Join(tools.ToPinyin(num), " "), ctc.ForegroundGreen))
+		//}
 
 		// 如果是暗号
 		if ok, info := runCode(num); ok {
@@ -164,7 +164,7 @@ func InputMenuSelection(tips string) (num, info string) {
 	}
 }
 
-// 只返回属于数字的字符串，并且支持暗号，用作画布输入
+// InputCanvasSize 只返回属于数字的字符串，并且支持暗号，用作画布输入
 func InputCanvasSize(tips string, minimum int) (num string) {
 	// 回到一开始光标的位置重新输入
 	refreshRow := func(x, y int) {

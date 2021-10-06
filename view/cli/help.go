@@ -1,4 +1,4 @@
-package view
+package cli
 
 import (
 	"fmt"
@@ -80,7 +80,7 @@ func skill() {
 }
 
 /**初始化*/
-func (v *CliView) help() {
+func (c *CLI) help() {
 OuterLoop:
 	for {
 		tools.EnglishTitle("Help info", 74)

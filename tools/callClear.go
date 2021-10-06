@@ -1,4 +1,4 @@
-// 这个文件实现跨平台清屏
+// Package tools 这个文件实现跨平台清屏
 package tools
 
 import (
@@ -23,7 +23,7 @@ func init() {
 	}
 }
 
-// 这是实现跨平台清屏的函数
+// CallClear 这是实现跨平台清屏的函数
 func CallClear() {
 	value, ok := clear[runtime.GOOS] //runtime.GOOS -> linux, windows, darwin etc.
 	if ok {                          //if we defined a clear func for that platform:

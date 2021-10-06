@@ -7,7 +7,8 @@ import (
 	"github.com/yesilin/go-cutting/initialize"
 	"github.com/yesilin/go-cutting/logs"
 	"github.com/yesilin/go-cutting/tools"
-	"github.com/yesilin/go-cutting/view"
+	"github.com/yesilin/go-cutting/view/cli"
+	"github.com/yesilin/go-cutting/view/gui"
 	"sync"
 	"time"
 )
@@ -15,7 +16,7 @@ import (
 func init() {
 	logs.InitLog()                // 初始化日志
 	controller.InitSetting()      //初始化设置
-	view.VerifyNetwork()          // 没有网络不让使用
+	cli.VerifyNetwork()           // 没有网络不让使用
 	initialize.InitNotification() // ps 未运行就进行通知
 	initialize.InitFolder()       // 创建必须提前存在的文件夹
 	initialize.InitScript()       // 创建必须提前准备的脚本
@@ -24,9 +25,9 @@ func init() {
 
 func main() {
 	//实例一个视图结构体
-	cliView := view.NewCliView()
-	cliView.Version = 1.001076 //设置版本号！！！！！！！！！！！！！！！！！！！！！！！
-	cliView.Expire = 60        //这里改版本最长有效期！！！！！！！！！！！！！！！！！！！！
+	cliView := cli.NewCliView()
+	cliView.Version = 1.001078 //设置版本号！！！！！！！！！！！！！！！！！！！！！！！
+	cliView.Expire = 90        //这里改版本最长有效期！！！！！！！！！！！！！！！！！！！！
 
 	// 限制软件使用 2019.7.19
 	// 定义私密文件路径
@@ -50,7 +51,7 @@ func main() {
 
 	// 运行gui界面
 	if viper.GetBool("gui") {
-		guiView := view.NewGuiView()
+		guiView := gui.NewGuiView()
 		guiView.ShowAndRun()
 	}
 

@@ -2,11 +2,12 @@ package tools
 
 import (
 	"fmt"
+	"os/exec"
 	"syscall"
 	"unsafe"
 )
 
-// 验证是否有网络的函数
+// IsNetwork 验证是否有网络的函数
 func IsNetwork() bool {
 	var (
 		wininet, _           = syscall.LoadLibrary("wininet.dll")
@@ -67,4 +68,15 @@ func IsNetwork() bool {
 		//fmt.Println("没有连网: 检查网络设置")
 		return false
 	}
+}
+
+// NetWorkStatus 检测网络状态
+func NetWorkStatus() bool {
+	// 发送一次数据，最长等待时间5毫秒
+	err := exec.Command("ping", "www.baidu.com", "-n", "1", "-w", "5").Run()
+	if err != nil {
+		return false
+	}
+	return true
+
 }
