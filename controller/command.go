@@ -147,6 +147,12 @@ func Command41() {
 	go tools.OpenFolder(viper.GetString("picture"), false)
 }
 
+// Command42 执行暗号-42 随机重命名
+func Command42() {
+	nested.RandomRenameFile(viper.GetString("picture"))
+}
+
+
 // Command97 执行暗号-97
 func Command97() {
 	nested.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页

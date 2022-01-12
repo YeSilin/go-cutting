@@ -21,7 +21,7 @@ func isOpenPs() {
 	}
 }
 
-// 小座屏公式 gui用了
+// FormulaFrame1 小座屏公式 gui用了
 func FormulaFrame1(widthStr, heightStr string) {
 	// 定义一个预留尺寸
 	var reserve = viper.GetFloat64("reserve")
@@ -222,7 +222,7 @@ func OldFrame2() {
 	}
 }
 
-//旧厂中间大两边小
+// OldFrame3 旧厂中间大两边小
 //先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个竖边 空出的中间画面加5厘米
 func OldFrame3() {
 	// 定义一个预留尺寸

@@ -7,17 +7,17 @@ import (
 	"strings"
 )
 
-// MaxCanvas 如果画布的高和宽同时大于148则提示
+// MaxCanvas 如果画布的高和宽同时大于180则提示
 func MaxCanvas(width, height float64) {
 	// 默认不写入
-	write := false
+	var write bool
 
-	if width > 180 && height > 180 {
+	if width > 200 && height > 200 {
 		// 这其实是红色
-		color.LightBlue.Println("（已超不透最大180cm。）")
+		color.LightBlue.Println("（已超半透最大200cm。）")
 		write = true
-	} else if width > 148 && height > 148 {
-		color.LightBlue.Println("（已超半透最大148cm。）")
+	} else if width > 180 && height > 180 {
+		color.LightBlue.Println("（已超不透最大180cm。）")
 		write = true
 	} else {
 		fmt.Println()
@@ -30,12 +30,12 @@ func MaxCanvas(width, height float64) {
 		var jsx = strings.Builder{}
 
 		jsx.WriteString("// 无聊加了个画布大小判断\n")
-		jsx.WriteString(fmt.Sprintf("if ((%f>180) && (%f>180)) {\n", width, height))
+		jsx.WriteString(fmt.Sprintf("if ((%f>200) && (%f>200)) {\n", width, height))
 		jsx.WriteString("     // 生成历史记录\n")
-		jsx.WriteString("    app.activeDocument.suspendHistory(\"注意：已超不透最大180cm\", \"maxCanvas(\\\"注意：已超不透最大180cm。\\\",  \\\"9d2e2d\\\")\");\n")
-		jsx.WriteString(fmt.Sprintf("} else if ((%f>148) && (%f>148)) {\n", width, height))
+		jsx.WriteString("    app.activeDocument.suspendHistory(\"注意：已超半透最大200cm\", \"maxCanvas(\\\"注意：已超半透最大200cm。\\\",  \\\"9d2e2d\\\")\");\n")
+		jsx.WriteString(fmt.Sprintf("} else if ((%f>180) && (%f>180)) {\n", width, height))
 		jsx.WriteString("      // 生成历史记录\n")
-		jsx.WriteString("    app.activeDocument.suspendHistory(\"注意：已超半透最大148cm\", \"maxCanvas(\\\"注意：已超半透最大148cm。\\\",  \\\"77bb11\\\")\");\n")
+		jsx.WriteString("    app.activeDocument.suspendHistory(\"注意：已超不透最大180cm\", \"maxCanvas(\\\"注意：已超不透最大180cm。\\\",  \\\"77bb11\\\")\");\n")
 		jsx.WriteString("}\n")
 		jsx.WriteString("\n")
 		jsx.WriteString("\n")

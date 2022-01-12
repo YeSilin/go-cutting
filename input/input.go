@@ -1,4 +1,4 @@
-// 对输入的字符进行判断
+// Package input 对输入的字符进行判断
 package input
 
 import (
@@ -56,6 +56,9 @@ func runCode(num string) (ok bool, info string) {
 	case "-41":
 		controller.Command41() // 快捷保存并关闭全部文档
 		return true, "\n:: 检测到输入的内容为隐藏暗号，已打开套图文件夹..."
+	case "-42":
+		controller.Command42()
+		return true, "\n:: 检测到输入的内容为隐藏暗号，已执行随机重命名..."
 	case "-97":
 		controller.Command97()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在替换详情页DP智能对象..."
@@ -105,7 +108,6 @@ func RunCodeGui(num string) {
 		controller.Command99()
 	}
 }
-
 
 // 从终端读取一行输入
 func readTerminalInput(tips string) (input string) {

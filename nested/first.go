@@ -126,10 +126,10 @@ func modifyAllImgSize(images []string, dstPath string, width, height, mode int) 
 // UniversalMainImage 通用主图第二版
 //裁剪模式：1智能 2居中 3居上 4居下 5居左 6居右
 func UniversalMainImage(originalPath string, width, height, mode int, delete bool) {
-	// 获取所有扩展名是jpg的文件名，类型是字符串切片
-	jpgSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.jpg", originalPath))
-	// 获取所有扩展名是png的文件名，类型是字符串切片
-	pngSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.png", originalPath))
+	// 获取所有扩展名是jpg的文件名，类型是字符串切片，忽略大小写
+	jpgSlice, _ := filepath.Glob(originalPath + "/*.[Jj][Pp][Gg]")
+	// 获取所有扩展名是png的文件名，类型是字符串切片，忽略大小写
+	pngSlice, _ := filepath.Glob(originalPath + "/*.[Pp][Nn][Gg]")
 
 	// 如果png和jpg都小于一张就不执行
 	if len(jpgSlice) < 1 && len(pngSlice) < 1 {
@@ -169,10 +169,11 @@ func UniversalMainImage(originalPath string, width, height, mode int, delete boo
 
 // WatermarkMainImage 带水印主图，水印路径，是否有白底图
 func WatermarkMainImage(originalPath, watermarkPath string, delete bool) {
-	// 获取所有扩展名是jpg的文件名，类型是字符串切片
-	jpgSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.jpg", originalPath))
-	// 获取所有扩展名是png的文件名，类型是字符串切片
-	pngSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.png", originalPath))
+	// 获取所有扩展名是jpg的文件名，类型是字符串切片，忽略大小写
+	jpgSlice, _ := filepath.Glob(originalPath + "/*.[Jj][Pp][Gg]")
+	// 获取所有扩展名是png的文件名，类型是字符串切片，忽略大小写
+	pngSlice, _ := filepath.Glob(originalPath + "/*.[Pp][Nn][Gg]")
+
 
 	// 如果png和jpg都小于一张就不执行
 	if len(jpgSlice) < 1 && len(pngSlice) < 1 {
