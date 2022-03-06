@@ -26,7 +26,7 @@ func init() {
 func main() {
 	//实例一个视图结构体
 	cliView := cli.NewCliView()
-	cliView.Version = 1.001080 //设置版本号！！！！！！！！！！！！！！！！！！！！！！！
+	cliView.Version = 1.001081 //设置版本号！！！！！！！！！！！！！！！！！！！！！！！
 	cliView.Expire = 90        //这里改版本最长有效期！！！！！！！！！！！！！！！！！！！！
 
 	// 限制软件使用 2019.7.19

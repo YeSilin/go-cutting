@@ -152,6 +152,15 @@ func Command42() {
 	nested.RandomRenameFile(viper.GetString("picture"))
 }
 
+// Command48 执行暗号-48
+func Command48() {
+	nested.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
+}
+
+// Command49 执行暗号-49
+func Command49() {
+	model.SaveForWeb()
+}
 
 // Command97 执行暗号-97
 func Command97() {

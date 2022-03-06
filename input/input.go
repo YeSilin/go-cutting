@@ -59,6 +59,12 @@ func runCode(num string) (ok bool, info string) {
 	case "-42":
 		controller.Command42()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，已执行随机重命名..."
+	case "-48":
+		controller.Command48()
+		return true, "\n:: 检测到输入的内容为隐藏暗号，正在替换详情页DP智能对象..."
+	case "-49":
+		controller.Command49()
+		return true, "\n:: 检测到输入的内容为隐藏暗号，正在导出为Web所用格式..."
 	case "-97":
 		controller.Command97()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在替换详情页DP智能对象..."
