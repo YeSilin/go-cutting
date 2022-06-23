@@ -34,12 +34,12 @@ func InitScript() {
 		generate.SelectTailor()                      // 生成裁剪选择脚本备用
 		generate.GeneralCutting("")                  // 生成通用裁剪脚本备用
 		generate.ClearMetadata()                     // 生成 -3 要用的清除元数据脚本备用
-		generate.ClearMetadataNoPopUp()              // 生成我自己动作要用的清除元数据脚本备用
-		generate.BlackEdge()                         // 生成添加黑边脚本备用
+		model.ClearMetadataStd()                     // 生成我自己动作要用的清除元数据脚本备用
+		model.AddBlackEdge()                         // 生成 -7 添加黑边脚本备用
 		model.SaveForWeb(viper.GetString("picture")) // 生成详情页指定保存位置
 		model.SaveAsJPEG()                           // 生成带自带清除元数据的另存脚本
 		model.SaveAllJPEG()                          // 生成另存全部文件脚本
 		model.SaveAndCloseAllDocuments()             // 生成保存并关闭全部文档的脚本
-		generate.CopyAndCloseOtherDocuments()        // 生成复制并关闭其他文档脚本
+		model.CopyAndCloseOtherDocuments()           // 生成 -5 复制并关闭其他文档脚本
 	}()
 }

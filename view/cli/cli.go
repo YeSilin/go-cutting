@@ -67,7 +67,7 @@ func (c *CLI) License() {
 // 内部调用，用来显示通知 是否常驻云端通知
 func (c *CLI) showNotice(permanent bool) {
 	if c.info != "" {
-		fmt.Println(c.info + "\n")
+		fmt.Println(c.info)
 		c.info = "" // 打印完就清空
 		return
 	}
@@ -77,22 +77,18 @@ func (c *CLI) showNotice(permanent bool) {
 		fmt.Println(c.Notice) // 显示有道云通知
 		return
 	}
-
-	// 不让标题顶在最上面
-	fmt.Println()
 }
 
 //MainMenu 显示主菜单
 func (c *CLI) MainMenu() {
-
 	for {
 		// 先显示通知
 		c.showNotice(true)
 
-		color.LightCyan.Println((strings.Repeat("-", 18)) + fmt.Sprintf(" Welcome to the GoCutting v%s app ", c.Version) + strings.Repeat("-", 17) + "\n")
-		fmt.Println(":: 输入数字并回车可选择需要进入的功能，输入暗号【-】并回车可返回上一级菜单！")
-
+		color.LightCyan.Println("\n" + (strings.Repeat("-", 18)) + fmt.Sprintf(" Welcome to the GoCutting v%s app ", c.Version) + strings.Repeat("-", 17))
 		tips := `
+:: 输入数字并回车可选择需要进入的功能，输入暗号【-】并回车可返回上一级菜单！
+
    [1]快捷切图.        [2]快捷贴图.        [3]快捷效果.        [4]自动套图.
 
    [5]附加功能.        [6]暗号列表         [7]设置中心.        [8]帮助信息.`

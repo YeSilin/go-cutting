@@ -22,9 +22,9 @@ func main() {
 	cliView.VerifyNetwork()
 
 	// 获取通知
-	cliView.Notice = ":: " + presenter.Limit.GetString("notice") + "\n"
+	cliView.Notice = ":: " + presenter.Limit.GetString("notice")
 	// 设置版本号
-	cliView.Version = "1.1.84" //设置版本号！！！！！！！！！！！！！！！！！！！！！！！
+	cliView.Version = "1.1.85" //设置版本号！！！！！！！！！！！！！！！！！！！！！！！
 
 	// 验证许可证
 	cliView.License()

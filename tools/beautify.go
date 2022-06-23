@@ -60,7 +60,7 @@ func EnglishTitle(s string, width int) {
 	} else {
 		right--
 	}
-	color.LightCyan.Println(strings.Repeat("-", left) + fmt.Sprintf(" %s ", s) + strings.Repeat("-", right))
+	color.LightCyan.Println("\n" + strings.Repeat("-", left) + fmt.Sprintf(" %s ", s) + strings.Repeat("-", right))
 }
 
 // ColourString 带颜色的字符串，第一参数 字符串 ，第二参数前景色，第三参数背景色

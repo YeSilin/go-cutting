@@ -1,6 +1,6 @@
-// Package nested 自动套图 - 对主图的操作
 package presenter
 
+//  自动套图 - 对主图的操作
 import (
 	"fmt"
 	"github.com/panjf2000/ants/v2"

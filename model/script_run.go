@@ -18,6 +18,19 @@ func RunAutoCreateDocuments() {
 	}
 }
 
+// RunClearMetadataStd 执行暗号-6 简单清除元数据
+func RunClearMetadataStd() {
+	dataPath := "config/jsx/clearMetadataStd.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+}
+
+// RunAddBlackEdge 执行暗号-7 为当前文档添加黑边
+func RunAddBlackEdge() {
+	// 创建一个协程使用cmd来运行脚本
+	dataPath := "config/jsx/addBlackEdge.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+}
+
 // RunSaveAsJPEG 储存为jpeg格式的调用  暗号-10的实现
 func RunSaveAsJPEG() {
 	// 创建一个协程使用cmd启动外部程序

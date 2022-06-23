@@ -44,15 +44,12 @@ func Command5() {
 
 // Command6 执行暗号-6 简单清除元数据
 func Command6() {
-	dataPath := "config/jsx/clearMetadataNoPopUp.jsx"
-	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+	model.RunClearMetadataStd()
 }
 
 // Command7 执行暗号-7 为当前文档添加黑边
 func Command7() {
-	// 创建一个协程使用cmd来运行脚本
-	dataPath := "config/jsx/blackEdge.jsx"
-	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+	model.RunAddBlackEdge()
 }
 
 // Command9 执行暗号-9 查询历史记录文件
