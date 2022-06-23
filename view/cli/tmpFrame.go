@@ -7,6 +7,8 @@ import (
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/input"
+	"github.com/yesilin/go-cutting/model"
+	"github.com/yesilin/go-cutting/presenter"
 	"github.com/yesilin/go-cutting/tools"
 	"strconv"
 )
@@ -34,7 +36,7 @@ func (c *CLI) tempFame1To4() {
 
 		generate.TempFrame1JS(width*10, height*10) // 生成小座屏效果图框架
 
-		generate.MaxCanvas(width-5, height-5) // 最大画布判断
+		model.IsMaxCanvasExceeded(width-5, height-5) // 最大画布判断
 
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
@@ -46,6 +48,8 @@ func (c *CLI) tempFame1To4() {
 func (c *CLI) tempFame1() {
 OuterLoop:
 	for {
+		// 先显示通知
+		c.showNotice(false)
 		tools.EnglishTitle("Size selection", 74)
 		// 提示标题
 		tips := `
@@ -54,10 +58,16 @@ OuterLoop:
    [1]80-180         [2]100-180         [3]120-180         [4]自定义尺寸.`
 		fmt.Println(tips)
 
-		c.key, c.info = input.InputMenuSelection("\n:: 请选择上方的边框尺寸：")
+		key := inputString("\n:: 请选择上方的边框尺寸：")
 		tools.CallClear() // 清屏
 
-		switch c.key {
+		// 如果是暗号就打印暗号传回来的提示
+		var ok bool
+		if ok, c.info = presenter.SelectCommand(key); ok {
+			continue
+		}
+
+		switch key {
 		case "1":
 			generate.SelectionTempFrameJS("Frame01", 0)
 		case "2":
@@ -68,12 +78,11 @@ OuterLoop:
 			c.tempFame1To4() // 小座屏自定义框架
 		case "-":
 			break OuterLoop
+		case "":
+			c.info = ":: 输入的内容为空，请重新输入..."
+			continue
 		default:
-			if len(c.info) != 0 {
-				fmt.Println(c.info)
-			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的框架类型，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
-			}
+			c.info = fmt.Sprintf(":: 输入的 [%s] 不是已知的边框类型，请重新输入...", tools.ColourString(key, ctc.ForegroundGreen))
 		}
 	}
 }
@@ -82,6 +91,8 @@ OuterLoop:
 func (c *CLI) tempFame2() {
 OuterLoop:
 	for {
+		// 先显示通知
+		c.showNotice(false)
 		tools.EnglishTitle("Size selection", 74)
 		// 提示标题
 		tips := `
@@ -90,10 +101,16 @@ OuterLoop:
    [1]45-180           [2]50-190           [3]60-190           [4]60-200`
 		fmt.Println(tips)
 
-		c.key, c.info = input.InputMenuSelection("\n:: 请选择上方的边框尺寸：")
+		key := inputString("\n:: 请选择上方的边框尺寸：")
 		tools.CallClear() // 清屏
 
-		switch c.key {
+		// 如果是暗号就打印暗号传回来的提示
+		var ok bool
+		if ok, c.info = presenter.SelectCommand(key); ok {
+			continue
+		}
+
+		switch key {
 		case "1":
 			generate.SelectionTempFrameJS("Frame02", 0)
 		case "2":
@@ -104,12 +121,11 @@ OuterLoop:
 			generate.SelectionTempFrameJS("Frame02", 3)
 		case "-":
 			break OuterLoop
+		case "":
+			c.info = ":: 输入的内容为空，请重新输入..."
+			continue
 		default:
-			if len(c.info) != 0 {
-				fmt.Println(c.info)
-			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的框架类型，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
-			}
+			c.info = fmt.Sprintf(":: 输入的 [%s] 不是已知的边框类型，请重新输入...", tools.ColourString(key, ctc.ForegroundGreen))
 		}
 	}
 }
@@ -118,6 +134,8 @@ OuterLoop:
 func (c *CLI) tempFame3() {
 OuterLoop:
 	for {
+		// 先显示通知
+		c.showNotice(false)
 		tools.EnglishTitle("Hollow type selection", 74)
 		// 提示标题
 		tips := `
@@ -126,10 +144,16 @@ OuterLoop:
    [1]回字镂空         [2]竖条镂空         [3]功能待定         [4]功能待定`
 		fmt.Println(tips)
 
-		c.key, c.info = input.InputMenuSelection("\n:: 请选择上方的镂空类型：")
+		key := inputString("\n:: 请选择上方的镂空类型：")
 		tools.CallClear() // 清屏
 
-		switch c.key {
+		// 如果是暗号就打印暗号传回来的提示
+		var ok bool
+		if ok, c.info = presenter.SelectCommand(key); ok {
+			continue
+		}
+
+		switch key {
 		case "1":
 			generate.SelectionTempFrameJS("HollowFrame", 0)
 		case "2":
@@ -142,12 +166,11 @@ OuterLoop:
 			fmt.Println("未开发")
 		case "-":
 			break OuterLoop
+		case "":
+			c.info = ":: 输入的内容为空，请重新输入..."
+			continue
 		default:
-			if len(c.info) != 0 {
-				fmt.Println(c.info)
-			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的镂空类型，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
-			}
+			c.info = fmt.Sprintf(":: 输入的 [%s] 不是已知的镂空类型，请重新输入...", tools.ColourString(key, ctc.ForegroundGreen))
 		}
 	}
 }
@@ -156,6 +179,9 @@ OuterLoop:
 func (c *CLI) temporaryChoice() {
 OuterLoop:
 	for {
+		// 先显示通知
+		c.showNotice(false)
+
 		tools.EnglishTitle("Temporary renderings", 74)
 
 		// 提示标题
@@ -164,9 +190,17 @@ OuterLoop:
 
    [1]新建背景         [2]常规座屏.        [3]单扇折屏.        [4]单侧镂空.`
 		fmt.Println(tips)
-		c.key, c.info = input.InputMenuSelection("\n:: 请选择上方的功能类型：")
-		tools.CallClear() // 清屏
-		switch c.key {
+
+		key := inputString("\n:: 请选择上方的边框类型：") // 获取键盘输入
+		tools.CallClear()                      // 清屏
+
+		// 如果是暗号就打印暗号传回来的提示
+		var ok bool
+		if ok, c.info = presenter.SelectCommand(key); ok {
+			continue
+		}
+
+		switch key {
 		case "1":
 			generate.NewTempDocumentJs() // 新建临时文档
 		case "2":
@@ -185,12 +219,11 @@ OuterLoop:
 			fmt.Println("未开发") // 补切画布
 		case "-":
 			break OuterLoop
+		case "":
+			c.info = ":: 输入的内容为空，请重新输入..."
+			continue
 		default:
-			if len(c.info) != 0 {
-				fmt.Println(c.info)
-			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的框架类型，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
-			}
+			c.info = fmt.Sprintf(":: 输入的 [%s] 不是已知的边框类型，请重新输入...", tools.ColourString(key, ctc.ForegroundGreen))
 		}
 	}
 }

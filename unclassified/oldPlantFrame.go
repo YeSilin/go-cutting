@@ -6,6 +6,8 @@ import (
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/input"
+	"github.com/yesilin/go-cutting/model"
+	"github.com/yesilin/go-cutting/presenter"
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
 	"strconv"
@@ -21,106 +23,7 @@ func isOpenPs() {
 	}
 }
 
-// FormulaFrame1 小座屏公式 gui用了
-func FormulaFrame1(widthStr, heightStr string) {
-	// 定义一个预留尺寸
-	var reserve = viper.GetFloat64("reserve")
-
-	//存储未计算时的历史记录
-	history := fmt.Sprintf("常规座屏的宽：%s\n", widthStr)
-	history += fmt.Sprintf("常规座屏的高：%s\n", heightStr)
-
-	// 强制类型转换成浮点数
-	width, _ := strconv.ParseFloat(widthStr, 64)
-	height, _ := strconv.ParseFloat(heightStr, 64)
-
-	// 进行框架公式计算
-	width = width - 10 + reserve
-	height = height - 10 + reserve
-
-	//存储已计算的历史记录
-	history += fmt.Sprintf("常规座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
-	go History(history) // 写入历史
-
-	// 为当前框架指定名字
-	frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", tools.NowTime(), width, height)
-
-	generate.NewDocument(width, height, frameName, true) // 创建ps文档
-	go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
-	generate.MaxCanvas(width, height)                    // 最大画布判断
-
-	isOpenPs() // 是否打开自动新建文档
-}
-
-//旧厂小座屏
-//边框是5  扣掉两个边框5+5 然后再加回来5厘米  可以理解为扣5*/
-func OldFrame1() {
-	// 定义一个预留尺寸
-	var reserve = viper.GetFloat64("reserve")
-
-	// 初始化输入提示的切片
-	inputPrompt := [2]string{"\n:: 请输入常规座屏的宽：", "\n:: 请输入常规座屏的高："}
-
-	// 保存尺寸的切片
-	saveSizeStr := [2]string{}
-
-	// 循环使用此框架
-	for {
-		tools.ChineseTitle("当前框架常规座屏", 74) // 请注意切图的工厂与框架的选择
-		for i := 0; i < len(saveSizeStr); i++ {
-			saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
-
-			// 输入返回当然要返回啦
-			if saveSizeStr[i] == "-" {
-				tools.CallClear() // 清屏
-				return
-			}
-
-			// 第一次就输入返回就退出此框架
-			if i == 0 && saveSizeStr[i] == "--" {
-				return
-			}
-
-			// 退回上一级输入
-			if saveSizeStr[i] == "--" {
-				i -= 2
-			}
-		}
-
-		//存储未计算时的历史记录
-		history := fmt.Sprintf("常规座屏的宽：%s\n", saveSizeStr[0])
-		history += fmt.Sprintf("常规座屏的高：%s\n", saveSizeStr[1])
-
-		// 强制类型转换成浮点数
-		width, _ := strconv.ParseFloat(saveSizeStr[0], 64)
-		height, _ := strconv.ParseFloat(saveSizeStr[1], 64)
-
-		// 进行框架公式计算
-		width = width - 10 + reserve
-		height = height - 10 + reserve
-
-		// 输出提示
-		color.Yellow.Printf("\n:: 常规座屏：宽 %.2f cm，高 %.2f cm", width, height)
-
-		//存储已计算的历史记录
-		history += fmt.Sprintf("常规座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
-		go History(history) // 写入历史
-
-		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", tools.NowTime(), width, height)
-
-		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                    // 最大画布判断
-
-		isOpenPs()                    // 是否打开自动新建文档
-		if !viper.GetBool("memory") { // 是否记忆框架
-			break
-		}
-	}
-}
-
-//旧厂左右镂空
+// OldFrame2 旧厂左右镂空
 //先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个竖边 空出的中间画面加5厘米  旧厂的边框实际厚度是5厘米
 func OldFrame2() {
 	// 定义一个预留尺寸
@@ -205,14 +108,14 @@ func OldFrame2() {
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("%s：宽 %.2f cm，高 %.2f cm\n", tempName, width, height)
-		go History(history) // 写入历史
+		go presenter.History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), tempName, width, height)
 
-		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                    // 最大画布判断
+		model.NewDocument(width, height, frameName, true) // 创建ps文档
+		go generate.GeneralCutting(frameName)             // 生成暗号【-1】可以用的另存脚本
+		model.IsMaxCanvasExceeded(width, height)          // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
 
@@ -290,15 +193,15 @@ func OldFrame3() {
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("左右画布：中间 %.2f cm，两边各 %.2f cm，高 %.2f cm\n", width, hollowOut, height)
-		go History(history) // 写入历史
+		go presenter.History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_左右画布_%.0fx%.0f", tools.NowTime(), totalWidth, height)
 
-		generate.NewDocument(totalWidth, height, frameName, false) // 创建ps文档
-		generate.LineJs3(width, hollowOut)                         // 生成专属参考线
-		go generate.Tailor3(width, height, hollowOut, frameName)   // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                          // 最大画布判断
+		model.NewDocument(totalWidth, height, frameName, false)  // 创建ps文档
+		generate.LineJs3(width, hollowOut)                       // 生成专属参考线
+		go generate.Tailor3(width, height, hollowOut, frameName) // 生成暗号【-1】可以用的另存脚本
+		model.IsMaxCanvasExceeded(width, height)                 // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
 
@@ -386,14 +289,14 @@ func OldFrame4to1() {
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("%s：宽 %.2f cm，高 %.2f cm\n", tempName, width, height)
-		go History(history) // 写入历史
+		go presenter.History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), tempName, width, height)
 
-		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                    // 最大画布判断
+		model.NewDocument(width, height, frameName, true) // 创建ps文档
+		go generate.GeneralCutting(frameName)             // 生成暗号【-1】可以用的另存脚本
+		model.IsMaxCanvasExceeded(width, height)          // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
 
@@ -489,12 +392,12 @@ func OldFrame4to2() {
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("%s：宽 %.2f cm，上高 %.2f cm，中高 %.2f cm，下高 %.2f cm\n", tempName, width, upperHollowOut, height, downHollowOut)
-		go History(history) // 写入历史
+		go presenter.History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), tempName, width, totalHeight)
 
-		generate.NewDocument(width, totalHeight, frameName, false) // 创建ps文档
+		model.NewDocument(width, totalHeight, frameName, false) // 创建ps文档
 
 		// 生成专属参考线
 		generate.LineJs4to2(upperHollowOut, height)
@@ -502,7 +405,7 @@ func OldFrame4to2() {
 		// 生成暗号【-1】可以用的另存脚本
 		go generate.Tailor4to2(width, upperHollowOut, height, downHollowOut, tempName, frameName)
 
-		generate.MaxCanvas(width, height) // 最大画布判断
+		model.IsMaxCanvasExceeded(width, height) // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
 
@@ -573,14 +476,14 @@ func OldFrame5() {
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("顶天立地：宽 %.2f cm，高 %.2f cm\n", width, height)
-		go History(history) // 写入历史
+		go presenter.History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_顶天立地_%.0fx%.0f", tools.NowTime(), width, height)
 
-		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                    // 最大画布判断
+		model.NewDocument(width, height, frameName, true) // 创建ps文档
+		go generate.GeneralCutting(frameName)             // 生成暗号【-1】可以用的另存脚本
+		model.IsMaxCanvasExceeded(width, height)          // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
 
@@ -669,7 +572,7 @@ func OldFrame6() {
 		color.Yellow.Printf("\n:: %s折屏：总宽 %.2f cm，高 %.2f cm", tempName, totalWidth, height)
 		//存储已计算的历史记录
 		history += fmt.Sprintf("%s折屏：总宽 %.2f cm，高 %.2f cm\n", tempName, totalWidth, height)
-		go History(history) // 写入历史
+		go presenter.History(history) // 写入历史
 
 		//获取当前时间，进行格式化 2006-01-02 15:04:05
 		now := tools.NowTime()
@@ -679,10 +582,10 @@ func OldFrame6() {
 		// 定义单片名字
 		singleName := fmt.Sprintf("%s折屏", tempName)
 
-		generate.NewDocument(totalWidth, height, frameName, false)        // 创建ps文档
+		model.NewDocument(totalWidth, height, frameName, false)           // 创建ps文档
 		generate.LineJs6(width, number)                                   // 生成专属参考线
 		go generate.Tailor6(width, height, number, frameName, singleName) // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                                 // 最大画布判断
+		model.IsMaxCanvasExceeded(width, height)                          // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
 
@@ -904,17 +807,17 @@ func OldFrame7() {
 		history += fmt.Sprintf("每个座屏的下镂空均是：%s\n", downHollowOutStr)
 		//存储已计算的历史记录
 		history += fmt.Sprintf("多座屏：总宽 %.2f cm，高 %.2f cm\n", widthSum, heightMax)
-		go History(history) // 写入历史
+		go presenter.History(history) // 写入历史
 
 		color.Yellow.Printf("\n:: 多座屏：总宽 %.2f cm，高 %.2f cm", widthSum, heightMax)
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s座屏_%.0fx%.0f", tools.NowTime(), tools.Transfer(len(widthSlice)), widthSum, heightMax)
 
-		generate.NewDocument(widthSum, heightMax, frameName, false) // 创建ps文档
+		model.NewDocument(widthSum, heightMax, frameName, false) // 创建ps文档
 		generate.LineJs7(widthSlice, heightSlice, heightMax, heightMin)
 		go generate.Tailor7(widthSlice, heightSlice, heightMax, frameName) // 生成暗号【-1】可以用的另存脚本// 生成参考线与遮罩层
-		generate.MaxCanvas(widthMax, heightMax)                            // 最大画布判断
+		model.IsMaxCanvasExceeded(widthMax, heightMax)                     // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
 
@@ -1110,17 +1013,17 @@ func OldFrame7bk() {
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("多座屏：总宽 %.2f cm，高 %.2f cm\n", widthSum, heightMax)
-		go History(history) // 写入历史
+		go presenter.History(history) // 写入历史
 
 		color.Yellow.Printf("\n:: 多座屏：总宽 %.2f cm，高 %.2f cm", widthSum, heightMax)
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s座屏_%.0fx%.0f", tools.NowTime(), tools.Transfer(len(widthSlice)), widthSum, heightMax)
 
-		generate.NewDocument(widthSum, heightMax, frameName, false) // 创建ps文档
+		model.NewDocument(widthSum, heightMax, frameName, false) // 创建ps文档
 		generate.LineJs7(widthSlice, heightSlice, heightMax, heightMin)
 		go generate.Tailor7(widthSlice, heightSlice, heightMax, frameName) // 生成暗号【-1】可以用的另存脚本// 生成参考线与遮罩层
-		generate.MaxCanvas(widthMax, heightMax)                            // 最大画布判断
+		model.IsMaxCanvasExceeded(widthMax, heightMax)                     // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
 
@@ -1180,14 +1083,14 @@ func OldFrame8() {
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("卷帘座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
-		go History(history) // 写入历史
+		go presenter.History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_卷帘座屏_%.0fx%.0f", tools.NowTime(), width, height)
 
-		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
-		generate.MaxCanvas(width, height)                    // 最大画布判断
+		model.NewDocument(width, height, frameName, true) // 创建ps文档
+		go generate.GeneralCutting(frameName)             // 生成暗号【-1】可以用的另存脚本
+		model.IsMaxCanvasExceeded(width, height)          // 最大画布判断
 
 		isOpenPs()                    // 是否打开自动新建文档
 		if !viper.GetBool("memory") { // 是否记忆框架
@@ -1239,16 +1142,16 @@ func OldFrame9() {
 		color.Yellow.Printf("\n【补切】补切画布的切图：宽为 %.2f cm，高为 %.2f cm", width, height)
 		//存储已计算的历史记录
 		history += fmt.Sprintf("补切画布的切图：宽为 %.2f cm，高为 %.2f cm", width, height)
-		go History(history) // 写入历史
+		go presenter.History(history) // 写入历史
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_补切画布_%.0fx%.0f", tools.NowTime(), width, height)
 
-		go generate.GeneralCutting(frameName)                // 生成暗号【-1】可以用的另存脚本
-		generate.NewDocument(width, height, frameName, true) // 创建ps文档
-		generate.MaxCanvas(width, height)                    // 最大画布判断
-		isOpenPs()                                           // 是否打开自动新建文档
-		if !viper.GetBool("memory") {                        // 是否记忆框架
+		go generate.GeneralCutting(frameName)             // 生成暗号【-1】可以用的另存脚本
+		model.NewDocument(width, height, frameName, true) // 创建ps文档
+		model.IsMaxCanvasExceeded(width, height)          // 最大画布判断
+		isOpenPs()                                        // 是否打开自动新建文档
+		if !viper.GetBool("memory") {                     // 是否记忆框架
 			break
 		}
 	}

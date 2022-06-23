@@ -38,7 +38,7 @@ func careful() {
 	fmt.Println("\n   4. 颜色配置文件是 工作中的CMYK:Japan color 2011 Coated；")
 	fmt.Println("\n   5. 切图时动物和文字都不能被切到，并且太阳和月亮这种正圆不能变形；")
 	fmt.Println("\n   6. 四周是纯白底色的时候要加 0.1厘米的黑色描边 快捷键是 Alt + Ctrl + C；")
-	fmt.Println("\n   7. 切图时有最大宽度限制，不透为180CM，半透与透光不透影为200CM；")
+	fmt.Println("\n   7. 切图时有最大宽度限制，不透为150CM，半透与透光不透影为200CM；")
 	fmt.Println("\n   8. 切图遇到不透画布并且双面图案不一样时，每张需额外备注：“印一张”；")
 	fmt.Printf("\n   9. 目前软件公式中，旧厂订布预留是 %.2f 厘米！。\n", viper.GetFloat64("reserve"))
 

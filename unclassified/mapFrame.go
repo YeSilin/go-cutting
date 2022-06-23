@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/input"
+	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
 	"strconv"
@@ -40,7 +41,7 @@ func MapFrame1() {
 
 		fmt.Printf("\n:: 常规座屏：宽 %d pixels，高 %d pixels", width, height)
 
-		generate.MaxCanvas(float64(width)/10, float64(height)/10)
+		model.IsMaxCanvasExceeded(float64(width)/10, float64(height)/10)
 
 		generate.NewDocumentForMap(width, height, "常规座屏贴图") // 生成创建ps文档脚本
 
@@ -111,7 +112,7 @@ func MapFrame6() {
 		}
 
 		fmt.Printf("\n:: 常规折屏：宽 %d pixels，高 %d pixels", totalWidth, height)
-		generate.MaxCanvas(float64(width)/10, float64(height)/10)
+		model.IsMaxCanvasExceeded(float64(width)/10, float64(height)/10)
 
 		//获取当前时间，进行格式化 2006-01-02 15:04:05
 		now := tools.NowTime()
@@ -320,11 +321,11 @@ func MapFrame7() {
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s座屏贴图_%dx%d", tools.NowTime(), tools.Transfer(len(widthSlice)), widthSum, heightMax)
-		generate.NewDocumentForMap(widthSum, heightMax, frameName) // 生成创建ps文档脚本
+		generate.NewDocumentForMap(widthSum, heightMax, frameName)           // 生成创建ps文档脚本
 		generate.Line3DMapJs7(widthSlice, heightSlice, heightMax, heightMin) // 生成参考线和遮罩层
 		// TODO: 代修改
 		go generate.TailorForMap7(widthSlice, heightSlice, heightMax, frameName) // 生成暗号【-1】可以用的另存脚本// 生成参考线与遮罩层
-		generate.MaxCanvas(float64(widthMax)/10, float64(heightMax)/10) // 最大画布判断
+		model.IsMaxCanvasExceeded(float64(widthMax)/10, float64(heightMax)/10)   // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
 

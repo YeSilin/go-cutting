@@ -3,15 +3,18 @@ package cli
 import (
 	"fmt"
 	"github.com/wzshiming/ctc"
-	"github.com/yesilin/go-cutting/input"
+	"github.com/yesilin/go-cutting/presenter"
 	"github.com/yesilin/go-cutting/tools"
 	"github.com/yesilin/go-cutting/unclassified"
 )
 
 // 贴图框架的选择
 func (c *CLI) mapFrameChoice() {
+
 OuterLoop:
 	for {
+		// 先显示通知
+		c.showNotice(false)
 		tools.EnglishTitle("3ds Max map frame", 74)
 		text := `
 :: 下方所有框架的切图单位均是像素，小数点位之后值均会被舍弃，并非四舍五入！
@@ -23,9 +26,16 @@ OuterLoop:
    [7]多个座屏贴图.            [8]卷帘座屏贴图.            [9]不扣补切贴图.`
 		fmt.Println(text)
 
-		c.key, c.info = input.InputMenuSelection("\n:: 请选择上方的边框类型：")
-		tools.CallClear() // 清屏
-		switch c.key {
+		key := inputString("\n:: 请选择上方的边框类型：") // 获取键盘输入
+		tools.CallClear()                      // 清屏
+
+		// 如果是暗号就打印暗号传回来的提示
+		var ok bool
+		if ok, c.info = presenter.SelectCommand(key); ok {
+			continue
+		}
+
+		switch key {
 		case "1":
 			unclassified.MapFrame1() // 小座屏
 		case "2":
@@ -42,14 +52,14 @@ OuterLoop:
 			unclassified.MapFrame7() // 多座屏
 		case "8":
 			fmt.Println("未开发") // 补切画布
+		case "9":
+			fmt.Println("未开发") // 不扣补切
 		case "-":
 			break OuterLoop
+		case "":
+			c.info = ":: 输入的内容为空，请重新输入..."
 		default:
-			if len(c.info) != 0 {
-				fmt.Println(c.info)
-			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的边框类型，请重新输入...\n", tools.ColourString(c.key, ctc.ForegroundGreen))
-			}
+			c.info = fmt.Sprintf(":: 输入的 [%s] 不是已知的功能选项，请重新输入...", tools.ColourString(key, ctc.ForegroundGreen))
 		}
 	}
 }

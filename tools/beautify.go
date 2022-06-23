@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-// 第一个字符串带颜色，第二个字符串不带颜色
+// BsPrintln 第一个字符串带颜色，第二个字符串不带颜色
 func BsPrintln(cs, ds string) {
 	color.Green.Print(cs)
 	fmt.Println(ds)
@@ -19,7 +19,7 @@ func BsPrint(cs, ds string) {
 	fmt.Print(ds)
 }
 
-// 中文提示标题; s 中文提示，width 标题宽度
+// ChineseTitle 中文提示标题; s 中文提示，width 标题宽度
 func ChineseTitle(s string, width int) {
 	// 求出有几个中文字
 	count := len(s) / 3
@@ -33,7 +33,7 @@ func ChineseTitle(s string, width int) {
 	left := available - right
 
 	// 因为起始位置要空一格，所以如果左边大于右边就减1
-	if left>right{
+	if left > right {
 		left--
 	} else {
 		right--
@@ -42,7 +42,7 @@ func ChineseTitle(s string, width int) {
 	color.LightCyan.Println("\n " + strings.Repeat("-", left) + fmt.Sprintf(" %s ", s) + strings.Repeat("-", right))
 }
 
-// 英文提示标题; s 中文提示，width 标题宽度
+// EnglishTitle 英文提示标题; s 中文提示，width 标题宽度
 func EnglishTitle(s string, width int) {
 	// 求出有几个英文字
 	count := len(s)
@@ -55,18 +55,18 @@ func EnglishTitle(s string, width int) {
 	left := available - right
 
 	// 因为起始位置要空一格，所以如果左边大于右边就减1
-	if left>right{
+	if left > right {
 		left--
 	} else {
 		right--
 	}
-	color.LightCyan.Println("\n " + strings.Repeat("-", left) + fmt.Sprintf(" %s ", s) + strings.Repeat("-", right))
+	color.LightCyan.Println(strings.Repeat("-", left) + fmt.Sprintf(" %s ", s) + strings.Repeat("-", right))
 }
 
-// 带颜色的字符串，第一参数 字符串 ，第二参数前景色，第三参数背景色
+// ColourString 带颜色的字符串，第一参数 字符串 ，第二参数前景色，第三参数背景色
 func ColourString(str string, c ...ctc.Color) string {
 	if len(c) == 1 {
-		return fmt.Sprintf("%s%s%s",c[0], str, ctc.Reset)
+		return fmt.Sprintf("%s%s%s", c[0], str, ctc.Reset)
 	}
-	return fmt.Sprintf("%s%s%s",c[0]|c[1], str, ctc.Reset)
+	return fmt.Sprintf("%s%s%s", c[0]|c[1], str, ctc.Reset)
 }

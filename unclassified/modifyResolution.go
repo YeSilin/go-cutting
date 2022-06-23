@@ -44,7 +44,7 @@ func PixelsPerInchChangedTo72(originalPath string) {
 			height := c.Height
 			file.Close() // 必须关闭文件
 			// 修改大小
-			tools.ImageResize(srcPath, files[i], width, height, 2,100)
+			tools.ImageResize(srcPath, files[i], width, height, 2, 100)
 		}
 
 		// 删除之前自动生成的gcTemp
@@ -123,5 +123,3 @@ func PixelsPerInchChangedTo300(originalPath string) {
 
 	fmt.Println("\n:: 脚本注入成功，正在转成 300PPI 若文件丢失，备份文件在上级目录 Backups！")
 }
-
-

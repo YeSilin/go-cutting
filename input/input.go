@@ -5,7 +5,7 @@ import (
 	"bufio"
 	"fmt"
 	"github.com/wzshiming/ctc"
-	"github.com/yesilin/go-cutting/controller"
+	"github.com/yesilin/go-cutting/presenter"
 	"github.com/yesilin/go-cutting/tools"
 	"os"
 	"regexp"
@@ -18,61 +18,60 @@ func runCode(num string) (ok bool, info string) {
 	// 开始指定功能
 	switch num {
 	case "-1":
-		controller.Command1()
+		presenter.Command1()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在调用快捷裁剪..."
 	case "-2":
-		controller.Command2()
+		presenter.Command2()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在重建新文档..."
 	case "-3":
-		controller.Command3() // 深度清除源数据
+		presenter.Command3() // 深度清除源数据
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在深度清理PSD..."
 	case "-4":
-		controller.Command4() // 工作目录
-		return true, ""
+		return false, ""
 	case "-5":
-		controller.Command5() // 复制并关闭其他文档
+		presenter.Command5() // 复制并关闭其他文档
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在复制并关闭其他文档..."
 	case "-6":
-		controller.Command6() // 简单清除元数据
+		presenter.Command6() // 简单清除元数据
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在快速清理PSD..."
 	case "-7":
-		controller.Command7() // 为当前文档添加黑边
+		presenter.Command7() // 为当前文档添加黑边
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在为当前文档添加黑边..."
 	case "-8":
 		tools.CallClear() // 清屏
 		return true, ""
 	case "-9":
-		controller.Command9() // 打开历史记录
+		presenter.Command9() // 打开历史记录
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在打开切图历史..."
 	case "-10":
-		controller.Command10() // 快捷另存为jpg
+		presenter.Command10() // 快捷另存为jpg
 		return true, ""
 	case "-11":
-		controller.Command11() // 快捷另存全部打开的文件
+		presenter.Command11() // 快捷另存全部打开的文件
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在另存全部打开的文件..."
 	case "-12":
-		controller.Command12() // 快捷保存并关闭全部文档
+		presenter.Command12() // 快捷保存并关闭全部文档
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在保存并关闭全部文档..."
 	case "-41":
-		controller.Command41() // 快捷保存并关闭全部文档
+		presenter.Command41() // 快捷保存并关闭全部文档
 		return true, "\n:: 检测到输入的内容为隐藏暗号，已打开套图文件夹..."
 	case "-42":
-		controller.Command42()
+		presenter.Command42()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，已执行随机重命名..."
 	case "-48":
-		controller.Command48()
+		presenter.Command48()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在替换详情页DP智能对象..."
 	case "-49":
-		controller.Command49()
+		presenter.Command49()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在导出为Web所用格式..."
 	case "-97":
-		controller.Command97()
+		presenter.Command97()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在替换详情页DP智能对象..."
 	case "-98":
-		controller.Command98()
+		presenter.Command98()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在导出为Web所用格式..."
 	case "-99":
-		controller.Command99()
+		presenter.Command99()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在后台激活Win10系统..."
 	}
 	return false, ""
@@ -83,35 +82,35 @@ func RunCodeGui(num string) {
 	// 开始指定功能
 	switch num {
 	case "-1":
-		controller.Command1()
+		presenter.Command1()
 	case "-2":
-		controller.Command2()
+		presenter.Command2()
 	case "-3":
-		controller.Command3() // 深度清除源数据
+		presenter.Command3() // 深度清除源数据
 	case "-4":
-		controller.Command4() // 工作目录
+		
 	case "-5":
-		controller.Command5() // 复制并关闭其他文档
+		presenter.Command5() // 复制并关闭其他文档
 	case "-6":
-		controller.Command6() // 简单清除元数据
+		presenter.Command6() // 简单清除元数据
 	case "-7":
-		controller.Command7() // 为当前文档添加黑边
+		presenter.Command7() // 为当前文档添加黑边
 	case "-8":
 		tools.CallClear() // 清屏
 	case "-9":
-		controller.Command9() // 打开历史记录
+		presenter.Command9() // 打开历史记录
 	case "-10":
-		controller.Command10() // 快捷另存为jpg
+		presenter.Command10() // 快捷另存为jpg
 	case "-11":
-		controller.Command11() // 快捷另存全部打开的文件
+		presenter.Command11() // 快捷另存全部打开的文件
 	case "-12":
-		controller.Command12() // 快捷保存并关闭全部文档
+		presenter.Command12() // 快捷保存并关闭全部文档
 	case "-97":
-		controller.Command97()
+		presenter.Command97()
 	case "-98":
-		controller.Command98()
+		presenter.Command98()
 	case "-99":
-		controller.Command99()
+		presenter.Command99()
 	}
 }
 

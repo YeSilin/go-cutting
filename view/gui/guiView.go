@@ -9,13 +9,13 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"github.com/spf13/viper"
-	"github.com/yesilin/go-cutting/controller"
+	"github.com/yesilin/go-cutting/presenter"
 	"github.com/yesilin/go-cutting/tools"
 )
 
 type GuiView struct {
-	app        fyne.App    //新应用程序实例
-	mainWindow fyne.Window //主窗口
+	app         fyne.App    //新应用程序实例
+	mainWindow  fyne.Window //主窗口
 	setupWindow fyne.Window // 设置窗口
 }
 
@@ -59,8 +59,8 @@ func (v *GuiView) choiceCode(tips *widget.Label) fyne.CanvasObject {
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("[-1]", func() {
 			//只有在Photoshop已经打开的情景下运行脚本
-			if controller.IsPhotoshopRun() {
-				controller.Command1()
+			if presenter.IsPhotoshopRun() {
+				presenter.Command1()
 				tips.SetText("You just pressed [-1]!~")
 			} else {
 				dialog.ShowInformation("Info", "Photoshop is not running!", v.mainWindow)
@@ -70,8 +70,8 @@ func (v *GuiView) choiceCode(tips *widget.Label) fyne.CanvasObject {
 		// 新建一个按钮，点击后执行匿名函数
 		widget.NewButton("[-3]", func() {
 			//只有在Photoshop已经打开的情景下运行脚本
-			if controller.IsPhotoshopRun() {
-				controller.Command3()
+			if presenter.IsPhotoshopRun() {
+				presenter.Command3()
 				tips.SetText("You just pressed [-3]!~")
 			} else {
 				dialog.ShowInformation("Info", "Photoshop is not running!", v.mainWindow)
@@ -79,10 +79,6 @@ func (v *GuiView) choiceCode(tips *widget.Label) fyne.CanvasObject {
 		}),
 	)
 }
-
-
-
-
 
 //ShowAndRun 显示并运行
 func (v *GuiView) ShowAndRun() {
@@ -106,11 +102,9 @@ func (v *GuiView) ShowAndRun() {
 //文件编辑帮助的主菜单
 func mainMenu() *fyne.MainMenu {
 
-	fileMenu := fyne.NewMenu("File",
-	)
+	fileMenu := fyne.NewMenu("File")
 
-	editMenu := fyne.NewMenu("Edit",
-	)
+	editMenu := fyne.NewMenu("Edit")
 	helpMenu := fyne.NewMenu("Help",
 		fyne.NewMenuItem("Documentation", func() {
 

@@ -14,8 +14,6 @@ import (
 
 // 当前状态
 func current() {
-	tools.EnglishTitle("Settings", 74)
-	fmt.Println("\n:: 这里提供简单的设置端口，如果大家有其他需要实现的功能设置可以在群里反馈！")
 
 	var memoryStr string
 	switch viper.GetBool("memory") {
@@ -226,8 +224,6 @@ func modifyLatestCanvasReservation() {
 	go viper.WriteConfig()
 }
 
-
-
 // 修改是否自启快捷操作界面
 func modifyQuickCut() {
 	tools.EnglishTitle("Modify Quick Cut", 74)
@@ -266,8 +262,6 @@ func modifyCipherList() {
 	go viper.WriteConfig()
 }
 
-
-
 // 设置快捷自启
 func settingsSelfStartingManagement() {
 OuterLoop:
@@ -298,8 +292,6 @@ OuterLoop:
 		}
 	}
 }
-
-
 
 // 修改自动套图路径
 func modifyPicturePath() {
@@ -332,7 +324,7 @@ func modifyPicturePath() {
 
 	// 生成详情页指定保存位置
 	go func() {
-		model.SaveForWebInit(viper.GetString("picture"))
+		model.SaveForWeb(viper.GetString("picture"))
 		// 保存最新配置
 		viper.WriteConfig()
 	}()
@@ -381,44 +373,4 @@ func modifyToDefaultSetting() {
 		_ = viper.WriteConfig()
 		generate.GeneralCutting("") // 根据配置更新通用裁剪
 	}()
-}
-
-// 选择要修改的配置
-func (c *CLI) settingsChoice() {
-OuterLoop:
-	for {
-		current() // 显示当前状态
-
-		modify, info := input.InputMenuSelection("\n:: 请选择需要修改的设置：")
-		tools.CallClear() // 清屏
-		switch modify {
-		case "1":
-			modifyMemoryFrame() // 是否记住框架
-		case "2":
-			modifyAutomaticCreateDocuments() // 是否自动新建切图文档
-		case "3":
-			modifyAutomaticAddBlackEdge() // 是否切图自动添加黑边
-		// 最新的切图前缀
-		case "4":
-
-		case "5":
-			modifyLatestCanvasReservation() // 最新的切图预留
-		case "6":
-			settingsSelfStartingManagement() // 自动开启暗号列表
-		case "7":
-			modifyPicturePath() // 自动套图文件夹路径
-		case "8":
-			modifyAutomaticDeletion() // 自动主图时删除来源
-		case "9":
-			modifyToDefaultSetting() // 恢复默认设置
-		case "-":
-			break OuterLoop // 跳到循环结束
-		default:
-			if len(info) != 0 {
-				fmt.Println(info)
-			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(modify, ctc.ForegroundGreen))
-			}
-		}
-	}
 }

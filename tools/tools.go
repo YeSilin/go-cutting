@@ -6,11 +6,12 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 )
 
-// 打印分割线 1短 2长
+// PrintLine 打印分割线 1短 2长
 func PrintLine(pattern int) {
 	switch pattern {
 	case 1:
@@ -22,7 +23,7 @@ func PrintLine(pattern int) {
 	}
 }
 
-// 数字转换中文小写
+// Transfer 数字转换中文小写
 func Transfer(num int) string {
 	chineseMap := []string{"", "十", "百", "千", "万", "十", "百", "千", "亿", "十", "百", "千"}
 	chineseNum := []string{"零", "一", "二", "三", "四", "五", "六", "七", "八", "九"}
@@ -58,9 +59,7 @@ func Transfer(num int) string {
 	return chinese
 }
 
-
-
-// 在字符串右侧第 X 位插入字符
+// StrRightInsert 在字符串右侧第 X 位插入字符
 func StrRightInsert(str, insert string, num int) string {
 	// 在末尾第几位插入插入
 	index := len(str) - num
@@ -68,7 +67,7 @@ func StrRightInsert(str, insert string, num int) string {
 	return str[:index] + insert + str[index:]
 }
 
-// 这是一个将浮点数切片转换成js数组的函数
+// Float64SliceToJsArray 这是一个将浮点数切片转换成js数组的函数
 func Float64SliceToJsArray(s []float64) string {
 	var str = "new Array("
 	for i := 0; i < len(s); i++ {
@@ -81,8 +80,7 @@ func Float64SliceToJsArray(s []float64) string {
 	return str
 }
 
-
-// 将int切片转换成js数组的函数
+// IntSliceToJsArray 将int切片转换成js数组的函数
 func IntSliceToJsArray(s []int) string {
 	var str = "new Array("
 	for i := 0; i < len(s); i++ {
@@ -95,9 +93,7 @@ func IntSliceToJsArray(s []int) string {
 	return str
 }
 
-
-
-// 这是一个将字符串切片转换成js数组的函数
+// StrToJsArray2 这是一个将字符串切片转换成js数组的函数
 func StrToJsArray2(s []string) string {
 	var str = "new Array("
 	for i := 0; i < len(s); i++ {
@@ -110,10 +106,9 @@ func StrToJsArray2(s []string) string {
 	return str
 }
 
-
-// 这是一个将字符串切片转换成js数组的函数，完整的组
+// StrToJsArray 这是一个将字符串切片转换成js数组的函数，完整的组
 func StrToJsArray(name string, s []string) string {
-	var str = fmt.Sprintf("var %s = [",name)
+	var str = fmt.Sprintf("var %s = [", name)
 	for i := 0; i < len(s); i++ {
 		str += fmt.Sprintf("\"%s\"", s[i])
 		if i != len(s)-1 {
@@ -124,29 +119,12 @@ func StrToJsArray(name string, s []string) string {
 	return str
 }
 
-
-// 获取指定天数前后的时间戳  负数是几天前
-func AroundTime(day string) int64 {
-	// 先转成字符串类型
-
-	// 这里的now是网络时间哦
-	now := time.Unix(GetNtpTime(), 0)
-	h, _ := time.ParseDuration(fmt.Sprintf("%sh", day))
-	//h, _ := time.ParseDuration("1h")
-
-	//   Add 时间相加
-	return now.Add(h * 24).Unix()
-	// 时间戳转指定格式
-	//t := time.Unix(1234567890, 0)
-	//fmt.Printf("%d-%d-%d %d:%d:%d\n", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second())
-}
-
-// 将秒转换成天
+// ToDay 将秒转换成天
 func ToDay(second int64) int64 {
 	return second/60/60/24 + 1
 }
 
-// 距离十八点还有多少秒
+// DistanceIsEighteen 距离十八点还有多少秒
 func DistanceIsEighteen() (int, bool) {
 	t := time.Now()
 	//fmt.Printf("%d-%d-%d %d:%d:%d\n", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second())
@@ -164,7 +142,7 @@ func DistanceIsEighteen() (int, bool) {
 	}
 }
 
-// 获取当前目录
+// GetCurrentDirectory 获取当前目录
 func GetCurrentDirectory() string {
 	// 返回绝对路径  filepath.Dir(os.Args[0])去除最后一个元素的路径
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
@@ -177,7 +155,7 @@ func GetCurrentDirectory() string {
 	return strings.Replace(dir, ":", "", 1)
 }
 
-// 删除多于备份 pattern路径  max保留最大数量
+// DeleteRedundantBackups 删除多于备份 pattern路径  max保留最大数量
 func DeleteRedundantBackups(pattern string, max int) {
 	// 获取所有文件名，类型是字符串切片
 	files, _ := filepath.Glob(pattern)
@@ -197,11 +175,21 @@ func DeleteRedundantBackups(pattern string, max int) {
 	}
 }
 
-// 因为Go会自动存储1.003为1.002999...
+// Float64ToInt64 因为Go会自动存储1.003为1.002999...
 // 因此正整数添加0.5，负数减去0.5
 func Float64ToInt64(f float64) int64 {
 	if f < 0 {
 		return int64(f - 0.5)
 	}
 	return int64(f + 0.5)
+}
+
+// IsNumber 判断当前字符串是否是整数或浮点数
+func IsNumber(str string) bool {
+	// 如果不是整数或浮点数就循环
+	number, err := regexp.MatchString(`^(\-|\+)?\d+(\.\d+)?$`, str)
+	if err != nil {
+		fmt.Println("regexp.MatchString err = ", err)
+	}
+	return number
 }

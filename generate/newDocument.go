@@ -11,63 +11,6 @@ import (
 	"time"
 )
 
-// NewDocument 生成用来新建ps文档js
-//@param width 传入宽度
-//@param height 传入高度
-//@param wordLine 是否创建文字不要超过的参考线
-func NewDocument(width, height float64, frameName string, wordLine bool) {
-	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
-	info := struct {
-		Width     float64
-		Height    float64
-		FrameName string // 新文档名
-		WordLine  bool   // 文字参考线
-	}{width, height, frameName, wordLine}
-
-	// 为模板自定义加法函数
-	//add := func(left float64, right float64) float64 {
-	//	return left + right
-	//}
-
-	// 为模板自定义减法函数
-	sub := func(Minuend float64, Reduction float64) float64 {
-		return Minuend - Reduction
-	}
-
-	// 采用链式操作在Parse解析之前调用Funcs添加自定义的kua函数
-	// 这边有个地方值得注意，template.New()函数中参数名字要和ParseFiles（）
-	// 函数的文件名要相同，要不然就会报错："" is an incomplete template
-	tmpl, err := template.New("newDocument.gohtml").Funcs(template.FuncMap{"sub": sub}).ParseFiles("config/jsx/template/newDocument.gohtml")
-	if err != nil {
-		logrus.Error(err)
-		return
-	}
-
-	//// 解析指定文件生成模板对象
-	//tmpl, err = template.ParseFiles("config/jsx/template/newDocument.gohtml")
-	//if err != nil {
-	//	fmt.Println("template.ParseFiles err: ", err)
-	//	return
-	//}
-
-	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create("config/jsx/newDocument.jsx")
-	if err != nil { // 如果有错误，打印错误，同时返回
-		logrus.Error(err)
-		return
-	}
-
-	// 利用给定数据渲染模板，并将结果写入f
-	err = tmpl.Execute(f, info)
-	if err != nil { // 如果有错误，打印错误，同时返回
-		logrus.Error(err)
-		return
-	}
-
-	// 关闭文件
-	f.Close()
-}
-
 // 生成用来新建ps文档3d作图js
 // @param width 传入宽度
 // @param height 传入高度

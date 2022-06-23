@@ -182,7 +182,7 @@ func IsPathExists(path string) (bool, error) {
 	return false, err
 }
 
-// 创建单个文件夹
+// CreateMkdir 创建单个文件夹
 func CreateMkdir(filePath string) {
 	exist, err := IsPathExists(filePath)
 	if err != nil {

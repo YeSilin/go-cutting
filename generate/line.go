@@ -9,7 +9,7 @@ import (
 	"text/template"
 )
 
-//生成中间大两边小参考线js
+// LineJs3 生成中间大两边小参考线js
 //@param width 传入宽度
 //@param hollowOut: 传入镂空
 func LineJs3(width, hollowOut float64) {
@@ -73,7 +73,7 @@ func LineJs4to2(upperHeight, middleHeight float64) {
 	}
 }
 
-//生成折屏参考线js
+// LineJs6 生成折屏参考线js
 //@param width: 传入宽
 //@param number: 传入扇数
 func LineJs6(width, number float64) {
