@@ -368,8 +368,8 @@ func SaveForWeb(originalPath string) {
 	_ = tmpl.Execute(f, savePath)
 }
 
-// FrameSave1to2 拉布座屏保存
-func FrameSave1to2(frameName string) {
+// FrameSave8to2 拉布座屏专属保存
+func FrameSave8to2(frameName string) {
 	jsx := `
 // 定义一个函数用来设置黑边
 function addEdge() {

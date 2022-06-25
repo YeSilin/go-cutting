@@ -77,6 +77,207 @@ if(String(app.name).search("Photoshop") > 0) {
 	tools.CreateFile("config/jsx/clearMetadataStd.jsx", script)
 }
 
+// ClearMetadata 生成清除元数据第四版js，让文件更小巧，带进度条
+func ClearMetadata() {
+	const script = `// 方法用来判断当前字符串是否是以另外一个给定的子字符串“结尾”的
+if (!String.prototype.endsWith) {
+    String.prototype.endsWith = function (search, this_len) {
+        if (this_len === undefined || this_len > this.length) {
+            this_len = this.length;
+        }
+        return this.substring(this_len - search.length, this_len) === search;
+    };
+}
+
+// 方法返回在数组中可以找到一个给定元素的第一个索引，如果不存在，则返回-1
+// Production steps of ECMA-262, Edition 5, 15.4.4.14
+// Reference: http://es5.github.io/#x15.4.4.14
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (searchElement, fromIndex) {
+
+        var k;
+
+        // 1. Let O be the result of calling ToObject passing
+        //    the this value as the argument.
+        if (this == null) {
+            throw new TypeError('"this" is null or not defined');
+        }
+
+        var O = Object(this);
+
+        // 2. Let lenValue be the result of calling the Get
+        //    internal method of O with the argument "length".
+        // 3. Let len be ToUint32(lenValue).
+        var len = O.length >>> 0;
+
+        // 4. If len is 0, return -1.
+        if (len === 0) {
+            return -1;
+        }
+
+        // 5. If argument fromIndex was passed let n be
+        //    ToInteger(fromIndex); else let n be 0.
+        var n = +fromIndex || 0;
+
+        if (Math.abs(n) === Infinity) {
+            n = 0;
+        }
+
+        // 6. If n >= len, return -1.
+        if (n >= len) {
+            return -1;
+        }
+
+        // 7. If n >= 0, then Let k be n.
+        // 8. Else, n<0, Let k be len - abs(n).
+        //    If k is less than 0, then let k be 0.
+        k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+
+        // 9. Repeat, while k < len
+        while (k < len) {
+            // a. Let Pk be ToString(k).
+            //   This is implicit for LHS operands of the in operator
+            // b. Let kPresent be the result of calling the
+            //    HasProperty internal method of O with argument Pk.
+            //   This step can be combined with c
+            // c. If kPresent is true, then
+            //    i.  Let elementK be the result of calling the Get
+            //        internal method of O with the argument ToString(k).
+            //   ii.  Let same be the result of applying the
+            //        Strict Equality Comparison Algorithm to
+            //        searchElement and elementK.
+            //  iii.  If same is true, return k.
+            if (k in O && O[k] === searchElement) {
+                return k;
+            }
+            k++;
+        }
+        return -1;
+    };
+}
+
+
+// 清除元数据的主要函数
+function deleteDocumentAncestorsMetadata() {
+    // 清理垃圾四步骤
+    if (ExternalObject.AdobeXMPScript == undefined) ExternalObject.AdobeXMPScript = new ExternalObject("lib:AdobeXMPScript");
+    var xmp = new XMPMeta(activeDocument.xmpMetadata.rawData);
+    // Begone foul Document Ancestors!
+    xmp.deleteProperty(XMPConst.NS_PHOTOSHOP, "DocumentAncestors");
+    app.activeDocument.xmpMetadata.rawData = xmp.serialize();
+}
+
+
+// 获得活动智能对象图层的文件名
+function getSmartObjectName() {
+    // 不打开智能对象的情况下获取其文件名，不是智能对象会报错
+    var ref = new ActionReference();
+    ref.putProperty(stringIDToTypeID("property"), stringIDToTypeID("smartObject"));
+    ref.putEnumerated(charIDToTypeID("Lyr "), charIDToTypeID("Ordn"), charIDToTypeID("Trgt"));
+    var layerDesc = executeActionGet(ref);
+    var soDesc = layerDesc.getObjectValue(stringIDToTypeID('smartObject'));
+    var theName = soDesc.getString(stringIDToTypeID("fileReference"));
+    return theName;
+}
+
+
+// 打开全部智能对象的递归函数
+function openAllSmartObject(doc) {
+    // 打开的是文档不是图层组时才清理
+    if (doc.typename == "Document") {
+        // 清理元数据
+        deleteDocumentAncestorsMetadata();
+    }
+
+    // 遍历全部图层
+    for (var i = 0; i < doc.layers.length; i++) {
+        var theLayer = doc.layers[i];
+        // 如果这个图层类型不是普通图层，即代表是图层组
+        if (theLayer.typename != "ArtLayer") {
+            // 那么递归打开
+            openAllSmartObject(theLayer);
+            continue;
+        }
+
+        // 如果这个图层不是智能对象
+        if (theLayer.kind != "LayerKind.SMARTOBJECT") {
+            continue;
+        }
+
+        // 设置成活动图层
+        app.activeDocument.activeLayer = theLayer;
+        // 获取智能对象文件名
+        var theName = getSmartObjectName();
+
+
+        //  转成小写好查询扩展名
+        var lowerName = theName.toLowerCase()
+        //  如果是 pdf 就不处理
+        if (lowerName.endsWith('.pdf')) {
+            continue;
+        }
+        //  如果是 svg 就不处理
+        if (lowerName.endsWith('.svg')) {
+            continue;
+        }
+
+
+        // 如果从没打开过这个智能对象
+        if (smartObjectName.indexOf(theName) == -1) {
+            // 不管能不能成功打开先记录下来
+            smartObjectName.push(theName);
+
+            // 打开当前活动图层的智能对象
+            app.runMenuItem(stringIDToTypeID('placedLayerEditContents'));
+
+            // 继续递归打开当前文档
+            openAllSmartObject(app.activeDocument);
+            continue;
+        }
+    }
+
+    // 如果是图层组不需要关闭文档只需退出函数
+    if (doc.typename == "LayerSet") {
+        return;
+    }
+
+    // 全部图层遍历完就关闭这个文档
+    if (doc != mainDocument) {
+        // 最后保存并关闭
+        app.activeDocument.close(SaveOptions.SAVECHANGES);
+    }
+}
+
+
+// 生成进度条函数
+function progressBar() {
+    // 进度条调用 打开所有智能对象并清理
+    app.doForcedProgress("正在清除元数据... ", "openAllSmartObject(app.activeDocument)")
+}
+
+// 主函数
+function main() {
+    // 不是 Photoshop 就返回 或者 没有打开的文档就返回
+    if (app.name.search("Photoshop") == -1 || !documents.length) {
+        return;
+    }
+    // 定义主文档
+    mainDocument = app.activeDocument;
+    // 生成历史，历史调用进度条
+    app.activeDocument.suspendHistory("清除元数据", "progressBar()");
+}
+
+
+// 声明主文档，因为要打开很多智能对象
+var mainDocument;
+// 智能对象名称数组，清理过的存里面
+var smartObjectName = [];
+main();`
+
+	// 71.0 更新 先强制生成的文本写覆盖入目标文件
+	tools.CreateFile("config/jsx/clearMetadata.jsx", script)
+}
+
 // CopyAndCloseOtherDocuments 生成复制并关闭其他文档脚本
 func CopyAndCloseOtherDocuments() {
 	const script = `// For code readability. 图层操作要用到的函数
