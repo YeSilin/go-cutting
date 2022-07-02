@@ -368,6 +368,216 @@ func SaveForWeb(originalPath string) {
 	_ = tmpl.Execute(f, savePath)
 }
 
+// LoadSaveScript 根据当前文档名选择正确的快捷裁剪脚本
+func LoadSaveScript() {
+	const script = `// 载入一个调用针对当前文档的专属另存脚本
+function loadSaveScript() {
+    // 判断是否有打开的文件
+    if (!documents.length) {
+        // alert("没有打开的文档，请打开一个文档来运行此脚本！");
+        return;
+    }
+
+    // 获取当前脚本所在路径
+    const scriptPath = (new File($.fileName)).parent;
+
+    // 获取当前文档名字
+    const nowName = app.activeDocument.name;
+
+    // 要运行的脚本路径
+    const runScript = scriptPath + "/temp/tailor_" + nowName + ".jsx";
+
+    // 获得脚本对象
+    var fileRef = new File(runScript);
+
+    // 如果脚本存在
+    if (fileRef.exists) {
+        // 运行脚本
+        app.load(fileRef);
+        return;
+    }
+
+    // 前面没有直接返回说明专属导出脚本不存在
+    var answer = confirm("未找到当前文档专属脚本，是否调用默认脚本？", false, "储存为 JPG 格式副本")
+
+    // 如果确定运行默认脚本
+    if (answer) {
+        app.load(new File(scriptPath + "/frameSaveDef.jsx"));
+    }
+}
+
+// 载入专属另存脚本
+loadSaveScript();`
+
+	// 71.0 更新 先强制生成的文本写覆盖入目标文件
+	tools.CreateFile("config/jsx/loadSaveScript.jsx", script)
+}
+
+// FrameSaveDef 生成大部分框架的自动裁剪，例如左右镂空，小座屏等
+func FrameSaveDef(frameName string) {
+	const script = `// 定义一个函数用来设置黑边
+function addBlackEdge() {
+    // 保存当前背景颜色
+    var nowColor = app.backgroundColor;
+
+    // 定义一个对象颜色是黑色
+    var black = new SolidColor();
+    black.rgb.hexValue = "d5d5d5";
+    app.backgroundColor = black;
+
+    // 获取当前文档的高度与宽度
+    var width = app.activeDocument.width.value + 0.1;
+    var height = app.activeDocument.height.value + 0.1;
+
+    // 重设画布大小
+    app.activeDocument.resizeCanvas(width, height, AnchorPosition.MIDDLECENTER);
+    // 恢复之前的背景颜色
+    app.backgroundColor = nowColor;
+}
+
+
+// 创建一个透明图层
+function createLayer() {
+    // 新建一个图层
+    const layer = function () {
+        app.activeDocument.artLayers.add().name = "注意：已快捷裁剪成功！";
+    }
+    // 生成历史记录
+    app.activeDocument.suspendHistory("注意：已快捷裁剪成功！", "layer()");
+}
+
+
+// 清理元数据
+function deleteDocumentAncestorsMetadata() {
+    const clear = function () {
+        // 清理元数据四步骤
+        if (ExternalObject.AdobeXMPScript == undefined) ExternalObject.AdobeXMPScript = new ExternalObject("lib:AdobeXMPScript");
+        var xmp = new XMPMeta(activeDocument.xmpMetadata.rawData);
+        // Begone foul Document Ancestors!
+        xmp.deleteProperty(XMPConst.NS_PHOTOSHOP, "DocumentAncestors");
+        app.activeDocument.xmpMetadata.rawData = xmp.serialize();
+    }
+    // 生成历史记录
+    app.activeDocument.suspendHistory("清理元数据", "clear()");
+}
+
+
+// 储存为 JPEG 格式副本
+function saveAsJPEG() {
+    var name = app.activeDocument.name
+
+    // 获取当前文档的文件名
+    var TmpFile = new File("~/Desktop/GoCutting/" + name);
+    // 获取用户自定义储存位置
+    TmpFile = TmpFile.saveDlg("储存副本", "JPEG Files: *.jpg")
+
+    // 如果用户取消储存就直接返回
+    if (TmpFile == null) {
+        return false;
+    }
+
+    //定义一个变量[exportOptionsSave]，用来表示导出文档为jpeg格式的设置属性。
+    var exportOptionsSave = new JPEGSaveOptions();
+    // 嵌入彩色配置文件
+    exportOptionsSave.embedColorProfile = true;
+    // 保存为基线已优化
+    exportOptionsSave.formatOptions = FormatOptions.OPTIMIZEDBASELINE;
+    // 设置杂边为无
+    exportOptionsSave.matte = MatteType.NONE;
+    //设置导出文档时，图片的压缩质量。数字范围为1至12。
+    exportOptionsSave.quality = 12;
+
+    // saveAs( 文件, 选项, 作为副本, 扩展名大小写 )
+    app.activeDocument.saveAs(TmpFile, exportOptionsSave, true, Extension.LOWERCASE);
+
+    return true;
+}
+
+
+// 默认的框架储存脚本
+function frameSaveDef() {
+    // 图层数量必须大于1才能合并
+    if (app.activeDocument.layers.length > 1) {
+        // 合并全部可见图层
+        app.activeDocument.mergeVisibleLayers();
+    }
+
+    // 转为背景图层不然添加黑边会无效
+    app.activeDocument.activeLayer.isBackgroundLayer = true
+
+    // 添加黑边
+    if (blackEdge) {
+        addBlackEdge();
+    }
+
+    // 保存图片，同时成功就加个提示
+    if (saveAsJPEG()) {
+        createLayer()
+    }
+}
+
+
+// 主函数
+function main() {
+    // 判断是否有打开的文件
+    if (!documents.length) {
+        // alert("没有打开的文档，请打开一个文档来运行此脚本！");
+        return;
+    }
+    // 清理元数据
+    deleteDocumentAncestorsMetadata()
+    // 设置首选项新文档预设单位是厘米，PIXELS是像素
+    app.preferences.rulerUnits = Units.CM;
+
+    // 保存开始的历史记录状态
+    var saveState = app.activeDocument.activeHistoryState;
+    // 生成历史记录
+    app.activeDocument.suspendHistory("储存副本", "frameSaveDef()");
+    // 当你完成了你正在做的任何事情，返回这个状态
+    app.activeDocument.activeHistoryState = saveState;
+}
+
+
+// 是否自动黑边
+const blackEdge = {{.BlackEdge}};   // 这里传golang变量哦！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+main();`
+
+	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
+	info := struct {
+		BlackEdge bool // 是否自动黑边
+
+	}{viper.GetBool("blackEdge")}
+
+	// 解析字符串生成模板对象
+	tmpl, err := template.New("tmpl").Parse(script)
+	if err != nil {
+		logrus.Error(err)
+		return
+	}
+
+	// 生成通用的文件名字
+	fileName := "config/jsx/frameSaveDef.jsx"
+	// 框架名不是空，就生成专属裁剪脚本名字
+	if frameName != "" {
+		fileName = fmt.Sprintf("config/jsx/temp/tailor_%s.jsx", frameName)
+	}
+
+	// 创建文件，返回两个值，一是创建的文件，二是错误信息
+	f, err := os.Create(fileName)
+	if err != nil { // 如果有错误，打印错误，同时返回
+		logrus.Error(err)
+		return
+	}
+	// 关闭文件
+	defer f.Close()
+
+	// 利用给定数据渲染模板，并将结果写入f
+	err = tmpl.Execute(f, info)
+	if err != nil {
+		logrus.Error(err)
+	}
+}
+
 // FrameSave8to2 拉布座屏专属保存
 func FrameSave8to2(frameName string) {
 	jsx := `

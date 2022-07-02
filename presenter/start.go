@@ -5,7 +5,6 @@ package presenter
 import (
 	"fmt"
 	"github.com/spf13/viper"
-	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"time"
@@ -31,8 +30,8 @@ func InitFolder() {
 func InitScript() {
 	go func() {
 		OpenMode()                                   // 导入注册表 使用正确的打开方式，并且取消脚本执行警告
-		generate.SelectTailor()                      // 生成裁剪选择脚本备用
-		generate.GeneralCutting("")                  // 生成通用裁剪脚本备用
+		model.LoadSaveScript()                       // 生成裁剪选择脚本备用
+		model.FrameSaveDef("")                       // 生成通用裁剪脚本备用
 		model.ClearMetadata()                        // 生成 -3 要用的清除元数据脚本备用
 		model.ClearMetadataStd()                     // 生成我自己动作要用的清除元数据脚本备用
 		model.AddBlackEdge()                         // 生成 -7 添加黑边脚本备用

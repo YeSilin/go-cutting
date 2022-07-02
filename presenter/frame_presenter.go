@@ -4,7 +4,6 @@ package presenter
 import (
 	"fmt"
 	"github.com/spf13/viper"
-	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"strconv"
@@ -30,7 +29,7 @@ func FramePresenter1(widthStr, heightStr string) (width, height float64) {
 	model.NewDocument(width, height, frameName, true) // 创建ps文档
 
 	// 生成暗号【-1】可以用的另存脚本
-	go generate.GeneralCutting(frameName)
+	go model.FrameSaveDef(frameName)
 
 	// 追加最大画布判断
 	model.IsMaxCanvasExceeded(width, height)
@@ -61,7 +60,7 @@ func FramePresenter8to1(widthStr, heightStr string) (width, height float64) {
 	model.NewDocument(width, height, frameName, true) // 创建ps文档
 
 	// 生成暗号【-1】可以用的另存脚本
-	go generate.GeneralCutting(frameName)
+	go model.FrameSaveDef(frameName)
 
 	// 追加最大画布判断
 	model.IsMaxCanvasExceeded(width, height)

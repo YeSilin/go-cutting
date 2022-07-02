@@ -114,7 +114,7 @@ func OldFrame2() {
 		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), tempName, width, height)
 
 		model.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.GeneralCutting(frameName)             // 生成暗号【-1】可以用的另存脚本
+		go model.FrameSaveDef(frameName)                  // 生成暗号【-1】可以用的另存脚本
 		model.IsMaxCanvasExceeded(width, height)          // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
@@ -295,7 +295,7 @@ func OldFrame4to1() {
 		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), tempName, width, height)
 
 		model.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.GeneralCutting(frameName)             // 生成暗号【-1】可以用的另存脚本
+		go model.FrameSaveDef(frameName)                  // 生成暗号【-1】可以用的另存脚本
 		model.IsMaxCanvasExceeded(width, height)          // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
@@ -482,7 +482,7 @@ func OldFrame5() {
 		frameName := fmt.Sprintf("%s_顶天立地_%.0fx%.0f", tools.NowTime(), width, height)
 
 		model.NewDocument(width, height, frameName, true) // 创建ps文档
-		go generate.GeneralCutting(frameName)             // 生成暗号【-1】可以用的另存脚本
+		go model.FrameSaveDef(frameName)                  // 生成暗号【-1】可以用的另存脚本
 		model.IsMaxCanvasExceeded(width, height)          // 最大画布判断
 
 		isOpenPs() // 是否打开自动新建文档
@@ -1081,7 +1081,7 @@ func OldFrame9() {
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_补切画布_%.0fx%.0f", tools.NowTime(), width, height)
 
-		go generate.GeneralCutting(frameName)             // 生成暗号【-1】可以用的另存脚本
+		go model.FrameSaveDef(frameName)                  // 生成暗号【-1】可以用的另存脚本
 		model.NewDocument(width, height, frameName, true) // 创建ps文档
 		model.IsMaxCanvasExceeded(width, height)          // 最大画布判断
 		isOpenPs()                                        // 是否打开自动新建文档

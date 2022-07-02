@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
-	"github.com/yesilin/go-cutting/generate"
 	"github.com/yesilin/go-cutting/input"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
@@ -192,11 +191,11 @@ func modifyAutomaticAddBlackEdge() {
 	case "1":
 		viper.Set("blackEdge", true)
 		fmt.Println("\n:: 设置成功 - 切图自动添加黑边已开启！")
-		generate.GeneralCutting("") // 根据配置更新通用裁剪
+		model.FrameSaveDef("") // 根据配置更新通用裁剪
 	case "2":
 		viper.Set("blackEdge", false)
 		fmt.Println("\n:: 设置成功 - 切图自动添加黑边已关闭！")
-		generate.GeneralCutting("") // 根据配置更新通用裁剪
+		model.FrameSaveDef("") // 根据配置更新通用裁剪
 	case "-":
 		//fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
 		return
@@ -340,11 +339,11 @@ func modifyAutomaticDeletion() {
 	case "1":
 		viper.Set("automaticDeletion", true)
 		fmt.Println("\n:: 设置成功 - 转换后将自动删除源文件！")
-		generate.GeneralCutting("") // 根据配置更新通用裁剪
+		model.FrameSaveDef("") // 根据配置更新通用裁剪
 	case "2":
 		viper.Set("automaticDeletion", false)
 		fmt.Println("\n:: 设置成功 - 转换后将不会删除源文件！")
-		generate.GeneralCutting("") // 根据配置更新通用裁剪
+		model.FrameSaveDef("") // 根据配置更新通用裁剪
 	case "-":
 		//fmt.Println(strings.Repeat("-", 36) + " Return " + strings.Repeat("-", 36) + "\n")
 		return
@@ -371,6 +370,6 @@ func modifyToDefaultSetting() {
 
 		// 保存最新配置
 		_ = viper.WriteConfig()
-		generate.GeneralCutting("") // 根据配置更新通用裁剪
+		model.FrameSaveDef("") // 根据配置更新通用裁剪
 	}()
 }

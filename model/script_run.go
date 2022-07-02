@@ -75,3 +75,13 @@ func RunSaveForWeb() {
 		//}
 	}()
 }
+
+// RunLoadSaveScript 根据当前文档名选择正确的快捷裁剪脚本 执行暗号-1
+func RunLoadSaveScript() {
+	// 创建一个协程使用cmd来运行脚本
+	dataPath := "config/jsx/loadSaveScript.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+
+	// 每次选择正确的脚本时删除多余备份，最大保留30个
+	go tools.DeleteRedundantBackups("Config/JSX/Temp/*", 100)
+}

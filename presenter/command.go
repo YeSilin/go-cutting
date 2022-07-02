@@ -12,12 +12,7 @@ import (
 
 // Command1 执行暗号-1
 func Command1() {
-	// 创建一个协程使用cmd来运行脚本
-	dataPath := "config/jsx/SelectTailor.jsx"
-	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
-
-	// 每次选择正确的脚本时删除多余备份，最大保留30个
-	go tools.DeleteRedundantBackups("Config/JSX/Temp/*", 30)
+	model.RunLoadSaveScript()
 }
 
 // Command2 执行暗号-2 重建新文档
