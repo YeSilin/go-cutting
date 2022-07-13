@@ -209,7 +209,6 @@ function openAllSmartObject(doc) {
         // 获取智能对象文件名
         var theName = getSmartObjectName();
 
-
         //  转成小写好查询扩展名
         var lowerName = theName.toLowerCase()
         //  如果是 pdf 就不处理
@@ -220,7 +219,10 @@ function openAllSmartObject(doc) {
         if (lowerName.endsWith('.svg')) {
             continue;
         }
-
+        //  如果是 ai 就不处理
+        if (lowerName.endsWith('.ai')) {
+            continue;
+        }
 
         // 如果从没打开过这个智能对象
         if (smartObjectName.indexOf(theName) == -1) {
@@ -232,7 +234,6 @@ function openAllSmartObject(doc) {
 
             // 继续递归打开当前文档
             openAllSmartObject(app.activeDocument);
-            continue;
         }
     }
 

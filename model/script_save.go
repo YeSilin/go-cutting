@@ -506,14 +506,12 @@ function frameSaveDef() {
     app.activeDocument.activeLayer.isBackgroundLayer = true
 
     // 添加黑边
-    if (blackEdge) {
+    if (BlackEdge) {
         addBlackEdge();
     }
 
-    // 保存图片，同时成功就加个提示
-    if (saveAsJPEG()) {
-        createLayer()
-    }
+    // 保存图片
+    Saved = saveAsJPEG()
 }
 
 
@@ -535,11 +533,17 @@ function main() {
     app.activeDocument.suspendHistory("储存副本", "frameSaveDef()");
     // 当你完成了你正在做的任何事情，返回这个状态
     app.activeDocument.activeHistoryState = saveState;
+    // 保存图片，同时成功就加个提示
+    if (Saved) {
+        createLayer()
+    }
 }
 
 
 // 是否自动黑边
-const blackEdge = {{.BlackEdge}};   // 这里传golang变量哦！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+const BlackEdge = {{.BlackEdge}};   // 这里传golang变量哦！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+// 是否已保存
+var Saved = false;
 main();`
 
 	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
@@ -580,48 +584,55 @@ main();`
 
 // FrameSave8to2 拉布座屏专属保存
 func FrameSave8to2(frameName string) {
-	jsx := `
-// 定义一个函数用来设置黑边
-function addEdge() {
+	const script = `// 定义一个函数用来设置黑边
+function addBlackEdge() {
     // 保存当前背景颜色
-    var nowColor = app.backgroundColor;
+    const nowColor = app.backgroundColor;
 
     // 定义一个对象颜色是黑色
     var black = new SolidColor();
     black.rgb.hexValue = "d5d5d5";
+
+    // 设置背景颜色
     app.backgroundColor = black;
 
     // 获取当前文档的高度与宽度
-    var width = app.activeDocument.width + 0.1;
-    var height = app.activeDocument.height + 0.1;
+    const width = app.activeDocument.width.value + 0.1;
+    const height = app.activeDocument.height.value + 0.1;
 
     // 重设画布大小
-    app.activeDocument.resizeCanvas(UnitValue(width), UnitValue(height), AnchorPosition.MIDDLECENTER);
+    app.activeDocument.resizeCanvas(width, height, AnchorPosition.MIDDLECENTER);
 
     // 恢复之前的背景颜色
     app.backgroundColor = nowColor;
 }
 
+
 // 创建一个透明图层
 function createLayer() {
     // 新建一个图层
-    function layer() {
+    const layer = function () {
         app.activeDocument.artLayers.add().name = "注意：已快捷裁剪成功！";
     }
-
     // 生成历史记录
     app.activeDocument.suspendHistory("注意：已快捷裁剪成功！", "layer()");
 }
 
+
 // 清理元数据
 function deleteDocumentAncestorsMetadata() {
-    // 清理元数据四步骤
-    if (ExternalObject.AdobeXMPScript == undefined) ExternalObject.AdobeXMPScript = new ExternalObject("lib:AdobeXMPScript");
-    var xmp = new XMPMeta(activeDocument.xmpMetadata.rawData);
-    // Begone foul Document Ancestors!
-    xmp.deleteProperty(XMPConst.NS_PHOTOSHOP, "DocumentAncestors");
-    app.activeDocument.xmpMetadata.rawData = xmp.serialize();
+    const clear = function () {
+        // 清理元数据四步骤
+        if (ExternalObject.AdobeXMPScript == undefined) ExternalObject.AdobeXMPScript = new ExternalObject("lib:AdobeXMPScript");
+        var xmp = new XMPMeta(activeDocument.xmpMetadata.rawData);
+        // Begone foul Document Ancestors!
+        xmp.deleteProperty(XMPConst.NS_PHOTOSHOP, "DocumentAncestors");
+        app.activeDocument.xmpMetadata.rawData = xmp.serialize();
+    }
+    // 生成历史记录
+    app.activeDocument.suspendHistory("清理元数据", "clear()");
 }
+
 
 // 用来保存的函数
 function saveJPEG() {
@@ -646,7 +657,7 @@ function saveJPEG() {
 
     // saveAs( 文件, 选项, 作为副本, 扩展名大小写 )
     //调用[document]的[saveAs]另存方法，使用上面设置的各种参数，将当前文档导出并转换为JPEG格式的文档
-    app.activeDocument.saveAs(TmpFile1.saveDlg("优化另存为", "JPEG Files: *.jpg"), exportOptionsSave, true, Extension.LOWERCASE);
+    app.activeDocument.saveAs(TmpFile1.saveDlg("储存副本", "JPEG Files: *.jpg"), exportOptionsSave, true, Extension.LOWERCASE);
 }
 
 
@@ -660,85 +671,96 @@ function optimized() {
     // 合并全部可见图层
     app.activeDocument.mergeVisibleLayers();
     // 转为背景图层不然添加黑边会无效
-    app.activeDocument.activeLayer.isBackgroundLayer = true
+    app.activeDocument.activeLayer.isBackgroundLayer = true;
 
     // 复制图层
-    app.activeDocument.activeLayer.duplicate()
-    app.activeDocument.activeLayer.duplicate()
-    app.activeDocument.activeLayer.duplicate()
-    app.activeDocument.activeLayer.duplicate()
-    
+    app.activeDocument.activeLayer.duplicate();
+    app.activeDocument.activeLayer.duplicate();
+    app.activeDocument.activeLayer.duplicate();
+    app.activeDocument.activeLayer.duplicate();
+
     // 扩大画布
-    const width = app.activeDocument.width
-    const height = app.activeDocument.height
+    const width = app.activeDocument.width.value;
+    const height = app.activeDocument.height.value;
     app.activeDocument.resizeCanvas(width + 8, height + 8, AnchorPosition.MIDDLECENTER);
-    
+
     // 垂直翻转
-    app.activeDocument.artLayers[0].resize(undefined, -100); //will flip layer vertically
+    app.activeDocument.artLayers[0].resize(undefined, -100);
     // 向上移动图层
     app.activeDocument.artLayers[0].translate(0, -height);
-    
+
     // 垂直翻转
-    app.activeDocument.artLayers[1].resize(undefined, -100); //will flip layer vertically
+    app.activeDocument.artLayers[1].resize(undefined, -100);
     // 向下移动图层
     app.activeDocument.artLayers[1].translate(0, height);
-    
+
     // 水平翻转
     app.activeDocument.artLayers[2].resize(-100, undefined);
     // 向左移动图层
     app.activeDocument.artLayers[2].translate(-width, 0);
-    
+
     // 水平翻转
     app.activeDocument.artLayers[3].resize(-100, undefined);
     // 向左移动图层
     app.activeDocument.artLayers[3].translate(width, 0);
-    
+
     // 合并全部可见图层
     app.activeDocument.mergeVisibleLayers();
 
-
-    if (BlackEdge) {
+    if (blackEdge) {
         // 添加黑边
-        addEdge();
+        addBlackEdge();
     }
 
     // 清理元数据
-    deleteDocumentAncestorsMetadata()
+    deleteDocumentAncestorsMetadata();
 
     // 保存JPEG
-    saveJPEG()
+    saveJPEG();
 }
 
-// 判断是否有打开的文件
-if (!documents.length) {
-    // return;
-} else {
-    // 是否自动黑边
-    var BlackEdge = {{.BlackEdge}};   // 这里传golang变量哦！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
-    // 是否保存成功
-    var isSave = false;
+// 主函数
+function main() {
+    // 判断是否有打开的文件
+    if (!documents.length) {
+        // alert("没有打开的文档，请打开一个文档来运行此脚本！");
+        return;
+    }
+    // 清理元数据
+    deleteDocumentAncestorsMetadata();
+    // 设置首选项新文档预设单位是厘米，PIXELS是像素
+    app.preferences.rulerUnits = Units.CM;
+
 
     // 保存开始的历史记录状态
-    var savedState = app.activeDocument.activeHistoryState;
+    var saveState = app.activeDocument.activeHistoryState;
+
 
     // 如果出错就返回最开始
     try {
         // 生成历史记录
-        app.activeDocument.suspendHistory("优化另存", "optimized()");
+        app.activeDocument.suspendHistory("储存副本", "optimized()");
         isSave = true;
     } catch (error) {
         // 忽略错误
     }
+
     // 当你完成了你正在做的任何事情，返回这个状态
-    app.activeDocument.activeHistoryState = savedState;
+    app.activeDocument.activeHistoryState = saveState;
 
     // 保存成功就加个提示
     if (isSave) {
-        createLayer()
+        createLayer();
     }
 }
-`
+
+
+// 是否自动黑边
+const blackEdge = {{.BlackEdge}};   // 这里传golang变量哦！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+// 是否保存成功
+var isSave = false;
+main();`
 
 	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
 	info := struct {
@@ -747,7 +769,7 @@ if (!documents.length) {
 	}{viper.GetBool("blackEdge")}
 
 	// 解析字符串生成模板对象
-	tmpl, err := template.New("tmpl").Parse(jsx)
+	tmpl, err := template.New("tmpl").Parse(script)
 	if err != nil {
 		logrus.Error(err)
 		return
