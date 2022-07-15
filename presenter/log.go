@@ -14,7 +14,7 @@ func logMultiWriter() io.Writer {
 	writer1 := os.Stdout
 
 	fileName := time.Now().Format("2006-01")
-	fileName = "config/logs/" + fileName + ".log"
+	fileName = "resources/logs/" + fileName + ".log"
 	writer2, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE, 0644)
 	if err != nil {
 		log.Fatalf("create file log.txt failed: %v", err)
@@ -31,7 +31,7 @@ func InitLog() {
 	logrus.SetReportCaller(true)
 
 	// 创建日志文件夹
-	_ = tools.CreateMkdirAll("config/logs")
+	_ = tools.CreateMkdirAll("resources/logs")
 
 	// 设置输出位置
 	logrus.SetOutput(logMultiWriter())

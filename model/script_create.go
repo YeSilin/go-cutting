@@ -3,6 +3,7 @@ package model
 // 这里放一些创建Photoshop文档的脚本
 import (
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"github.com/yesilin/go-cutting/tools"
 	"os"
 	"strings"
@@ -86,7 +87,7 @@ app.activeDocument.suspendHistory("建议：字不要在此参考线外！", "ad
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create("config/jsx/newDocument.jsx")
+	f, err := os.Create("resources/jsx/newDocument.jsx")
 	if err != nil { // 如果有错误，打印错误，同时返回
 		fmt.Println(err)
 		return
@@ -160,6 +161,67 @@ app.activeDocument.suspendHistory("注意：已超不透最大150cm", "promptLay
 	}
 
 	// 追加写入
-	tools.WriteFile("config/jsx/newDocument.jsx", jsx.String())
+	tools.WriteFile("resources/jsx/newDocument.jsx", jsx.String())
 	return true
+}
+
+// NewDocumentForMap 生成用来新建ps文档3d作图的jsx
+func NewDocumentForMap(width, height int, frameName string) {
+	const script = `// 新建文档函数
+function newDocument(width, height, docName){
+	// 设置首选项新文档预设单位是厘米，PIXELS是像素
+	app.preferences.rulerUnits = Units.PIXELS;
+	// 新文档的分辨率
+	const resolution = 72;
+	// 新文档的颜色模式
+	const mode = NewDocumentMode.RGB;
+	// 新文档的默认背景填充颜色
+	const initialFill = DocumentFill.WHITE;
+	// 新文档的像素比率
+	const pixelAspectRatio = 1;
+	// 设置颜色位数为8位
+	const bitsPerChannel = BitsPerChannelType.EIGHT;
+	// 设置颜色配置文件为日本常规用途3
+	const colorProfileName = "sRGB IEC61966-2.1";
+	// 将设置好的参数放在[add]方法里面
+	app.documents.add(width, height, resolution, docName, mode, initialFill, pixelAspectRatio, bitsPerChannel, colorProfileName);
+}
+
+// 新文档的宽度
+const width = {{printf "%d" .Width}}; // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
+// 新文档的高度
+const height = {{printf "%d" .Height}}; // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
+// 新文档的名称
+const docName = "{{.FrameName}}"; // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
+// 执行新建文档
+newDocument(width,height,docName);`
+
+	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
+	info := struct {
+		Width     int
+		Height    int
+		FrameName string // 新文档名
+	}{width, height, frameName}
+
+	// 解析字符串生成模板对象
+	tmpl, err := template.New("tmpl").Parse(script)
+	if err != nil {
+		logrus.Error(err)
+		return
+	}
+
+	// 创建文件，返回两个值，一是创建的文件，二是错误信息
+	f, err := os.Create("resources/jsx/newDocument.jsx")
+	if err != nil { // 如果有错误，打印错误，同时返回
+		logrus.Error(err)
+		return
+	}
+	// 关闭文件
+	defer f.Close()
+
+	// 利用给定数据渲染模板，并将结果写入f
+	err = tmpl.Execute(f, info)
+	if err != nil {
+		logrus.Error(err)
+	}
 }

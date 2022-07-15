@@ -14,15 +14,15 @@ import (
 func InitFolder() {
 	go func() {
 		// 创建jsx文件夹
-		_ = tools.CreateMkdirAll("config/jsx/temp")
+		_ = tools.CreateMkdirAll("resources/jsx/temp")
 		// 创建历史记录文件夹
 		now := time.Now().Format("2006-01")
-		_ = tools.CreateMkdirAll(fmt.Sprintf("config/History/%s", now))
+		_ = tools.CreateMkdirAll(fmt.Sprintf("resources/History/%s", now))
 		// 创建套图文件夹
-		_ = tools.CreateMkdirAll("config/Picture")
+		_ = tools.CreateMkdirAll("resources/Picture")
 
 		// 创建备份文件夹
-		_ = tools.CreateMkdirAll("config/backups")
+		_ = tools.CreateMkdirAll("resources/backups")
 	}()
 }
 

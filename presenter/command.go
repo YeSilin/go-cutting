@@ -18,7 +18,7 @@ func Command1() {
 // Command2 执行暗号-2 重建新文档
 func Command2() {
 	// 创建一个协程使用cmd来运行脚本
-	dataPath := "config/jsx/newDocument.jsx"
+	dataPath := "resources/jsx/newDocument.jsx"
 	cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 	go cmd.Run()
 }
@@ -26,14 +26,14 @@ func Command2() {
 // Command3 执行暗号-3 深度清除源数据
 func Command3() {
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "config/jsx/clearMetadata.jsx"
+	dataPath := "resources/jsx/clearMetadata.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
 // Command5 执行暗号-5 复制并关闭其他文档
 func Command5() {
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "config/jsx/copyAndCloseOtherDocuments.jsx"
+	dataPath := "resources/jsx/copyAndCloseOtherDocuments.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
@@ -54,7 +54,7 @@ func Command9() {
 	now := time.Now().Format("2006-01")
 
 	// 储存历史记录路径
-	path := fmt.Sprintf("config/History/%s/%s.txt", now, fileName)
+	path := fmt.Sprintf("resources/History/%s/%s.txt", now, fileName)
 
 	// 先查看是否有历史记录文件
 	exists, _ := tools.IsPathExists(path)
@@ -62,7 +62,7 @@ func Command9() {
 	if !exists {
 		//fmt.Println("\n【错误】找不到今天的切图历史记录，可能今天还未开始切图，已自动打开历史文件夹！")
 
-		exec.Command("cmd.exe", "/c", "start config\\History").Run()
+		exec.Command("cmd.exe", "/c", "start resources\\History").Run()
 		//tools.PrintLine(2)
 		return
 	}
@@ -119,7 +119,7 @@ func Command98() {
 // Command99 执行暗号-99
 func Command99() {
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "config/software/W10DigitalActivation.exe /activate"
+	dataPath := "resources/software/W10DigitalActivation.exe /activate"
 	cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 	go cmd.Run()
 }

@@ -13,21 +13,21 @@ import (
 func RunAutoCreateDocuments() {
 	if viper.GetBool("openPs") { // 是否自动新建ps文档
 		// 创建一个协程使用cmd来运行脚本
-		dataPath := "config/jsx/newDocument.jsx"
+		dataPath := "resources/jsx/newDocument.jsx"
 		go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 	}
 }
 
 // RunClearMetadataStd 执行暗号-6 简单清除元数据
 func RunClearMetadataStd() {
-	dataPath := "config/jsx/clearMetadataStd.jsx"
+	dataPath := "resources/jsx/clearMetadataStd.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
 // RunAddBlackEdge 执行暗号-7 为当前文档添加黑边
 func RunAddBlackEdge() {
 	// 创建一个协程使用cmd来运行脚本
-	dataPath := "config/jsx/addBlackEdge.jsx"
+	dataPath := "resources/jsx/addBlackEdge.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
@@ -48,7 +48,7 @@ func RunSaveAllJPEG() {
 // RunSaveAndCloseAllDocuments 保存并关闭全部文档的调用 暗号-12
 func RunSaveAndCloseAllDocuments() {
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "config/jsx/saveAndCloseAllDocuments.jsx"
+	dataPath := "resources/jsx/saveAndCloseAllDocuments.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
@@ -62,7 +62,7 @@ func RunSaveForWeb() {
 		_ = tools.CreateMkdirAll(fmt.Sprintf("%s/主图", picturePath))
 
 		// 创建一个协程使用cmd来运行脚本
-		dataPath := "config/jsx/saveForWeb.jsx"
+		dataPath := "resources/jsx/saveForWeb.jsx"
 		exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 
 		//time.Sleep(time.Second) // 停一秒
@@ -79,7 +79,7 @@ func RunSaveForWeb() {
 // RunLoadSaveScript 根据当前文档名选择正确的快捷裁剪脚本 执行暗号-1
 func RunLoadSaveScript() {
 	// 创建一个协程使用cmd来运行脚本
-	dataPath := "config/jsx/loadSaveScript.jsx"
+	dataPath := "resources/jsx/loadSaveScript.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 
 	// 每次选择正确的脚本时删除多余备份，最大保留30个

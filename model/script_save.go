@@ -90,7 +90,7 @@ if (!documents.length) {
 }`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("config/jsx/saveAsJPEG.jsx", script)
+	tools.CreateFile("resources/jsx/saveAsJPEG.jsx", script)
 }
 
 // SaveAllJPEG 将所有打开的文档储存为jpeg格式的初始化 暗号-11的实现
@@ -288,7 +288,7 @@ if (!documents.length) {
 }`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("config/jsx/saveAllJPEG.jsx", script)
+	tools.CreateFile("resources/jsx/saveAllJPEG.jsx", script)
 }
 
 // SaveAndCloseAllDocuments 保存并关闭全部文档的初始化 暗号-12的实现
@@ -329,7 +329,7 @@ function main() {
 main();`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("config/jsx/saveAndCloseAllDocuments.jsx", script)
+	tools.CreateFile("resources/jsx/saveAndCloseAllDocuments.jsx", script)
 }
 
 // SaveForWeb 导出web格式脚本的初始化 暗号-98的实现 副作用分辨率会被强制修改为72ppi 并且无法选择保存路径
@@ -346,14 +346,14 @@ func SaveForWeb(originalPath string) {
 	originalPath = "/" + strings.Replace(originalPath, ":", "", 1)
 
 	// 解析指定文件生成模板对象
-	tmpl, err := template.ParseFiles("config/jsx/template/saveForWeb.gohtml")
+	tmpl, err := template.ParseFiles("resources/jsx/template/saveForWeb.gohtml")
 	if err != nil {
 		logrus.Error(err)
 		return
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create("config/jsx/saveForWeb.jsx")
+	f, err := os.Create("resources/jsx/saveForWeb.jsx")
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return
@@ -410,7 +410,7 @@ function loadSaveScript() {
 loadSaveScript();`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("config/jsx/loadSaveScript.jsx", script)
+	tools.CreateFile("resources/jsx/loadSaveScript.jsx", script)
 }
 
 // FrameSaveDef 生成大部分框架的自动裁剪，例如左右镂空，小座屏等
@@ -560,10 +560,10 @@ main();`
 	}
 
 	// 生成通用的文件名字
-	fileName := "config/jsx/frameSaveDef.jsx"
+	fileName := "resources/jsx/frameSaveDef.jsx"
 	// 框架名不是空，就生成专属裁剪脚本名字
 	if frameName != "" {
-		fileName = fmt.Sprintf("config/jsx/temp/tailor_%s.jsx", frameName)
+		fileName = fmt.Sprintf("resources/jsx/temp/tailor_%s.jsx", frameName)
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
@@ -776,7 +776,7 @@ main();`
 	}
 
 	// 生成的文件名字
-	fileName := fmt.Sprintf("config/jsx/temp/tailor_%s.jsx", frameName)
+	fileName := fmt.Sprintf("resources/jsx/temp/tailor_%s.jsx", frameName)
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
 	f, err := os.Create(fileName)

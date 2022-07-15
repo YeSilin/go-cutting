@@ -17,7 +17,7 @@ import (
 func isOpenPs() {
 	if viper.GetBool("openPs") { // 是否自动新建ps文档
 		// 创建一个协程使用cmd来运行脚本
-		dataPath := "config/jsx/newDocument.jsx"
+		dataPath := "resources/jsx/newDocument.jsx"
 		cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 		go cmd.Run()
 	}

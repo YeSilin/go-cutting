@@ -24,7 +24,7 @@ func logo() fyne.Resource {
 	// 绑定资源到此变量
 	var logo = &fyne.StaticResource{
 		StaticName:    "logo8-32.png",
-		StaticContent: tools.ReadFileEasy("config/static/img/logo8-32.png"),
+		StaticContent: tools.ReadFileEasy("resources/static/img/logo8-32.png"),
 	}
 	return logo
 }

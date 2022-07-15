@@ -123,14 +123,14 @@ func ReplaceDetailsPage(path string) {
 		}{tools.StrToJsArray("dpArray", dp), tools.StrToJsArray("deArray", de)}
 
 		// 解析指定文件生成模板对象
-		tmpl, err := template.ParseFiles("config/jsx/template/replaceDetailsPage.gohtml")
+		tmpl, err := template.ParseFiles("resources/jsx/template/replaceDetailsPage.gohtml")
 		if err != nil {
 			logrus.Error(err)
 			return
 		}
 
 		// 创建文件，返回两个值，一是创建的文件，二是错误信息
-		f, err := os.Create("config/jsx/replaceDetailsPage.jsx")
+		f, err := os.Create("resources/jsx/replaceDetailsPage.jsx")
 		if err != nil { // 如果有错误，打印错误，同时返回
 			logrus.Error(err)
 			return

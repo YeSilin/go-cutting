@@ -87,14 +87,14 @@ func PixelsPerInchChangedTo300(originalPath string) {
 		_ = tools.CopyDir(originalPath, "Config/Backups/")
 
 		// 解析指定文件生成模板对象
-		tmpl, err := template.ParseFiles("config/jsx/template/pixelsPerInchChangedTo300.gohtml")
+		tmpl, err := template.ParseFiles("resources/jsx/template/pixelsPerInchChangedTo300.gohtml")
 		if err != nil {
 			fmt.Println("create template failed, err:", err)
 			return
 		}
 
 		// 创建文件，返回两个值，一是创建的文件，二是错误信息
-		f, err := os.Create("config/jsx/pixelsPerInchChangedTo300.jsx")
+		f, err := os.Create("resources/jsx/pixelsPerInchChangedTo300.jsx")
 		if err != nil { // 如果有错误，打印错误，同时返回
 			fmt.Println("创建文件错误 =", err)
 			return

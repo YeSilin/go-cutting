@@ -43,11 +43,11 @@ func MapFrame1() {
 
 		model.IsMaxCanvasExceeded(float64(width)/10, float64(height)/10)
 
-		generate.NewDocumentForMap(width, height, "常规座屏贴图") // 生成创建ps文档脚本
+		model.NewDocumentForMap(width, height, "常规座屏贴图") // 生成创建ps文档脚本
 
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "config/jsx/newDocument.jsx"
+			dataPath := "resources/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
@@ -123,12 +123,12 @@ func MapFrame6() {
 		// 定义单片名字
 		singleName := fmt.Sprintf("%s_折屏贴图", now)
 
-		generate.NewDocumentForMap(totalWidth, height, frameName)               // 生成创建ps文档脚本
+		model.NewDocumentForMap(totalWidth, height, frameName)                  // 生成创建ps文档脚本
 		generate.Line3DMapJs6(width, number)                                    // 生成专属参考线
 		go generate.TailorForMap6(width, height, number, frameName, singleName) // 生成暗号【-1】可以用的另存脚本
 		if viper.GetBool("openPs") {                                            // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "config/jsx/newDocument.jsx"
+			dataPath := "resources/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
@@ -321,7 +321,7 @@ func MapFrame7() {
 
 		// 为当前框架指定名字
 		frameName := fmt.Sprintf("%s_%s座屏贴图_%dx%d", tools.NowTime(), tools.Transfer(len(widthSlice)), widthSum, heightMax)
-		generate.NewDocumentForMap(widthSum, heightMax, frameName)           // 生成创建ps文档脚本
+		model.NewDocumentForMap(widthSum, heightMax, frameName)              // 生成创建ps文档脚本
 		generate.Line3DMapJs7(widthSlice, heightSlice, heightMax, heightMin) // 生成参考线和遮罩层
 		// TODO: 代修改
 		go generate.TailorForMap7(widthSlice, heightSlice, heightMax, frameName) // 生成暗号【-1】可以用的另存脚本// 生成参考线与遮罩层

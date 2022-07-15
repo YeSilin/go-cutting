@@ -37,15 +37,15 @@ OuterLoop:
 
 		switch key {
 		case "1":
-			presenter.WatermarkMainImage(viper.GetString("picture"), "config/static/img/yinanjj.png", viper.GetBool("automaticDeletion"))
+			presenter.WatermarkMainImage(viper.GetString("picture"), "resources/static/img/yinanjj.png", viper.GetBool("automaticDeletion"))
 		case "2":
-			presenter.WatermarkMainImage(viper.GetString("picture"), "config/static/img/yushantanjj.png", viper.GetBool("automaticDeletion"))
+			presenter.WatermarkMainImage(viper.GetString("picture"), "resources/static/img/yushantanjj.png", viper.GetBool("automaticDeletion"))
 		case "3":
-			presenter.WatermarkMainImage(viper.GetString("picture"), "config/static/img/sufanjj.png", viper.GetBool("automaticDeletion"))
+			presenter.WatermarkMainImage(viper.GetString("picture"), "resources/static/img/sufanjj.png", viper.GetBool("automaticDeletion"))
 		case "4":
-			presenter.WatermarkMainImage(viper.GetString("picture"), "config/static/img/tangyujj.png", viper.GetBool("automaticDeletion"))
+			presenter.WatermarkMainImage(viper.GetString("picture"), "resources/static/img/tangyujj.png", viper.GetBool("automaticDeletion"))
 		case "5":
-			presenter.WatermarkMainImage(viper.GetString("picture"), "config/static/img/lingxuan.png", viper.GetBool("automaticDeletion"))
+			presenter.WatermarkMainImage(viper.GetString("picture"), "resources/static/img/lingxuan.png", viper.GetBool("automaticDeletion"))
 		case "6":
 			presenter.UniversalMainImage(viper.GetString("picture"), 1125, 1500, 4, viper.GetBool("automaticDeletion")) // 通用长图
 		case "7":
@@ -147,15 +147,15 @@ OuterLoop:
 
 		switch key {
 		case "1":
-			presenter.WatermarkMainImage(viper.GetString("picture"), "config/static/img/mulan.png", viper.GetBool("automaticDeletion"))
+			presenter.WatermarkMainImage(viper.GetString("picture"), "resources/static/img/mulan.png", viper.GetBool("automaticDeletion"))
 		case "2":
-			presenter.WatermarkMainImage(viper.GetString("picture"), "config/static/img/huafu.png", viper.GetBool("automaticDeletion"))
+			presenter.WatermarkMainImage(viper.GetString("picture"), "resources/static/img/huafu.png", viper.GetBool("automaticDeletion"))
 		case "3":
-			presenter.WatermarkMainImage(viper.GetString("picture"), "config/static/img/muyunge.png", viper.GetBool("automaticDeletion"))
+			presenter.WatermarkMainImage(viper.GetString("picture"), "resources/static/img/muyunge.png", viper.GetBool("automaticDeletion"))
 		case "4":
-			presenter.WatermarkMainImage(viper.GetString("picture"), "config/static/img/yushantanpf.png", viper.GetBool("automaticDeletion"))
+			presenter.WatermarkMainImage(viper.GetString("picture"), "resources/static/img/yushantanpf.png", viper.GetBool("automaticDeletion"))
 		case "5":
-			presenter.WatermarkMainImage(viper.GetString("picture"), "config/static/img/jinzunfu.png", viper.GetBool("automaticDeletion"))
+			presenter.WatermarkMainImage(viper.GetString("picture"), "resources/static/img/jinzunfu.png", viper.GetBool("automaticDeletion"))
 		case "6":
 		case "-":
 			break OuterLoop

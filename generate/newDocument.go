@@ -2,48 +2,11 @@ package generate
 
 import (
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"github.com/yesilin/go-cutting/tools"
-	"os"
 	"os/exec"
 	"strings"
-	"text/template"
 	"time"
 )
-
-// 生成用来新建ps文档3d作图js
-// @param width 传入宽度
-// @param height 传入高度
-func NewDocumentForMap(width, height int, frameName string) {
-	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
-	info := struct {
-		Width     int
-		Height    int
-		FrameName string // 新文档名
-	}{width, height, frameName}
-
-	// 解析指定文件生成模板对象
-	tmpl, err := template.ParseFiles("config/jsx/template/map/newDocument.gohtml")
-	if err != nil {
-		logrus.Error(err)
-		return
-	}
-
-	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create("config/jsx/newDocument.jsx")
-	if err != nil { // 如果有错误，打印错误，同时返回
-		logrus.Error(err)
-		return
-	}
-	// 关闭文件
-	defer f.Close()
-
-	// 利用给定数据渲染模板，并将结果写入f
-	err = tmpl.Execute(f, info)
-	if err != nil {
-		logrus.Error(err)
-	}
-}
 
 // 新建临时效果图文档
 func NewTempDocumentJs() {
@@ -92,9 +55,9 @@ func NewTempDocumentJs() {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("config/jsx/newTempDocument.jsx", jsxStr)
+	tools.CreateFile("resources/jsx/newTempDocument.jsx", jsxStr)
 
 	// 创建一个协程使用cmd来运行脚本
-	dataPath := "config/jsx/newTempDocument.jsx"
+	dataPath := "resources/jsx/newTempDocument.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }

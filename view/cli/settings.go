@@ -84,7 +84,7 @@ func current() {
 
 	// 修改套图文件夹位置
 	var pictureStr string
-	if viper.GetString("picture") != "config\\picture" {
+	if viper.GetString("picture") != "resources\\picture" {
 		pictureStr = "已修改"
 		pictureStr = tools.ColourString(pictureStr, ctc.ForegroundCyan) // 设置带颜色的字符串
 	} else {
@@ -304,7 +304,7 @@ func modifyPicturePath() {
 	// 直接回车代表恢复默认路径
 	case "":
 		// 设置套图文件夹位置
-		viper.Set("picture", "config\\picture")
+		viper.Set("picture", "resources\\picture")
 		tools.CallClear() // 清屏
 		fmt.Println("\n:: 直接回车会恢复默认设置，现已恢复默认设置！")
 	default:
@@ -365,7 +365,7 @@ func modifyToDefaultSetting() {
 		viper.Set("reserve", 5)
 		viper.Set("gui", true)
 		viper.Set("cipherList", false)
-		viper.Set("picture", "config\\picture")
+		viper.Set("picture", "resources\\picture")
 		viper.Set("automaticDeletion", false) // // 自动主图时删除来源
 
 		// 保存最新配置
