@@ -285,7 +285,7 @@ func OldFrame4to1() {
 			height -= downHollowOut + 5 // 如果有下镂空的话
 		}
 
-		color.Yellow.Printf("\n:: %s：宽 %.2f cm，高 %.2f cm", tempName, width, height)
+		color.Yellow.Printf("\n:: %s：宽 %.2f cm，高 %.2f cm\n", tempName, width, height)
 
 		//存储已计算的历史记录
 		history += fmt.Sprintf("%s：宽 %.2f cm，高 %.2f cm\n", tempName, width, height)

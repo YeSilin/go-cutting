@@ -112,7 +112,7 @@ OuterLoop:
 		text := `
 :: 下方所有框架的切图单位均是厘米，支持使用小数点来表示毫米，但是意义不大！
 
-   [1]卷帘座屏.                  [2]拉布座屏.                  [3]暂未开发`
+   [1]卷帘座屏.                  [2]拉布座屏.                  [3]拉布折屏.`
 		fmt.Println(text)
 
 		key := inputString("\n:: 请选择上方的边框类型：") // 获取键盘输入
@@ -146,7 +146,7 @@ OuterLoop:
 	}
 }
 
-// 旧厂框架的选择
+// 旧厂各种框架的选择汇总
 func (c *CLI) oldFrameChoice() {
 OuterLoop:
 	for {

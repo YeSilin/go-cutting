@@ -34,14 +34,14 @@ func RunAddBlackEdge() {
 // RunSaveAsJPEG 储存为jpeg格式的调用  暗号-10的实现
 func RunSaveAsJPEG() {
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "Config/JSX/SaveAsJPEG.jsx"
+	dataPath := "resources/JSX/SaveAsJPEG.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
 // RunSaveAllJPEG 将所有打开的文档储存为jpeg格式的调用 暗号-11
 func RunSaveAllJPEG() {
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "Config/JSX/saveAllJPEG.jsx"
+	dataPath := "resources/JSX/saveAllJPEG.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
@@ -83,5 +83,5 @@ func RunLoadSaveScript() {
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 
 	// 每次选择正确的脚本时删除多余备份，最大保留30个
-	go tools.DeleteRedundantBackups("Config/JSX/Temp/*", 100)
+	go tools.DeleteRedundantBackups("resources/jsx/Temp/*", 100)
 }

@@ -10,7 +10,7 @@ import (
 
 func init() {
 	presenter.InitLog()     // 初始化日志
-	presenter.InitSetting() //初始化设置
+	presenter.InitSetting() // 初始化设置
 	presenter.InitFolder()  // 创建必须提前存在的文件夹
 	presenter.InitScript()  // 创建必须提前准备的脚本
 }
@@ -24,7 +24,7 @@ func main() {
 	// 获取通知
 	cliView.Notice = ":: " + presenter.Limit.GetString("notice")
 	// 设置版本号
-	cliView.Version = "1.1.91" //设置版本号！！！！！！！！！！！！！！！！！！！！！！！
+	cliView.Version = "1.1.93" // 设置版本号！！！！！！！！！！！！！！！！！！！！！！！
 
 	// 验证许可证
 	cliView.License()

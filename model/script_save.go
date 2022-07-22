@@ -496,14 +496,8 @@ function saveAsJPEG() {
 
 // 默认的框架储存脚本
 function frameSaveDef() {
-    // 图层数量必须大于1才能合并
-    if (app.activeDocument.layers.length > 1) {
-        // 合并全部可见图层
-        app.activeDocument.mergeVisibleLayers();
-    }
-
-    // 转为背景图层不然添加黑边会无效
-    app.activeDocument.activeLayer.isBackgroundLayer = true
+    // 拼合活动文档的所有图层并扔掉隐藏的图层
+    app.activeDocument.flatten();
 
     // 添加黑边
     if (BlackEdge) {
@@ -541,7 +535,7 @@ function main() {
 
 
 // 是否自动黑边
-const BlackEdge = {{.BlackEdge}};   // 这里传golang变量哦！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+const BlackEdge = {{.BlackEdge}};  // 这里传golang变量哦！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 // 是否已保存
 var Saved = false;
 main();`
@@ -608,17 +602,6 @@ function addBlackEdge() {
 }
 
 
-// 创建一个透明图层
-function createLayer() {
-    // 新建一个图层
-    const layer = function () {
-        app.activeDocument.artLayers.add().name = "注意：已快捷裁剪成功！";
-    }
-    // 生成历史记录
-    app.activeDocument.suspendHistory("注意：已快捷裁剪成功！", "layer()");
-}
-
-
 // 清理元数据
 function deleteDocumentAncestorsMetadata() {
     const clear = function () {
@@ -634,8 +617,80 @@ function deleteDocumentAncestorsMetadata() {
 }
 
 
+// 创建一个文字提示层
+function promptLayer(text) {
+    // 在当前文档中添加一个图层。并且用变量 newLayer 记录这个图层。
+    var newLayer = app.activeDocument.artLayers.add();
+
+    // 把图层 newLayer 的图层类型变为”文本“ ，图层转换为文本图层。
+    newLayer.kind = LayerKind.TEXT;
+
+    // 设置图层 newLayer 的文本框位置，横坐标 50 像素，纵坐标 100 像素，例子 newLayer.textItem.position= [UnitValue("50px"), UnitValue("100px")]
+    newLayer.textItem.position = [app.activeDocument.width.value / 2, app.activeDocument.height.value - 1];
+
+    // 设置 newLayer 的文本字体大小为“40 点”。
+    newLayer.textItem.size = UnitValue("2cm");
+
+    // 设置 newLayer 的文本内容。
+    newLayer.textItem.contents = text;
+
+    // 设置 newLayer 的文本框对齐方式为居中对齐。
+    newLayer.textItem.justification = Justification.CENTER;
+
+    // 创建一个色彩变量 c   ，颜色为 #77bb11。
+    var c = new SolidColor();
+    c.rgb.hexValue = "000000";
+
+    // 设置 newLayer 的文本颜色为 c。
+    newLayer.textItem.color = c;
+}
+
+
+// 创建一个透明图层
+function createLayer() {
+    // 新建一个图层
+    const layer = function () {
+        app.activeDocument.artLayers.add().name = "注意：已快捷裁剪成功！";
+    }
+    // 生成历史记录
+    app.activeDocument.suspendHistory("注意：已快捷裁剪成功！", "layer()");
+}
+
+
+// 让用户确定保存的文件位置，返回文件对象
+function setSavePath() {
+    var docName = app.activeDocument.name;
+
+    // 如果有后缀
+    var index = docName.lastIndexOf(".")
+    if (index != -1) {
+        // 就去掉后缀名
+        docName = docName.substring(0, index);
+    }
+
+    // 自己特意加的后缀可以取代类型选择的大写
+    var TmpFile = new File("~/Desktop/GoCutting/" + docName + ".jpg");
+    // 获取用户自定义储存位置
+    //TmpFile = TmpFile.saveDlg("储存副本", "JPEG Files: *.jpg");
+    TmpFile = TmpFile.saveDlg("储存副本", "JPEG:*.JPG;*.JPEG;*.JPE, 不要修改保存类型:*.*");
+
+    return TmpFile;
+}
+
+
+// 获取文件名，返回字符串
+function getFileName(fileObject) {
+    // 先进行URL解码
+    var fileName = decodeURI(fileObject.name);
+    // 去掉后缀名
+    fileName = fileName.substring(0, fileName.lastIndexOf("."));
+
+    return fileName;
+}
+
+
 // 用来保存的函数
-function saveJPEG() {
+function saveJPEG(fileObject) {
     //定义一个变量[exportOptionsSave]，用来表示导出文档为jpeg格式的设置属性。
     var exportOptionsSave = new JPEGSaveOptions();
 
@@ -651,27 +706,15 @@ function saveJPEG() {
     // 保存为基线已优化
     exportOptionsSave.formatOptions = FormatOptions.OPTIMIZEDBASELINE;
 
-    // 获取当前文档的文件名
-    var name = app.activeDocument.name
-    var TmpFile1 = new File("~/Desktop/GoCutting/" + name);
-
     // saveAs( 文件, 选项, 作为副本, 扩展名大小写 )
-    //调用[document]的[saveAs]另存方法，使用上面设置的各种参数，将当前文档导出并转换为JPEG格式的文档
-    app.activeDocument.saveAs(TmpFile1.saveDlg("储存副本", "JPEG Files: *.jpg"), exportOptionsSave, true, Extension.LOWERCASE);
+    app.activeDocument.saveAs(fileObject, exportOptionsSave, true, Extension.LOWERCASE);
 }
 
 
 // 全部整合在一起
-function optimized() {
-    // 设置首选项新文档预设单位是厘米，PIXELS是像素
-    app.preferences.rulerUnits = Units.CM;
-
-    // 新建一个空白图层用于合并
-    app.activeDocument.artLayers.add();
-    // 合并全部可见图层
-    app.activeDocument.mergeVisibleLayers();
-    // 转为背景图层不然添加黑边会无效
-    app.activeDocument.activeLayer.isBackgroundLayer = true;
+function frameSave(fileObject) {
+    // 拼合活动文档的所有图层并扔掉隐藏的图层
+    app.activeDocument.flatten();
 
     // 复制图层
     app.activeDocument.activeLayer.duplicate();
@@ -704,19 +747,21 @@ function optimized() {
     // 向左移动图层
     app.activeDocument.artLayers[3].translate(width, 0);
 
-    // 合并全部可见图层
-    app.activeDocument.mergeVisibleLayers();
+    // 获取用户设定的文件名
+    //const userName = getFileName(fileObject);
+    // 按工厂要求添加提示
+    //promptLayer(userName);
 
-    if (blackEdge) {
+    // 拼合活动文档的所有图层并扔掉隐藏的图层
+    app.activeDocument.flatten();
+
+    if (BlackEdge) {
         // 添加黑边
         addBlackEdge();
     }
 
-    // 清理元数据
-    deleteDocumentAncestorsMetadata();
-
-    // 保存JPEG
-    saveJPEG();
+    // 最后另存为JPEG
+    saveJPEG(fileObject);
 }
 
 
@@ -727,39 +772,34 @@ function main() {
         // alert("没有打开的文档，请打开一个文档来运行此脚本！");
         return;
     }
-    // 清理元数据
-    deleteDocumentAncestorsMetadata();
     // 设置首选项新文档预设单位是厘米，PIXELS是像素
     app.preferences.rulerUnits = Units.CM;
+    // 清理元数据
+    deleteDocumentAncestorsMetadata();
 
+    // 确定用户的保存位置
+    var filePath = setSavePath();
+    // 用户没有选择位置直接返回
+    if (filePath == null) {
+        return;
+    }
 
     // 保存开始的历史记录状态
     var saveState = app.activeDocument.activeHistoryState;
 
-
-    // 如果出错就返回最开始
-    try {
-        // 生成历史记录
-        app.activeDocument.suspendHistory("储存副本", "optimized()");
-        isSave = true;
-    } catch (error) {
-        // 忽略错误
-    }
+    // 生成历史记录并调用函数
+    app.activeDocument.suspendHistory("储存副本", "frameSave(filePath)");
 
     // 当你完成了你正在做的任何事情，返回这个状态
     app.activeDocument.activeHistoryState = saveState;
 
     // 保存成功就加个提示
-    if (isSave) {
-        createLayer();
-    }
+    createLayer();
 }
 
 
 // 是否自动黑边
-const blackEdge = {{.BlackEdge}};   // 这里传golang变量哦！！！！！！！！！！！！！！！！！！！！！！！！！！！！
-// 是否保存成功
-var isSave = false;
+const BlackEdge = {{.BlackEdge}};   // 这里传golang变量哦！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 main();`
 
 	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用

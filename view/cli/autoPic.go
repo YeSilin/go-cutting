@@ -93,6 +93,7 @@ OuterLoop:
 		switch key {
 		case "1":
 			presenter.UniversalMainImage(viper.GetString("picture"), 800, 800, 1, viper.GetBool("automaticDeletion")) // 通用主图
+			return
 		case "2":
 			presenter.UniversalMainImage(viper.GetString("picture"), 800, 800, 2, viper.GetBool("automaticDeletion")) // 通用主图
 		case "3":

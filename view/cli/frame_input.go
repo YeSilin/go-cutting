@@ -62,7 +62,7 @@ func frame8to1() {
 		width, height := presenter.FramePresenter8to1(widthStr, heightStr)
 
 		// 输出提示
-		color.Yellow.Printf("\n:: 卷帘座屏：宽 %.2f cm，高 %.2f cm", width, height)
+		color.Yellow.Printf("\n:: 卷帘座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
 
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
@@ -99,4 +99,9 @@ func frame8to2() {
 			break
 		}
 	}
+}
+
+//  拉布折屏框架，需要：宽，高，片数
+func frame8to3() {
+	
 }
