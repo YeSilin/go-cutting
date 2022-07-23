@@ -583,7 +583,7 @@ func OldFrame6() {
 		singleName := fmt.Sprintf("%s折屏", tempName)
 
 		model.NewDocument(totalWidth, height, frameName, false)           // 创建ps文档
-		generate.LineJs6(width, number)                                   // 生成专属参考线
+		model.FrameLine6(width, number)                                   // 生成专属的切图参考线
 		go generate.Tailor6(width, height, number, frameName, singleName) // 生成暗号【-1】可以用的另存脚本
 		model.IsMaxCanvasExceeded(width, height)                          // 最大画布判断
 

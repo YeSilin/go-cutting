@@ -103,5 +103,38 @@ func frame8to2() {
 
 //  拉布折屏框架，需要：宽，高，片数
 func frame8to3() {
-	
+	// 由配置决定是否循环使用此框架
+	for {
+		tools.ChineseTitle("当前框架拉布折屏", 74)         // 请注意切图的工厂与框架的选择
+		widthStr := inputPro("\n:: 请输入拉布折屏的宽：", 6) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if widthStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		heightStr := inputPro("\n:: 请输入拉布折屏的高：", 6) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if heightStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		numberStr := inputPro("\n:: 请输入共拥有几扇：", 1) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if numberStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		// 处理框架生成脚本
+		totalWidth, height := presenter.FramePresenter8to3(widthStr, heightStr, numberStr)
+
+		// 输出提示
+		color.Yellow.Printf("\n:: 拉布折屏：宽 %.2f cm，高 %.2f cm\n", totalWidth, height)
+
+		if !viper.GetBool("memory") { // 是否记忆框架
+			break
+		}
+	}
 }

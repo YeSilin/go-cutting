@@ -135,6 +135,11 @@ OuterLoop:
 			if !viper.GetBool("memory") { // 是否记忆框架
 				return
 			}
+		case "3":
+			frame8to3()                   // 拉布折屏
+			if !viper.GetBool("memory") { // 是否记忆框架
+				return
+			}
 		case "-":
 			break OuterLoop
 		case "":

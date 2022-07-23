@@ -833,3 +833,291 @@ main();`
 		logrus.Error(err)
 	}
 }
+
+// FrameSave8to3 拉布折屏的专属保存
+func FrameSave8to3(frameName string, width, height, Count float64) {
+	const script = `//var str = "js实现用{two}自符串替换占位符{two} {three}  {one} ".format({one: "I",two: "LOVE",three: "YOU"});
+//var str2 = "js实现用{1}自符串替换占位符{1} {2}  {0} ".format("I","LOVE","YOU");
+String.prototype.format = function () {
+    if (arguments.length == 0) return this;
+    var param = arguments[0];
+    var s = this;
+    if (typeof (param) == 'object') {
+        for (var key in param)
+            s = s.replace(new RegExp("\\{" + key + "\\}", "g"), param[key]);
+        return s;
+    } else {
+        for (var i = 0; i < arguments.length; i++)
+            s = s.replace(new RegExp("\\{" + i + "\\}", "g"), arguments[i]);
+        return s;
+    }
+};
+
+// 用于添加黑边的函数
+function addBlackEdge() {
+    // 保存当前背景颜色
+    const nowColor = app.backgroundColor;
+
+    // 定义一个对象颜色是黑色
+    var black = new SolidColor();
+    black.rgb.hexValue = "d5d5d5";
+
+    // 设置背景颜色
+    app.backgroundColor = black;
+
+    // 获取当前文档的高度与宽度
+    const width = app.activeDocument.width.value + 0.1;
+    const height = app.activeDocument.height.value + 0.1;
+
+    // 重设画布大小
+    app.activeDocument.resizeCanvas(width, height, AnchorPosition.MIDDLECENTER);
+
+    // 恢复之前的背景颜色
+    app.backgroundColor = nowColor;
+}
+
+
+// 创建一个文字提示层
+function promptLayer(text) {
+    // 设置坐标
+    const x = app.activeDocument.width.value / 2;
+    const y = app.activeDocument.height.value - 1;
+
+    // 在当前文档中添加一个图层。并且用变量 newLayer 记录这个图层。
+    var newLayer = app.activeDocument.artLayers.add();
+    // 把图层 newLayer 的图层类型变为”文本“ ，图层转换为文本图层。
+    newLayer.kind = LayerKind.TEXT;
+    // 设置图层 newLayer 的文本框位置，横坐标 50 像素，纵坐标 100 像素，例子 newLayer.textItem.position= [UnitValue("50px"), UnitValue("100px")]
+    newLayer.textItem.position = [x, y];
+    // 设置 newLayer 的文本字体大小为“40 点”。
+    newLayer.textItem.size = UnitValue("2cm");
+    // 设置 newLayer 的文本内容。
+    newLayer.textItem.contents = text;
+    // 设置 newLayer 的文本框对齐方式为居中对齐。
+    newLayer.textItem.justification = Justification.CENTER;
+
+    // 添加一个颜色采样器
+    const pointSample1 = app.activeDocument.colorSamplers.add([x - 1, y]);
+    const pointSample2 = app.activeDocument.colorSamplers.add([x + 1, y]);
+    // 求出平均值
+    const average = (pointSample1.color.cmyk.black + pointSample2.color.cmyk.black) / 2
+    // 删除全部颜色取样器
+    app.activeDocument.colorSamplers.removeAll();
+
+    // 创建一个色彩变量 c
+    var c = new SolidColor();
+    // 如果吸取的颜色K小于40说明偏白，那么字就改成黑色
+    if (average < 40) {
+        c.rgb.hexValue = "000000";
+    } else {
+        c.rgb.hexValue = "ffffff";
+    }
+    // 设置 newLayer 的文本颜色为 c。
+    newLayer.textItem.color = c;
+}
+
+
+// 创建一个透明图层
+function createLayer() {
+    // 新建一个图层
+    const layer = function () {
+        app.activeDocument.artLayers.add().name = "注意：已快捷裁剪成功！";
+    }
+    // 生成历史记录
+    app.activeDocument.suspendHistory("注意：已快捷裁剪成功！", "layer()");
+}
+
+
+// 清理元数据
+function deleteDocumentAncestorsMetadata() {
+    const clear = function () {
+        // 清理元数据四步骤
+        if (ExternalObject.AdobeXMPScript == undefined) ExternalObject.AdobeXMPScript = new ExternalObject("lib:AdobeXMPScript");
+        var xmp = new XMPMeta(activeDocument.xmpMetadata.rawData);
+        // Begone foul Document Ancestors!
+        xmp.deleteProperty(XMPConst.NS_PHOTOSHOP, "DocumentAncestors");
+        app.activeDocument.xmpMetadata.rawData = xmp.serialize();
+    }
+    // 生成历史记录
+    app.activeDocument.suspendHistory("清理元数据", "clear()");
+}
+
+
+
+//  获取用户想要保存的位置加文件名
+function getPathName(saveName) {
+    // 裁剪之后进行保存的位置和你想要的默认名称
+    var tempFile = new File("~/Desktop/GoCutting/" + saveName);
+    // 返回带路径的名字，注意要先数字解码
+    return decodeURI(tempFile.saveDlg("储存副本", ["不要带扩展名:*", "默认保存为 JPG 文件:*"]))
+}
+
+
+
+// 全部整合在一起
+function frameSave(fileNameArr) {
+    // 定义一个变量[exportOptionsSave]，用来表示导出文档为jpeg格式的设置属性。
+    var exportOptionsSave = new JPEGSaveOptions();
+    // 嵌入彩色配置文件
+    exportOptionsSave.embedColorProfile = true;
+    // 设置杂边为无
+    exportOptionsSave.matte = MatteType.NONE;
+    //设置导出文档时，图片的压缩质量。数字范围为1至12。
+    exportOptionsSave.quality = 12;
+    // 保存为基线已优化
+    exportOptionsSave.formatOptions = FormatOptions.OPTIMIZEDBASELINE;
+
+
+    // 生成历史记录并调用函数
+    app.activeDocument.suspendHistory("拼合图像", "app.activeDocument.flatten()");
+    // 保存活动历史记录状态
+    const work = app.activeDocument.activeHistoryState;
+
+    // 循环保存每一片
+    for (var i = 0; i < Count; i++) {
+        // 根据左上右下裁剪且边距是0
+        app.activeDocument.crop([Width * i, 0, Width * (i + 1), Height], 0);
+
+        // 复制图层
+        app.activeDocument.activeLayer.duplicate();
+        app.activeDocument.activeLayer.duplicate();
+        app.activeDocument.activeLayer.duplicate();
+        app.activeDocument.activeLayer.duplicate();
+
+        // 扩大画布
+        var currentWidth = app.activeDocument.width.value;
+        var currentHeight = app.activeDocument.height.value;
+        app.activeDocument.resizeCanvas(currentWidth + 8, currentHeight + 8, AnchorPosition.MIDDLECENTER);
+
+        // 垂直翻转
+        app.activeDocument.artLayers[0].resize(undefined, -100);
+        // 向上移动图层
+        app.activeDocument.artLayers[0].translate(0, -currentHeight);
+
+        // 垂直翻转
+        app.activeDocument.artLayers[1].resize(undefined, -100);
+        // 向下移动图层
+        app.activeDocument.artLayers[1].translate(0, currentHeight);
+
+        // 水平翻转
+        app.activeDocument.artLayers[2].resize(-100, undefined);
+        // 向左移动图层
+        app.activeDocument.artLayers[2].translate(-currentWidth, 0);
+
+        // 水平翻转
+        app.activeDocument.artLayers[3].resize(-100, undefined);
+        // 向左移动图层
+        app.activeDocument.artLayers[3].translate(currentWidth, 0);
+
+        // 按工厂要求添加提示
+        promptLayer((i + 1) + "/" + Count);
+
+        // 拼合活动文档的所有图层并扔掉隐藏的图层
+        app.activeDocument.flatten();
+
+        // 添加黑边
+        if (BlackEdge) {
+            addBlackEdge();
+        }
+
+        // saveAs( 文件, 选项, 作为副本, 扩展名大小写 )
+        app.activeDocument.saveAs(new File(fileNameArr[i]), exportOptionsSave, true, Extension.LOWERCASE);
+
+        // 当你完成了你正在做的任何事情，返回这个状态
+        app.activeDocument.activeHistoryState = work;
+    }
+}
+
+
+// 主函数
+function main() {
+    // 判断是否有打开的文件
+    if (!documents.length) {
+        return;
+    }
+
+    // 得到用户想要保存的位置
+    var userSavePath = getPathName("请输入订单编号");
+    // 没有得到路径就返回
+    if (userSavePath == "null") {
+        return;
+    }
+
+    // 得到最终会保存出来的文件名
+    var fileNameArr = new Array();
+    for (var i = 0; i < Count; i++) {
+        // 这里额外加8是因为保存时还要重设画布大小
+        fileNameArr[i] = "{0}_拉布折屏_{1}_{2}-{3}".format(userSavePath, (Width + 8) + "x" + (Height + 8), i + 1, Count);
+    }
+
+    // 遍历全部可能覆盖的文件名
+    for (var i = 0; i < fileNameArr.length; i++) {
+        // 避免覆盖已保存的文件
+        if (new File(fileNameArr[i] + ".jpg").exists) {
+            alert("输入的编号重复，已自动取消操作！");
+            return;
+        }
+    }
+
+    // 设置首选项新文档预设单位是厘米，PIXELS是像素
+    app.preferences.rulerUnits = Units.CM;
+    // 清除元数据
+    deleteDocumentAncestorsMetadata();
+
+    // 保存活动历史记录状态
+    var savedState = app.activeDocument.activeHistoryState;
+
+    // 调用保存函数，这里如果调用了历史函数内就不能再次调用历史
+    frameSave(fileNameArr);
+
+    // 当你完成了你正在做的任何事情，返回这个状态
+    app.activeDocument.activeHistoryState = savedState;
+
+    // 全部保存成功加个提示
+    createLayer();
+}
+
+
+// 定义折屏单扇的宽和高
+const Width = {{.Width}};  // 这里传golang变量哦！！！！！！！！！！！
+const Height = {{.Height}};  // 这里传golang变量哦！！！！！！！！！！！
+// 定义一个变量表示几扇
+const Count = {{.Count}};  // 这里传golang变量哦！！！！！！！！！！！
+// 是否自动黑边
+const BlackEdge = {{.BlackEdge}}; // 这里传golang变量哦！！！！！！！！！！！
+// 执行主函数
+main();`
+
+	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
+	info := struct {
+		Width     float64
+		Height    float64
+		Count     int  // 几片折屏
+		BlackEdge bool // 是否自动黑边
+	}{width, height, int(Count), viper.GetBool("blackEdge")}
+
+	// 解析字符串生成模板对象
+	tmpl, err := template.New("tmpl").Parse(script)
+	if err != nil {
+		logrus.Error(err)
+		return
+	}
+
+	// 生成的文件名字
+	fileName := fmt.Sprintf("resources/jsx/temp/tailor_%s.jsx", frameName)
+
+	// 创建文件，返回两个值，一是创建的文件，二是错误信息
+	f, err := os.Create(fileName)
+	if err != nil { // 如果有错误，打印错误，同时返回
+		logrus.Error(err)
+		return
+	}
+	// 关闭文件
+	defer f.Close()
+
+	// 利用给定数据渲染模板，并将结果写入f
+	err = tmpl.Execute(f, info)
+	if err != nil {
+		logrus.Error(err)
+	}
+}
