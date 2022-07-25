@@ -100,13 +100,13 @@ func FramePresenter8to2(widthStr, heightStr string) (width, height float64) {
 }
 
 // FramePresenter8to3  对拉布折屏进行处理
-func FramePresenter8to3(widthStr, heightStr, numberStr string) (totalWidth, height float64) {
+func FramePresenter8to3(widthStr, heightStr, countStr string) (totalWidth, height float64) {
 	// 强制类型转换成浮点数
 	width, _ := strconv.ParseFloat(widthStr, 64)
 	height, _ = strconv.ParseFloat(heightStr, 64)
-	number, _ := strconv.ParseFloat(numberStr, 64)
+	count, _ := strconv.ParseFloat(countStr, 64)
 	// 算出总宽
-	totalWidth = width * number
+	totalWidth = width * count
 
 	// 进行框架公式计算
 
@@ -117,10 +117,10 @@ func FramePresenter8to3(widthStr, heightStr, numberStr string) (totalWidth, heig
 	model.NewDocument(totalWidth, height, frameName, false)
 
 	// 生成专属的切图参考线
-	model.FrameLine6(width, number)
+	model.FrameLine6(width, count)
 
 	// 生成暗号【-1】可以用的另存脚本
-	go model.FrameSave8to3(frameName, width, height, number)
+	go model.FrameSave8to3(frameName, width, height, count)
 
 	// 追加最大画布判断
 	model.IsMaxCanvasExceeded(width+8, height+8)

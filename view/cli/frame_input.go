@@ -120,15 +120,15 @@ func frame8to3() {
 			return
 		}
 
-		numberStr := inputPro("\n:: 请输入共拥有几扇：", 1) // 获取键盘输入
+		countStr := inputPro("\n:: 请输入共拥有几扇：", 1) // 获取键盘输入
 		// 输入返回当然要返回啦
-		if numberStr == "-" {
+		if countStr == "-" {
 			tools.CallClear() // 清屏
 			return
 		}
 
 		// 处理框架生成脚本
-		totalWidth, height := presenter.FramePresenter8to3(widthStr, heightStr, numberStr)
+		totalWidth, height := presenter.FramePresenter8to3(widthStr, heightStr, countStr)
 
 		// 输出提示
 		color.Yellow.Printf("\n:: 拉布折屏：宽 %.2f cm，高 %.2f cm\n", totalWidth, height)

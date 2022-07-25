@@ -619,28 +619,39 @@ function deleteDocumentAncestorsMetadata() {
 
 // 创建一个文字提示层
 function promptLayer(text) {
+    // 设置坐标底部居中
+    const x = app.activeDocument.width.value / 2;
+    const y = app.activeDocument.height.value - 1;
+    // 添加一个颜色采样器
+    const pointSample1 = app.activeDocument.colorSamplers.add([x - 1, y - 1]);
+    const pointSample2 = app.activeDocument.colorSamplers.add([x + 1, y - 1]);
+    // 求出平均值备用
+    const average = (pointSample1.color.cmyk.black + pointSample2.color.cmyk.black) / 2
+    // 删除全部颜色取样器
+    app.activeDocument.colorSamplers.removeAll();
+	// 不在循环内直接关闭信息面板
+	app.runMenuItem(stringIDToTypeID("closeInfoPanel"));
+    // 创建一个色彩变量 c
+    var c = new SolidColor();
+    // 如果吸取的颜色K小于40说明偏白，那么字就改成黑色
+    if (average < 40) {
+        c.rgb.hexValue = "000000";
+    } else {
+        c.rgb.hexValue = "ffffff";
+    }
+
     // 在当前文档中添加一个图层。并且用变量 newLayer 记录这个图层。
     var newLayer = app.activeDocument.artLayers.add();
-
     // 把图层 newLayer 的图层类型变为”文本“ ，图层转换为文本图层。
     newLayer.kind = LayerKind.TEXT;
-
     // 设置图层 newLayer 的文本框位置，横坐标 50 像素，纵坐标 100 像素，例子 newLayer.textItem.position= [UnitValue("50px"), UnitValue("100px")]
-    newLayer.textItem.position = [app.activeDocument.width.value / 2, app.activeDocument.height.value - 1];
-
+    newLayer.textItem.position = [x, y];
     // 设置 newLayer 的文本字体大小为“40 点”。
     newLayer.textItem.size = UnitValue("2cm");
-
     // 设置 newLayer 的文本内容。
     newLayer.textItem.contents = text;
-
     // 设置 newLayer 的文本框对齐方式为居中对齐。
     newLayer.textItem.justification = Justification.CENTER;
-
-    // 创建一个色彩变量 c   ，颜色为 #77bb11。
-    var c = new SolidColor();
-    c.rgb.hexValue = "000000";
-
     // 设置 newLayer 的文本颜色为 c。
     newLayer.textItem.color = c;
 }
@@ -835,7 +846,7 @@ main();`
 }
 
 // FrameSave8to3 拉布折屏的专属保存
-func FrameSave8to3(frameName string, width, height, Count float64) {
+func FrameSave8to3(frameName string, width, height, count float64) {
 	const script = `//var str = "js实现用{two}自符串替换占位符{two} {three}  {one} ".format({one: "I",two: "LOVE",three: "YOU"});
 //var str2 = "js实现用{1}自符串替换占位符{1} {2}  {0} ".format("I","LOVE","YOU");
 String.prototype.format = function () {
@@ -879,9 +890,24 @@ function addBlackEdge() {
 
 // 创建一个文字提示层
 function promptLayer(text) {
-    // 设置坐标
+    // 设置坐标底部居中
     const x = app.activeDocument.width.value / 2;
     const y = app.activeDocument.height.value - 1;
+    // 添加一个颜色采样器
+    const pointSample1 = app.activeDocument.colorSamplers.add([x - 1, y - 1]);
+    const pointSample2 = app.activeDocument.colorSamplers.add([x + 1, y - 1]);
+    // 求出平均值备用
+    const average = (pointSample1.color.cmyk.black + pointSample2.color.cmyk.black) / 2
+    // 删除全部颜色取样器
+    app.activeDocument.colorSamplers.removeAll();
+    // 创建一个色彩变量 c
+    var c = new SolidColor();
+    // 如果吸取的颜色K小于40说明偏白，那么字就改成黑色
+    if (average < 40) {
+        c.rgb.hexValue = "000000";
+    } else {
+        c.rgb.hexValue = "ffffff";
+    }
 
     // 在当前文档中添加一个图层。并且用变量 newLayer 记录这个图层。
     var newLayer = app.activeDocument.artLayers.add();
@@ -895,23 +921,6 @@ function promptLayer(text) {
     newLayer.textItem.contents = text;
     // 设置 newLayer 的文本框对齐方式为居中对齐。
     newLayer.textItem.justification = Justification.CENTER;
-
-    // 添加一个颜色采样器
-    const pointSample1 = app.activeDocument.colorSamplers.add([x - 1, y]);
-    const pointSample2 = app.activeDocument.colorSamplers.add([x + 1, y]);
-    // 求出平均值
-    const average = (pointSample1.color.cmyk.black + pointSample2.color.cmyk.black) / 2
-    // 删除全部颜色取样器
-    app.activeDocument.colorSamplers.removeAll();
-
-    // 创建一个色彩变量 c
-    var c = new SolidColor();
-    // 如果吸取的颜色K小于40说明偏白，那么字就改成黑色
-    if (average < 40) {
-        c.rgb.hexValue = "000000";
-    } else {
-        c.rgb.hexValue = "ffffff";
-    }
     // 设置 newLayer 的文本颜色为 c。
     newLayer.textItem.color = c;
 }
@@ -1009,7 +1018,7 @@ function frameSave(fileNameArr) {
         // 向左移动图层
         app.activeDocument.artLayers[3].translate(currentWidth, 0);
 
-        // 按工厂要求添加提示
+        // 按工厂要求添加提示会自动打开信息面板
         promptLayer((i + 1) + "/" + Count);
 
         // 拼合活动文档的所有图层并扔掉隐藏的图层
@@ -1026,6 +1035,8 @@ function frameSave(fileNameArr) {
         // 当你完成了你正在做的任何事情，返回这个状态
         app.activeDocument.activeHistoryState = work;
     }
+	// 循环结束后关闭信息面板
+	app.runMenuItem(stringIDToTypeID("closeInfoPanel"));
 }
 
 
@@ -1094,7 +1105,7 @@ main();`
 		Height    float64
 		Count     int  // 几片折屏
 		BlackEdge bool // 是否自动黑边
-	}{width, height, int(Count), viper.GetBool("blackEdge")}
+	}{width, height, int(count), viper.GetBool("blackEdge")}
 
 	// 解析字符串生成模板对象
 	tmpl, err := template.New("tmpl").Parse(script)
