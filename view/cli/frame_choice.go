@@ -166,7 +166,7 @@ OuterLoop:
 
    [4]上下座屏.                  [5]顶天立地.                  [6]传统折屏.
 
-   [7]多个座屏.                  [8]卷帘拉布.                  [9]不扣补切.`
+   [7]多个座屏.                  [8]卷帘拉布.                  [9]补切画布.`
 		fmt.Println(text)
 
 		key := inputString("\n:: 请选择上方的边框类型：") // 获取键盘输入
@@ -196,7 +196,7 @@ OuterLoop:
 		case "8":
 			c.rollerShutterClothChoice() // 卷帘拉布框架选择
 		case "9":
-			unclassified.OldFrame9() // 补切画布
+			frame9() // 补切画布
 		case "-":
 			break OuterLoop
 		case "":

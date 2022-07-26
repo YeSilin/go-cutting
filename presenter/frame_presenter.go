@@ -99,7 +99,7 @@ func FramePresenter8to2(widthStr, heightStr string) (width, height float64) {
 	return
 }
 
-// FramePresenter8to3  对拉布折屏进行处理
+// FramePresenter8to3 对拉布折屏进行处理
 func FramePresenter8to3(widthStr, heightStr, countStr string) (totalWidth, height float64) {
 	// 强制类型转换成浮点数
 	width, _ := strconv.ParseFloat(widthStr, 64)
@@ -124,6 +124,34 @@ func FramePresenter8to3(widthStr, heightStr, countStr string) (totalWidth, heigh
 
 	// 追加最大画布判断
 	model.IsMaxCanvasExceeded(width+8, height+8)
+
+	// 是否打开自动新建文档
+	model.RunAutoCreateDocuments()
+
+	return
+}
+
+// FramePresenter9 对补切画布进行处理
+func FramePresenter9(widthStr, heightStr string) (width, height float64) {
+	// 定义一个预留尺寸
+
+	// 强制类型转换成浮点数
+	width, _ = strconv.ParseFloat(widthStr, 64)
+	height, _ = strconv.ParseFloat(heightStr, 64)
+
+	// 进行框架公式计算
+
+	// 为当前框架指定名字
+	frameName := fmt.Sprintf("%s_补切画布_%.0fx%.0f", tools.NowTime(), width, height)
+
+	// 生成创建Photoshop新文档脚本
+	model.NewDocument(width, height, frameName, true) // 创建ps文档
+
+	// 生成暗号【-1】可以用的另存脚本
+	go model.FrameSaveDef(frameName)
+
+	// 追加最大画布判断
+	model.IsMaxCanvasExceeded(width, height)
 
 	// 是否打开自动新建文档
 	model.RunAutoCreateDocuments()

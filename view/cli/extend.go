@@ -52,56 +52,6 @@ OuterLoop:
 	}
 }
 
-// 定时关机工具选择
-func (c *CLI) timingShutdownToolSelection() {
-OuterLoop:
-	for {
-		// 先显示通知
-		c.showNotice(false)
-
-		tools.EnglishTitle("Timing shutdown tool selection", 74)
-		text := `
-:: 以下小功能主要用于关闭远程服务器，提前预定关机，避免忘记关闭远程服务器！
-
-   [1]定时十八点关机           [2]取消十八点关机           [3]功能暂未开发`
-		fmt.Println(text)
-		key := inputString("\n:: 请选择需要使用的功能：") // 获取键盘输入
-		tools.CallClear()                      // 清屏
-
-		// 如果是暗号就打印暗号传回来的提示
-		var ok bool
-		if ok, c.info = presenter.SelectCommand(key); ok {
-			continue
-		}
-
-		switch key {
-		case "1":
-			// 定时关机
-			s, Unsigned := tools.DistanceIsEighteen()
-			if Unsigned { // 无符号就设置
-				cmd := fmt.Sprintf("shutdown /s /t %d", s)
-				go exec.Command("cmd.exe", "/c", cmd).Run()
-				fmt.Printf("\n:: 定时关机设置成功，%d秒后将自动关机！\n", s)
-			} else {
-				fmt.Println("\n:: 定时关机设置失败，已超过18点，此条命令不生效！")
-			}
-		case "2":
-			// 取消定时关机
-			go exec.Command("cmd.exe", "/c", "shutdown /a").Run()
-			fmt.Println("\n:: 定时关机已关闭，18点后不会自动关机！")
-		case "3":
-
-		case "-":
-			break OuterLoop
-		case "":
-			c.info = ":: 输入的内容为空，请重新输入..."
-			continue
-		default:
-			c.info = fmt.Sprintf(":: 输入的 [%s] 不是已知的功能选项，请重新输入...", tools.ColourString(key, ctc.ForegroundGreen))
-		}
-	}
-}
-
 // 附加功能选择
 func (c *CLI) extendChoice() {
 OuterLoop:
@@ -116,7 +66,7 @@ OuterLoop:
 
    [4]净化设备驱动器          [5]解决黑屏卡死           [6]文件修复工具.
 
-   [7]定时关机工具.           [8]看图王去广告           [9]新建文本修复`
+   [7]功能暂未开发            [8]看图王去广告           [9]新建文本修复`
 		fmt.Println(tips)
 
 		key := inputString("\n:: 请选择需要使用的功能：") // 获取键盘输入
@@ -148,7 +98,7 @@ OuterLoop:
 		case "6":
 			c.fileRepairToolSelection() // 文件修复工具选择
 		case "7":
-			c.timingShutdownToolSelection() // 定时关机工具选择
+
 		case "8":
 			model.CleanUp2345Pic() // 净化2345看图王
 		case "9":
