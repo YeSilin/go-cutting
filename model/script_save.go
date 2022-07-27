@@ -382,10 +382,15 @@ function loadSaveScript() {
     const scriptPath = (new File($.fileName)).parent;
 
     // 获取当前文档名字
-    const nowName = app.activeDocument.name;
+    var docName = app.activeDocument.name;
+    // 如果有文件后缀名就去掉
+    const index = docName.lastIndexOf(".")
+    if (index != -1) {
+        docName = docName.substring(0, index);
+    }
 
     // 要运行的脚本路径
-    const runScript = scriptPath + "/temp/tailor_" + nowName + ".jsx";
+    const runScript = scriptPath + "/temp/tailor_" + docName + ".jsx";
 
     // 获得脚本对象
     var fileRef = new File(runScript);

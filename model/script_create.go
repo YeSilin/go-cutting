@@ -30,6 +30,8 @@ function newDocument(width, height, docName){
 	const colorProfileName = "Japan Color 2011 Coated";
 	// 将设置好的参数放在[add]方法里面
 	app.documents.add(width, height, resolution, docName, mode, initialFill, pixelAspectRatio, bitsPerChannel, colorProfileName);
+	// 切换锁定参考线
+	app.runMenuItem(stringIDToTypeID('toggleLockGuides'));
 }
 
 // 新文档的宽度

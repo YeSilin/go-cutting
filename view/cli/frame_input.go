@@ -81,10 +81,10 @@ func frame2() {
 		}
 
 		// 处理框架生成脚本
-		width, height := presenter.FramePresenter1(widthStr, heightStr)
+		width, height, frameType := presenter.FramePresenter2(widthStr, heightStr, leftHollowStr, rightHollowStr, hingeStr)
 
 		// 输出提示
-		color.Yellow.Printf("\n:: 常规座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
+		color.Yellow.Printf("\n:: %s：宽 %.2f cm，高 %.2f cm\n", frameType, width, height)
 
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break

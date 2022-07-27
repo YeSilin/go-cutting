@@ -23,108 +23,6 @@ func isOpenPs() {
 	}
 }
 
-// OldFrame2 旧厂左右镂空
-//先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个竖边 空出的中间画面加5厘米  旧厂的边框实际厚度是5厘米
-func OldFrame2() {
-	// 定义一个预留尺寸
-	var reserve = viper.GetFloat64("reserve")
-
-	// 初始化输入提示的切片
-	inputPrompt := [5]string{"\n:: 请输入左右镂空的总宽：", "\n:: 请输入左右镂空的总高：", "\n:: 请输入左镂空的大小：",
-		"\n:: 请输入右镂空的大小：", "\n:: 请输入合页数量（若订单无备注请输入“0”）："}
-
-	// 保存尺寸的切片
-	saveSizeStr := [5]string{}
-
-	// 循环使用此框架
-	for {
-		tools.ChineseTitle("当前框架左右镂空", 74) // 请注意切图的工厂与框架的选择
-		for i := 0; i < len(saveSizeStr); i++ {
-
-			// 只有前两个需要开启画布模式
-			if i < 2 {
-				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
-			} else {
-				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
-			}
-
-			// 输入返回当然要返回啦
-			if saveSizeStr[i] == "-" {
-				tools.CallClear() // 清屏
-				return
-			}
-
-			// 第一次就输入返回就退出此框架
-			if i == 0 && saveSizeStr[i] == "--" {
-				return
-			}
-
-			// 退回上一级输入
-			if saveSizeStr[i] == "--" {
-				i -= 2
-			}
-		}
-
-		//存储未计算时的历史记录
-		history := fmt.Sprintf("左右镂空的总宽：%s\n", saveSizeStr[0])
-		history += fmt.Sprintf("左右镂空的总高：%s\n", saveSizeStr[1])
-		history += fmt.Sprintf("左镂空的大小：%s\n", saveSizeStr[2])
-		history += fmt.Sprintf("右镂空的大小：%s\n", saveSizeStr[3])
-		history += fmt.Sprintf("合页数量：%s\n", saveSizeStr[4])
-
-		// 强制类型转换成浮点数
-		width, _ := strconv.ParseFloat(saveSizeStr[0], 64)
-		height, _ := strconv.ParseFloat(saveSizeStr[1], 64)
-		leftHollowOut, _ := strconv.ParseFloat(saveSizeStr[2], 64)
-		rightHollowOut, _ := strconv.ParseFloat(saveSizeStr[3], 64)
-		hinges, _ := strconv.ParseFloat(saveSizeStr[4], 64)
-
-		// 声明临时框架名字
-		var tempName = "左右镂空"
-
-		// 镂空判断
-		if leftHollowOut > 0 && rightHollowOut == 0 {
-			tempName = "左镂空"
-		}
-		if leftHollowOut == 0 && rightHollowOut > 0 {
-			tempName = "右镂空"
-		}
-
-		// 进行框架公式计算
-		if hinges == 0 {
-			width = width - 10 + reserve
-			if leftHollowOut > 0 {
-				width -= leftHollowOut + 5 // 如果有左镂空的话
-			}
-			if rightHollowOut > 0 {
-				width -= rightHollowOut + 5 // 如果有右镂空的话
-			}
-		} else {
-			width = width - (leftHollowOut + rightHollowOut) - 10 + reserve
-		}
-		height = height - 10 + reserve
-
-		color.Yellow.Printf("\n:: %s：宽 %.2f cm，高 %.2f cm", tempName, width, height)
-
-		//存储已计算的历史记录
-		history += fmt.Sprintf("%s：宽 %.2f cm，高 %.2f cm\n", tempName, width, height)
-		go presenter.History(history) // 写入历史
-
-		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), tempName, width, height)
-
-		model.NewDocument(width, height, frameName, true) // 创建ps文档
-		go model.FrameSaveDef(frameName)                  // 生成暗号【-1】可以用的另存脚本
-		model.IsMaxCanvasExceeded(width, height)          // 最大画布判断
-
-		isOpenPs() // 是否打开自动新建文档
-
-		if !viper.GetBool("memory") { // 是否记忆框架
-			break
-		}
-	}
-}
-
 // OldFrame3 旧厂中间大两边小
 //先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个竖边 空出的中间画面加5厘米
 func OldFrame3() {
@@ -583,7 +481,7 @@ func OldFrame6() {
 		singleName := fmt.Sprintf("%s折屏", tempName)
 
 		model.NewDocument(totalWidth, height, frameName, false)           // 创建ps文档
-		model.FrameLine6(width, number)                                   // 生成专属的切图参考线
+		model.FrameGuide6(width, number)                                  // 生成专属的切图参考线
 		go generate.Tailor6(width, height, number, frameName, singleName) // 生成暗号【-1】可以用的另存脚本
 		model.IsMaxCanvasExceeded(width, height)                          // 最大画布判断
 

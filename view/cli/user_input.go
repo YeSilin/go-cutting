@@ -79,7 +79,7 @@ func inputPro(prompt string, least int) string {
 		}
 
 		// 如果要0直接返回，那必须满足不可小于最小值
-		if least <= 0 {
+		if temp == "0" && least <= 0 {
 			// 重新指定xy位置
 			tools.GotoPostion(x, y-1)
 			fmt.Println(prompt + "0") // 重新打印一遍

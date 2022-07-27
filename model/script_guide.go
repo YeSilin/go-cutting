@@ -7,11 +7,11 @@ import (
 	"text/template"
 )
 
-// FrameLine6 生成折屏参考线
-func FrameLine6(width, number float64) {
+// FrameGuide6 生成折屏参考线
+func FrameGuide6(width, number float64) {
 	const script = `
 // 新建折屏参考线函数
-function addFoldingScreenLine() {
+function addFoldingScreenGuide() {
     const width = {{.Width}};  // 这里传golang参数！！！！！！！！！！！！！！！！！！！！！！！！！！
     const number = {{.Number}};  // 这里传golang参数！！！！！！！！！！！！！！！！！！！！！！！！！！
 
@@ -26,7 +26,7 @@ function addFoldingScreenLine() {
 }
 
 // 调用新建折屏参考线
-addFoldingScreenLine();
+addFoldingScreenGuide();
 `
 
 	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用

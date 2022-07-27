@@ -40,6 +40,62 @@ func FramePresenter1(widthStr, heightStr string) (width, height float64) {
 	return
 }
 
+// FramePresenter2 对左右镂空进行处理
+func FramePresenter2(widthStr, heightStr, leftHollowStr, rightHollowStr, hingeStr string) (width, height float64, frameType string) {
+	// 定义一个预留尺寸
+	var reserve = viper.GetFloat64("reserve")
+
+	// 强制类型转换成浮点数
+	width, _ = strconv.ParseFloat(widthStr, 64)
+	height, _ = strconv.ParseFloat(heightStr, 64)
+	leftHollow, _ := strconv.ParseFloat(leftHollowStr, 64)
+	rightHollow, _ := strconv.ParseFloat(rightHollowStr, 64)
+	hinge, _ := strconv.ParseFloat(hingeStr, 64)
+
+	// 进行框架公式计算
+	if hinge == 0 {
+		width = width - 10 + reserve
+		if leftHollow > 0 {
+			width -= leftHollow + 5 // 如果有左镂空的话
+		}
+		if rightHollow > 0 {
+			width -= rightHollow + 5 // 如果有右镂空的话
+		}
+	} else {
+		width = width - (leftHollow + rightHollow) - 10 + reserve
+	}
+	height = height - 10 + reserve
+
+	// 求出框架类型
+	if leftHollow > 0 {
+		frameType += "左"
+	}
+	if rightHollow > 0 {
+		frameType += "右"
+	}
+	if frameType == "" {
+		frameType += "无"
+	}
+	frameType += "镂空"
+
+	// 为当前框架指定名字
+	frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), frameType, width, height)
+
+	// 生成创建Photoshop新文档脚本
+	model.NewDocument(width, height, frameName, true)
+
+	// 生成暗号【-1】可以用的另存脚本
+	go model.FrameSaveDef(frameName)
+
+	// 追加最大画布判断
+	model.IsMaxCanvasExceeded(width, height)
+
+	// 是否打开自动新建文档
+	model.RunAutoCreateDocuments()
+
+	return
+}
+
 // FramePresenter8to1  对卷帘座屏进行处理
 func FramePresenter8to1(widthStr, heightStr string) (width, height float64) {
 	// 定义一个预留尺寸
@@ -117,7 +173,7 @@ func FramePresenter8to3(widthStr, heightStr, countStr string) (totalWidth, heigh
 	model.NewDocument(totalWidth, height, frameName, false)
 
 	// 生成专属的切图参考线
-	model.FrameLine6(width, count)
+	model.FrameGuide6(width, count)
 
 	// 生成暗号【-1】可以用的另存脚本
 	go model.FrameSave8to3(frameName, width, height, count)

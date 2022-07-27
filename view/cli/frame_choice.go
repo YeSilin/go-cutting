@@ -182,7 +182,7 @@ OuterLoop:
 		case "1":
 			frame1() // 常规座屏
 		case "2":
-			unclassified.OldFrame2() // 左右镂空
+			frame2() // 左右镂空
 		case "3":
 			unclassified.OldFrame3() // 左右画布
 		case "4":
