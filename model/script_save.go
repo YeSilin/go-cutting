@@ -869,6 +869,7 @@ String.prototype.format = function () {
     }
 };
 
+
 // 用于添加黑边的函数
 function addBlackEdge() {
     // 保存当前背景颜色
@@ -957,7 +958,6 @@ function deleteDocumentAncestorsMetadata() {
 }
 
 
-
 //  获取用户想要保存的位置加文件名
 function getPathName(saveName) {
     // 裁剪之后进行保存的位置和你想要的默认名称
@@ -965,7 +965,6 @@ function getPathName(saveName) {
     // 返回带路径的名字，注意要先数字解码
     return decodeURI(tempFile.saveDlg("储存副本", ["不要带扩展名:*", "默认保存为 JPG 文件:*"]))
 }
-
 
 
 // 全部整合在一起
@@ -980,7 +979,6 @@ function frameSave(fileNameArr) {
     exportOptionsSave.quality = 12;
     // 保存为基线已优化
     exportOptionsSave.formatOptions = FormatOptions.OPTIMIZEDBASELINE;
-
 
     // 生成历史记录并调用函数
     app.activeDocument.suspendHistory("拼合图像", "app.activeDocument.flatten()");
@@ -998,7 +996,7 @@ function frameSave(fileNameArr) {
         app.activeDocument.activeLayer.duplicate();
         app.activeDocument.activeLayer.duplicate();
 
-        // 扩大画布
+        // 扩大画布，循环里不能使用常量
         var currentWidth = app.activeDocument.width.value;
         var currentHeight = app.activeDocument.height.value;
         app.activeDocument.resizeCanvas(currentWidth + 8, currentHeight + 8, AnchorPosition.MIDDLECENTER);
@@ -1030,9 +1028,7 @@ function frameSave(fileNameArr) {
         app.activeDocument.flatten();
 
         // 添加黑边
-        if (BlackEdge) {
-            addBlackEdge();
-        }
+        addBlackEdge();
 
         // saveAs( 文件, 选项, 作为副本, 扩展名大小写 )
         app.activeDocument.saveAs(new File(fileNameArr[i]), exportOptionsSave, true, Extension.LOWERCASE);
@@ -1040,8 +1036,8 @@ function frameSave(fileNameArr) {
         // 当你完成了你正在做的任何事情，返回这个状态
         app.activeDocument.activeHistoryState = work;
     }
-	// 循环结束后关闭信息面板
-	app.runMenuItem(stringIDToTypeID("closeInfoPanel"));
+    // 循环结束后关闭信息面板
+    app.runMenuItem(stringIDToTypeID("closeInfoPanel"));
 }
 
 
@@ -1064,10 +1060,7 @@ function main() {
     for (var i = 0; i < Count; i++) {
         // 这里额外加8是因为保存时还要重设画布大小
         fileNameArr[i] = "{0}_拉布折屏_{1}_{2}-{3}".format(userSavePath, (Width + 8) + "x" + (Height + 8), i + 1, Count);
-    }
-
-    // 遍历全部可能覆盖的文件名
-    for (var i = 0; i < fileNameArr.length; i++) {
+       
         // 避免覆盖已保存的文件
         if (new File(fileNameArr[i] + ".jpg").exists) {
             alert("输入的编号重复，已自动取消操作！");
@@ -1081,7 +1074,7 @@ function main() {
     deleteDocumentAncestorsMetadata();
 
     // 保存活动历史记录状态
-    var savedState = app.activeDocument.activeHistoryState;
+    const savedState = app.activeDocument.activeHistoryState;
 
     // 调用保存函数，这里如果调用了历史函数内就不能再次调用历史
     frameSave(fileNameArr);
@@ -1099,8 +1092,6 @@ const Width = {{.Width}};  // 这里传golang变量哦！！！！！！！！�
 const Height = {{.Height}};  // 这里传golang变量哦！！！！！！！！！！！
 // 定义一个变量表示几扇
 const Count = {{.Count}};  // 这里传golang变量哦！！！！！！！！！！！
-// 是否自动黑边
-const BlackEdge = {{.BlackEdge}}; // 这里传golang变量哦！！！！！！！！！！！
 // 执行主函数
 main();`
 
