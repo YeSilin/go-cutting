@@ -64,9 +64,6 @@ func runCode(num string) (ok bool, info string) {
 	case "-49":
 		presenter.Command49()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在导出为Web所用格式..."
-	case "-97":
-		presenter.Command97()
-		return true, "\n:: 检测到输入的内容为隐藏暗号，正在替换详情页DP智能对象..."
 	case "-98":
 		presenter.Command98()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在导出为Web所用格式..."

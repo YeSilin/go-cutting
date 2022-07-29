@@ -255,7 +255,7 @@ OuterLoop:
 		case "7":
 			c.modifyResolution() // 修改分辨率
 		case "8":
-			presenter.ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
+			presenter.ReplaceSmartObjects(viper.GetString("picture")) // 替换详情页
 		case "9":
 			presenter.Command98() // 导出web格式详情页
 		case "-":

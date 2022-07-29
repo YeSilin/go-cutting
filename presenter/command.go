@@ -98,17 +98,12 @@ func Command42() {
 
 // Command48 执行暗号-48
 func Command48() {
-	ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
+	ReplaceSmartObjects(viper.GetString("picture")) // 替换详情页
 }
 
 // Command49 执行暗号-49
 func Command49() {
 	model.RunSaveForWeb()
-}
-
-// Command97 执行暗号-97
-func Command97() {
-	ReplaceDetailsPage(viper.GetString("picture")) // 替换详情页
 }
 
 // Command98 执行暗号-98
@@ -171,13 +166,12 @@ func SelectCommand(Command string) (ok bool, info string) {
 		return true, ":: 检测到输入的内容为隐藏暗号，已执行随机重命名..."
 	case "-48":
 		Command48()
-		return true, ":: 检测到输入的内容为隐藏暗号，正在替换详情页DP智能对象..."
+		return true, ":: 检测到输入的内容为隐藏暗号，正在替换名字以 [DP] 开头的智能对象图层..."
 	case "-49":
 		Command49()
 		return true, ":: 检测到输入的内容为隐藏暗号，正在导出为Web所用格式..."
 	case "-97":
-		Command97()
-		return true, ":: 检测到输入的内容为隐藏暗号，正在替换详情页DP智能对象..."
+		return true, ""
 	case "-98":
 		Command98()
 		return true, ":: 检测到输入的内容为隐藏暗号，正在导出为Web所用格式..."

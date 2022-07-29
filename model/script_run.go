@@ -18,6 +18,16 @@ func RunAutoCreateDocuments() {
 	}
 }
 
+// RunLoadSaveScript 根据当前文档名选择正确的快捷裁剪脚本 执行暗号-1
+func RunLoadSaveScript() {
+	// 创建一个协程使用cmd来运行脚本
+	dataPath := "resources/jsx/loadSaveScript.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+
+	// 每次选择正确的脚本时删除多余备份，最大保留30个
+	go tools.DeleteRedundantBackups("resources/jsx/Temp/*", 100)
+}
+
 // RunClearMetadataStd 执行暗号-6 简单清除元数据
 func RunClearMetadataStd() {
 	dataPath := "resources/jsx/clearMetadataStd.jsx"
@@ -52,6 +62,13 @@ func RunSaveAndCloseAllDocuments() {
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
+// RunReplaceSmartObjects 运行替换智能对象脚本 暗号-48
+func RunReplaceSmartObjects() {
+	// 创建一个协程使用cmd来运行脚本
+	dataPath := "resources/jsx/replaceSmartObjects.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+}
+
 // RunSaveForWeb 导出web格式的调用 暗号-98的实现
 func RunSaveForWeb() {
 	go func() {
@@ -74,14 +91,4 @@ func RunSaveForWeb() {
 		//	exec.Command("cmd.exe", "/c", fmt.Sprintf("start %s\\主图", picturePath)).Run()
 		//}
 	}()
-}
-
-// RunLoadSaveScript 根据当前文档名选择正确的快捷裁剪脚本 执行暗号-1
-func RunLoadSaveScript() {
-	// 创建一个协程使用cmd来运行脚本
-	dataPath := "resources/jsx/loadSaveScript.jsx"
-	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
-
-	// 每次选择正确的脚本时删除多余备份，最大保留30个
-	go tools.DeleteRedundantBackups("resources/jsx/Temp/*", 100)
 }
