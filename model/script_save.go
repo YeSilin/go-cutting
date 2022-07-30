@@ -1097,11 +1097,10 @@ main();`
 
 	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
 	info := struct {
-		Width     float64
-		Height    float64
-		Count     int  // 几片折屏
-		BlackEdge bool // 是否自动黑边
-	}{width, height, int(count), viper.GetBool("blackEdge")}
+		Width  float64
+		Height float64
+		Count  int // 几片折屏
+	}{width, height, int(count)}
 
 	// 解析字符串生成模板对象
 	tmpl, err := template.New("tmpl").Parse(script)

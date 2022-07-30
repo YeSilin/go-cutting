@@ -11,106 +11,6 @@ import (
 	"strings"
 )
 
-// 当前状态
-func current() {
-
-	var memoryStr string
-	switch viper.GetBool("memory") {
-	case true:
-		memoryStr = "已启用"
-		memoryStr = tools.ColourString(memoryStr, ctc.ForegroundCyan) // 设置带颜色的字符串
-	case false:
-		memoryStr = "已关闭"
-		//memoryStr = unclassified.ColourString(memoryStr, ctc.ForegroundBright) // 设置带颜色的字符串
-	default:
-		memoryStr = "参数错误"
-		//memoryStr = unclassified.ColourString(memoryStr, ctc.ForegroundBright) // 设置带颜色的字符串
-	}
-
-	var openPsStr string
-	switch viper.GetBool("openPs") {
-	case true:
-		openPsStr = "已启用"
-		openPsStr = tools.ColourString(openPsStr, ctc.ForegroundCyan) // 设置带颜色的字符串
-	case false:
-		openPsStr = "已关闭"
-		//openPsStr = unclassified.ColourString(openPsStr, ctc.ForegroundBright) // 设置带颜色的字符串
-	default:
-		openPsStr = "参数错误"
-		//openPsStr = unclassified.ColourString(openPsStr, ctc.ForegroundBright) // 设置带颜色的字符串
-	}
-
-	// 自动黑边状态
-	var blackEdgeStr string
-	switch viper.GetBool("blackEdge") {
-	case true:
-		blackEdgeStr = "已启用"
-		blackEdgeStr = tools.ColourString(blackEdgeStr, ctc.ForegroundCyan) // 设置带颜色的字符串
-	case false:
-		blackEdgeStr = "已关闭"
-		//blackEdgeStr = unclassified.ColourString(blackEdgeStr, ctc.ForegroundBright) // 设置带颜色的字符串
-	default:
-		blackEdgeStr = "参数错误"
-		//blackEdgeStr = unclassified.ColourString(blackEdgeStr, ctc.ForegroundBright) // 设置带颜色的字符串
-	}
-
-	// 自定前缀状态
-	var prefixStr string
-	if viper.GetString("prefix") != "" {
-		prefixStr = "已定义"
-		prefixStr = tools.ColourString(prefixStr, ctc.ForegroundCyan) // 设置带颜色的字符串
-	} else {
-		prefixStr = "未定义"
-		//prefixStr = unclassified.ColourString(prefixStr, ctc.ForegroundBright) // 设置带颜色的字符串
-	}
-
-	// 带颜色的预留画布提示
-	var reserveStr = fmt.Sprintf("%.2fcm", viper.GetFloat64("reserve"))
-	reserveStr = tools.ColourString(reserveStr, ctc.ForegroundCyan) // 设置带颜色的字符串
-
-	// 自启管理
-	var selfStartingManagementStr string
-	switch viper.GetBool("gui") {
-	case true:
-		selfStartingManagementStr = "已自启"
-		selfStartingManagementStr = tools.ColourString(selfStartingManagementStr, ctc.ForegroundCyan) // 设置带颜色的字符串
-	case false:
-		selfStartingManagementStr = "已关闭"
-		//cipherListStr = unclassified.ColourString(cipherListStr, ctc.ForegroundBright) // 设置带颜色的字符串
-	default:
-		selfStartingManagementStr = "参数错误"
-		//cipherListStr = unclassified.ColourString(cipherListStr, ctc.ForegroundBright) // 设置带颜色的字符串
-	}
-
-	// 修改套图文件夹位置
-	var pictureStr string
-	if viper.GetString("picture") != "resources\\picture" {
-		pictureStr = "已修改"
-		pictureStr = tools.ColourString(pictureStr, ctc.ForegroundCyan) // 设置带颜色的字符串
-	} else {
-		pictureStr = "默认值"
-		//pictureStr = unclassified.ColourString(pictureStr, ctc.ForegroundBright) // 设置带颜色的字符串
-	}
-
-	// 主图自动删除来源
-	var automaticDeletionStr string
-	switch viper.GetBool("automaticDeletion") {
-	case true:
-		automaticDeletionStr = "已启用"
-		automaticDeletionStr = tools.ColourString(automaticDeletionStr, ctc.ForegroundCyan) // 设置带颜色的字符串
-	case false:
-		automaticDeletionStr = "已关闭"
-		//automaticDeletionStr = unclassified.ColourString(automaticDeletionStr, ctc.ForegroundBright) // 设置带颜色的字符串
-	default:
-		automaticDeletionStr = "参数错误"
-		//automaticDeletionStr = unclassified.ColourString(automaticDeletionStr, ctc.ForegroundBright) // 设置带颜色的字符串
-	}
-
-	fmt.Printf("\n   [1]记忆框架：%s       [2]自动新建：%s       [3]自动黑边：%s\n", memoryStr, openPsStr, blackEdgeStr)
-	fmt.Printf("\n   [4]自定前缀：%s       [5]切布预留：%s       [6]自启管理：%s\n", prefixStr, reserveStr, selfStartingManagementStr)
-	fmt.Printf("\n   [7]套图位置：%s       [8]主图自删：%s       [9]全部恢复默认设置\n", pictureStr, automaticDeletionStr)
-}
-
 // 验证输入的内容是不是有效数据
 // @param text: 传入用户输入提示信息
 // @return: 返回有效的配置信息
@@ -293,7 +193,7 @@ OuterLoop:
 }
 
 // 修改自动套图路径
-func modifyPicturePath() {
+func modifyPicturePathBk() {
 	tools.EnglishTitle("Modify Picture Path", 74)
 	fmt.Printf("\n:: 正在修改自动套图文件夹路径，当前路径是【%s】\n", viper.GetString("picture"))
 	// 套图文件夹位置

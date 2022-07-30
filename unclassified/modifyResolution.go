@@ -25,7 +25,7 @@ func PixelsPerInchChangedTo72(originalPath string) {
 
 	go func() {
 		// 为了防止文件丢失，在重命名之前先备份一次文件
-		_ = tools.CopyDir(originalPath, "Config/Backups/")
+		_ = tools.CopyDir(originalPath, "resources/Backups/")
 
 		// 全部一起改名为temp
 		for _, v := range files {
@@ -56,7 +56,7 @@ func PixelsPerInchChangedTo72(originalPath string) {
 		}
 
 		// 删除多余备份，最大保留10个
-		tools.DeleteRedundantBackups("Config/Backups/*", 15)
+		tools.DeleteRedundantBackups("resources/Backups/*", 15)
 	}()
 
 	fmt.Println("\n:: 已转成 72ppi 如果文件丢失，备份文件夹在上级目录下的 Backups！")
@@ -84,7 +84,7 @@ func PixelsPerInchChangedTo300(originalPath string) {
 
 	go func() {
 		// 为了防止文件丢失，在重命名之前先备份一次文件
-		_ = tools.CopyDir(originalPath, "Config/Backups/")
+		_ = tools.CopyDir(originalPath, "resources/Backups/")
 
 		// 解析指定文件生成模板对象
 		tmpl, err := template.ParseFiles("resources/jsx/template/pixelsPerInchChangedTo300.gohtml")
@@ -114,11 +114,11 @@ func PixelsPerInchChangedTo300(originalPath string) {
 		f.Close()
 
 		// 创建一个协程使用cmd来运行脚本
-		dataPath := "Config/jsx/pixelsPerInchChangedTo300.jsx"
+		dataPath := "resources/jsx/pixelsPerInchChangedTo300.jsx"
 		exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 
 		// 删除多余备份，最大保留10个
-		tools.DeleteRedundantBackups("Config/Backups/*", 15)
+		tools.DeleteRedundantBackups("resources/Backups/*", 15)
 	}()
 
 	fmt.Println("\n:: 脚本注入成功，正在转成 300PPI 若文件丢失，备份文件在上级目录 Backups！")
