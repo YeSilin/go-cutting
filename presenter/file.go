@@ -93,13 +93,13 @@ func RandomRenameFile(originalPath string) {
 
 	go func() {
 		// 为了防止文件丢失，在重命名之前先备份一次文件
-		_ = tools.CopyDir(originalPath, "Config/Backups/")
+		_ = tools.CopyDir(originalPath, "resources/Backups/")
 
 		// 随机重命名
 		randomRename(originalPath, "jpg")
 
 		// 删除多余备份，最大保留10个
-		tools.DeleteRedundantBackups("Config/Backups/*", 15)
+		tools.DeleteRedundantBackups("resources/Backups/*", 15)
 	}()
 
 	fmt.Println("\n:: 随机重命名成功，现已支持所有尺寸的 jpg 或 png 格式图片！")

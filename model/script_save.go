@@ -898,12 +898,13 @@ function addBlackEdge() {
 function promptLayer(text) {
     // 设置坐标底部居中
     const x = app.activeDocument.width.value / 2;
-    const y = app.activeDocument.height.value - 1;
+    const y = 3;
     // 添加一个颜色采样器
     const pointSample1 = app.activeDocument.colorSamplers.add([x - 1, y - 1]);
-    const pointSample2 = app.activeDocument.colorSamplers.add([x + 1, y - 1]);
+    const pointSample2 = app.activeDocument.colorSamplers.add([x, y - 1]);
+    const pointSample3 = app.activeDocument.colorSamplers.add([x + 1, y - 1]);
     // 求出平均值备用
-    const average = (pointSample1.color.cmyk.black + pointSample2.color.cmyk.black) / 2
+    const average = (pointSample1.color.cmyk.black + pointSample2.color.cmyk.black + pointSample3.color.cmyk.black) / 3
     // 删除全部颜色取样器
     app.activeDocument.colorSamplers.removeAll();
     // 创建一个色彩变量 c

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
+	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/presenter"
 	"github.com/yesilin/go-cutting/tools"
 	"github.com/yesilin/go-cutting/unclassified"
@@ -257,7 +258,7 @@ OuterLoop:
 		case "8":
 			presenter.ReplaceSmartObjects(viper.GetString("picture")) // 替换详情页
 		case "9":
-			presenter.Command98() // 导出web格式详情页
+			model.RunSaveForWeb() // 导出web格式详情页
 		case "-":
 			break OuterLoop
 		case "":

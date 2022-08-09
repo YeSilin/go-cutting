@@ -202,7 +202,7 @@ OuterLoop:
 
 		switch key {
 		case "1":
-			generate.NewTempDocumentJs() // 新建临时文档
+			model.NewDocumentForTemp() // 新建临时文档
 		case "2":
 			c.tempFame1() // 小座屏
 		case "3":

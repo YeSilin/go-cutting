@@ -106,11 +106,6 @@ func Command49() {
 	model.RunSaveForWeb()
 }
 
-// Command98 执行暗号-98
-func Command98() {
-	model.RunSaveForWeb()
-}
-
 // Command99 执行暗号-99
 func Command99() {
 	// 创建一个协程使用cmd启动外部程序
@@ -173,8 +168,7 @@ func SelectCommand(Command string) (ok bool, info string) {
 	case "-97":
 		return true, ""
 	case "-98":
-		Command98()
-		return true, ":: 检测到输入的内容为隐藏暗号，正在导出为Web所用格式..."
+		return true, ":"
 	case "-99":
 		Command99()
 		return true, ":: 检测到输入的内容为隐藏暗号，正在后台激活Win10系统..."

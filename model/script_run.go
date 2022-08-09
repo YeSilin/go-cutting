@@ -69,7 +69,7 @@ func RunReplaceSmartObjects() {
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
-// RunSaveForWeb 导出web格式的调用 暗号-98的实现
+// RunSaveForWeb 导出web格式的调用 暗号-49的实现
 func RunSaveForWeb() {
 	go func() {
 		// 自动套图工作路径
