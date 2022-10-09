@@ -44,7 +44,7 @@ func NewGuiView() *GuiView {
 	//设置一个默认图标
 	windows.SetIcon(logo())
 	//修改主窗口大小
-	windows.Resize(fyne.NewSize(250, 100))
+	windows.Resize(fyne.NewSize(250, 85))
 
 	return &GuiView{
 		app:        application,
@@ -88,10 +88,11 @@ func (v *GuiView) ShowAndRun() {
 
 	//对窗口进行设置内容，设置内容的时候先新建一个垂直对齐的盒子
 	v.mainWindow.SetContent(container.NewVBox(
-		tips,
+		//tips,
 		v.choiceCode(tips),
-		//v.switchTheme(),
 		v.settings(),
+
+		//v.switchTheme(),
 	))
 
 	// 显示并运行

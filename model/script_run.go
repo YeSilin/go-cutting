@@ -9,6 +9,12 @@ import (
 	"os/exec"
 )
 
+// RunGlobalHotkey 运行易语言写的全局热键
+func RunGlobalHotkey() {
+	dataPath := "resources/software/全局热键.exe"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+}
+
 // RunAutoCreateDocuments 是否打开自动新建Photoshop文档
 func RunAutoCreateDocuments() {
 	if viper.GetBool("openPs") { // 是否自动新建ps文档

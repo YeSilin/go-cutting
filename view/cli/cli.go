@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gookit/color"
 	"github.com/wzshiming/ctc"
+	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/presenter"
 	"github.com/yesilin/go-cutting/tools"
 	"os"
@@ -91,7 +92,7 @@ func (c *CLI) MainMenu() {
 
    [1]快捷切图.        [2]快捷贴图.        [3]快捷效果.        [4]自动套图.
 
-   [5]附加功能.        [6]暗号列表         [7]设置中心.        [8]帮助信息.`
+   [5]附加功能.        [6]全局热键         [7]设置中心.        [8]帮助信息.`
 		fmt.Println(tips)
 
 		key := inputString("\n:: 请选择上方的菜单功能：") // 获取键盘输入
@@ -116,6 +117,7 @@ func (c *CLI) MainMenu() {
 		case "5":
 			c.extendChoice() // 附加
 		case "6":
+			model.RunGlobalHotkey()
 		case "7":
 			c.settingsChoice() // 设置
 		case "8":

@@ -7,7 +7,6 @@ import (
 	"strings"
 )
 
-
 // 生成小座屏临时框架
 func TempFrame1JS(width, height float64) {
 	// 使用最高效的字符串拼接
@@ -154,11 +153,11 @@ func TempFrame1JS(width, height float64) {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("Config/JSX/GenerateTempFrame.jsx", jsxStr)
+	tools.CreateFile("resources/jsx/GenerateTempFrame.jsx", jsxStr)
 
 	// 同时运行运行脚本
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "Config/JSX/GenerateTempFrame.jsx"
+	dataPath := "resources/jsx/GenerateTempFrame.jsx"
 	cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 	go cmd.Run()
 }

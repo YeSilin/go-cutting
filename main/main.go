@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/spf13/viper"
+	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/presenter"
 	"github.com/yesilin/go-cutting/view/cli"
 	"github.com/yesilin/go-cutting/view/gui"
@@ -24,10 +25,13 @@ func main() {
 	// 获取通知
 	cliView.Notice = ":: " + presenter.Limit.GetString("notice")
 	// 设置版本号
-	cliView.Version = "1.2.1" // 设置版本号！！！！！！！！！！！！！！！！！！！！！！！
+	cliView.Version = "1.2.5" // 设置版本号！！！！！！！！！！！！！！！！！！！！！！！
 
 	// 验证许可证
 	cliView.License()
+
+	// 自动运行全局热键
+	model.RunGlobalHotkey()
 
 	// 不让自动退出
 	wg := sync.WaitGroup{}

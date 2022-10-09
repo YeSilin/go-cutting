@@ -134,9 +134,9 @@ func SelectionTempFrameJS(frame string, layer int) {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("Config/JSX/SelectionTempFrame.jsx", jsxStr)
+	tools.CreateFile("resources/jsx/SelectionTempFrame.jsx", jsxStr)
 
 	// 创建一个协程使用cmd来运行脚本
-	dataPath := "Config/JSX/SelectionTempFrame.jsx"
+	dataPath := "resources/jsx/SelectionTempFrame.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
