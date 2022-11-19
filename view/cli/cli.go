@@ -19,7 +19,7 @@ type CLI struct {
 	info    string // 临时通知
 }
 
-//NewCliView 视图的构造方法
+// NewCliView 视图的构造方法
 func NewCliView() *CLI {
 	return &CLI{
 		Version: "1.0.0", // 默认版本是 1.0.0
@@ -80,7 +80,7 @@ func (c *CLI) showNotice(permanent bool) {
 	}
 }
 
-//MainMenu 显示主菜单
+// MainMenu 显示主菜单
 func (c *CLI) MainMenu() {
 	for {
 		// 先显示通知
@@ -92,7 +92,7 @@ func (c *CLI) MainMenu() {
 
    [1]快捷切图.        [2]快捷贴图.        [3]快捷效果.        [4]自动套图.
 
-   [5]附加功能.        [6]全局热键         [7]设置中心.        [8]帮助信息.`
+   [5]附加功能.        [6]辅助工具         [7]设置中心.        [8]帮助信息.`
 		fmt.Println(tips)
 
 		key := inputString("\n:: 请选择上方的菜单功能：") // 获取键盘输入

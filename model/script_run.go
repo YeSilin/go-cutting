@@ -9,9 +9,9 @@ import (
 	"os/exec"
 )
 
-// RunGlobalHotkey 运行易语言写的全局热键
+// RunGlobalHotkey 运行易语言写的辅助工具
 func RunGlobalHotkey() {
-	dataPath := "resources/software/全局热键.exe"
+	dataPath := "resources/software/AuxiliaryTools.exe"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 

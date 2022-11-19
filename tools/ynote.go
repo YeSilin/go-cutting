@@ -88,8 +88,11 @@ func GetYNote(id string) string {
 			//fmt.Print(noteContent.Num5[i].Num5[0].Num7[j].Num8)
 			buffer.WriteString(noteContent.Num5[i].Num5[0].Num7[j].Num8)
 		}
-		//fmt.Println()
-		buffer.WriteString("\n")
+		// 最后一行不默认加换行
+		if i != len(noteContent.Num5)-1 {
+			//fmt.Println()
+			buffer.WriteString("\n")
+		}
 	}
 
 	// 返回数据
