@@ -127,31 +127,34 @@ func FramePresenter8to1(widthStr, heightStr string) (width, height float64) {
 }
 
 // FramePresenter8to2  对拉布座屏进行处理
-func FramePresenter8to2(widthStr, heightStr string) (width, height float64) {
+func FramePresenter8to2(widthStr, heightStr, thicknessStr string) (width, height float64) {
 	// 强制类型转换成浮点数
 	width, _ = strconv.ParseFloat(widthStr, 64)
 	height, _ = strconv.ParseFloat(heightStr, 64)
+	thickness, _ := strconv.ParseFloat(thicknessStr, 64)
 
 	// 进行框架公式计算
+	saveWidth := width + thickness*2 + 2   // 保存时的宽度
+	saveHeight := height + thickness*2 + 2 // 保存时的高度
 
 	// 为当前框架指定名字，此框架特殊，保存时进行框架计算
-	frameName := fmt.Sprintf("%s_拉布座屏_%.0fx%.0f", tools.NowTime(), width+8, height+8)
+	frameName := fmt.Sprintf("%s_拉布座屏_%.0fx%.0f", tools.NowTime(), saveWidth, saveHeight)
 
 	// 生成创建Photoshop新文档脚本
 	model.NewDocument(width, height, frameName, false)
 
 	// 生成暗号【-1】可以用的另存脚本
-	go model.FrameSave8to2(frameName)
+	go model.FrameSave8to2(frameName, thickness)
 
 	// 追加最大画布判断
-	model.IsMaxCanvasExceeded(width+8, height+8)
+	model.IsMaxCanvasExceeded(saveWidth, saveHeight)
 
 	// 是否打开自动新建文档
 	model.RunAutoCreateDocuments()
 
 	// 此框架是保存时才将画布变大
-	width += 8
-	height += 8
+	width = saveWidth
+	height = saveHeight
 	return
 }
 

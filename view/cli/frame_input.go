@@ -144,8 +144,15 @@ func frame8to2() {
 			return
 		}
 
+		thicknessStr := inputPro("\n:: 请输入边框的厚度（默认3）：", 3) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if thicknessStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
 		// 处理框架生成脚本
-		width, height := presenter.FramePresenter8to2(widthStr, heightStr)
+		width, height := presenter.FramePresenter8to2(widthStr, heightStr, thicknessStr)
 
 		// 输出提示
 		color.Yellow.Printf("\n:: 拉布座屏：宽 %.2f cm，高 %.2f cm\n", width, height)

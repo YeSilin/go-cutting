@@ -10,7 +10,7 @@ require (
 	github.com/gookit/color v1.5.2
 	github.com/mozillazg/go-pinyin v0.19.0
 	github.com/muesli/smartcrop v0.3.0
-	github.com/ncruces/zenity v0.9.2
+	github.com/ncruces/zenity v0.9.3
 	github.com/noelyahan/mergi v0.0.0-20190514155713-df743a5b4419
 	github.com/panjf2000/ants/v2 v2.6.0
 	github.com/sirupsen/logrus v1.9.0
@@ -25,7 +25,7 @@ require (
 	github.com/akavel/rsrc v0.10.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dchest/jsmin v0.0.0-20220218165748-59f39799265f // indirect
-	github.com/fredbi/uri v0.0.0-20221012073901-fb871453c6d3 // indirect
+	github.com/fredbi/uri v0.1.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/fyne-io/gl-js v0.0.0-20220802150000-8e339395f381 // indirect
 	github.com/fyne-io/glfw-js v0.0.0-20220517201726-bebc2019cd33 // indirect
@@ -45,7 +45,7 @@ require (
 	github.com/noelyahan/mergitrans v0.0.0-20190507035323-73e76dcd7d2a // indirect
 	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
-	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
+	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 // indirect
 	github.com/spf13/afero v1.9.3 // indirect

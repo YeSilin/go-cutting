@@ -24,3 +24,5 @@ resources/logs/
 /resources/jsx/*
 !/resources/jsx/template/
 
+# 忽略配置文件
+*.ini

@@ -12,7 +12,7 @@ import (
 	"text/template"
 )
 
-//SaveAsJPEG 储存为jpeg格式的初始化 暗号-10的实现
+// SaveAsJPEG 储存为jpeg格式的初始化 暗号-10的实现
 func SaveAsJPEG() {
 	const script = `// 储存为JPEG格式并清理与更新链接的智能对象
 
@@ -582,7 +582,7 @@ main();`
 }
 
 // FrameSave8to2 拉布座屏专属保存
-func FrameSave8to2(frameName string) {
+func FrameSave8to2(frameName string, thickness float64) {
 	const script = `// 定义一个函数用来设置黑边
 function addBlackEdge() {
     // 保存当前背景颜色
@@ -634,8 +634,8 @@ function promptLayer(text) {
     const average = (pointSample1.color.cmyk.black + pointSample2.color.cmyk.black) / 2
     // 删除全部颜色取样器
     app.activeDocument.colorSamplers.removeAll();
-	// 不在循环内直接关闭信息面板
-	app.runMenuItem(stringIDToTypeID("closeInfoPanel"));
+    // 不在循环内直接关闭信息面板
+    app.runMenuItem(stringIDToTypeID("closeInfoPanel"));
     // 创建一个色彩变量 c
     var c = new SolidColor();
     // 如果吸取的颜色K小于40说明偏白，那么字就改成黑色
@@ -687,7 +687,6 @@ function setSavePath() {
     // 自己特意加的后缀可以取代类型选择的大写
     var TmpFile = new File("~/Desktop/GoCutting/" + docName + ".jpg");
     // 获取用户自定义储存位置
-    //TmpFile = TmpFile.saveDlg("储存副本", "JPEG Files: *.jpg");
     TmpFile = TmpFile.saveDlg("储存副本", "JPEG:*.JPG;*.JPEG;*.JPE, 不要修改保存类型:*.*");
 
     return TmpFile;
@@ -741,7 +740,8 @@ function frameSave(fileObject) {
     // 扩大画布
     const width = app.activeDocument.width.value;
     const height = app.activeDocument.height.value;
-    app.activeDocument.resizeCanvas(width + 8, height + 8, AnchorPosition.MIDDLECENTER);
+    // 叠加画布预留重设大小
+    app.activeDocument.resizeCanvas(width + Reserve, height + Reserve, AnchorPosition.MIDDLECENTER);
 
     // 垂直翻转
     app.activeDocument.artLayers[0].resize(undefined, -100);
@@ -771,10 +771,8 @@ function frameSave(fileObject) {
     // 拼合活动文档的所有图层并扔掉隐藏的图层
     app.activeDocument.flatten();
 
-    if (BlackEdge) {
-        // 添加黑边
-        addBlackEdge();
-    }
+    // 添加黑边
+    addBlackEdge();
 
     // 最后另存为JPEG
     saveJPEG(fileObject);
@@ -813,16 +811,14 @@ function main() {
     createLayer();
 }
 
-
-// 是否自动黑边
-const BlackEdge = {{.BlackEdge}};   // 这里传golang变量哦！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+// 设置拉布屏风边框厚度，提前算出叠加厚度后需要预留的画布
+const Reserve = {{.Thickness}} * 2 + 2  // 这里传golang变量哦！！！！！！！！！！！
 main();`
 
 	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
 	info := struct {
-		BlackEdge bool // 是否自动黑边
-
-	}{viper.GetBool("blackEdge")}
+		Thickness float64 // 拉布屏风的边框厚度
+	}{thickness}
 
 	// 解析字符串生成模板对象
 	tmpl, err := template.New("tmpl").Parse(script)
