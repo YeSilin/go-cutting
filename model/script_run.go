@@ -11,7 +11,7 @@ import (
 
 // RunGlobalHotkey 运行易语言写的辅助工具
 func RunGlobalHotkey() {
-	dataPath := "resources/software/AuxiliaryTools.exe"
+	dataPath := "resources/software/AuxiliaryTools/AuxiliaryTools.exe"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 

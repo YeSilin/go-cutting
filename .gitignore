@@ -26,3 +26,4 @@ resources/logs/
 
 # 忽略配置文件
 *.ini
+*.db

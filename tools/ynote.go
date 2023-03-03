@@ -53,7 +53,8 @@ func GetYNote(id string) string {
 	// 处理返回结果
 	response, err := client.Do(reqest)
 	if err != nil {
-		panic(err)
+		//panic(err)
+		return ""
 	}
 	defer response.Body.Close()
 
@@ -70,14 +71,16 @@ func GetYNote(id string) string {
 	var note Note
 	err = json.NewDecoder(response.Body).Decode(&note)
 	if err != nil {
-		panic(err)
+		//panic(err)
+		return ""
 	}
 
 	// 对内容进行二次解码
 	var noteContent NoteContent
 	err = json.Unmarshal([]byte(note.Content), &noteContent)
 	if err != nil {
-		panic(err)
+		//panic(err)
+		return ""
 	}
 
 	// 取出层层叠叠的数据

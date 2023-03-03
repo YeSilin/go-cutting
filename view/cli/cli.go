@@ -58,6 +58,14 @@ func (c *CLI) License() {
 	if presenter.GetLicense(c.Version) {
 		return
 	}
+
+	// 公告都获取不到说明没有网络
+	//if c.Notice == ":: " && time.Now().Format("2006-01-02") == "2022-12-22" {
+	//	//fmt.Println(":: 断网临时授权！~")
+	//	c.Notice = ":: 断网临时授权！~"
+	//	return
+	//}
+
 	// 失败打印云端提示信息
 	fmt.Println(":: 当前版本已停用，请前往官方群下载新版本，以下为最新公告：\n" + c.Notice)
 

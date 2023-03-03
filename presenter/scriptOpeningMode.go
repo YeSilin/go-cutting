@@ -40,6 +40,18 @@ func psUserConfig(edition int) {
 
 // OpenMode jsx文件的打开方式
 func OpenMode() {
+	// 170的代号是2023版本的ps，如果2023版本的ps存在
+	if val, ok := tools.ReadKeyString(registry.CLASSES_ROOT, `Photoshop.PSDTFile.170\DefaultIcon`, ``); ok {
+		// 单判断注册表不够，同时再判断文件exe文件是否存在
+		ok, _ := tools.IsPathExists(val)
+		if ok {
+			// 写入注册表
+			tools.WriteKeyString(registry.CURRENT_USER, `SOFTWARE\Classes\.jsx`, ``, "Photoshop.PSDTFile.170")
+			psUserConfig(2023) // 取消脚本执行警告
+			return
+		}
+	}
+
 	// 160的代号是2022版本的ps，如果2022版本的ps存在
 	if val, ok := tools.ReadKeyString(registry.CLASSES_ROOT, `Photoshop.PSDTFile.160\DefaultIcon`, ``); ok {
 		// 单判断注册表不够，同时再判断文件exe文件是否存在
