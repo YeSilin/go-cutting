@@ -25,7 +25,7 @@ func main() {
 	// 获取通知
 	cliView.Notice = ":: " + presenter.Limit.GetString("notice")
 	// 设置版本号
-	cliView.Version = "1.2.36" // 设置版本号！！！！！！！！！！！！！！！！！！！！！！！
+	cliView.Version = "1.2.40" // 设置版本号！！！！！！！！！！！！！！！！！！！！！！！
 
 	// 验证许可证
 	cliView.License()
