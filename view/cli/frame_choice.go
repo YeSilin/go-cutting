@@ -184,7 +184,7 @@ OuterLoop:
 		case "2":
 			frame2() // 左右镂空
 		case "3":
-			unclassified.OldFrame3() // 左右画布
+			frame3() // 左右画布
 		case "4":
 			c.upperAndLowerScreenChoice() // 上下座屏框架选择
 		case "5":

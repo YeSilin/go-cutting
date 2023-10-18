@@ -7,6 +7,48 @@ import (
 	"text/template"
 )
 
+// FrameGuide3 生成左右画布专属参考线
+func FrameGuide3(width, hollow float64) {
+	const script = `
+// ----------------------------------------------------------------------------------------------------------------------------
+// 定义一个函数用于新建参考线
+function addLine() {
+    activeDocument.guides.add(Direction.VERTICAL, UnitValue("{{printf "%.2f" .Line1}}cm"));
+    activeDocument.guides.add(Direction.VERTICAL, UnitValue("{{printf "%.2f" .Line2}}cm"));
+}
+
+// 生成历史记录
+app.activeDocument.suspendHistory("左右画布参考线！", "addLine()");`
+
+	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
+	info := struct {
+		Line1 float64
+		Line2 float64
+	}{hollow, hollow + width}
+
+	// 解析字符串生成模板对象
+	tmpl, err := template.New("tmpl").Parse(script)
+	if err != nil {
+		logrus.Error(err)
+		return
+	}
+
+	// 打开要追加数据的文件
+	f, err := os.OpenFile("resources/jsx/newDocument.jsx", os.O_APPEND, 0644)
+	if err != nil { // 如果有错误，打印错误，同时返回
+		logrus.Error(err)
+		return
+	}
+	// 关闭文件
+	defer f.Close()
+
+	// 利用给定数据渲染模板，并将结果写入f
+	err = tmpl.Execute(f, info)
+	if err != nil {
+		logrus.Error(err)
+	}
+}
+
 // FrameGuide6 生成折屏参考线
 func FrameGuide6(width, number float64) {
 	const script = `

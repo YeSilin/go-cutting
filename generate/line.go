@@ -9,39 +9,6 @@ import (
 	"text/template"
 )
 
-// LineJs3 生成中间大两边小参考线js
-//@param width 传入宽度
-//@param hollowOut: 传入镂空
-func LineJs3(width, hollowOut float64) {
-	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
-	info := struct {
-		Line1 float64
-		Line2 float64
-	}{hollowOut, hollowOut + width}
-
-	// 解析指定文件生成模板对象
-	tmpl, err := template.ParseFiles("resources/jsx/template/leftAndRightCanvasReferenceLine.gohtml")
-	if err != nil {
-		logrus.Error(err)
-		return
-	}
-
-	// 打开要追加数据的文件
-	f, err := os.OpenFile("resources/jsx/newDocument.jsx", os.O_APPEND, 0644)
-	if err != nil { // 如果有错误，打印错误，同时返回
-		logrus.Error(err)
-		return
-	}
-	// 关闭文件
-	defer f.Close()
-
-	// 利用给定数据渲染模板，并将结果写入f
-	err = tmpl.Execute(f, info)
-	if err != nil {
-		logrus.Error(err)
-	}
-}
-
 // 上下画布参考线
 func LineJs4to2(upperHeight, middleHeight float64) {
 	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
@@ -194,9 +161,9 @@ func LineJs7(widthSlice, heightSlice []float64, heightMax, heightMin float64) {
 	//tools.WriteFile("resources/jsx/newDocument.jsx", jsxStr)
 }
 
-//生成折屏3d贴图参考线js
-//@param width: 传入宽
-//@param number: 传入扇数
+// 生成折屏3d贴图参考线js
+// @param width: 传入宽
+// @param number: 传入扇数
 func Line3DMapJs6(width, number int) {
 	var line = strings.Builder{}
 

@@ -23,94 +23,8 @@ func isOpenPs() {
 	}
 }
 
-// OldFrame3 旧厂中间大两边小
-//先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个竖边 空出的中间画面加5厘米
-func OldFrame3() {
-	// 定义一个预留尺寸
-	var reserve = viper.GetFloat64("reserve")
-
-	// 初始化输入提示的切片
-	inputPrompt := [4]string{"\n:: 请输入左右画布的总宽：", "\n:: 请输入左右画布的总高：",
-		"\n:: 请输入单边画布的大小：", "\n:: 请输入合页数量（若订单无备注请输入“0”）："}
-
-	// 保存尺寸的切片
-	saveSizeStr := [4]string{}
-
-	// 循环使用此框架
-	for {
-		tools.ChineseTitle("当前框架左右画布", 74) // 请注意切图的工厂与框架的选择
-		for i := 0; i < len(saveSizeStr); i++ {
-			// 只有前3个需要开启画布模式
-			if i < 3 {
-				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
-			} else {
-				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
-			}
-
-			// 输入返回当然要返回啦
-			if saveSizeStr[i] == "-" {
-				tools.CallClear() // 清屏
-				return
-			}
-
-			// 第一次就输入返回就退出此框架
-			if i == 0 && saveSizeStr[i] == "--" {
-				return
-			}
-
-			// 退回上一级输入
-			if saveSizeStr[i] == "--" {
-				i -= 2
-			}
-		}
-
-		//存储未计算时的历史记录
-		history := fmt.Sprintf("左右画布的总宽：%s\n", saveSizeStr[0])
-		history += fmt.Sprintf("左右画布的总高：%s\n", saveSizeStr[1])
-		history += fmt.Sprintf("单边画布的大小：%s\n", saveSizeStr[2])
-		history += fmt.Sprintf("合页数量：%s\n", saveSizeStr[3])
-
-		// 强制类型转换成浮点数
-		width, _ := strconv.ParseFloat(saveSizeStr[0], 64)
-		height, _ := strconv.ParseFloat(saveSizeStr[1], 64)
-		hollowOut, _ := strconv.ParseFloat(saveSizeStr[2], 64)
-		hinges, _ := strconv.ParseFloat(saveSizeStr[3], 64)
-
-		if hinges == 0 {
-			width = width - hollowOut*2 - 4*5 + reserve
-			hollowOut += reserve
-		} else {
-			width = width - hollowOut*2 - hinges*5 + reserve
-			hollowOut = hollowOut - 10 + reserve
-		}
-
-		totalWidth := width + hollowOut*2
-		height = height - 10 + reserve
-
-		color.Yellow.Printf("\n:: 左右画布：中间 %.2f cm，两边各 %.2f cm，高 %.2f cm", width, hollowOut, height)
-
-		//存储已计算的历史记录
-		history += fmt.Sprintf("左右画布：中间 %.2f cm，两边各 %.2f cm，高 %.2f cm\n", width, hollowOut, height)
-		go presenter.History(history) // 写入历史
-
-		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_左右画布_%.0fx%.0f", tools.NowTime(), totalWidth, height)
-
-		model.NewDocument(totalWidth, height, frameName, false)  // 创建ps文档
-		generate.LineJs3(width, hollowOut)                       // 生成专属参考线
-		go generate.Tailor3(width, height, hollowOut, frameName) // 生成暗号【-1】可以用的另存脚本
-		model.IsMaxCanvasExceeded(width, height)                 // 最大画布判断
-
-		isOpenPs() // 是否打开自动新建文档
-
-		if !viper.GetBool("memory") { // 是否记忆框架
-			break
-		}
-	}
-}
-
-//旧厂上下镂空
-//先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个横边 空出的中间画面加5厘米
+// 旧厂上下镂空
+// 先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个横边 空出的中间画面加5厘米
 func OldFrame4to1() {
 	// 定义一个预留尺寸
 	var reserve = viper.GetFloat64("reserve")
@@ -313,8 +227,8 @@ func OldFrame4to2() {
 	}
 }
 
-//旧厂顶天立地
-//扣掉镂空部分 再扣5
+// 旧厂顶天立地
+// 扣掉镂空部分 再扣5
 func OldFrame5() {
 	// 定义一个预留尺寸
 	var reserve = viper.GetFloat64("reserve")
@@ -392,7 +306,7 @@ func OldFrame5() {
 }
 
 // 旧厂常规折屏
-//扣5
+// 扣5
 func OldFrame6() {
 	// 定义一个预留尺寸
 	var reserve = viper.GetFloat64("reserve")
@@ -493,7 +407,7 @@ func OldFrame6() {
 	}
 }
 
-//旧厂多座屏
+// 旧厂多座屏
 func OldFrame7() {
 	// 定义一个预留尺寸
 	var reserve = viper.GetFloat64("reserve")

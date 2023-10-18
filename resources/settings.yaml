@@ -1,9 +1,11 @@
 automaticdeletion: false
 blackedge: true
+border: 4
+cipherlist: false
 darktheme: true
 gui: false
 memory: false
 openps: true
-picture: E:\淘宝美工\套图汇总
+picture: resources\picture
 prefix: ""
 reserve: 5

@@ -121,7 +121,7 @@ func modifyAllImgSize(images []string, dstPath string, width, height, mode int) 
 }
 
 // UniversalMainImage 通用主图第二版
-//裁剪模式：1智能 2居中 3居上 4居下 5居左 6居右
+// 裁剪模式：1智能 2居中 3居上 4居下 5居左 6居右
 func UniversalMainImage(originalPath string, width, height, mode int, delete bool) {
 	// 获取所有扩展名是jpg的文件名，类型是字符串切片，忽略大小写
 	jpgSlice, _ := filepath.Glob(originalPath + "/*.[Jj][Pp][Gg]")
@@ -139,15 +139,20 @@ func UniversalMainImage(originalPath string, width, height, mode int, delete boo
 
 		// 完成后的目标路径
 		resultPath := fmt.Sprintf("%s/主图", originalPath)
+		path34 := resultPath + "/34"
 
 		// 创建目标路径文件夹
-		_ = tools.CreateMkdirAll(resultPath)
+		_ = tools.CreateMkdirAll(path34)
 
 		// jpg修改全部大小为800，到主图文件夹
 		modifyAllImgSize(jpgSlice, resultPath, width, height, mode)
-
 		// png修改全部大小为800，到主图文件夹
 		modifyAllImgSize(pngSlice, resultPath, width, height, mode)
+
+		// jpg修改全部大小为3:4，到主图文件夹
+		modifyAllImgSize(jpgSlice, path34, 750, 1000, mode)
+		// png修改全部大小为3:4，到主图文件夹
+		modifyAllImgSize(pngSlice, path34, 750, 1000, mode)
 
 		// 复制所有文本到主图文件夹
 		copyAllTXT(originalPath, resultPath)

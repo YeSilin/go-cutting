@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-// NewDocument 生成用来新建ps文档jsx；wordLine 是否创建文字不要超过的参考线
+// NewDocument 生成用来新建ps文档jsx；exceeded 是否创建文字不要超过的参考线
 func NewDocument(width, height float64, frameName string, exceeded bool) {
 	jsx := `// 新建文档函数
 function newDocument(width, height, docName){
@@ -21,15 +21,15 @@ function newDocument(width, height, docName){
 	// 新文档的分辨率
 	const resolution = 100;
 	// 新文档的颜色模式
-	const mode = NewDocumentMode.CMYK;
+	const mode = NewDocumentMode.RGB;
 	// 新文档的默认背景填充颜色
 	const initialFill = DocumentFill.WHITE;
 	// 新文档的像素比率
 	const pixelAspectRatio = 1;
 	// 设置颜色位数为8位
 	const bitsPerChannel = BitsPerChannelType.EIGHT;
-	// 设置颜色配置文件为日本常规用途3
-	const colorProfileName = "Japan Color 2011 Coated";
+	// 设置颜色配置文件为sRGB; 日本常规用途3 Japan Color 2011 Coated
+	const colorProfileName = "sRGB IEC61966-2.1";
 	// 将设置好的参数放在[add]方法里面
 	app.documents.add(width, height, resolution, docName, mode, initialFill, pixelAspectRatio, bitsPerChannel, colorProfileName);
 	// 切换锁定参考线

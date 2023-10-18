@@ -1,4 +1,4 @@
-//Package presenter 这是一个名为毒蛇的配置
+// Package presenter 这是一个名为毒蛇的配置
 package presenter
 
 import (
@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-//InitSetting 初始化
+// InitSetting 初始化
 func InitSetting() {
 	// 初始化的 Viper实例
 	//v := viper.New()
@@ -17,6 +17,7 @@ func InitSetting() {
 	viper.SetDefault("blackEdge", true) // 黑边
 	viper.SetDefault("prefix", "")      // 前缀
 	viper.SetDefault("reserve", 5)      // 画布预留
+	viper.SetDefault("border", 4)       // 传统屏风边框宽度
 	viper.SetDefault("gui", false)      // 自动开启gui
 	//viper.SetDefault("cipherList", false)          // 自动开启暗号列表
 	viper.SetDefault("picture", "resources\\picture") // 正斜杠会出错

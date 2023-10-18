@@ -89,9 +89,52 @@ func frame2() {
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
 		}
-
 	}
+}
 
+// 旧厂中间大两边小 先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个竖边 空出的中间画面加5厘米
+func frame3() {
+	// 由配置决定是否循环使用此框架
+	for {
+		tools.ChineseTitle("当前框架左右画布", 74)          // 请注意切图的工厂与框架的选择
+		widthStr := inputPro("\n:: 请输入左右画布的总宽：", 6) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if widthStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		heightStr := inputPro("\n:: 请输入左右画布的总高：", 6) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if heightStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		hollowStr := inputPro("\n:: 请输入单边画布的大小：", 6) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if hollowStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		hingeStr := inputPro("\n:: 请输入合页数量（若订单无备注请输入“0”）：", 0) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if hingeStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		// 处理框架生成脚本
+		width, height, hollow := presenter.FramePresenter3(widthStr, heightStr, hollowStr, hingeStr)
+
+		// 输出提示
+		color.Yellow.Printf("\n:: 左右画布：中间 %.2f cm，两边各 %.2f cm，高 %.2f cm\n", width, hollow, height)
+
+		if !viper.GetBool("memory") { // 是否记忆框架
+			break
+		}
+	}
 }
 
 // 卷帘座屏  宽-20   高上下各镂空各-15 上横梁-5    高预留5
