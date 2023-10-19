@@ -81,12 +81,12 @@ OuterLoop:
 
 		switch key {
 		case "1":
-			unclassified.OldFrame4to1()   // 上下镂空
+			frame4to1()                   // 上下镂空
 			if !viper.GetBool("memory") { // 是否记忆框架
 				return
 			}
 		case "2":
-			unclassified.OldFrame4to2()   // 上下画布
+			frame4to2()                   // 上下画布
 			if !viper.GetBool("memory") { // 是否记忆框架
 				return
 			}

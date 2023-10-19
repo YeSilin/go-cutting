@@ -137,6 +137,113 @@ func frame3() {
 	}
 }
 
+// 旧厂上下镂空 先扣镂空尺寸 先扣两个镂空的大小  再扣掉 几个边框5 两镂空就有4个横边 空出的中间画面加5厘米
+func frame4to1() {
+	// 由配置决定是否循环使用此框架
+	for {
+		tools.ChineseTitle("当前框架上下镂空", 74)          // 请注意切图的工厂与框架的选择
+		widthStr := inputPro("\n:: 请输入上下镂空的总宽：", 6) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if widthStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		heightStr := inputPro("\n:: 请输入上下镂空的总高：", 6) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if heightStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		upHollowStr := inputPro("\n:: 请输入上镂空的大小：", 0) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if upHollowStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		downHollowStr := inputPro("\n:: 请输入下镂空的大小：", 0) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if downHollowStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		hingeStr := inputPro("\n:: 请输入合页数量（若订单无备注请输入“0”）：", 0) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if hingeStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		// 处理框架生成脚本
+		width, height, frameType := presenter.FramePresenter4to1(widthStr, heightStr, upHollowStr, downHollowStr, hingeStr)
+
+		// 输出提示
+		color.Yellow.Printf("\n:: %s：宽 %.2f cm，高 %.2f cm\n", frameType, width, height)
+
+		if !viper.GetBool("memory") { // 是否记忆框架
+			break
+		}
+
+	}
+
+}
+
+// 上下画布 例如 总高：180 上下分别：30+5  中间为：100+5，也就是说边框5都在中间画布扣了
+func frame4to2() {
+	// 由配置决定是否循环使用此框架
+	for {
+		tools.ChineseTitle("当前框架上下画布", 74) // 请注意切图的工厂与框架的选择
+
+		widthStr := inputPro("\n:: 请输入上下画布的总宽：", 6) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if widthStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		heightStr := inputPro("\n:: 请输入上下画布的总高：", 6) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if heightStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		upHollowStr := inputPro("\n:: 请输入上画布的大小：", 0) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if upHollowStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		downHollowStr := inputPro("\n:: 请输入下画布的大小：", 0) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if downHollowStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		hingeStr := inputPro("\n:: 请输入合页数量（若订单无备注请输入“0”）：", 0) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if hingeStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		// 处理框架生成脚本
+		width, height, upHollow, downHollow, frameType := presenter.FramePresenter4to2(widthStr, heightStr, upHollowStr, downHollowStr, hingeStr)
+
+		// 输出提示
+		color.Yellow.Printf("\n:: %s：宽 %.2f cm，上高 %.2f cm，中高 %.2f cm，下高 %.2f cm\n", frameType, width, upHollow, height, downHollow)
+
+		if !viper.GetBool("memory") { // 是否记忆框架
+			break
+		}
+	}
+}
+
 // 卷帘座屏  宽-20   高上下各镂空各-15 上横梁-5    高预留5
 func frame8to1() {
 	// 由配置决定是否循环使用此框架

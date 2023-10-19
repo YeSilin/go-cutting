@@ -815,6 +815,269 @@ if (!documents.length) {
 	}
 }
 
+// FrameSave4to2  生成上下画布专属保存
+func FrameSave4to2(width, upperCanvas, middleCanvas, downCanvas float64, frameType, frameName string) {
+	const script = `// 清理元数据
+function deleteDocumentAncestorsMetadata() {
+    // 清理元数据四步骤
+    if (ExternalObject.AdobeXMPScript == undefined) ExternalObject.AdobeXMPScript = new ExternalObject("lib:AdobeXMPScript");
+    var xmp = new XMPMeta(activeDocument.xmpMetadata.rawData);
+    // Begone foul Document Ancestors!
+    xmp.deleteProperty(XMPConst.NS_PHOTOSHOP, "DocumentAncestors");
+    app.activeDocument.xmpMetadata.rawData = xmp.serialize();
+}
+
+
+// 定义一个函数用来设置黑边
+function addEdge() {
+    // 保存当前背景颜色
+    var nowColor = app.backgroundColor;
+
+    // 定义一个对象颜色是黑色
+    var black = new SolidColor();
+    black.rgb.hexValue = "d5d5d5";
+    app.backgroundColor = black;
+
+    // 获取当前文档的高度与宽度
+    var width = app.activeDocument.width + 0.1;
+    var height = app.activeDocument.height + 0.1;
+
+    // 重设画布大小
+    app.activeDocument.resizeCanvas(UnitValue(width), UnitValue(height), AnchorPosition.MIDDLECENTER);
+
+    // 恢复之前的背景颜色
+    app.backgroundColor = nowColor;
+}
+
+
+// 创建一个透明图层
+function createLayer() {
+    // 新建一个图层
+    function layer() {
+        app.activeDocument.artLayers.add().name = "注意：已快捷裁剪成功！";
+    }
+
+    // 生成历史记录
+    app.activeDocument.suspendHistory("注意：已快捷裁剪成功！", "layer()");
+}
+
+
+// 合并图层用于提速
+function speedUp() {
+    // 设置首选项新文档预设单位是厘米，PIXELS是像素
+    app.preferences.rulerUnits = Units.CM;
+    // 新建一个空白图层用于合并
+    app.activeDocument.artLayers.add();
+    // 合并全部可见图层
+    app.activeDocument.mergeVisibleLayers();
+    // 改变当前文档的色彩模型为 CMYK
+    app.activeDocument.changeMode(ChangeMode.CMYK)
+    // 转为背景图层不然添加黑边会无效
+    app.activeDocument.activeLayer.isBackgroundLayer = true
+}
+
+
+//  返回上一级函数
+function returnUpper() {
+    // 为历史定义的变量
+    var idslct = charIDToTypeID("slct");
+    var idnull = charIDToTypeID("null");
+    var idHstS = charIDToTypeID("HstS");
+    var idOrdn = charIDToTypeID("Ordn");
+    var idPrvs = charIDToTypeID("Prvs");
+
+    // 返回上一级历史
+    var ref = new ActionReference();
+    var desc = new ActionDescriptor();
+    ref.putEnumerated(idHstS, idOrdn, idPrvs);
+    desc.putReference(idnull, ref);
+    executeAction(idslct, desc, DialogModes.NO);
+}
+
+
+//  获取用户想要保存的位置加文件名
+function getPathName(saveName) {
+    // 裁剪之后进行保存的位置和你想要的默认名称
+    var tempFile = new File("~/Desktop/GoCutting/" + saveName);
+    // 返回带路径的名字，注意要先数字解码
+    return decodeURI(tempFile.saveDlg("优化另存为", ["不要带扩展名:*", "默认保存为 JPG 文件:*"]))
+}
+
+
+// 用于裁剪另存
+function optimized(x1, y1, x2, y2, savePath) {
+    var bounds0 = [x1, y1, x2, y2];
+    document.crop(bounds0, 0);
+
+    // 添加黑边
+    addEdge();
+
+    // 裁剪之后进行保存的位置和你想要的默认名称
+    var TmpFile = new File(savePath);
+
+    //saveAs( 文件, 选项, 作为副本, 扩展名大小写 )
+    //调用[document]的[saveAs]另存方法，使用上面设置的各种参数，将当前文档导出并转换为JPEG格式的文档。
+    document.saveAs(TmpFile, exportOptionsSave, true, Extension.LOWERCASE);
+}
+
+// 主函数
+function main() {
+    // 得到用户想要保存的位置
+    var userSavePath = getPathName("请输入订单编号");
+    // 没有得到路径就返回
+    if (userSavePath == "null") {
+        return
+    }
+
+    // 得到最终会保存出来的文件名
+    var tempNameDic = new Array()
+
+    // 如果有上画布就追加
+    if (upperCanvas > 0) {
+        tempNameDic["upper"] = userSavePath + "_" + frameName + "_上_" + width + "x" + upperCanvas
+    }
+
+    // 中间这个画布肯定存在，直接添加
+    tempNameDic["middle"] = userSavePath + "_" + frameName + "_中_" + width + "x" + middleCanvas;
+
+    // 如果有下画布就追加
+    if (downCanvas > 0) {
+        tempNameDic["down"] = userSavePath + "_" + frameName + "_下_" + width + "x" + downCanvas
+    }
+
+
+    // 遍历全部可能覆盖的文件名
+    for (var key in tempNameDic) { // 输出字典元素，如果字典的key是数字，输出时会自动按序输出
+        if (new File(tempNameDic[key] + ".jpg").exists) {
+            alert("输入的编号重复，已自动取消操作！");
+            return
+        }
+    }
+
+
+    // 生成历史记录并调用函数
+    app.activeDocument.suspendHistory("性能加速", "speedUp()");
+
+    // 清理元数据
+    deleteDocumentAncestorsMetadata();
+
+
+    // 为上画布裁剪
+    if (upperCanvas > 0) {
+        app.activeDocument.suspendHistory("合并所有操作为一条历史", "optimized(0, 0, width, upperCanvas, tempNameDic[\"upper\"])")
+        // 返回上一级历史
+        returnUpper();
+    }
+
+
+    // 为中间画布调用裁剪函数
+    app.activeDocument.suspendHistory("合并所有操作为一条历史", "optimized(0, upperCanvas, width, upperCanvas + middleCanvas, tempNameDic[\"middle\"])")
+    // 返回上一级历史
+    returnUpper();
+
+
+    // 为下画布裁剪
+    if (downCanvas > 0) {
+        app.activeDocument.suspendHistory("合并所有操作为一条历史", "optimized(0, upperCanvas + middleCanvas, width, upperCanvas + middleCanvas + downCanvas, tempNameDic[\"down\"])")
+        // 返回上一级历史
+        returnUpper();
+    }
+
+
+    // 全部保存成功
+    isSave = true;
+}
+
+
+// 判断是否有打开的文件
+if (!documents.length) {
+    alert("没有打开的文档，请打开一个文档来运行此脚本！");
+} else {
+
+
+    // 确定是 上画布 上下画布 下画布
+    var frameName = "{{.FrameName}}" // 这里传golang变量哦！！！！！！！！！！！！！！
+
+    // 上下画布的总宽
+    var width = {{.Width}};    // 这里传golang变量哦！！！！！！！！！！！！！！
+    
+    // 上画布高度
+    var upperCanvas = {{.UpperCanvas}};   // 这里传golang变量哦！！！！！！！！！！！！！！
+
+    // 中画布高度
+    var middleCanvas = {{.MiddleCanvas}}  // 这里传golang变量哦！！！！！！！！！！！！！！
+
+    // 下画布高度
+    var downCanvas = {{.DownCanvas}}    // 这里传golang变量哦！！！！！！！！！！！！！！
+
+    // 是否保存成功
+    var isSave = false;
+
+    // 保存开始状态
+    var savedState = app.activeDocument.activeHistoryState;
+
+    // 为当前文档定义变量
+    var document = app.activeDocument;
+
+    // 定义一个变量[exportOptionsSave]，用来表示导出文档为jpeg格式的设置属性。
+    var exportOptionsSave = new JPEGSaveOptions();
+
+    // 嵌入彩色配置文件
+    exportOptionsSave.embedColorProfile = true;
+
+    // 设置杂边为无
+    exportOptionsSave.matte = MatteType.NONE;
+
+    // 设置导出文档时，图片的压缩质量。数字范围为1至12。
+    exportOptionsSave.quality = 12;
+
+    // 保存为基线已优化
+    exportOptionsSave.formatOptions = FormatOptions.OPTIMIZEDBASELINE;
+
+    // 执行主函数
+    main();
+
+    // 当你完成了你正在做的任何事情，返回这个状态
+    app.activeDocument.activeHistoryState = savedState;
+
+    // 保存成功就加个提示
+    if (isSave) {
+        createLayer();
+    }
+}`
+
+	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
+	info := struct {
+		FrameName    string  // 确定是 上画布 上下画布 下画布
+		Width        float64 // 总宽
+		UpperCanvas  float64 // 上高
+		MiddleCanvas float64 // 中高
+		DownCanvas   float64 // 下高
+	}{frameType, width, upperCanvas, middleCanvas, downCanvas}
+
+	// 解析字符串生成模板对象
+	tmpl, err := template.New("tmpl").Parse(script)
+	if err != nil {
+		logrus.Error(err)
+		return
+	}
+
+	// 创建文件，返回两个值，一是创建的文件，二是错误信息
+	f, err := os.Create(fmt.Sprintf("resources/jsx/temp/tailor_%s.jsx", frameName))
+	if err != nil { // 如果有错误，打印错误，同时返回
+		logrus.Error(err)
+		return
+	}
+	// 关闭文件
+	defer f.Close()
+
+	// 利用给定数据渲染模板，并将结果写入f
+	err = tmpl.Execute(f, info)
+	if err != nil {
+		logrus.Error(err)
+	}
+}
+
 // FrameSave8to2 拉布座屏专属保存
 func FrameSave8to2(frameName string, thickness float64) {
 	const script = `// 定义一个函数用来设置黑边

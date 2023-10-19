@@ -142,6 +142,130 @@ func FramePresenter3(widthStr, heightStr, hollowStr, hingeStr string) (width, he
 	return
 }
 
+// FramePresenter4to1 对上下镂空进行处理
+func FramePresenter4to1(widthStr, heightStr, upHollowStr, downHollowStr, hingeStr string) (width, height float64, frameType string) {
+	// 定义预留尺寸和传统边框宽度
+	var reserve = viper.GetFloat64("reserve")
+	var border = viper.GetFloat64("border")
+
+	// 强制类型转换成浮点数
+	width, _ = strconv.ParseFloat(widthStr, 64)
+	height, _ = strconv.ParseFloat(heightStr, 64)
+	upHollow, _ := strconv.ParseFloat(upHollowStr, 64)
+	downHollow, _ := strconv.ParseFloat(downHollowStr, 64)
+	hinge, _ := strconv.ParseFloat(hingeStr, 64)
+
+	// 进行框架公式计算
+	if hinge == 0 {
+		height = height - border*2 + reserve
+		if upHollow > 0 {
+			height -= upHollow + border // 如果有上镂空的话
+		}
+		if downHollow > 0 {
+			height -= downHollow + border // 如果有下镂空的话
+		}
+	} else {
+		height = height - (upHollow + downHollow) - border*2 + reserve
+	}
+	width = width - border*2 + reserve
+
+	// 求出框架类型
+	if upHollow > 0 {
+		frameType += "上"
+	}
+	if downHollow > 0 {
+		frameType += "下"
+	}
+	if frameType == "" {
+		frameType += "无"
+	}
+	frameType += "镂空"
+
+	// 为当前框架指定名字
+	frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), frameType, width, height)
+
+	// 生成创建Photoshop新文档脚本
+	model.NewDocument(width, height, frameName, true)
+
+	// 追加最大画布判断
+	model.IsMaxCanvasExceeded(width, height)
+
+	// 生成暗号【-1】可以用的另存脚本
+	go model.FrameSaveDef(frameName)
+
+	// 是否打开自动新建文档
+	model.RunAutoCreateDocuments()
+
+	return
+}
+
+// FramePresenter4to2 对上下画布进行处理
+func FramePresenter4to2(widthStr, heightStr, upHollowStr, downHollowStr, hingeStr string) (width, height, upHollow, downHollow float64, frameType string) {
+	// 定义预留尺寸和传统边框宽度
+	var reserve = viper.GetFloat64("reserve")
+	var border = viper.GetFloat64("border")
+
+	// 强制类型转换成浮点数
+	width, _ = strconv.ParseFloat(widthStr, 64)
+	height, _ = strconv.ParseFloat(heightStr, 64)
+	upHollow, _ = strconv.ParseFloat(upHollowStr, 64)
+	downHollow, _ = strconv.ParseFloat(downHollowStr, 64)
+	hinge, _ := strconv.ParseFloat(hingeStr, 64)
+
+	// 进行框架公式计算
+	width = width - border*2 + reserve
+	if hinge == 0 {
+		height = height - (upHollow + downHollow) - border*4 + reserve
+		if upHollow > 0 { // 如果有上画布
+			upHollow += reserve
+		}
+		if downHollow > 0 { // 如果有下画布
+			downHollow += reserve
+		}
+	} else { // 有合页的话就完全按照多座屏的方式
+		height = height - (upHollow + downHollow) - hinge*border + reserve
+		if upHollow > 0 { // 如果有上画布
+			upHollow = upHollow - border*2 + reserve
+		}
+		if downHollow > 0 { // 如果有下画布
+			downHollow = downHollow - border*2 + reserve
+		}
+	}
+	totalHeight := upHollow + downHollow + height
+
+	// 求出框架类型
+	if upHollow > 0 {
+		frameType += "上"
+	}
+	if downHollow > 0 {
+		frameType += "下"
+	}
+	if frameType == "" {
+		frameType += "无"
+	}
+	frameType += "画布"
+
+	// 为当前框架指定名字
+	frameName := fmt.Sprintf("%s_%s_%.0fx%.0f", tools.NowTime(), frameType, width, totalHeight)
+
+	// 生成创建Photoshop新文档脚本
+	model.NewDocument(width, totalHeight, frameName, false)
+
+	// 追加专属的切图参考线
+	model.FrameGuide4to2(upHollow, height)
+
+	// 追加最大画布判断
+	model.IsMaxCanvasExceeded(width, height)
+
+	// 生成暗号【-1】可以用的另存脚本
+	go model.FrameSave4to2(width, upHollow, height, downHollow, frameType, frameName)
+
+	// 是否打开自动新建文档
+	model.RunAutoCreateDocuments()
+
+	return
+}
+
 // FramePresenter8to1  对卷帘座屏进行处理
 func FramePresenter8to1(widthStr, heightStr string) (width, height float64) {
 	// 定义一个预留尺寸
