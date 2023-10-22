@@ -188,7 +188,7 @@ OuterLoop:
 		case "4":
 			c.upperAndLowerScreenChoice() // 上下座屏框架选择
 		case "5":
-			unclassified.OldFrame5() // 顶天立地
+			frame5() // 顶天立地
 		case "6":
 			unclassified.OldFrame6() // 常规折屏
 		case "7":

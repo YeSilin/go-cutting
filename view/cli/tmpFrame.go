@@ -5,11 +5,10 @@ import (
 	"github.com/gookit/color"
 	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
-	"github.com/yesilin/go-cutting/generate"
-	"github.com/yesilin/go-cutting/input"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/presenter"
 	"github.com/yesilin/go-cutting/tools"
+	"github.com/yesilin/go-cutting/unclassified"
 	"strconv"
 )
 
@@ -18,12 +17,12 @@ func (c *CLI) tempFame1To4() {
 	for {
 		tools.EnglishTitle("Custom size", 74)
 
-		widthStr := input.InputCanvasSize("\n:: 请输入小座屏的宽：", 6)
+		widthStr := unclassified.InputCanvasSize("\n:: 请输入小座屏的宽：", 6)
 		if widthStr == "-" {
 			break
 		}
 
-		heightStr := input.InputCanvasSize("\n:: 请输入小座屏的高：", 6)
+		heightStr := unclassified.InputCanvasSize("\n:: 请输入小座屏的高：", 6)
 		if heightStr == "-" {
 			break
 		}
@@ -34,7 +33,7 @@ func (c *CLI) tempFame1To4() {
 
 		color.Green.Printf("\n:: 小座屏：宽 %.2f cm，高 %.2f cm", width, height)
 
-		generate.TempFrame1JS(width*10, height*10) // 生成小座屏效果图框架
+		model.TempFrame1(width*10, height*10) // 生成小座屏效果图框架
 
 		model.IsMaxCanvasExceeded(width-5, height-5) // 最大画布判断
 
@@ -69,11 +68,11 @@ OuterLoop:
 
 		switch key {
 		case "1":
-			generate.SelectionTempFrameJS("Frame01", 0)
+			model.SelectionTempFrame("Frame01", 0)
 		case "2":
-			generate.SelectionTempFrameJS("Frame01", 1)
+			model.SelectionTempFrame("Frame01", 1)
 		case "3":
-			generate.SelectionTempFrameJS("Frame01", 2)
+			model.SelectionTempFrame("Frame01", 2)
 		case "4":
 			c.tempFame1To4() // 小座屏自定义框架
 		case "-":
@@ -112,13 +111,13 @@ OuterLoop:
 
 		switch key {
 		case "1":
-			generate.SelectionTempFrameJS("Frame02", 0)
+			model.SelectionTempFrame("Frame02", 0)
 		case "2":
-			generate.SelectionTempFrameJS("Frame02", 1)
+			model.SelectionTempFrame("Frame02", 1)
 		case "3":
-			generate.SelectionTempFrameJS("Frame02", 2)
+			model.SelectionTempFrame("Frame02", 2)
 		case "4":
-			generate.SelectionTempFrameJS("Frame02", 3)
+			model.SelectionTempFrame("Frame02", 3)
 		case "-":
 			break OuterLoop
 		case "":
@@ -155,14 +154,14 @@ OuterLoop:
 
 		switch key {
 		case "1":
-			generate.SelectionTempFrameJS("HollowFrame", 0)
+			model.SelectionTempFrame("HollowFrame", 0)
 		case "2":
-			generate.SelectionTempFrameJS("HollowFrame", 1)
+			model.SelectionTempFrame("HollowFrame", 1)
 		case "3":
-			//generate.SelectionTempFrameJS("Frame02", 2)
+			//generate.SelectionTempFrame("Frame02", 2)
 			fmt.Println("未开发")
 		case "4":
-			//generate.SelectionTempFrameJS("Frame02", 3)
+			//generate.SelectionTempFrame("Frame02", 3)
 			fmt.Println("未开发")
 		case "-":
 			break OuterLoop

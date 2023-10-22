@@ -244,6 +244,58 @@ func frame4to2() {
 	}
 }
 
+// 旧厂顶天立地 扣掉镂空部分 再扣5
+func frame5() {
+	// 由配置决定是否循环使用此框架
+	for {
+		tools.ChineseTitle("当前框架顶天立地", 74)          // 请注意切图的工厂与框架的选择
+		widthStr := inputPro("\n:: 请输入顶天立地的总宽：", 6) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if widthStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		heightStr := inputPro("\n:: 请输入顶天立地的总高：", 6) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if heightStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		upHollowStr := inputPro("\n:: 请输入上镂空的大小：", 0) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if upHollowStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		downHollowStr := inputPro("\n:: 请输入下镂空的大小：", 0) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if downHollowStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		numberStr := inputPro("\n:: 请输入拥有几个贴地或贴顶横杆：", 0) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if numberStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		// 处理框架生成脚本
+		width, height := presenter.FramePresenter5(widthStr, heightStr, upHollowStr, downHollowStr, numberStr)
+
+		// 输出提示
+		color.Yellow.Printf("\n:: 顶天立地：宽 %.2f cm，高 %.2f cm", width, height)
+
+		if !viper.GetBool("memory") { // 是否记忆框架
+			break
+		}
+	}
+}
+
 // 卷帘座屏  宽-20   高上下各镂空各-15 上横梁-5    高预留5
 func frame8to1() {
 	// 由配置决定是否循环使用此框架

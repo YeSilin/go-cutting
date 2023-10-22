@@ -5,7 +5,6 @@ import (
 	"github.com/gookit/color"
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/generate"
-	"github.com/yesilin/go-cutting/input"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
 	"os/exec"
@@ -17,15 +16,15 @@ func MapFrame1() {
 	for {
 		tools.ChineseTitle("当前框架常规座屏贴图 ", 74) // 请注意切图的工厂与框架的选择
 
-		widthStr := input.InputCanvasSize("\n:: 请输入常规座屏的宽：", 6)
+		widthStr := InputCanvasSize("\n:: 请输入常规座屏的宽：", 6)
 		if widthStr == "-" {
 			break
 		}
-		heightStr := input.InputCanvasSize("\n:: 请输入常规座屏的高：", 6)
+		heightStr := InputCanvasSize("\n:: 请输入常规座屏的高：", 6)
 		if heightStr == "-" {
 			break
 		}
-		reserveStr := input.InputCanvasSize("\n:: 请输入要减去的单边框大小(一般为40)：", 0)
+		reserveStr := InputCanvasSize("\n:: 请输入要减去的单边框大小(一般为40)：", 0)
 		if reserveStr == "-" {
 			break
 		}
@@ -62,31 +61,31 @@ func MapFrame6() {
 	for {
 		tools.ChineseTitle("当前框架各种折屏贴图", 74) // 请注意切图的工厂与框架的选择
 
-		widthStr := input.InputCanvasSize("\n:: 请输入折屏单扇的宽：", 6)
+		widthStr := InputCanvasSize("\n:: 请输入折屏单扇的宽：", 6)
 		if widthStr == "-" {
 			break
 		}
-		heightStr := input.InputCanvasSize("\n:: 请输入折屏单扇的高：", 6)
+		heightStr := InputCanvasSize("\n:: 请输入折屏单扇的高：", 6)
 		if heightStr == "-" {
 			break
 		}
-		upperHollowOutStr := input.InputCanvasSize("\n:: 请输入上镂空的大小：", 0)
+		upperHollowOutStr := InputCanvasSize("\n:: 请输入上镂空的大小：", 0)
 		if heightStr == "-" {
 			break
 		}
 
-		downHollowOutStr := input.InputCanvasSize("\n:: 请输入下镂空的大小：", 0)
+		downHollowOutStr := InputCanvasSize("\n:: 请输入下镂空的大小：", 0)
 		if heightStr == "-" {
 
 			break
 		}
 
-		numberStr := input.InputCanvasSize("\n:: 请输入共拥有几扇：", 1)
+		numberStr := InputCanvasSize("\n:: 请输入共拥有几扇：", 1)
 		if numberStr == "-" {
 			break
 		}
 
-		reserveStr := input.InputCanvasSize("\n:: 请输入要减去的单边框大小(一般为40)：", 0)
+		reserveStr := InputCanvasSize("\n:: 请输入要减去的单边框大小(一般为40)：", 0)
 		if reserveStr == "-" {
 			break
 		}
@@ -233,14 +232,14 @@ func MapFrame7() {
 	// 循环使用此框架
 	for {
 		tools.ChineseTitle("当前框架多座屏贴图", 74) // 请注意切图的工厂与框架的选择
-		numberStr := input.InputCanvasSize("\n:: 请输入拥有几个座屏：", 0)
+		numberStr := InputCanvasSize("\n:: 请输入拥有几个座屏：", 0)
 		// 一开始就返回直接退出函数
 		if numberStr == "-" || numberStr == "--" {
 			tools.CallClear() // 清屏
 			return
 		}
 
-		reserveStr := input.InputCanvasSize("\n:: 请输入要减去的单边框大小(一般为40)：", 0)
+		reserveStr := InputCanvasSize("\n:: 请输入要减去的单边框大小(一般为40)：", 0)
 		if reserveStr == "-" || numberStr == "--" {
 			return
 		}
@@ -264,9 +263,9 @@ func MapFrame7() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 除了最后一个都需要开启画布模式
 			if i != len(saveSizeStr)-1 {
-				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦

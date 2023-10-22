@@ -1,5 +1,5 @@
 // Package input 对输入的字符进行判断
-package input
+package unclassified
 
 import (
 	"bufio"

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
-	"github.com/yesilin/go-cutting/input"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
+	"github.com/yesilin/go-cutting/unclassified"
 	"strconv"
 	"strings"
 )
@@ -108,7 +108,7 @@ func modifyAutomaticAddBlackEdge() {
 func modifyLatestCanvasReservation() {
 	tools.EnglishTitle("Modify Latest Canvas Reservation", 74)
 	fmt.Println("\n【警告】修改此项将直接影响最终的切图结果，如未出现特殊情况请勿修改")
-	tempReserve := input.InputCanvasSize("\n【警告】请输入最新的切图预留：", 0)
+	tempReserve := unclassified.InputCanvasSize("\n【警告】请输入最新的切图预留：", 0)
 
 	switch tempReserve {
 	case "-":
@@ -171,7 +171,7 @@ OuterLoop:
 
    [1]自启快捷操作             [2]功能暂未开发            [3]功能暂未开发`
 		fmt.Println(text)
-		choice, info := input.InputMenuSelection("\n:: 请选择需要使用的功能：")
+		choice, info := unclassified.InputMenuSelection("\n:: 请选择需要使用的功能：")
 		tools.CallClear() // 清屏
 		switch choice {
 		case "1":

@@ -5,7 +5,6 @@ import (
 	"github.com/gookit/color"
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/generate"
-	"github.com/yesilin/go-cutting/input"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/presenter"
 	"github.com/yesilin/go-cutting/tools"
@@ -20,84 +19,6 @@ func isOpenPs() {
 		dataPath := "resources/jsx/newDocument.jsx"
 		cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 		go cmd.Run()
-	}
-}
-
-// 旧厂顶天立地
-// 扣掉镂空部分 再扣5
-func OldFrame5() {
-	// 定义一个预留尺寸
-	var reserve = viper.GetFloat64("reserve")
-
-	// 初始化输入提示的切片
-	inputPrompt := [5]string{"\n:: 请输入顶天立地的总宽：", "\n:: 请输入顶天立地的总高：",
-		"\n:: 请输入上镂空的大小：", "\n:: 请输入下镂空的大小：", "\n:: 请输入拥有几个贴地或贴顶横杆："}
-
-	// 保存尺寸的数组
-	saveSizeStr := [5]string{}
-
-	for {
-		tools.ChineseTitle("当前框架顶天立地", 74) // 请注意切图的工厂与框架的选择
-
-		for i := 0; i < len(saveSizeStr); i++ {
-			// 只有前2个需要开启画布模式
-			if i < 2 {
-				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
-			} else {
-				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
-			}
-
-			// 输入返回当然要返回啦
-			if saveSizeStr[i] == "-" {
-				tools.CallClear() // 清屏
-				return
-			}
-
-			// 第一次就输入返回就退出此框架
-			if i == 0 && saveSizeStr[i] == "--" {
-				return
-			}
-
-			// 退回上一级输入
-			if saveSizeStr[i] == "--" {
-				i -= 2
-			}
-		}
-
-		//存储未计算时的历史记录
-		var history = fmt.Sprintf("顶天立地的总宽：%s\n", saveSizeStr[0])
-		history += fmt.Sprintf("顶天立地的总高：%s\n", saveSizeStr[1])
-		history += fmt.Sprintf("上镂空的大小：%s\n", saveSizeStr[2])
-		history += fmt.Sprintf("下镂空的大小：%s\n", saveSizeStr[3])
-		history += fmt.Sprintf("拥有几个贴地或贴顶横杆：%s\n", saveSizeStr[4])
-
-		width, _ := strconv.ParseFloat(saveSizeStr[0], 64)
-		height, _ := strconv.ParseFloat(saveSizeStr[1], 64)
-		upperHollowOut, _ := strconv.ParseFloat(saveSizeStr[2], 64)
-		downHollowOut, _ := strconv.ParseFloat(saveSizeStr[3], 64)
-		number, _ := strconv.ParseFloat(saveSizeStr[4], 64)
-
-		width = width - 10 + reserve
-		height = height - upperHollowOut - downHollowOut - 10 - number*5 + reserve
-
-		color.Yellow.Printf("\n:: 顶天立地：宽 %.2f cm，高 %.2f cm", width, height)
-
-		//存储已计算的历史记录
-		history += fmt.Sprintf("顶天立地：宽 %.2f cm，高 %.2f cm\n", width, height)
-		go presenter.History(history) // 写入历史
-
-		// 为当前框架指定名字
-		frameName := fmt.Sprintf("%s_顶天立地_%.0fx%.0f", tools.NowTime(), width, height)
-
-		model.NewDocument(width, height, frameName, true) // 创建ps文档
-		go model.FrameSaveDef(frameName)                  // 生成暗号【-1】可以用的另存脚本
-		model.IsMaxCanvasExceeded(width, height)          // 最大画布判断
-
-		isOpenPs() // 是否打开自动新建文档
-
-		if !viper.GetBool("memory") { // 是否记忆框架
-			break
-		}
 	}
 }
 
@@ -119,9 +40,9 @@ func OldFrame6() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 只有前2个需要开启画布模式
 			if i < 2 {
-				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦
@@ -318,7 +239,7 @@ func OldFrame7() {
 	// 循环使用此框架
 	for {
 		tools.ChineseTitle("当前框架多座屏", 74) // 请注意切图的工厂与框架的选择
-		numberStr := input.InputCanvasSize("\n:: 请输入拥有几个座屏：", 1)
+		numberStr := InputCanvasSize("\n:: 请输入拥有几个座屏：", 1)
 		// 一开始就返回直接退出函数
 		if numberStr == "-" || numberStr == "--" {
 			tools.CallClear() // 清屏
@@ -342,9 +263,9 @@ func OldFrame7() {
 		for i := 0; i < len(saveSizeStr); i++ {
 			// 除了最后两个都需要开启画布模式
 			if i < len(saveSizeStr)-2 {
-				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 6)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 6)
 			} else {
-				saveSizeStr[i] = input.InputCanvasSize(inputPrompt[i], 0)
+				saveSizeStr[i] = InputCanvasSize(inputPrompt[i], 0)
 			}
 
 			// 输入返回当然要返回啦

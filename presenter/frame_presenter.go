@@ -266,6 +266,41 @@ func FramePresenter4to2(widthStr, heightStr, upHollowStr, downHollowStr, hingeSt
 	return
 }
 
+// FramePresenter5 顶天立地进行处理
+func FramePresenter5(widthStr, heightStr, upHollowStr, downHollowStr, numberStr string) (width, height float64) {
+	// 定义预留尺寸和传统边框宽度
+	var reserve = viper.GetFloat64("reserve")
+	var border = viper.GetFloat64("border")
+
+	// 强制类型转换成浮点数
+	width, _ = strconv.ParseFloat(widthStr, 64)
+	height, _ = strconv.ParseFloat(heightStr, 64)
+	upHollow, _ := strconv.ParseFloat(upHollowStr, 64)
+	downHollow, _ := strconv.ParseFloat(downHollowStr, 64)
+	number, _ := strconv.ParseFloat(numberStr, 64)
+
+	// 进行框架公式计算
+	width = width - border*2 + reserve
+	height = height - upHollow - downHollow - border*2 - number*border + reserve
+
+	// 为当前框架指定名字
+	frameName := fmt.Sprintf("%s_顶天立地_%.0fx%.0f", tools.NowTime(), width, height)
+
+	// 生成创建Photoshop新文档脚本
+	model.NewDocument(width, height, frameName, true)
+
+	// 追加最大画布判断
+	model.IsMaxCanvasExceeded(width, height)
+
+	// 生成暗号【-1】可以用的另存脚本
+	go model.FrameSaveDef(frameName)
+
+	// 是否打开自动新建文档
+	model.RunAutoCreateDocuments()
+
+	return
+}
+
 // FramePresenter8to1  对卷帘座屏进行处理
 func FramePresenter8to1(widthStr, heightStr string) (width, height float64) {
 	// 定义一个预留尺寸
