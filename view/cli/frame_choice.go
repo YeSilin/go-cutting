@@ -190,7 +190,7 @@ OuterLoop:
 		case "5":
 			frame5() // 顶天立地
 		case "6":
-			unclassified.OldFrame6() // 常规折屏
+			frame6() // 常规折屏
 		case "7":
 			unclassified.OldFrame7() // 多座屏
 		case "8":

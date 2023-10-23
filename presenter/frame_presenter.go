@@ -301,6 +301,62 @@ func FramePresenter5(widthStr, heightStr, upHollowStr, downHollowStr, numberStr 
 	return
 }
 
+// FramePresenter6 传统折屏进行处理
+func FramePresenter6(widthStr, heightStr, upHollowStr, downHollowStr, numberStr string) (totalWidth, height float64, frameType string) {
+	// 定义预留尺寸和传统边框宽度
+	var reserve = viper.GetFloat64("reserve")
+	var border = viper.GetFloat64("border")
+
+	// 强制类型转换成浮点数
+	width, _ := strconv.ParseFloat(widthStr, 64)
+	height, _ = strconv.ParseFloat(heightStr, 64)
+	upHollow, _ := strconv.ParseFloat(upHollowStr, 64)
+	downHollow, _ := strconv.ParseFloat(downHollowStr, 64)
+	number, _ := strconv.ParseFloat(numberStr, 64)
+
+	// 进行框架公式计算
+	width = width - border*2 + reserve         // 单扇的宽
+	totalWidth = width * number                // 总宽
+	height = height - border*2 + (reserve + 1) // 单扇的高  折屏高要多预留1厘米
+
+	// 求出框架类型
+	switch {
+	case upHollow > 0 && downHollow > 0: // 如果有上镂空 下镂空的话
+		height = height - upHollow - downHollow - border*2
+		frameType = "上下镂空"
+	case upHollow > 0: // 如果有上镂空的话
+		height = height - upHollow - border
+		frameType = "上镂空"
+	case downHollow > 0: // 如果有下镂空的话
+		height = height - downHollow - border
+		frameType = "下镂空"
+	default:
+		frameType = "常规"
+	}
+
+	// 为当前框架指定名字，获取当前时间，进行格式化 2006-01-02 15:04:05
+	frameName := fmt.Sprintf("%s_%s折屏_%.0fx%.0f", tools.NowTime(), frameType, totalWidth, height)
+
+	// 定义单片名字
+	singleName := fmt.Sprintf("%s折屏", frameType)
+
+	// 生成创建Photoshop新文档脚本
+	model.NewDocument(totalWidth, height, frameName, false)
+
+	// 追加专属的切图参考线
+	model.FrameGuide6(width, number)
+
+	// 追加最大画布判断
+	model.IsMaxCanvasExceeded(width, height)
+
+	// 生成暗号【-1】可以用的另存脚本
+	go model.FrameSave6(width, height, number, frameName, singleName)
+
+	// 是否打开自动新建文档
+	model.RunAutoCreateDocuments()
+	return
+}
+
 // FramePresenter8to1  对卷帘座屏进行处理
 func FramePresenter8to1(widthStr, heightStr string) (width, height float64) {
 	// 定义一个预留尺寸

@@ -14,7 +14,7 @@ import (
 
 // NewDocument 生成用来新建ps文档jsx；exceeded 是否创建文字不要超过的参考线
 func NewDocument(width, height float64, frameName string, exceeded bool) {
-	jsx := `// 新建文档函数
+	script := `// 新建文档函数
 function newDocument(width, height, docName){
 	// 设置首选项新文档预设单位是厘米，PIXELS是像素
 	app.preferences.rulerUnits = Units.CM;
@@ -84,7 +84,7 @@ app.activeDocument.suspendHistory("建议：字不要在此参考线外！", "ad
 	// 采用链式操作在Parse解析之前调用 Funcs 添加自定义的sub函数
 	// 这边有个地方值得注意，template.New()函数中参数名字要和ParseFiles（）
 	// 函数的文件名要相同，要不然就会报错："" is an incomplete template
-	tmpl, err := template.New("newDocument.gohtml").Funcs(template.FuncMap{"sub": sub}).Parse(jsx)
+	tmpl, err := template.New("newDocument.gohtml").Funcs(template.FuncMap{"sub": sub}).Parse(script)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -96,6 +96,9 @@ app.activeDocument.suspendHistory("建议：字不要在此参考线外！", "ad
 		fmt.Println(err)
 		return
 	}
+
+	// 写入 UTF-8 BOM 头，避免出现 JavaScript 代码丢失错误
+	_, _ = f.WriteString("\xEF\xBB\xBF")
 
 	// 利用给定数据渲染模板，并将结果写入f
 	err = tmpl.Execute(f, info)
