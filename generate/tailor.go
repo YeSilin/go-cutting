@@ -22,14 +22,14 @@ func TailorForMap6(width, height, number int, frameName, singleName string) {
 	}{width, height, number, singleName}
 
 	// 解析指定文件生成模板对象
-	tmpl, err := template.ParseFiles("resources/jsx/template/map/foldingScreensCutting.gohtml")
+	tmpl, err := template.ParseFiles("data/jsx/template/map/foldingScreensCutting.gohtml")
 	if err != nil {
 		logrus.Error(err)
 		return
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create(fmt.Sprintf("resources/jsx/temp/tailor_%s.jsx", frameName))
+	f, err := os.Create(fmt.Sprintf("data/jsx/temp/tailor_%s.jsx", frameName))
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return
@@ -55,14 +55,14 @@ func TailorForMap7(widthSlice, heightSlice []int, heightMax int, frameName strin
 	}{tools.IntSliceToJsArray(widthSlice), tools.IntSliceToJsArray(heightSlice), heightMax, tools.Transfer(len(widthSlice))}
 
 	// 解析指定文件生成模板对象
-	tmpl, err := template.ParseFiles("resources/jsx/template/map/multiScreenCutting.gohtml")
+	tmpl, err := template.ParseFiles("data/jsx/template/map/multiScreenCutting.gohtml")
 	if err != nil {
 		logrus.Error(err)
 		return
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create(fmt.Sprintf("resources/jsx/temp/tailor_%s.jsx", frameName))
+	f, err := os.Create(fmt.Sprintf("data/jsx/temp/tailor_%s.jsx", frameName))
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return

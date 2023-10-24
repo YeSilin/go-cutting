@@ -35,7 +35,7 @@ app.activeDocument.suspendHistory("左右画布参考线！", "addLine()");`
 	}
 
 	// 打开要追加数据的文件
-	f, err := os.OpenFile("resources/jsx/newDocument.jsx", os.O_APPEND, 0644)
+	f, err := os.OpenFile("data/jsx/newDocument.jsx", os.O_APPEND, 0644)
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return
@@ -77,7 +77,7 @@ app.activeDocument.suspendHistory("上下画布参考线！", "addLine()");`
 	}
 
 	// 打开要追加数据的文件
-	f, err := os.OpenFile("resources/jsx/newDocument.jsx", os.O_APPEND, 0644)
+	f, err := os.OpenFile("data/jsx/newDocument.jsx", os.O_APPEND, 0644)
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return
@@ -128,7 +128,7 @@ addFoldingScreenGuide();
 	}
 
 	// 打开要追加数据的文件
-	f, err := os.OpenFile("resources/jsx/newDocument.jsx", os.O_APPEND, 0644)
+	f, err := os.OpenFile("data/jsx/newDocument.jsx", os.O_APPEND, 0644)
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return
@@ -281,7 +281,7 @@ if (app.activeDocument.layers.length != 1){
 	}
 
 	// 打开要追加数据的文件
-	f, err := os.OpenFile("resources/jsx/newDocument.jsx", os.O_APPEND, 0644)
+	f, err := os.OpenFile("data/jsx/newDocument.jsx", os.O_APPEND, 0644)
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return

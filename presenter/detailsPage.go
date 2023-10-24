@@ -334,7 +334,7 @@ if (!documents.length) {
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create("resources/jsx/replaceSmartObjects.jsx")
+	f, err := os.Create("data/jsx/replaceSmartObjects.jsx")
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return

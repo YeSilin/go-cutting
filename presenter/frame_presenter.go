@@ -456,16 +456,17 @@ func FramePresenter7(widthStrSlice, heightStrSlice []string, upHollowStr, downHo
 
 // FramePresenter8to1  对卷帘座屏进行处理
 func FramePresenter8to1(widthStr, heightStr string) (width, height float64) {
-	// 定义一个预留尺寸
+	// 定义预留尺寸和传统边框宽度
 	var reserve = viper.GetFloat64("reserve")
+	var border = viper.GetFloat64("border")
 
 	// 强制类型转换成浮点数
 	width, _ = strconv.ParseFloat(widthStr, 64)
 	height, _ = strconv.ParseFloat(heightStr, 64)
 
 	// 进行框架公式计算
-	width = width - 20             // 由于卷帘座屏左右两边的画布没有被嵌套，因此不需要计算预留
-	height = height - 35 + reserve // 上下镂空各-15，横梁再-5
+	width = width - 20                      // 由于卷帘座屏左右两边的画布没有被嵌套，因此不需要计算预留
+	height = height - 30 - border + reserve // 上下镂空各-15，横梁再-5
 
 	// 为当前框架指定名字
 	frameName := fmt.Sprintf("%s_卷帘座屏_%.0fx%.0f", tools.NowTime(), width, height)
@@ -489,7 +490,7 @@ func FramePresenter8to2(widthStr, heightStr, thicknessStr string) (width, height
 	// 强制类型转换成浮点数
 	width, _ = strconv.ParseFloat(widthStr, 64)
 	height, _ = strconv.ParseFloat(heightStr, 64)
-	thickness, _ := strconv.ParseFloat(thicknessStr, 64)
+	thickness, _ := strconv.ParseFloat(thicknessStr, 64) // 边框厚度
 
 	// 进行框架公式计算
 	saveWidth := width + thickness*2 + 2   // 保存时的宽度

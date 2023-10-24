@@ -90,7 +90,7 @@ if (!documents.length) {
 }`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("resources/jsx/saveAsJPEG.jsx", script)
+	tools.CreateFile("data/jsx/saveAsJPEG.jsx", script)
 }
 
 // SaveAllJPEG 将所有打开的文档储存为jpeg格式的初始化 暗号-11的实现
@@ -288,7 +288,7 @@ if (!documents.length) {
 }`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("resources/jsx/saveAllJPEG.jsx", script)
+	tools.CreateFile("data/jsx/saveAllJPEG.jsx", script)
 }
 
 // SaveAndCloseAllDocuments 保存并关闭全部文档的初始化 暗号-12的实现
@@ -329,7 +329,7 @@ function main() {
 main();`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("resources/jsx/saveAndCloseAllDocuments.jsx", script)
+	tools.CreateFile("data/jsx/saveAndCloseAllDocuments.jsx", script)
 }
 
 // SaveForWeb 导出web格式脚本的初始化 暗号-98的实现 副作用分辨率会被强制修改为72ppi 并且无法选择保存路径
@@ -346,14 +346,14 @@ func SaveForWeb(originalPath string) {
 	originalPath = "/" + strings.Replace(originalPath, ":", "", 1)
 
 	// 解析指定文件生成模板对象
-	tmpl, err := template.ParseFiles("resources/jsx/template/saveForWeb.gohtml")
+	tmpl, err := template.ParseFiles("data/jsx/template/saveForWeb.gohtml")
 	if err != nil {
 		logrus.Error(err)
 		return
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create("resources/jsx/saveForWeb.jsx")
+	f, err := os.Create("data/jsx/saveForWeb.jsx")
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return
@@ -415,7 +415,7 @@ function loadSaveScript() {
 loadSaveScript();`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("resources/jsx/loadSaveScript.jsx", script)
+	tools.CreateFile("data/jsx/loadSaveScript.jsx", script)
 }
 
 // FrameSaveDef 生成大部分框架的自动裁剪，例如左右镂空，小座屏等
@@ -558,10 +558,10 @@ main();`
 	}
 
 	// 生成通用的文件名字
-	fileName := "resources/jsx/frameSaveDef.jsx"
+	fileName := "data/jsx/frameSaveDef.jsx"
 	// 框架名不是空，就生成专属裁剪脚本名字
 	if frameName != "" {
-		fileName = fmt.Sprintf("resources/jsx/temp/tailor_%s.jsx", frameName)
+		fileName = fmt.Sprintf("data/jsx/temp/tailor_%s.jsx", frameName)
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
@@ -800,7 +800,7 @@ if (!documents.length) {
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create(fmt.Sprintf("resources/jsx/temp/tailor_%s.jsx", frameName))
+	f, err := os.Create(fmt.Sprintf("data/jsx/temp/tailor_%s.jsx", frameName))
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return
@@ -1063,7 +1063,7 @@ if (!documents.length) {
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create(fmt.Sprintf("resources/jsx/temp/tailor_%s.jsx", frameName))
+	f, err := os.Create(fmt.Sprintf("data/jsx/temp/tailor_%s.jsx", frameName))
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return
@@ -1309,7 +1309,7 @@ if (!documents.length) {
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create(fmt.Sprintf("resources/jsx/temp/tailor_%s.jsx", frameName))
+	f, err := os.Create(fmt.Sprintf("data/jsx/temp/tailor_%s.jsx", frameName))
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return
@@ -1568,7 +1568,7 @@ if (!documents.length) {
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create(fmt.Sprintf("resources/jsx/temp/tailor_%s.jsx", frameName))
+	f, err := os.Create(fmt.Sprintf("data/jsx/temp/tailor_%s.jsx", frameName))
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return
@@ -1732,6 +1732,8 @@ function saveJPEG(fileObject) {
 function frameSave(fileObject) {
     // 拼合活动文档的所有图层并扔掉隐藏的图层
     app.activeDocument.flatten();
+	// 改变当前文档的色彩模型为 CMYK
+	app.activeDocument.changeMode(ChangeMode.CMYK);
 
     // 复制图层
     app.activeDocument.activeLayer.duplicate();
@@ -1830,7 +1832,7 @@ main();`
 	}
 
 	// 生成的文件名字
-	fileName := fmt.Sprintf("resources/jsx/temp/tailor_%s.jsx", frameName)
+	fileName := fmt.Sprintf("data/jsx/temp/tailor_%s.jsx", frameName)
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
 	f, err := os.Create(fileName)
@@ -1978,11 +1980,12 @@ function frameSave(fileNameArr) {
     exportOptionsSave.quality = 12;
     // 保存为基线已优化
     exportOptionsSave.formatOptions = FormatOptions.OPTIMIZEDBASELINE;
-
-    // 生成历史记录并调用函数
-    app.activeDocument.suspendHistory("拼合图像", "app.activeDocument.flatten()");
+    // 拼合图像
+    app.activeDocument.flatten();
+    // 改变当前文档的色彩模型为 CMYK
+    app.activeDocument.changeMode(ChangeMode.CMYK);
     // 保存活动历史记录状态
-    const work = app.activeDocument.activeHistoryState;
+    var work = app.activeDocument.activeHistoryState;
 
     // 循环保存每一片
     for (var i = 0; i < Count; i++) {
@@ -2109,7 +2112,7 @@ main();`
 	}
 
 	// 生成的文件名字
-	fileName := fmt.Sprintf("resources/jsx/temp/tailor_%s.jsx", frameName)
+	fileName := fmt.Sprintf("data/jsx/temp/tailor_%s.jsx", frameName)
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
 	f, err := os.Create(fileName)

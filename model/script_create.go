@@ -91,7 +91,7 @@ app.activeDocument.suspendHistory("建议：字不要在此参考线外！", "ad
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create("resources/jsx/newDocument.jsx")
+	f, err := os.Create("data/jsx/newDocument.jsx")
 	if err != nil { // 如果有错误，打印错误，同时返回
 		fmt.Println(err)
 		return
@@ -168,7 +168,7 @@ app.activeDocument.suspendHistory("注意：已超不透最大150cm", "promptLay
 	}
 
 	// 追加写入
-	tools.WriteFile("resources/jsx/newDocument.jsx", jsx.String())
+	tools.WriteFile("data/jsx/newDocument.jsx", jsx.String())
 	return true
 }
 
@@ -218,7 +218,7 @@ newDocument(width,height,docName);`
 	}
 
 	// 创建文件，返回两个值，一是创建的文件，二是错误信息
-	f, err := os.Create("resources/jsx/newDocument.jsx")
+	f, err := os.Create("data/jsx/newDocument.jsx")
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return
@@ -280,9 +280,9 @@ func NewDocumentForTemp() {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("resources/jsx/newTempDocument.jsx", jsxStr)
+	tools.CreateFile("data/jsx/newTempDocument.jsx", jsxStr)
 
 	// 创建一个协程使用cmd来运行脚本
-	dataPath := "resources/jsx/newTempDocument.jsx"
+	dataPath := "data/jsx/newTempDocument.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }

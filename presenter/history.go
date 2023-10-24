@@ -15,7 +15,7 @@ func History(data string) {
 	now2 := time.Now().Format("15:04:05")
 
 	// 储存历史记录路径
-	path := fmt.Sprintf("resources/History/%s/%s.txt", now, now1)
+	path := fmt.Sprintf("data/History/%s/%s.txt", now, now1)
 
 	// 先查看是否有历史记录文件
 	exists, _ := tools.IsPathExists(path)

@@ -46,7 +46,7 @@ func MapFrame1() {
 
 		if viper.GetBool("openPs") { // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "resources/jsx/newDocument.jsx"
+			dataPath := "data/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}
@@ -127,7 +127,7 @@ func MapFrame6() {
 		go generate.TailorForMap6(width, height, number, frameName, singleName) // 生成暗号【-1】可以用的另存脚本
 		if viper.GetBool("openPs") {                                            // 是否自动新建ps文档
 			// 创建一个协程使用cmd来运行脚本
-			dataPath := "resources/jsx/newDocument.jsx"
+			dataPath := "data/jsx/newDocument.jsx"
 			cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 			go cmd.Run()
 		}

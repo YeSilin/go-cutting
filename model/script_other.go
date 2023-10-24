@@ -53,7 +53,7 @@ if (!documents.length) {
 }`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("resources/jsx/addBlackEdge.jsx", script)
+	tools.CreateFile("data/jsx/addBlackEdge.jsx", script)
 }
 
 // ClearMetadataStd 生成清除元数据标准版，不清理智能对象，让文件跟小巧 无弹窗
@@ -79,7 +79,7 @@ if(String(app.name).search("Photoshop") > 0) {
 }`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("resources/jsx/clearMetadataStd.jsx", script)
+	tools.CreateFile("data/jsx/clearMetadataStd.jsx", script)
 }
 
 // ClearMetadata 生成清除元数据第四版js，让文件更小巧，带进度条
@@ -281,7 +281,7 @@ var smartObjectName = [];
 main();`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("resources/jsx/clearMetadata.jsx", script)
+	tools.CreateFile("data/jsx/clearMetadata.jsx", script)
 }
 
 // CopyAndCloseOtherDocuments 生成复制并关闭其他文档脚本
@@ -432,7 +432,7 @@ var masterDocument
 main()`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("resources/jsx/copyAndCloseOtherDocuments.jsx", script)
+	tools.CreateFile("data/jsx/copyAndCloseOtherDocuments.jsx", script)
 }
 
 // SelectionTempFrame 生成临时效果图选择框架代码
@@ -562,10 +562,10 @@ func SelectionTempFrame(frame string, layer int) {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("resources/jsx/SelectionTempFrame.jsx", jsxStr)
+	tools.CreateFile("data/jsx/SelectionTempFrame.jsx", jsxStr)
 
 	// 创建一个协程使用cmd来运行脚本
-	dataPath := "resources/jsx/SelectionTempFrame.jsx"
+	dataPath := "data/jsx/SelectionTempFrame.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
@@ -715,11 +715,11 @@ func TempFrame1(width, height float64) {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("resources/jsx/GenerateTempFrame.jsx", jsxStr)
+	tools.CreateFile("data/jsx/GenerateTempFrame.jsx", jsxStr)
 
 	// 同时运行运行脚本
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "resources/jsx/GenerateTempFrame.jsx"
+	dataPath := "data/jsx/GenerateTempFrame.jsx"
 	cmd := exec.Command("cmd.exe", "/c", "start "+dataPath)
 	go cmd.Run()
 }

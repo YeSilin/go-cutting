@@ -20,15 +20,15 @@ func InitSetting() {
 	viper.SetDefault("border", 4)       // 传统屏风边框宽度
 	viper.SetDefault("gui", false)      // 自动开启gui
 	//viper.SetDefault("cipherList", false)          // 自动开启暗号列表
-	viper.SetDefault("picture", "resources\\picture") // 正斜杠会出错
-	viper.SetDefault("automaticDeletion", false)      // 自动主图时删除来源
-	viper.SetDefault("darkTheme", true)               // 默认黑色主题
+	viper.SetDefault("picture", "data\\picture") // 正斜杠会出错
+	viper.SetDefault("automaticDeletion", false) // 自动主图时删除来源
+	viper.SetDefault("darkTheme", true)          // 默认黑色主题
 
 	//  设置配置文件名，不带后缀
 	viper.SetConfigName("settings")
 
 	// 第一个搜索路径
-	viper.AddConfigPath("./resources/")
+	viper.AddConfigPath("./data/")
 
 	//设置配置文件类型
 	viper.SetConfigType("yaml")

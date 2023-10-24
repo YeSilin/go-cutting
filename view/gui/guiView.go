@@ -19,12 +19,12 @@ type GuiView struct {
 	setupWindow fyne.Window // 设置窗口
 }
 
-//Logo 返回实现资源接口的logo图标
+// Logo 返回实现资源接口的logo图标
 func logo() fyne.Resource {
 	// 绑定资源到此变量
 	var logo = &fyne.StaticResource{
 		StaticName:    "logo8-32.png",
-		StaticContent: tools.ReadFileEasy("resources/static/img/logo8-32.png"),
+		StaticContent: tools.ReadFileEasy("data/static/img/logo8-32.png"),
 	}
 	return logo
 }
@@ -52,7 +52,7 @@ func NewGuiView() *GuiView {
 	}
 }
 
-//选择暗号，同时修改一个标签的文字
+// 选择暗号，同时修改一个标签的文字
 func (v *GuiView) choiceCode(tips *widget.Label) fyne.CanvasObject {
 	//实例一个容器对象，此容器每行可以放两个画布对象
 	return container.New(layout.NewGridLayout(2),
@@ -80,7 +80,7 @@ func (v *GuiView) choiceCode(tips *widget.Label) fyne.CanvasObject {
 	)
 }
 
-//ShowAndRun 显示并运行
+// ShowAndRun 显示并运行
 func (v *GuiView) ShowAndRun() {
 
 	//实例一个标签对象，用于文本提示
@@ -100,7 +100,7 @@ func (v *GuiView) ShowAndRun() {
 
 }
 
-//文件编辑帮助的主菜单
+// 文件编辑帮助的主菜单
 func mainMenu() *fyne.MainMenu {
 
 	fileMenu := fyne.NewMenu("File")

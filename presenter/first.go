@@ -135,7 +135,7 @@ func UniversalMainImage(originalPath string, width, height, mode int, delete boo
 	}
 	go func() {
 		// 为了防止文件丢失，在重命名之前先备份一次文件
-		_ = tools.CopyDir(originalPath, "resources/Backups/")
+		_ = tools.CopyDir(originalPath, "data/Backups/")
 
 		// 完成后的目标路径
 		resultPath := fmt.Sprintf("%s/主图", originalPath)
@@ -164,7 +164,7 @@ func UniversalMainImage(originalPath string, width, height, mode int, delete boo
 		}
 
 		// 删除多余备份，最大保留15个
-		tools.DeleteRedundantBackups("resources/Backups/*", 15)
+		tools.DeleteRedundantBackups("data/Backups/*", 15)
 	}()
 	fmt.Printf("\n:: 已转成 %d*%d 如果文件丢失，备份文件夹在上级目录下的 Backups！\n", width, height)
 }
@@ -186,7 +186,7 @@ func WatermarkMainImage(originalPath, watermarkPath string, delete bool) {
 
 	go func() {
 		// 为了防止文件丢失，在重命名之前先备份一次文件
-		_ = tools.CopyDir(originalPath, "resources/Backups/")
+		_ = tools.CopyDir(originalPath, "data/Backups/")
 
 		// 完成后的主图路径
 		resultPath := fmt.Sprintf("%s/主图", originalPath)
@@ -241,7 +241,7 @@ func WatermarkMainImage(originalPath, watermarkPath string, delete bool) {
 		}
 
 		// 删除多余备份，最大保留10个
-		tools.DeleteRedundantBackups("resources/Backups/*", 15)
+		tools.DeleteRedundantBackups("data/Backups/*", 15)
 	}()
 	fmt.Println("\n:: 已转成 800*800 如果文件丢失，备份文件夹在上级目录下的 Backups！")
 }

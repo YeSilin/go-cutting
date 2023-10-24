@@ -9,7 +9,7 @@ import (
 func TestGetAllImages(t *testing.T) {
 
 	// 程序输出的结果
-	got, _ := getAllImages("E:\\Code\\Golang\\go-cutting\\resources\\Picture")
+	got, _ := getAllImages("E:\\Code\\Golang\\go-cutting\\data\\Picture")
 	// 期望得到的结果
 	//want := []
 

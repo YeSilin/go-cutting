@@ -6,6 +6,6 @@ darktheme: true
 gui: false
 memory: false
 openps: true
-picture: resources\picture
+picture: data\picture
 prefix: ""
 reserve: 5

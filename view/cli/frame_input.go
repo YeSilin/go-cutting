@@ -468,7 +468,7 @@ func frame7() {
 		totalWidth, maxHeight := presenter.FramePresenter7(widthStrSlice, heightStrSlice, upHollowStr, downHollowStr)
 
 		// 输出提示
-		color.Yellow.Printf("\n:: %s座屏：总宽 %.2f cm，最高 %.2f cm", tools.Transfer(number), totalWidth, maxHeight)
+		color.Yellow.Printf("\n:: %s座屏：总宽 %.2f cm，最高 %.2f cm\n", tools.Transfer(number), totalWidth, maxHeight)
 
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break

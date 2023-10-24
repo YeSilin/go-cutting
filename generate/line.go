@@ -35,7 +35,7 @@ func Line3DMapJs6(width, number int) {
 	// 转成字符串格式
 	jsxStr := jsx.String()
 	// 追加写入
-	tools.WriteFile("resources/jsx/newDocument.jsx", jsxStr)
+	tools.WriteFile("data/jsx/newDocument.jsx", jsxStr)
 }
 
 // 生成多座屏贴图参考线
@@ -50,14 +50,14 @@ func Line3DMapJs7(widthSlice, heightSlice []int, heightMax, heightMin int) {
 	}{tools.IntSliceToJsArray(widthSlice), tools.IntSliceToJsArray(heightSlice), heightMax, tools.Transfer(len(widthSlice)), heightMax == heightMin}
 
 	// 解析指定文件生成模板对象
-	tmpl, err := template.ParseFiles("resources/jsx/template/map/multiScreenReferenceLine.gohtml")
+	tmpl, err := template.ParseFiles("data/jsx/template/map/multiScreenReferenceLine.gohtml")
 	if err != nil {
 		logrus.Error(err)
 		return
 	}
 
 	// 打开要追加数据的文件
-	f, err := os.OpenFile("resources/jsx/newDocument.jsx", os.O_APPEND, 0644)
+	f, err := os.OpenFile("data/jsx/newDocument.jsx", os.O_APPEND, 0644)
 	if err != nil { // 如果有错误，打印错误，同时返回
 		logrus.Error(err)
 		return

@@ -11,7 +11,7 @@ import (
 
 // RunGlobalHotkey 运行易语言写的辅助工具
 func RunGlobalHotkey() {
-	dataPath := "resources/software/AuxiliaryTools/AuxiliaryTools.exe"
+	dataPath := "data/software/AuxiliaryTools/AuxiliaryTools.exe"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
@@ -19,7 +19,7 @@ func RunGlobalHotkey() {
 func RunAutoCreateDocuments() {
 	if viper.GetBool("openPs") { // 是否自动新建ps文档
 		// 创建一个协程使用cmd来运行脚本
-		dataPath := "resources/jsx/newDocument.jsx"
+		dataPath := "data/jsx/newDocument.jsx"
 		go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 	}
 }
@@ -27,51 +27,51 @@ func RunAutoCreateDocuments() {
 // RunLoadSaveScript 根据当前文档名选择正确的快捷裁剪脚本 执行暗号-1
 func RunLoadSaveScript() {
 	// 创建一个协程使用cmd来运行脚本
-	dataPath := "resources/jsx/loadSaveScript.jsx"
+	dataPath := "data/jsx/loadSaveScript.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 
 	// 每次选择正确的脚本时删除多余备份，最大保留30个
-	go tools.DeleteRedundantBackups("resources/jsx/Temp/*", 100)
+	go tools.DeleteRedundantBackups("data/jsx/Temp/*", 100)
 }
 
 // RunClearMetadataStd 执行暗号-6 简单清除元数据
 func RunClearMetadataStd() {
-	dataPath := "resources/jsx/clearMetadataStd.jsx"
+	dataPath := "data/jsx/clearMetadataStd.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
 // RunAddBlackEdge 执行暗号-7 为当前文档添加黑边
 func RunAddBlackEdge() {
 	// 创建一个协程使用cmd来运行脚本
-	dataPath := "resources/jsx/addBlackEdge.jsx"
+	dataPath := "data/jsx/addBlackEdge.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
 // RunSaveAsJPEG 储存为jpeg格式的调用  暗号-10的实现
 func RunSaveAsJPEG() {
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "resources/JSX/SaveAsJPEG.jsx"
+	dataPath := "data/JSX/SaveAsJPEG.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
 // RunSaveAllJPEG 将所有打开的文档储存为jpeg格式的调用 暗号-11
 func RunSaveAllJPEG() {
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "resources/JSX/saveAllJPEG.jsx"
+	dataPath := "data/JSX/saveAllJPEG.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
 // RunSaveAndCloseAllDocuments 保存并关闭全部文档的调用 暗号-12
 func RunSaveAndCloseAllDocuments() {
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "resources/jsx/saveAndCloseAllDocuments.jsx"
+	dataPath := "data/jsx/saveAndCloseAllDocuments.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
 // RunReplaceSmartObjects 运行替换智能对象脚本 暗号-48
 func RunReplaceSmartObjects() {
 	// 创建一个协程使用cmd来运行脚本
-	dataPath := "resources/jsx/replaceSmartObjects.jsx"
+	dataPath := "data/jsx/replaceSmartObjects.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
@@ -85,7 +85,7 @@ func RunSaveForWeb() {
 		_ = tools.CreateMkdirAll(fmt.Sprintf("%s/主图", picturePath))
 
 		// 创建一个协程使用cmd来运行脚本
-		dataPath := "resources/jsx/saveForWeb.jsx"
+		dataPath := "data/jsx/saveForWeb.jsx"
 		exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 
 		//time.Sleep(time.Second) // 停一秒

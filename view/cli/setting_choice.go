@@ -70,7 +70,7 @@ func currentState() {
 
 	// 修改套图文件夹位置
 	var pictureStr string
-	if viper.GetString("picture") != "resources\\picture" {
+	if viper.GetString("picture") != "data\\picture" {
 		pictureStr = tools.ColourString("已修改", ctc.ForegroundCyan) // 设置带颜色的字符串
 	} else {
 		pictureStr = "默认值"
@@ -123,8 +123,8 @@ OuterLoop:
 
 		case "2":
 			// 设置套图文件夹位置
-			viper.Set("picture", "resources\\picture")
-			c.info = ":: 已恢复默认路径，位置在主程序的 [resources\\picture] 目录下..."
+			viper.Set("picture", "data\\picture")
+			c.info = ":: 已恢复默认路径，位置在主程序的 [data\\picture] 目录下..."
 		case "-":
 			break OuterLoop // 跳到循环结束
 		case "":

@@ -204,7 +204,7 @@ func modifyPicturePathBk() {
 	// 直接回车代表恢复默认路径
 	case "":
 		// 设置套图文件夹位置
-		viper.Set("picture", "resources\\picture")
+		viper.Set("picture", "data\\picture")
 		tools.CallClear() // 清屏
 		fmt.Println("\n:: 直接回车会恢复默认设置，现已恢复默认设置！")
 	default:
@@ -265,7 +265,7 @@ func modifyToDefaultSetting() {
 		viper.Set("reserve", 5)
 		viper.Set("gui", true)
 		viper.Set("cipherList", false)
-		viper.Set("picture", "resources\\picture")
+		viper.Set("picture", "data\\picture")
 		viper.Set("automaticDeletion", false) // // 自动主图时删除来源
 
 		// 保存最新配置

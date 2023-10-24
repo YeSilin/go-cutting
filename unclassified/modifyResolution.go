@@ -25,7 +25,7 @@ func PixelsPerInchChangedTo72(originalPath string) {
 
 	go func() {
 		// 为了防止文件丢失，在重命名之前先备份一次文件
-		_ = tools.CopyDir(originalPath, "resources/Backups/")
+		_ = tools.CopyDir(originalPath, "data/Backups/")
 
 		// 全部一起改名为temp
 		for _, v := range files {
@@ -56,7 +56,7 @@ func PixelsPerInchChangedTo72(originalPath string) {
 		}
 
 		// 删除多余备份，最大保留10个
-		tools.DeleteRedundantBackups("resources/Backups/*", 15)
+		tools.DeleteRedundantBackups("data/Backups/*", 15)
 	}()
 
 	fmt.Println("\n:: 已转成 72ppi 如果文件丢失，备份文件夹在上级目录下的 Backups！")
@@ -84,17 +84,17 @@ func PixelsPerInchChangedTo300(originalPath string) {
 
 	go func() {
 		// 为了防止文件丢失，在重命名之前先备份一次文件
-		_ = tools.CopyDir(originalPath, "resources/Backups/")
+		_ = tools.CopyDir(originalPath, "data/Backups/")
 
 		// 解析指定文件生成模板对象
-		tmpl, err := template.ParseFiles("resources/jsx/template/pixelsPerInchChangedTo300.gohtml")
+		tmpl, err := template.ParseFiles("data/jsx/template/pixelsPerInchChangedTo300.gohtml")
 		if err != nil {
 			fmt.Println("create template failed, err:", err)
 			return
 		}
 
 		// 创建文件，返回两个值，一是创建的文件，二是错误信息
-		f, err := os.Create("resources/jsx/pixelsPerInchChangedTo300.jsx")
+		f, err := os.Create("data/jsx/pixelsPerInchChangedTo300.jsx")
 		if err != nil { // 如果有错误，打印错误，同时返回
 			fmt.Println("创建文件错误 =", err)
 			return
@@ -114,11 +114,11 @@ func PixelsPerInchChangedTo300(originalPath string) {
 		f.Close()
 
 		// 创建一个协程使用cmd来运行脚本
-		dataPath := "resources/jsx/pixelsPerInchChangedTo300.jsx"
+		dataPath := "data/jsx/pixelsPerInchChangedTo300.jsx"
 		exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 
 		// 删除多余备份，最大保留10个
-		tools.DeleteRedundantBackups("resources/Backups/*", 15)
+		tools.DeleteRedundantBackups("data/Backups/*", 15)
 	}()
 
 	fmt.Println("\n:: 脚本注入成功，正在转成 300PPI 若文件丢失，备份文件在上级目录 Backups！")
