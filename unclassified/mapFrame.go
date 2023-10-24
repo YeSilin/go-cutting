@@ -326,7 +326,8 @@ func MapFrame7() {
 		go generate.TailorForMap7(widthSlice, heightSlice, heightMax, frameName) // 生成暗号【-1】可以用的另存脚本// 生成参考线与遮罩层
 		model.IsMaxCanvasExceeded(float64(widthMax)/10, float64(heightMax)/10)   // 最大画布判断
 
-		isOpenPs() // 是否打开自动新建文档
+		// 是否打开自动新建文档
+		model.RunAutoCreateDocuments()
 
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break

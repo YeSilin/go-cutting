@@ -8,7 +8,6 @@ import (
 	"github.com/wzshiming/ctc"
 	"github.com/yesilin/go-cutting/presenter"
 	"github.com/yesilin/go-cutting/tools"
-	"github.com/yesilin/go-cutting/unclassified"
 )
 
 // 单个座屏选择，备用
@@ -192,7 +191,7 @@ OuterLoop:
 		case "6":
 			frame6() // 常规折屏
 		case "7":
-			unclassified.OldFrame7() // 多座屏
+			frame7() // 多座屏
 		case "8":
 			c.rollerShutterClothChoice() // 卷帘拉布框架选择
 		case "9":

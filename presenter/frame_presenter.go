@@ -357,6 +357,103 @@ func FramePresenter6(widthStr, heightStr, upHollowStr, downHollowStr, numberStr 
 	return
 }
 
+// FramePresenter7 多个座屏进行处理
+func FramePresenter7(widthStrSlice, heightStrSlice []string, upHollowStr, downHollowStr string) (totalWidth, maxHeight float64) {
+	// 定义预留尺寸和传统边框宽度
+	var reserve = viper.GetFloat64("reserve")
+	var border = viper.GetFloat64("border")
+
+	// 将全部字符串切片转浮点数切片的函数，顺便计算一下实际切图尺寸
+	parseFloatSlice := func(s []string) (f []float64) {
+		// 分配下内存
+		f = make([]float64, len(s))
+
+		// 将字符串转浮点数
+		for i := 0; i < len(s); i++ {
+			size, _ := strconv.ParseFloat(s[i], 64)
+			// 顺便计算一下实际切图尺寸，赋值到切片
+			f[i] = size - border*2 + reserve
+		}
+		return
+	}
+
+	// 计算最大的临时函数
+	maxSize := func(s []float64) (max float64) {
+		max = s[0]
+		for i := 1; i < len(s); i++ {
+			if max < s[i] {
+				max = s[i]
+			}
+		}
+		return
+	}
+
+	// 计算最小的临时函数
+	minSize := func(s []float64) (min float64) {
+		min = s[0]
+		for i := 1; i < len(s); i++ {
+			if min > s[i] {
+				min = s[i]
+			}
+		}
+		return
+	}
+
+	// 强制类型转换成浮点数
+	widthSlice := parseFloatSlice(widthStrSlice)
+	heightSlice := parseFloatSlice(heightStrSlice)
+	upHollow, _ := strconv.ParseFloat(upHollowStr, 64)
+	downHollow, _ := strconv.ParseFloat(downHollowStr, 64)
+
+	// 进行框架公式计算
+	if upHollow > 0 { // 如果有上镂空的话
+		// 顺序遍历
+		for i := 0; i < len(heightSlice); i++ {
+			heightSlice[i] = heightSlice[i] - upHollow - border
+		}
+	}
+	if downHollow > 0 { // 如果有下镂空的话
+		// 顺序遍历
+		for i := 0; i < len(heightSlice); i++ {
+			heightSlice[i] = heightSlice[i] - downHollow - border
+		}
+	}
+
+	// 遍历出总宽
+	for i := 0; i < len(widthSlice); i++ {
+		totalWidth += widthSlice[i]
+	}
+
+	// 遍历出最大的宽度
+	maxWidth := maxSize(widthSlice)
+
+	// 遍历出最大的高度
+	maxHeight = maxSize(heightSlice)
+
+	// 遍历出最小的高度
+	minHeight := minSize(heightSlice)
+
+	// 为当前框架指定名字
+	frameName := fmt.Sprintf("%s_%s座屏_%.0fx%.0f", tools.NowTime(), tools.Transfer(len(widthSlice)), totalWidth, maxHeight)
+
+	// 生成创建Photoshop新文档脚本
+	model.NewDocument(totalWidth, maxHeight, frameName, false)
+
+	// 追加专属的切图参考线与遮罩层
+	model.FrameGuide7(widthSlice, heightSlice, maxHeight, minHeight)
+
+	// 追加最大画布判断
+	model.IsMaxCanvasExceeded(maxWidth, maxHeight)
+
+	// 生成暗号【-1】可以用的另存脚本
+	go model.FrameSave7(widthSlice, heightSlice, maxHeight, frameName)
+
+	// 是否打开自动新建文档
+	model.RunAutoCreateDocuments()
+
+	return
+}
+
 // FramePresenter8to1  对卷帘座屏进行处理
 func FramePresenter8to1(widthStr, heightStr string) (width, height float64) {
 	// 定义一个预留尺寸

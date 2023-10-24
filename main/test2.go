@@ -1,13 +1,10 @@
 package main
 
-import (
-	"github.com/yesilin/go-cutting/model"
-	"time"
-)
+import "fmt"
 
 // go build test2.go
-func main33() {
-	model.CleanUp2345Pic()
-
-	time.Sleep(10 * time.Second)
+func main333() {
+	a := 10
+	a -= 5 + 1
+	fmt.Println(a)
 }
