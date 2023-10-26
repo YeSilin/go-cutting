@@ -28,7 +28,7 @@ function newDocument(width, height, docName){
 	const pixelAspectRatio = 1;
 	// 设置颜色位数为8位
 	const bitsPerChannel = BitsPerChannelType.EIGHT;
-	// 设置颜色配置文件为sRGB; 日本常规用途3 Japan Color 2011 Coated
+	// 设置颜色配置文件为sRGB; 备用日本常规用途3 Japan Color 2011 Coated
 	const colorProfileName = "sRGB IEC61966-2.1";
 	// 将设置好的参数放在[add]方法里面
 	app.documents.add(width, height, resolution, docName, mode, initialFill, pixelAspectRatio, bitsPerChannel, colorProfileName);
@@ -41,7 +41,7 @@ const width = {{printf "%.2f" .Width}}; // 这里传go模板语句！！！！�
 // 新文档的高度
 const height = {{printf "%.2f" .Height}}; // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
 // 新文档的名称
-const docName = "{{.FrameName}}";
+const docName = "{{.FrameName}}";  // 这里传go模板语句！！！！！！！！！！！！！！！！！！！！！
 // 执行新建文档
 newDocument(width,height,docName)
 
@@ -59,7 +59,7 @@ function addLine() {
 }
 
 // 生成历史记录
-app.activeDocument.suspendHistory("建议：字不要在此参考线外！", "addLine()");
+app.activeDocument.suspendHistory("建议：字不要在此参考线外！ 解锁参考线：Alt+Ctrl+;", "addLine()"); 
 {{end}}
 `
 
@@ -192,6 +192,8 @@ function newDocument(width, height, docName){
 	const colorProfileName = "sRGB IEC61966-2.1";
 	// 将设置好的参数放在[add]方法里面
 	app.documents.add(width, height, resolution, docName, mode, initialFill, pixelAspectRatio, bitsPerChannel, colorProfileName);
+	// 切换锁定参考线
+	app.runMenuItem(stringIDToTypeID('toggleLockGuides'));
 }
 
 // 新文档的宽度

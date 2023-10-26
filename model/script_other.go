@@ -7,82 +7,7 @@ import (
 	"strings"
 )
 
-// AddBlackEdge 暗号-7，为当前文档添加黑边
-func AddBlackEdge() {
-	const script = `// 对当前文档添加黑边，缺点是会合并全部图层
-function addBlackEdge() {
-    // 设置首选项新文档预设单位是厘米，PIXELS是像素
-    app.preferences.rulerUnits = Units.CM;
-
-    // 保存当前背景颜色
-    var nowColor = app.backgroundColor;
-
-    // 定义一个对象颜色是黑色
-    var black = new SolidColor();
-    black.rgb.hexValue = "d5d5d5";
-    
-    // 设置背景颜色为新颜色
-    app.backgroundColor = black;
-
-    // 新建一个空白图层用于合并
-    app.activeDocument.artLayers.add();
-    
-    // 合并全部可见图层
-    app.activeDocument.mergeVisibleLayers();
-    
-    // 转为背景图层不然添加黑边会无效
-    app.activeDocument.activeLayer.isBackgroundLayer = true;
-
-    // 获取当前文档的高度与宽度
-    var width = app.activeDocument.width.value + 0.1
-    var height = app.activeDocument.height.value + 0.1
-    
-    // 重设画布大小
-    app.activeDocument.resizeCanvas(width, height, AnchorPosition.MIDDLECENTER);
-
-    // 恢复之前的背景颜色
-    app.backgroundColor = nowColor;
-}
-
-// 判断是否有打开的文件
-if (!documents.length) {
-    // alert("没有打开的文档，请打开一个文档来运行此脚本！");
-} else {
-    // 生成历史记录
-    app.activeDocument.suspendHistory("向四周添加0.1厘米黑边！", "addBlackEdge()");
-}`
-
-	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("data/jsx/addBlackEdge.jsx", script)
-}
-
-// ClearMetadataStd 生成清除元数据标准版，不清理智能对象，让文件跟小巧 无弹窗
-func ClearMetadataStd() {
-	const script = `// 清除元数据无弹窗版，并且不会清理智能对象
-function deleteDocumentAncestorsMetadata() {
-    if (ExternalObject.AdobeXMPScript == undefined) ExternalObject.AdobeXMPScript = new ExternalObject("lib:AdobeXMPScript");
-    var xmp = new XMPMeta(activeDocument.xmpMetadata.rawData);
-     // Begone foul Document Ancestors!
-    xmp.deleteProperty(XMPConst.NS_PHOTOSHOP, "DocumentAncestors");
-    app.activeDocument.xmpMetadata.rawData = xmp.serialize();
-}
-
-
-//  专门检查photoshop，否则会导致错误
-if(String(app.name).search("Photoshop") > 0) {
-    if (!documents.length) {
-    // alert("没有打开的文档，请打开一个文档来运行此脚本！")
-    } else {
-        // 生成历史记录
-        app.activeDocument.suspendHistory("清除元数据", "deleteDocumentAncestorsMetadata()");
-    }
-}`
-
-	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("data/jsx/clearMetadataStd.jsx", script)
-}
-
-// ClearMetadata 生成清除元数据第四版js，让文件更小巧，带进度条
+// ClearMetadata 暗号-3，生成清除元数据第四版js，让文件更小巧，带进度条
 func ClearMetadata() {
 	const script = `// 方法用来判断当前字符串是否是以另外一个给定的子字符串“结尾”的
 if (!String.prototype.endsWith) {
@@ -284,7 +209,52 @@ main();`
 	tools.CreateFile("data/jsx/clearMetadata.jsx", script)
 }
 
-// CopyAndCloseOtherDocuments 生成复制并关闭其他文档脚本
+// CopyOriginalImageStamping 暗号-4，复制原图盖印
+func CopyOriginalImageStamping() {
+	const script = `// 盖印到剪贴板
+function stampToClipboard() {
+    // 添加一个临时图层好实现复制操作
+    app.activeDocument.artLayers.add();
+    // 参数true是表示合并可见图层进行复制
+    app.activeDocument.activeLayer.copy(true);
+    // 复制完删掉这个临时图层
+    app.activeDocument.activeLayer.remove();
+}
+
+//复制原图盖印
+function copyOriginalImageStamping() {
+    // 打开的文档不够多直接返回
+    if (app.documents.length < 2) {
+        return;
+    }
+
+    // 当前活动文档为切图文档
+    var dstDoc = app.activeDocument;
+    // 最后一个文档为原图文档
+    var srcDoc = app.documents[app.documents.length - 1];
+
+    // 如果最后打开的文档是切图文档，那么就寻找上一个原图
+    if (dstDoc == srcDoc) {
+        srcDoc = app.documents[app.documents.length - 2];
+    }
+
+    // 切换活动文档为原图文档
+    app.activeDocument = srcDoc;
+    app.activeDocument.suspendHistory("盖印到剪贴板", "stampToClipboard()");
+
+    // 切换活动文档为切图文档
+    app.activeDocument = dstDoc;
+    // 粘贴盖印好的原图到切图文档
+    dstDoc.paste();
+}
+
+copyOriginalImageStamping();`
+
+	// 71.0 更新 先强制生成的文本写覆盖入目标文件
+	tools.CreateFile("data/jsx/copyOriginalImageStamping.jsx", script)
+}
+
+// CopyAndCloseOtherDocuments 暗号-5，生成复制并关闭其他文档脚本
 func CopyAndCloseOtherDocuments() {
 	const script = `// For code readability. 图层操作要用到的函数
 function cTID(s) {
@@ -433,6 +403,81 @@ main()`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
 	tools.CreateFile("data/jsx/copyAndCloseOtherDocuments.jsx", script)
+}
+
+// ClearMetadataStd 暗号-6，生成清除元数据标准版，不清理智能对象，让文件跟小巧 无弹窗
+func ClearMetadataStd() {
+	const script = `// 清除元数据无弹窗版，并且不会清理智能对象
+function deleteDocumentAncestorsMetadata() {
+    if (ExternalObject.AdobeXMPScript == undefined) ExternalObject.AdobeXMPScript = new ExternalObject("lib:AdobeXMPScript");
+    var xmp = new XMPMeta(activeDocument.xmpMetadata.rawData);
+     // Begone foul Document Ancestors!
+    xmp.deleteProperty(XMPConst.NS_PHOTOSHOP, "DocumentAncestors");
+    app.activeDocument.xmpMetadata.rawData = xmp.serialize();
+}
+
+
+//  专门检查photoshop，否则会导致错误
+if(String(app.name).search("Photoshop") > 0) {
+    if (!documents.length) {
+    // alert("没有打开的文档，请打开一个文档来运行此脚本！")
+    } else {
+        // 生成历史记录
+        app.activeDocument.suspendHistory("清除元数据", "deleteDocumentAncestorsMetadata()");
+    }
+}`
+
+	// 71.0 更新 先强制生成的文本写覆盖入目标文件
+	tools.CreateFile("data/jsx/clearMetadataStd.jsx", script)
+}
+
+// AddBlackEdge 暗号-7，为当前文档添加黑边
+func AddBlackEdge() {
+	const script = `// 对当前文档添加黑边，缺点是会合并全部图层
+function addBlackEdge() {
+    // 设置首选项新文档预设单位是厘米，PIXELS是像素
+    app.preferences.rulerUnits = Units.CM;
+
+    // 保存当前背景颜色
+    var nowColor = app.backgroundColor;
+
+    // 定义一个对象颜色是黑色
+    var black = new SolidColor();
+    black.rgb.hexValue = "d5d5d5";
+    
+    // 设置背景颜色为新颜色
+    app.backgroundColor = black;
+
+    // 新建一个空白图层用于合并
+    app.activeDocument.artLayers.add();
+    
+    // 合并全部可见图层
+    app.activeDocument.mergeVisibleLayers();
+    
+    // 转为背景图层不然添加黑边会无效
+    app.activeDocument.activeLayer.isBackgroundLayer = true;
+
+    // 获取当前文档的高度与宽度
+    var width = app.activeDocument.width.value + 0.1
+    var height = app.activeDocument.height.value + 0.1
+    
+    // 重设画布大小
+    app.activeDocument.resizeCanvas(width, height, AnchorPosition.MIDDLECENTER);
+
+    // 恢复之前的背景颜色
+    app.backgroundColor = nowColor;
+}
+
+// 判断是否有打开的文件
+if (!documents.length) {
+    // alert("没有打开的文档，请打开一个文档来运行此脚本！");
+} else {
+    // 生成历史记录
+    app.activeDocument.suspendHistory("向四周添加0.1厘米黑边！", "addBlackEdge()");
+}`
+
+	// 71.0 更新 先强制生成的文本写覆盖入目标文件
+	tools.CreateFile("data/jsx/addBlackEdge.jsx", script)
 }
 
 // SelectionTempFrame 生成临时效果图选择框架代码

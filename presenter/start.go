@@ -40,5 +40,6 @@ func InitScript() {
 		model.SaveAllJPEG()                          // 生成另存全部文件脚本
 		model.SaveAndCloseAllDocuments()             // 生成保存并关闭全部文档的脚本
 		model.CopyAndCloseOtherDocuments()           // 生成 -5 复制并关闭其他文档脚本
+		model.CopyOriginalImageStamping()            // 生成 -4 复制原图盖印
 	}()
 }

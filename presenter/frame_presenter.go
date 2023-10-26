@@ -27,7 +27,7 @@ func FramePresenter1(widthStr, heightStr string) (width, height float64) {
 	frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", tools.NowTime(), width, height)
 
 	// 生成创建Photoshop新文档脚本
-	model.NewDocument(width, height, frameName, true) // 创建ps文档
+	model.NewDocument(width, height, frameName, true)
 
 	// 追加最大画布判断
 	model.IsMaxCanvasExceeded(width, height)

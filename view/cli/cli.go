@@ -67,7 +67,7 @@ func (c *CLI) License() {
 	//}
 
 	// 失败打印云端提示信息
-	fmt.Println(":: 当前版本已停用，请前往官方群下载新版本，以下为最新公告：\n" + c.Notice)
+	fmt.Println(":: 当前版本已停用，请前往官方群下载最新版本，以下为最新公告：\n\n" + c.Notice)
 
 	time.Sleep(30 * time.Second) // 休眠
 	os.Exit(0)

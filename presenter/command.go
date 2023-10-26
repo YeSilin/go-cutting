@@ -30,6 +30,13 @@ func Command3() {
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
+// Command4 执行暗号-4 复制原图盖印
+func Command4() {
+	// 创建一个协程使用cmd启动外部程序
+	dataPath := "data/jsx/copyOriginalImageStamping.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+}
+
 // Command5 执行暗号-5 复制并关闭其他文档
 func Command5() {
 	// 创建一个协程使用cmd启动外部程序
@@ -128,7 +135,8 @@ func SelectCommand(Command string) (ok bool, info string) {
 		Command3() // 深度清除源数据
 		return true, ":: 检测到输入的内容为隐藏暗号，正在深度清理PSD..."
 	case "-4":
-		return false, ""
+		Command4() // 复制原图盖印
+		return true, ":: 检测到输入的内容为隐藏暗号，正在复制原图盖印到当前文档..."
 	case "-5":
 		Command5() // 复制并关闭其他文档
 		return true, ":: 检测到输入的内容为隐藏暗号，正在复制并关闭其他文档..."

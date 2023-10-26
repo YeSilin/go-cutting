@@ -4,18 +4,18 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"github.com/wzshiming/ctc"
+	"github.com/yesilin/go-cutting/presenter"
 	"github.com/yesilin/go-cutting/tools"
-	"github.com/yesilin/go-cutting/unclassified"
 )
 
-/**快捷键说明*/
-func key() {
+// 命令列表
+func commandList() {
 	tips := `
 :: 目前已实现的全局暗号如下：
 
    [-]返回上一级             [-1]裁剪快捷键             [-2]重建新文档
 
-   [-3]深度清理PSD           [-4]快捷文件夹             [-5]复制其他层
+   [-3]深度清理PSD           [-4]复制原图盖印           [-5]复制其他层
 
    [-6]快速清理PSD           [-7]自动加黑边             [-8]清屏快捷键
 
@@ -83,26 +83,38 @@ func skill() {
 func (c *CLI) help() {
 OuterLoop:
 	for {
+		// 先显示通知
+		c.showNotice(false)
+
 		tools.EnglishTitle("Help info", 74)
-		fmt.Println("\n:: 此项目是通过注入JS脚本对PS进行短暂的间接控制，非实时监控，资源消耗极低！")
-		fmt.Println("\n   [1]查看快捷暗号.            [2]查看切图规则.            [3]查看功能说明.")
-		help, info := unclassified.InputMenuSelection("\n:: 请选择需要查看的帮助：")
-		tools.CallClear() // 清屏
-		switch help {
+		text := `:: 此项目是通过注入JS脚本对PS进行短暂的间接控制，非实时监控，资源消耗极低！
+
+   [1]查看快捷暗号.            [2]查看切图规则.            [3]查看功能说明.`
+		fmt.Println(text)
+
+		key := inputString("\n:: 请选择需要查看的帮助：") // 获取键盘输入
+		tools.CallClear()                      // 清屏
+
+		// 如果是暗号就打印暗号传回来的提示
+		var ok bool
+		if ok, c.info = presenter.SelectCommand(key); ok {
+			continue
+		}
+
+		switch key {
 		case "1":
-			key() // 快捷键
+			commandList() // 命令列表
 		case "2":
 			careful() // 注意事项
 		case "3":
 			skill() // 软件使用技巧
 		case "-":
-			break OuterLoop //跳出循环
+			break OuterLoop
+		case "":
+			c.info = ":: 输入的内容为空，请重新输入..."
+			continue
 		default:
-			if len(info) != 0 {
-				fmt.Println(info)
-			} else {
-				fmt.Printf("\n:: 输入的 [%s] 不是已知的功能选项，请重新输入...\n", tools.ColourString(help, ctc.ForegroundGreen))
-			}
+			c.info = fmt.Sprintf(":: 输入的 [%s] 不是已知的功能选项，请重新输入...", tools.ColourString(key, ctc.ForegroundGreen))
 		}
 	}
 }
