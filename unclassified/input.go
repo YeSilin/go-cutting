@@ -24,7 +24,7 @@ func runCode(num string) (ok bool, info string) {
 		presenter.Command2()
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在重建新文档..."
 	case "-3":
-		presenter.Command3() // 深度清除源数据
+		presenter.Command7() // 深度清除源数据
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在深度清理PSD..."
 	case "-4":
 		return false, ""
@@ -35,7 +35,7 @@ func runCode(num string) (ok bool, info string) {
 		presenter.Command6() // 简单清除元数据
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在快速清理PSD..."
 	case "-7":
-		presenter.Command7() // 为当前文档添加黑边
+		presenter.Command8() // 为当前文档添加黑边
 		return true, "\n:: 检测到输入的内容为隐藏暗号，正在为当前文档添加黑边..."
 	case "-8":
 		tools.CallClear() // 清屏

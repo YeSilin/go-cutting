@@ -68,11 +68,11 @@ func (v *GuiView) choiceCode(tips *widget.Label) fyne.CanvasObject {
 		}),
 
 		// 新建一个按钮，点击后执行匿名函数
-		widget.NewButton("[-3]", func() {
+		widget.NewButton("[-7]", func() {
 			//只有在Photoshop已经打开的情景下运行脚本
 			if presenter.IsPhotoshopRun() {
-				presenter.Command3()
-				tips.SetText("You just pressed [-3]!~")
+				presenter.Command7()
+				tips.SetText("You just pressed [-7]!~")
 			} else {
 				dialog.ShowInformation("Info", "Photoshop is not running!", v.mainWindow)
 			}

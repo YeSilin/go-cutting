@@ -40,8 +40,10 @@ func InitScript() {
 		model.SaveAsJPEG()                           // 生成带自带清除元数据的另存脚本
 		model.SaveAllJPEG()                          // 生成另存全部文件脚本
 		model.SaveAndCloseAllDocuments()             // 生成保存并关闭全部文档的脚本
+		model.CopyOriginalImageStamping()            // 生成 -3 复制原图盖印
+		model.CopyOriginalImageGroup()               // 生成 -4 复制原图编组
 		model.CopyAndCloseOtherDocuments()           // 生成 -5 复制并关闭其他文档脚本
-		model.CopyOriginalImageStamping()            // 生成 -4 复制原图盖印
+
 	}()
 }
 
@@ -52,6 +54,14 @@ func InitHotkey() {
 	// 注册F1热键
 	hkey.Register(hotkey.None, hotkey.F1, func() {
 		Command1()
+	})
+	// 注册F2热键
+	hkey.Register(hotkey.None, hotkey.F2, func() {
+		Command2()
+	})
+	// 注册F3热键
+	hkey.Register(hotkey.None, hotkey.F3, func() {
+		Command3()
 	})
 	// 注册F4热键
 	hkey.Register(hotkey.None, hotkey.F4, func() {

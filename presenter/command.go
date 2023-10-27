@@ -23,17 +23,17 @@ func Command2() {
 	go cmd.Run()
 }
 
-// Command3 执行暗号-3 深度清除源数据
+// Command3 执行暗号-3 复制原图盖印
 func Command3() {
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "data/jsx/clearMetadata.jsx"
+	dataPath := "data/jsx/copyOriginalImageStamping.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
-// Command4 执行暗号-4 复制原图盖印
+// Command4 执行暗号-4 复制原图编组
 func Command4() {
 	// 创建一个协程使用cmd启动外部程序
-	dataPath := "data/jsx/copyOriginalImageStamping.jsx"
+	dataPath := "data/jsx/copyOriginalImageGroup.jsx"
 	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
 }
 
@@ -49,8 +49,15 @@ func Command6() {
 	model.RunClearMetadataStd()
 }
 
-// Command7 执行暗号-7 为当前文档添加黑边
+// Command7 执行暗号-7 深度清除源数据
 func Command7() {
+	// 创建一个协程使用cmd启动外部程序
+	dataPath := "data/jsx/clearMetadata.jsx"
+	go exec.Command("cmd.exe", "/c", "start "+dataPath).Run()
+}
+
+// Command8 执行暗号-8 为当前文档添加黑边
+func Command8() {
 	model.RunAddBlackEdge()
 }
 
@@ -132,11 +139,11 @@ func SelectCommand(Command string) (ok bool, info string) {
 		Command2()
 		return true, ":: 检测到输入的内容为隐藏暗号，正在重建新文档..."
 	case "-3":
-		Command3() // 深度清除源数据
-		return true, ":: 检测到输入的内容为隐藏暗号，正在深度清理PSD..."
-	case "-4":
-		Command4() // 复制原图盖印
+		Command3() // 复制原图盖印
 		return true, ":: 检测到输入的内容为隐藏暗号，正在复制原图盖印到当前文档..."
+	case "-4":
+		Command4() // 复制原图编组
+		return true, ":: 检测到输入的内容为隐藏暗号，正在复制原图编组到当前文档..."
 	case "-5":
 		Command5() // 复制并关闭其他文档
 		return true, ":: 检测到输入的内容为隐藏暗号，正在复制并关闭其他文档..."
@@ -144,11 +151,11 @@ func SelectCommand(Command string) (ok bool, info string) {
 		Command6() // 简单清除元数据
 		return true, ":: 检测到输入的内容为隐藏暗号，正在快速清理PSD..."
 	case "-7":
-		Command7() // 为当前文档添加黑边
-		return true, ":: 检测到输入的内容为隐藏暗号，正在为当前文档添加黑边..."
+		Command7() // 深度清除源数据
+		return true, ":: 检测到输入的内容为隐藏暗号，正在深度清理PSD..."
 	case "-8":
-		tools.CallClear() // 清屏
-		return true, ""
+		Command8() // 为当前文档添加黑边
+		return true, ":: 检测到输入的内容为隐藏暗号，正在为当前文档添加黑边..."
 	case "-9":
 		Command9() // 打开历史记录
 		return true, ":: 检测到输入的内容为隐藏暗号，正在打开切图历史..."
