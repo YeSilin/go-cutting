@@ -87,7 +87,8 @@ OuterLoop:
 		c.showNotice(false)
 
 		tools.EnglishTitle("Help info", 74)
-		text := `:: 此项目是通过注入JS脚本对PS进行短暂的间接控制，非实时监控，资源消耗极低！
+		text := `
+:: 此项目是通过注入JS脚本对PS进行短暂的间接控制，非实时监控，资源消耗极低！
 
    [1]查看快捷暗号.            [2]查看切图规则.            [3]查看功能说明.`
 		fmt.Println(text)

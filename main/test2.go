@@ -1,10 +1,26 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/MakeNowJust/hotkey"
+)
 
-// go build test2.go
-func main333() {
-	a := 10
-	a -= 5 + 1
-	fmt.Println(a)
+func main33() {
+	hkey := hotkey.New()
+
+	quit := make(chan bool)
+
+	hkey.Register(hotkey.None, hotkey.F1, func() {
+		fmt.Println("Quit~~~~~~~~~~~~~~~~~~~")
+		//quit <- true
+	})
+
+	hkey.Register(hotkey.None, hotkey.F2, func() {
+		fmt.Println("f2~~~~~~~~~~~~~~~~~~~")
+		//quit <- true
+	})
+
+	fmt.Println("Start hotkey's loop")
+	fmt.Println("Push Ctrl-Q to escape and quit")
+	<-quit
 }

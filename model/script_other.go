@@ -211,6 +211,7 @@ main();`
 
 // CopyOriginalImageStamping 暗号-4，复制原图盖印
 func CopyOriginalImageStamping() {
+	// 切图文档的正则 ^\d{12}_[\u4e00-\u9fa5]{1,10}_\d{1,5}x\d{1,5}
 	const script = `// 盖印到剪贴板
 function stampToClipboard() {
     // 添加一个临时图层好实现复制操作

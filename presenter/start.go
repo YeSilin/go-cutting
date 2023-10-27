@@ -4,6 +4,7 @@ package presenter
 
 import (
 	"fmt"
+	"github.com/MakeNowJust/hotkey"
 	"github.com/spf13/viper"
 	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/tools"
@@ -42,4 +43,18 @@ func InitScript() {
 		model.CopyAndCloseOtherDocuments()           // 生成 -5 复制并关闭其他文档脚本
 		model.CopyOriginalImageStamping()            // 生成 -4 复制原图盖印
 	}()
+}
+
+// InitHotkey 初始化全局热键
+func InitHotkey() {
+	hkey := hotkey.New()
+
+	// 注册F1热键
+	hkey.Register(hotkey.None, hotkey.F1, func() {
+		Command1()
+	})
+	// 注册F4热键
+	hkey.Register(hotkey.None, hotkey.F4, func() {
+		Command4()
+	})
 }

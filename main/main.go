@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/spf13/viper"
-	"github.com/yesilin/go-cutting/model"
 	"github.com/yesilin/go-cutting/presenter"
 	"github.com/yesilin/go-cutting/view/cli"
 	"github.com/yesilin/go-cutting/view/gui"
@@ -14,6 +13,7 @@ func init() {
 	presenter.InitSetting() // 初始化设置
 	presenter.InitFolder()  // 创建必须提前存在的文件夹
 	presenter.InitScript()  // 创建必须提前准备的脚本
+	presenter.InitHotkey()  // 初始化全局热键
 }
 
 func main() {
@@ -25,13 +25,13 @@ func main() {
 	// 获取通知
 	cliView.Notice = ":: " + presenter.Limit.GetString("notice")
 	// 设置版本号
-	cliView.Version = "1.2.49" // 设置版本号！！！！！！！！！！！！！！！！！！！！！！！
+	cliView.Version = "1.2.50" // 设置版本号！！！！！！！！！！！！！！！！！！！！！！！
 
 	// 验证许可证
 	cliView.License()
 
-	// 自动运行全局热键
-	model.RunGlobalHotkey()
+	// 打开易语言写的辅助工具
+	//model.RunGlobalHotkey()
 
 	// 不让自动退出
 	wg := sync.WaitGroup{}
