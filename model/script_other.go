@@ -90,6 +90,11 @@ function groupSelected(name) {
 }
 
 
+// 是否存在背景图层
+function isExistBackgroundLayer(doc) {
+    return doc.layers[doc.layers.length - 1].isBackgroundLayer;
+}
+
 // 解锁背景图层
 function unlockBackgroundLayer() {
     var idsetd = charIDToTypeID("setd");
@@ -119,8 +124,13 @@ function selectAllLayers() {
 
 // 合并历史记录
 function mergeHistory(srcDoc, dstDoc) {
-    // 解锁背景图层
-    unlockBackgroundLayer();
+
+    // 如果有背景图层才解锁
+    if (isExistBackgroundLayer(srcDoc)) {
+        // 解锁背景图层
+        unlockBackgroundLayer();
+    }
+
     // 选择全部图层
     selectAllLayers();
     // 只有图层数大于1的才打包
@@ -150,6 +160,11 @@ function copyOriginalImageGroup() {
         srcDoc = app.documents[app.documents.length - 2];
     }
 
+    // 如果两个模式不同就取消操作
+    if (dstDoc.mode != srcDoc.mode) {
+        alert("颜色模式不同已取消操作！~")
+        return;
+    }
 
     // 切换活动文档为原图文档
     app.activeDocument = srcDoc;

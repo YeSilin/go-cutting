@@ -55,14 +55,14 @@ func InitHotkey() {
 	hkey.Register(hotkey.None, hotkey.F1, func() {
 		Command1()
 	})
-	// 注册F2热键
-	hkey.Register(hotkey.None, hotkey.F2, func() {
-		Command2()
-	})
-	// 注册F3热键
-	hkey.Register(hotkey.None, hotkey.F3, func() {
-		Command3()
-	})
+	// 注册F2热键 重命名冲突
+	//hkey.Register(hotkey.None, hotkey.F2, func() {
+	//	Command2()
+	//})
+	// 注册F3热键 3dsMax冲突
+	//hkey.Register(hotkey.None, hotkey.F3, func() {
+	//	Command3()
+	//})
 	// 注册F4热键
 	hkey.Register(hotkey.None, hotkey.F4, func() {
 		Command4()
