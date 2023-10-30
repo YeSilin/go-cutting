@@ -583,21 +583,21 @@ func frame8to3() {
 	}
 }
 
-// 补切画布不扣任何大小
-func frame9() {
+// 不扣补切，不扣任何大小
+func frame9to1() {
 	// 由配置决定是否循环使用此框架
 	for {
-		tools.ChineseTitle("当前框架补切画布", 74) // 请注意切图的工厂与框架的选择
+		tools.ChineseTitle("当前框架不扣补切", 74) // 请注意切图的工厂与框架的选择
 		fmt.Println("\n:: 此框架主要用来补切画布，不减去任何边框尺寸，适合不想手动新建画布时使用！")
 
-		widthStr := inputPro("\n:: 请输入补切画布的宽：", 6) // 获取键盘输入
+		widthStr := inputPro("\n:: 请输入不扣补切的宽：", 6) // 获取键盘输入
 		// 输入返回当然要返回啦
 		if widthStr == "-" {
 			tools.CallClear() // 清屏
 			return
 		}
 
-		heightStr := inputPro("\n:: 请输入补切画布的高：", 6) // 获取键盘输入
+		heightStr := inputPro("\n:: 请输入不扣补切的高：", 6) // 获取键盘输入
 		// 输入返回当然要返回啦
 		if heightStr == "-" {
 			tools.CallClear() // 清屏
@@ -605,10 +605,35 @@ func frame9() {
 		}
 
 		// 处理框架生成脚本
-		width, height := presenter.FramePresenter9(widthStr, heightStr)
+		width, height := presenter.FramePresenter9to1(widthStr, heightStr)
 
 		// 输出提示
-		color.Yellow.Printf("\n:: 补切画布：宽 %.2f cm，高 %.2f cm\n", width, height)
+		color.Yellow.Printf("\n:: 不扣补切：宽 %.2f cm，高 %.2f cm\n", width, height)
+
+		if !viper.GetBool("memory") { // 是否记忆框架
+			break
+		}
+	}
+}
+
+// 圆形补切，扣2
+func frame9to2() {
+	// 由配置决定是否循环使用此框架
+	for {
+		tools.ChineseTitle("当前框架圆形补切", 74) // 请注意切图的工厂与框架的选择
+
+		diameterStr := inputPro("\n:: 请输入圆形补切的直径：", 6) // 获取键盘输入
+		// 输入返回当然要返回啦
+		if diameterStr == "-" {
+			tools.CallClear() // 清屏
+			return
+		}
+
+		// 处理框架生成脚本
+		diameter := presenter.FramePresenter9to2(diameterStr)
+
+		// 输出提示
+		color.Yellow.Printf("\n:: 圆形补切：直径 %.2f cm\n", diameter)
 
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break

@@ -497,7 +497,7 @@ func FramePresenter8to2(widthStr, heightStr, thicknessStr string) (width, height
 	saveHeight := height + thickness*2 + 2 // 保存时的高度
 
 	// 为当前框架指定名字，此框架特殊，保存时进行框架计算
-	frameName := fmt.Sprintf("%s_拉布座屏_%.0fx%.0f", tools.NowTime(), saveWidth, saveHeight)
+	frameName := fmt.Sprintf("%s_拉布座屏_%.0fx%.0f", tools.NowTime(), width, height)
 
 	// 生成创建Photoshop新文档脚本
 	model.NewDocument(width, height, frameName, false)
@@ -510,10 +510,6 @@ func FramePresenter8to2(widthStr, heightStr, thicknessStr string) (width, height
 
 	// 是否打开自动新建文档
 	model.RunAutoCreateDocuments()
-
-	// 此框架是保存时才将画布变大
-	width = saveWidth
-	height = saveHeight
 	return
 }
 
@@ -549,8 +545,8 @@ func FramePresenter8to3(widthStr, heightStr, countStr string) (totalWidth, heigh
 	return
 }
 
-// FramePresenter9 对补切画布进行处理
-func FramePresenter9(widthStr, heightStr string) (width, height float64) {
+// FramePresenter9to1 对不扣补切进行处理
+func FramePresenter9to1(widthStr, heightStr string) (width, height float64) {
 	// 定义一个预留尺寸
 
 	// 强制类型转换成浮点数
@@ -560,13 +556,44 @@ func FramePresenter9(widthStr, heightStr string) (width, height float64) {
 	// 进行框架公式计算
 
 	// 为当前框架指定名字
-	frameName := fmt.Sprintf("%s_补切画布_%.0fx%.0f", tools.NowTime(), width, height)
+	frameName := fmt.Sprintf("%s_不扣补切_%.0fx%.0f", tools.NowTime(), width, height)
 
 	// 生成创建Photoshop新文档脚本
 	model.NewDocument(width, height, frameName, true) // 创建ps文档
 
 	// 追加最大画布判断
 	model.IsMaxCanvasExceeded(width, height)
+
+	// 生成暗号【-1】可以用的另存脚本
+	go model.FrameSaveDef(frameName)
+
+	// 是否打开自动新建文档
+	model.RunAutoCreateDocuments()
+
+	return
+}
+
+// FramePresenter9to2 对圆形补切进行处理
+func FramePresenter9to2(diameterStr string) (diameter float64) {
+	// 定义一个预留尺寸
+
+	// 强制类型转换成浮点数
+	diameter, _ = strconv.ParseFloat(diameterStr, 64)
+
+	// 进行框架公式计算
+	diameter = diameter - 2
+
+	// 为当前框架指定名字
+	frameName := fmt.Sprintf("%s_圆形补切_%.0fx%.0f", tools.NowTime(), diameter, diameter)
+
+	// 生成创建Photoshop新文档脚本
+	model.NewDocument(diameter, diameter, frameName, true) // 创建ps文档
+
+	// 追加专属的切图参考线
+	model.FrameGuide9to2()
+
+	// 追加最大画布判断
+	model.IsMaxCanvasExceeded(diameter, diameter)
 
 	// 生成暗号【-1】可以用的另存脚本
 	go model.FrameSaveDef(frameName)

@@ -150,6 +150,52 @@ OuterLoop:
 	}
 }
 
+// 补切画布的选择
+func (c *CLI) patchCanvasChoice() {
+OuterLoop:
+	for {
+		// 先显示通知
+		c.showNotice(false)
+
+		tools.EnglishTitle("Roller Shutter Cloth Choice", 74)
+		text := `
+:: 下方所有框架的切图单位均是厘米，支持使用小数点来表示毫米，但是意义不大！
+
+   [1]不扣补切.                  [2]圆形补切.                  [3]暂未开发.`
+		fmt.Println(text)
+
+		key := inputString("\n:: 请选择上方的边框类型：") // 获取键盘输入
+		tools.CallClear()                      // 清屏
+
+		// 如果是暗号就打印暗号传回来的提示
+		var ok bool
+		if ok, c.info = presenter.SelectCommand(key); ok {
+			continue
+		}
+
+		switch key {
+		case "1":
+			frame9to1()                   // 不扣补切
+			if !viper.GetBool("memory") { // 是否记忆框架
+				return
+			}
+		case "2":
+			frame9to2()                   // 圆形补切
+			if !viper.GetBool("memory") { // 是否记忆框架
+				return
+			}
+
+		case "-":
+			break OuterLoop
+		case "":
+			c.info = ":: 输入的内容为空，请重新输入..."
+			continue
+		default:
+			c.info = fmt.Sprintf(":: 输入的 [%s] 不是已知的边框类型，请重新输入...", tools.ColourString(key, ctc.ForegroundGreen))
+		}
+	}
+}
+
 // 旧厂各种框架的选择汇总
 func (c *CLI) oldFrameChoice() {
 OuterLoop:
@@ -195,7 +241,7 @@ OuterLoop:
 		case "8":
 			c.rollerShutterClothChoice() // 卷帘拉布框架选择
 		case "9":
-			frame9() // 补切画布
+			c.patchCanvasChoice() // 补切画布的选择
 		case "-":
 			break OuterLoop
 		case "":

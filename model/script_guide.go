@@ -295,3 +295,95 @@ if (app.activeDocument.layers.length != 1){
 		logrus.Error(err)
 	}
 }
+
+// FrameGuide9to2 生成补切圆形专属参考线圆形辅助
+func FrameGuide9to2() {
+	const script = `
+// 创建椭圆形状
+function createEllipse(theBounds, theR, theG, theB) {
+    var idpixelsUnit = stringIDToTypeID("pixelsUnit");
+    var idmake = stringIDToTypeID("make");
+    var desc15 = new ActionDescriptor();
+    var idnull = stringIDToTypeID("null");
+    var ref4 = new ActionReference();
+    var idcontentLayer = stringIDToTypeID("contentLayer");
+    ref4.putClass(idcontentLayer);
+    desc15.putReference(idnull, ref4);
+    var idusing = stringIDToTypeID("using");
+    var desc16 = new ActionDescriptor();
+    var idtype = stringIDToTypeID("type");
+    var desc17 = new ActionDescriptor();
+    var idcolor = stringIDToTypeID("color");
+    var desc18 = new ActionDescriptor();
+    var idred = stringIDToTypeID("red");
+    desc18.putDouble(idred, theR);
+    var idgrain = stringIDToTypeID("grain");
+    desc18.putDouble(idgrain, theG);
+    var idblue = stringIDToTypeID("blue");
+    desc18.putDouble(idblue, theB);
+    var idRGBColor = stringIDToTypeID("RGBColor");
+    desc17.putObject(idcolor, idRGBColor, desc18);
+    var idsolidColorLayer = stringIDToTypeID("solidColorLayer");
+    desc16.putObject(idtype, idsolidColorLayer, desc17);
+    var idshape = stringIDToTypeID("shape");
+    var desc19 = new ActionDescriptor();
+    var idunitValueQuadVersion = stringIDToTypeID("unitValueQuadVersion");
+    desc19.putInteger(idunitValueQuadVersion, 1);
+    var idtop = stringIDToTypeID("top");
+    desc19.putUnitDouble(idtop, idpixelsUnit, theBounds[1]);
+    var idleft = stringIDToTypeID("left");
+    desc19.putUnitDouble(idleft, idpixelsUnit, theBounds[0]);
+    var idbottom = stringIDToTypeID("bottom");
+    desc19.putUnitDouble(idbottom, idpixelsUnit, theBounds[3]);
+    var idright = stringIDToTypeID("right");
+    desc19.putUnitDouble(idright, idpixelsUnit, theBounds[2]);
+    var idellipse = stringIDToTypeID("ellipse");
+    desc16.putObject(idshape, idellipse, desc19);
+    var idcontentLayer = stringIDToTypeID("contentLayer");
+    desc15.putObject(idusing, idcontentLayer, desc16);
+    var idlayerID = stringIDToTypeID("layerID");
+    desc15.putInteger(idlayerID, 3);
+    executeAction(idmake, desc15, DialogModes.NO);
+};
+
+
+// 合并历史
+function circularReference() {
+    var originalRulerUnits = app.preferences.rulerUnits;
+    app.preferences.rulerUnits = Units.PIXELS;
+    // 创建一个随机颜色的椭圆
+    createEllipse([0, 0, activeDocument.width, activeDocument.width], Math.random() * 255, Math.random() * 255, Math.random() * 255);
+    app.preferences.rulerUnits = originalRulerUnits;
+}
+
+// 生成历史记录
+app.activeDocument.suspendHistory("圆形参考", "circularReference()");
+`
+
+	// 定义一个匿名结构体，给模板使用，属性必须大写，不然无权调用
+	info := struct {
+		diameter float64
+	}{}
+
+	// 解析字符串生成模板对象
+	tmpl, err := template.New("tmpl").Parse(script)
+	if err != nil {
+		logrus.Error(err)
+		return
+	}
+
+	// 打开要追加数据的文件
+	f, err := os.OpenFile("data/jsx/newDocument.jsx", os.O_APPEND, 0644)
+	if err != nil { // 如果有错误，打印错误，同时返回
+		logrus.Error(err)
+		return
+	}
+	// 关闭文件
+	defer f.Close()
+
+	// 利用给定数据渲染模板，并将结果写入f
+	err = tmpl.Execute(f, info)
+	if err != nil {
+		logrus.Error(err)
+	}
+}

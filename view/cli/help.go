@@ -96,7 +96,7 @@ OuterLoop:
 		fmt.Println(text)
 
 		key := inputString("\n:: 请选择需要查看的帮助：") // 获取键盘输入
-		tools.CallClear()                                // 清屏
+		tools.CallClear()                      // 清屏
 
 		// 如果是暗号就打印暗号传回来的提示
 		var ok bool
