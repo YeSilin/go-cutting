@@ -299,6 +299,37 @@ if (app.activeDocument.layers.length != 1){
 // FrameGuide9to2 生成补切圆形专属参考线圆形辅助
 func FrameGuide9to2() {
 	const script = `
+/* accepts parameters
+ * h  Object = {h:x, s:y, v:z}
+ * OR 
+ * h, s, v
+*/
+function HSVtoRGB(h, s, v) {
+    var r, g, b, i, f, p, q, t;
+    if (arguments.length === 1) {
+        s = h.s, v = h.v, h = h.h;
+    }
+    i = Math.floor(h * 6);
+    f = h * 6 - i;
+    p = v * (1 - s);
+    q = v * (1 - f * s);
+    t = v * (1 - (1 - f) * s);
+    switch (i % 6) {
+        case 0: r = v, g = t, b = p; break;
+        case 1: r = q, g = v, b = p; break;
+        case 2: r = p, g = v, b = t; break;
+        case 3: r = p, g = q, b = v; break;
+        case 4: r = t, g = p, b = v; break;
+        case 5: r = v, g = p, b = q; break;
+    }
+    return {
+        r: Math.round(r * 255),
+        g: Math.round(g * 255),
+        b: Math.round(b * 255)
+    };
+}
+
+
 // 创建椭圆形状
 function createEllipse(theBounds, theR, theG, theB) {
     var idpixelsUnit = stringIDToTypeID("pixelsUnit");
@@ -347,12 +378,14 @@ function createEllipse(theBounds, theR, theG, theB) {
 };
 
 
-// 合并历史
+// 创建圆形参考
 function circularReference() {
     var originalRulerUnits = app.preferences.rulerUnits;
     app.preferences.rulerUnits = Units.PIXELS;
+	// HSV 转 RGB
+    var rgbColor = HSVtoRGB(Math.random(), 20 / 100, 85 / 100);
     // 创建一个随机颜色的椭圆
-    createEllipse([0, 0, activeDocument.width, activeDocument.width], Math.random() * 255, Math.random() * 255, Math.random() * 255);
+    createEllipse([0, 0, activeDocument.width, activeDocument.width], rgbColor.r, rgbColor.g, rgbColor.b);
     app.preferences.rulerUnits = originalRulerUnits;
 }
 

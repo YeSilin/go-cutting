@@ -78,7 +78,7 @@ func randomRename(srcPath, extensionName string) {
 	_ = os.Rename(tempMin, min)
 }
 
-// 随机重命名文件名，打乱原始顺序后从一开始重命名
+// RandomRenameFile 随机重命名文件名，打乱原始顺序后从一开始重命名
 func RandomRenameFile(originalPath string) {
 	// 获取所有扩展名是jpg的文件名，类型是字符串切片
 	jpgSlice, _ := filepath.Glob(fmt.Sprintf("%s/*.jpg", originalPath))

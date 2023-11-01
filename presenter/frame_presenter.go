@@ -24,7 +24,7 @@ func FramePresenter1(widthStr, heightStr string) (width, height float64) {
 	height = height - border*2 + reserve
 
 	// 为当前框架指定名字
-	frameName := fmt.Sprintf("%s_常规座屏_%.0fx%.0f", tools.NowTime(), width, height)
+	frameName := fmt.Sprintf("%s_传统座屏_%.0fx%.0f", tools.NowTime(), width, height)
 
 	// 生成创建Photoshop新文档脚本
 	model.NewDocument(width, height, frameName, true)
@@ -497,7 +497,7 @@ func FramePresenter8to2(widthStr, heightStr, thicknessStr string) (width, height
 	saveHeight := height + thickness*2 + 2 // 保存时的高度
 
 	// 为当前框架指定名字，此框架特殊，保存时进行框架计算
-	frameName := fmt.Sprintf("%s_拉布座屏_%.0fx%.0f", tools.NowTime(), width, height)
+	frameName := fmt.Sprintf("%s_拉布座屏_%.0fx%.0f", tools.NowTime(), saveWidth, saveHeight)
 
 	// 生成创建Photoshop新文档脚本
 	model.NewDocument(width, height, frameName, false)
@@ -510,6 +510,8 @@ func FramePresenter8to2(widthStr, heightStr, thicknessStr string) (width, height
 
 	// 是否打开自动新建文档
 	model.RunAutoCreateDocuments()
+	width = saveWidth
+	height = saveHeight
 	return
 }
 

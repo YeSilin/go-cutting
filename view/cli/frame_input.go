@@ -14,15 +14,15 @@ import (
 func frame1() {
 	// 由配置决定是否循环使用此框架
 	for {
-		tools.ChineseTitle("当前框架常规座屏", 74)         // 请注意切图的工厂与框架的选择
-		widthStr := inputPro("\n:: 请输入常规座屏的宽：", 6) // 获取键盘输入
+		tools.ChineseTitle("当前框架传统座屏", 74)         // 请注意切图的工厂与框架的选择
+		widthStr := inputPro("\n:: 请输入传统座屏的宽：", 6) // 获取键盘输入
 		// 输入返回当然要返回啦
 		if widthStr == "-" {
 			tools.CallClear() // 清屏
 			return
 		}
 
-		heightStr := inputPro("\n:: 请输入常规座屏的高：", 6) // 获取键盘输入
+		heightStr := inputPro("\n:: 请输入传统座屏的高：", 6) // 获取键盘输入
 		// 输入返回当然要返回啦
 		if heightStr == "-" {
 			tools.CallClear() // 清屏
@@ -33,7 +33,7 @@ func frame1() {
 		width, height := presenter.FramePresenter1(widthStr, heightStr)
 
 		// 输出提示
-		color.Yellow.Printf("\n:: 常规座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
+		color.Yellow.Printf("\n:: 传统座屏：宽 %.2f cm，高 %.2f cm\n", width, height)
 
 		if !viper.GetBool("memory") { // 是否记忆框架
 			break
