@@ -213,7 +213,8 @@ function sameSize(modifyLayer, boundsRef) {
     heightPercentage = heightRef / heightCur * 100
 
     // 重设大小
-    modifyLayer.resize(widthPercentage, heightPercentage);
+    // modifyLayer.resize(widthPercentage, heightPercentage); // 宽高都缩放到参考图大小，缺点是会变形
+    modifyLayer.resize(widthPercentage, widthPercentage); // 根据参考图的宽度缩放到参考图大小，等比例缩放
 }
 
 

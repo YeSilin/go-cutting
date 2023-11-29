@@ -114,7 +114,7 @@ app.activeDocument.suspendHistory("建议：字不要在此参考线外！ 解�
 // IsMaxCanvasExceeded 是否超过最大画布尺寸
 func IsMaxCanvasExceeded(width, height float64) bool {
 	// 如果宽或高小于限定，那就直接返回
-	if width < 150 || height < 150 {
+	if width < 200 || height < 200 {
 		return false
 	}
 
@@ -156,14 +156,14 @@ function promptLayer(text, rgbValue){
 }
 `)
 
-	// 剩下的都大于150了，于是先从最过分的尺寸判断
-	if width > 200 && height > 200 {
+	// 剩下的都大于200了，于是先从最过分的尺寸判断
+	if width > 300 && height > 300 {
 		jsx.WriteString(`
-app.activeDocument.suspendHistory("注意：已超半透最大200cm", "promptLayer(\"注意：已超半透最大200cm。\",  \"f1362c\")");
+app.activeDocument.suspendHistory("注意：已超不透最大300cm", "promptLayer(\"注意：已超不透最大300cm。\",  \"f1362c\")");
 `)
 	} else {
 		jsx.WriteString(`
-app.activeDocument.suspendHistory("注意：已超不透最大150cm", "promptLayer(\"注意：已超不透最大150cm。\",  \"77bb11\")");
+app.activeDocument.suspendHistory("注意：已超半透最大200cm", "promptLayer(\"注意：已超半透最大200cm。\",  \"77bb11\")");
 `)
 	}
 

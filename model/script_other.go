@@ -183,7 +183,7 @@ function copyOriginalImageGroup() {
 copyOriginalImageGroup();`
 
 	// 71.0 更新 先强制生成的文本写覆盖入目标文件
-	tools.CreateFile("data/jsx/CopyOriginalImageGroup.jsx", script)
+	tools.CreateFile("data/jsx/copyOriginalImageGroup.jsx", script)
 }
 
 // CopyAndCloseOtherDocuments 暗号-5，生成复制并关闭其他文档脚本
