@@ -121,6 +121,35 @@ function selectAllLayers() {
     executeAction(stringIDToTypeID('selectAllLayers'), desc29, DialogModes.NO);
 }
 
+// 改变文档颜色模式
+function changeDocumentMode(srcDoc, dstDoc) {
+    // 如果两个模式相同就跳过
+    if (srcDoc.mode == dstDoc.mode) {
+        return true;
+    }
+
+    // 确认对话框，如果是false就跳过
+    if (!confirm("是否将切图文档改成原图文档的颜色模式？此操作可能出现色差！", false, "颜色模式不同")) {
+        return false;
+    }
+
+    // 剩下的就是颜色模式不同，且打算改变模式的
+    switch (srcDoc.mode) {
+        case DocumentMode.CMYK:
+            // 改变当前文档的色彩模型为 CMYK
+            dstDoc.changeMode(ChangeMode.CMYK)
+            break;
+        case DocumentMode.RGB:
+            dstDoc.changeMode(ChangeMode.RGB)
+            break;
+        default:
+            // 不是已知的颜色模式不改变
+            alert("不是已知的颜色模式已取消操作！~")
+            return false;
+    }
+
+    return true;
+}
 
 // 合并历史记录
 function mergeHistory(srcDoc, dstDoc) {
@@ -160,9 +189,8 @@ function copyOriginalImageGroup() {
         srcDoc = app.documents[app.documents.length - 2];
     }
 
-    // 如果两个模式不同就取消操作
-    if (dstDoc.mode != srcDoc.mode) {
-        alert("颜色模式不同已取消操作！~")
+    // 如果两个模式不同且用户不同意改变颜色模式就取消操作
+    if (!changeDocumentMode(srcDoc, dstDoc)) {
         return;
     }
 
