@@ -138,6 +138,8 @@ function changeDocumentMode(srcDoc, dstDoc) {
         case DocumentMode.CMYK:
             // 改变当前文档的色彩模型为 CMYK
             dstDoc.changeMode(ChangeMode.CMYK)
+            // 指定配置文件的色彩配置文件名
+            app.activeDocument.colorProfileName = "Japan Color 2011 Coated";
             break;
         case DocumentMode.RGB:
             dstDoc.changeMode(ChangeMode.RGB)

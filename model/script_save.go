@@ -509,6 +509,8 @@ function frameSaveDef() {
 
     // 改变当前文档的色彩模型为 CMYK
     app.activeDocument.changeMode(ChangeMode.CMYK)
+	// 指定配置文件的色彩配置文件名
+	app.activeDocument.colorProfileName = "Japan Color 2011 Coated";
 
     // 保存图片
     IsSaved = saveAsJPEG()
@@ -631,13 +633,13 @@ function createLayer() {
 function speedUp() {
     // 设置首选项新文档预设单位是厘米，PIXELS是像素
     app.preferences.rulerUnits = Units.CM;
-    // 新建一个空白图层用于合并
-    app.activeDocument.artLayers.add();
-    // 合并全部可见图层
-    app.activeDocument.mergeVisibleLayers();
+    // 拼合活动文档的所有图层并扔掉隐藏的图层
+    app.activeDocument.flatten();
 
     // 改变当前文档的色彩模型为 CMYK
     app.activeDocument.changeMode(ChangeMode.CMYK)
+	// 指定配置文件的色彩配置文件名
+	app.activeDocument.colorProfileName = "Japan Color 2011 Coated";
 
     // 转为背景图层不然添加黑边会无效
     app.activeDocument.activeLayer.isBackgroundLayer = true
@@ -866,12 +868,12 @@ function createLayer() {
 function speedUp() {
     // 设置首选项新文档预设单位是厘米，PIXELS是像素
     app.preferences.rulerUnits = Units.CM;
-    // 新建一个空白图层用于合并
-    app.activeDocument.artLayers.add();
-    // 合并全部可见图层
-    app.activeDocument.mergeVisibleLayers();
+    // 拼合活动文档的所有图层并扔掉隐藏的图层
+    app.activeDocument.flatten();
     // 改变当前文档的色彩模型为 CMYK
     app.activeDocument.changeMode(ChangeMode.CMYK)
+	// 指定配置文件的色彩配置文件名
+	app.activeDocument.colorProfileName = "Japan Color 2011 Coated";
     // 转为背景图层不然添加黑边会无效
     app.activeDocument.activeLayer.isBackgroundLayer = true
 }
@@ -1149,12 +1151,12 @@ function deleteDocumentAncestorsMetadata() {
 function speedUp() {
     // 设置首选项新文档预设单位是厘米，PIXELS是像素
     app.preferences.rulerUnits = Units.CM;
-    // 新建一个空白图层用于合并
-    app.activeDocument.artLayers.add();
-    // 合并全部可见图层
-    app.activeDocument.mergeVisibleLayers();
+    // 拼合活动文档的所有图层并扔掉隐藏的图层
+    app.activeDocument.flatten();
     // 改变当前文档的色彩模型为 CMYK
     app.activeDocument.changeMode(ChangeMode.CMYK);
+	// 指定配置文件的色彩配置文件名
+	app.activeDocument.colorProfileName = "Japan Color 2011 Coated";
     // 转为背景图层不然添加黑边会无效
     app.activeDocument.activeLayer.isBackgroundLayer = true
 }
@@ -1393,12 +1395,12 @@ function deleteDocumentAncestorsMetadata() {
 function speedUp() {
     // 设置首选项新文档预设单位是厘米，PIXELS是像素
     app.preferences.rulerUnits = Units.CM;
-    // 新建一个空白图层用于合并
-    app.activeDocument.artLayers.add();
-    // 合并全部可见图层
-    app.activeDocument.mergeVisibleLayers();
+    // 拼合活动文档的所有图层并扔掉隐藏的图层
+    app.activeDocument.flatten();
     // 改变当前文档的色彩模型为 CMYK
     app.activeDocument.changeMode(ChangeMode.CMYK);
+	// 指定配置文件的色彩配置文件名
+	app.activeDocument.colorProfileName = "Japan Color 2011 Coated";
     // 转为背景图层不然添加黑边会无效
     app.activeDocument.activeLayer.isBackgroundLayer = true;
 }
@@ -1734,6 +1736,8 @@ function frameSave(fileObject) {
     app.activeDocument.flatten();
 	// 改变当前文档的色彩模型为 CMYK
 	app.activeDocument.changeMode(ChangeMode.CMYK);
+	// 指定配置文件的色彩配置文件名
+	app.activeDocument.colorProfileName = "Japan Color 2011 Coated";
 
     // 复制图层
     app.activeDocument.activeLayer.duplicate();
@@ -1984,6 +1988,8 @@ function frameSave(fileNameArr) {
     app.activeDocument.flatten();
     // 改变当前文档的色彩模型为 CMYK
     app.activeDocument.changeMode(ChangeMode.CMYK);
+	// 指定配置文件的色彩配置文件名
+	app.activeDocument.colorProfileName = "Japan Color 2011 Coated";
     // 保存活动历史记录状态
     var work = app.activeDocument.activeHistoryState;
 
